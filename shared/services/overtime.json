@@ -1,0 +1,744 @@
+{
+  "items": [
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 123190,
+        "guid": "66520fe1-570c-4177-af86-af7194206818",
+        "dateFiled": "2024-10-13T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101611367",
+        "actual": {
+          "dateFrom": "2024-10-13T10:30:00",
+          "dateTo": "2024-10-13T20:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-13T10:30:00",
+          "dateTo": "2024-10-13T21:00:00"
+        },
+        "dateTransaction": "2024-10-16T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "numberOfHours": 0,
+        "reason": "Zz - BATCH REVIEWED BY: Christian Padasas - 10/16/2024 - BATCH APPROVED BY: Christian Padasas - 10/16/2024",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-16T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 123191,
+        "guid": "8daede66-b396-4bdc-9702-ad7a108c99ba",
+        "dateFiled": "2024-10-02T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101611368",
+        "actual": {
+          "dateFrom": "2024-10-02T19:00:00",
+          "dateTo": "2024-10-02T22:50:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-02T19:00:00",
+          "dateTo": "2024-10-02T22:50:00"
+        },
+        "dateTransaction": "2024-10-16T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "A",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-16T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124190,
+        "guid": "7d897e60-b4f6-414d-ab47-21a324c040d1",
+        "dateFiled": "2024-10-16T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101611370",
+        "actual": {
+          "dateFrom": "2024-10-16T19:00:00",
+          "dateTo": "2024-10-17T10:35:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-16T19:00:00",
+          "dateTo": "2024-10-17T10:35:00"
+        },
+        "dateTransaction": "2024-10-16T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Cancelled"
+        },
+        "numberOfHours": 0,
+        "reason": "Zs",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-16T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124192,
+        "guid": "7491a5ea-00a3-4a9e-b01b-19ef0cc0f79c",
+        "dateFiled": "2024-10-01T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101611372",
+        "actual": {
+          "dateFrom": "2024-10-01T19:00:00",
+          "dateTo": "2024-10-01T23:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-01T19:00:00",
+          "dateTo": "2024-10-01T23:00:00"
+        },
+        "dateTransaction": "2024-10-16T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Reviewed"
+        },
+        "numberOfHours": 0,
+        "reason": "Hahahah",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-16T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124193,
+        "guid": "6ac9d258-a8e7-4f9e-a481-9388d216f1dc",
+        "dateFiled": "2024-10-03T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101611373",
+        "actual": {
+          "dateFrom": "2024-10-03T10:30:00",
+          "dateTo": "2024-10-03T22:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-03T10:30:00",
+          "dateTo": "2024-10-03T22:00:00"
+        },
+        "dateTransaction": "2024-10-16T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "Hahahaha",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-16T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124194,
+        "guid": "95d573fb-e125-4ec8-aa57-b3cc4669c428",
+        "dateFiled": "2024-10-07T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101611374",
+        "actual": {
+          "dateFrom": "2024-10-07T10:30:00",
+          "dateTo": "2024-10-07T18:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-07T10:30:00",
+          "dateTo": "2024-10-07T18:00:00"
+        },
+        "dateTransaction": "2024-10-16T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "numberOfHours": 0,
+        "reason": "Zzzzz - BATCH REVIEWED BY: Christian Padasas - 10/16/2024 - BATCH APPROVED BY: Christian Padasas - 10/16/2024",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-16T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080007",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124196,
+        "guid": "837d528e-0626-407f-b847-edf14bef27b5",
+        "dateFiled": "2024-10-17T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711376",
+        "actual": {
+          "dateFrom": "2024-10-17T18:00:00",
+          "dateTo": "2024-10-18T03:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-17T18:00:00",
+          "dateTo": "2024-10-18T03:00:00"
+        },
+        "dateTransaction": "2024-10-17T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Cancelled"
+        },
+        "numberOfHours": 0,
+        "reason": "Zzz",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-17T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080008",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124197,
+        "guid": "example-guid-1",
+        "dateFiled": "2024-10-18T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711377",
+        "actual": {
+          "dateFrom": "2024-10-18T09:00:00",
+          "dateTo": "2024-10-18T17:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-18T09:00:00",
+          "dateTo": "2024-10-18T17:00:00"
+        },
+        "dateTransaction": "2024-10-18T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "New filing for review",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-18T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080009",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124198,
+        "guid": "example-guid-2",
+        "dateFiled": "2024-10-19T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711378",
+        "actual": {
+          "dateFrom": "2024-10-19T10:00:00",
+          "dateTo": "2024-10-19T15:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-19T10:00:00",
+          "dateTo": "2024-10-19T15:00:00"
+        },
+        "dateTransaction": "2024-10-19T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Reviewed"
+        },
+        "numberOfHours": 0,
+        "reason": "Follow-up filing",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-19T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080010",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124199,
+        "guid": "example-guid-3",
+        "dateFiled": "2024-10-20T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711379",
+        "actual": {
+          "dateFrom": "2024-10-20T08:00:00",
+          "dateTo": "2024-10-20T16:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-20T08:00:00",
+          "dateTo": "2024-10-20T16:00:00"
+        },
+        "dateTransaction": "2024-10-20T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "Routine check-in",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-20T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080011",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124200,
+        "guid": "example-guid-4",
+        "dateFiled": "2024-10-21T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711380",
+        "actual": {
+          "dateFrom": "2024-10-21T09:00:00",
+          "dateTo": "2024-10-21T17:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-21T09:00:00",
+          "dateTo": "2024-10-21T17:00:00"
+        },
+        "dateTransaction": "2024-10-21T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "Team meeting preparation",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-21T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080012",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124201,
+        "guid": "example-guid-5",
+        "dateFiled": "2024-10-22T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711381",
+        "actual": {
+          "dateFrom": "2024-10-22T10:00:00",
+          "dateTo": "2024-10-22T15:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-22T10:00:00",
+          "dateTo": "2024-10-22T15:00:00"
+        },
+        "dateTransaction": "2024-10-22T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Reviewed"
+        },
+        "numberOfHours": 0,
+        "reason": "Client follow-up",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-22T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080013",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124202,
+        "guid": "example-guid-6",
+        "dateFiled": "2024-10-23T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711382",
+        "actual": {
+          "dateFrom": "2024-10-23T09:00:00",
+          "dateTo": "2024-10-23T17:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-23T09:00:00",
+          "dateTo": "2024-10-23T17:00:00"
+        },
+        "dateTransaction": "2024-10-23T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Cancelled"
+        },
+        "numberOfHours": 0,
+        "reason": "Project update meeting",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-23T00:00:00"
+    },
+    {
+      "id": 79,
+      "code": "TW303080014",
+      "name": "Christian Padasas",
+      "companyId": 2,
+      "branchId": 3,
+      "departmentId": 42,
+      "filing": {
+        "id": 124203,
+        "guid": "example-guid-7",
+        "dateFiled": "2024-10-24T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT224101711383",
+        "actual": {
+          "dateFrom": "2024-10-24T08:30:00",
+          "dateTo": "2024-10-24T16:30:00"
+        },
+        "requested": {
+          "dateFrom": "2024-10-24T08:30:00",
+          "dateTo": "2024-10-24T16:30:00"
+        },
+        "dateTransaction": "2024-10-24T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Approved"
+        },
+        "numberOfHours": 0,
+        "reason": "End of month review",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-10-24T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 36,
+        "guid": "7ca047ee-a081-4b54-b53f-66bf633ee7d9",
+        "dateFiled": "2023-03-20T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12305230036",
+        "actual": {
+          "dateFrom": "2023-03-20T16:00:00",
+          "dateTo": "2023-03-21T07:38:00"
+        },
+        "requested": {
+          "dateFrom": "2023-03-20T16:00:00",
+          "dateTo": "2023-03-21T03:00:00"
+        },
+        "dateTransaction": "2023-03-24T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "Duty and RAN-UFO Disassmble\r\n(THIS DOCUMENT IS REVIEWED BY MIROY, ANGELO JAMES LIBUTON 03/28/2023 03:37 pm) Reason: File Reviewed\r\n(THIS DOCUMENT IS APPROVED BY NAPURAN, MARY JOSSA ABRENICA 04/03/2023 03:10 pm) Reason: ok",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-03-24T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 71,
+        "guid": "90bd9571-1780-42cb-a576-d9b9bb968236",
+        "dateFiled": "2023-03-22T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12305230069",
+        "actual": {
+          "dateFrom": "2023-03-22T16:00:00",
+          "dateTo": "2023-03-23T03:02:00"
+        },
+        "requested": {
+          "dateFrom": "2023-03-22T18:06:00",
+          "dateTo": "2023-03-23T03:00:00"
+        },
+        "dateTransaction": "2023-03-31T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "GApan\r\n(THIS DOCUMENT IS APPROVED BY NAPURAN, MARY JOSSA ABRENICA 04/03/2023 02:56 pm) Reason: ok",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-03-31T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 773,
+        "guid": "e97e729d-56e2-4e73-a8b4-52c482a87b79",
+        "dateFiled": "2023-06-20T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12306290603",
+        "actual": {
+          "dateFrom": "2023-06-20T16:00:00",
+          "dateTo": "2023-06-20T22:48:00"
+        },
+        "requested": {
+          "dateFrom": "2023-06-20T16:00:00",
+          "dateTo": "2023-06-20T22:48:00"
+        },
+        "dateTransaction": "2023-06-29T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "SGC",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-06-29T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 774,
+        "guid": "7a93daee-3dad-46b6-a05f-fb4c8486db3e",
+        "dateFiled": "2023-06-22T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12306290604",
+        "actual": {
+          "dateFrom": "2023-06-22T16:00:00",
+          "dateTo": "2023-06-22T20:11:00"
+        },
+        "requested": {
+          "dateFrom": "2023-06-22T16:00:00",
+          "dateTo": "2023-06-22T20:11:00"
+        },
+        "dateTransaction": "2023-06-29T00:00:00",
+        "filingStatus": {
+          "id": 1,
+          "name": "Filed"
+        },
+        "numberOfHours": 0,
+        "reason": "SGC",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-06-29T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 8117,
+        "guid": "31b729f6-ac87-47b9-9a51-d5c9965f509a",
+        "dateFiled": "2023-10-27T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12310312883",
+        "actual": {
+          "dateFrom": "2023-10-27T16:30:00",
+          "dateTo": "2023-10-27T20:14:00"
+        },
+        "requested": {
+          "dateFrom": "2023-10-27T16:30:00",
+          "dateTo": "2023-10-27T20:00:00"
+        },
+        "dateTransaction": "2023-10-31T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "Videoke carpentry\n(THIS DOCUMENT IS BATCH APPROVED BY BALALLO, NELSON SOLIVEN 10/31/2023 02:19 pm)",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-10-31T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 8657,
+        "guid": "30015131-25e1-4ce6-9c7a-e9c053ab16e6",
+        "dateFiled": "2023-11-10T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12311133062",
+        "actual": {
+          "dateFrom": "2023-11-10T16:30:00",
+          "dateTo": "2023-11-10T19:41:00"
+        },
+        "requested": {
+          "dateFrom": "2023-11-10T16:30:00",
+          "dateTo": "2023-11-10T19:30:00"
+        },
+        "dateTransaction": "2023-11-13T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "Jeep\n(THIS DOCUMENT IS BATCH APPROVED BY BALALLO, NELSON SOLIVEN 11/14/2023 04:59 pm)",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-11-13T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 8658,
+        "guid": "5f06ac9c-c583-47af-b6df-07cec9eefa72",
+        "dateFiled": "2023-11-11T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12311133063",
+        "actual": {
+          "dateFrom": "2023-11-11T16:30:00",
+          "dateTo": "2023-11-11T19:56:00"
+        },
+        "requested": {
+          "dateFrom": "2023-11-11T16:30:00",
+          "dateTo": "2023-11-11T19:30:00"
+        },
+        "dateTransaction": "2023-11-13T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "Jeep/cabinet stock\n(THIS DOCUMENT IS BATCH APPROVED BY BALALLO, NELSON SOLIVEN 11/14/2023 04:59 pm)",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-11-13T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 9089,
+        "guid": "0613a002-9489-42ed-bd37-530e1f8dee0c",
+        "dateFiled": "2023-11-13T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12311153225",
+        "actual": {
+          "dateFrom": "2023-11-13T16:30:00",
+          "dateTo": "2023-11-13T20:05:00"
+        },
+        "requested": {
+          "dateFrom": "2023-11-13T16:30:00",
+          "dateTo": "2023-11-13T19:30:00"
+        },
+        "dateTransaction": "2023-11-15T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "jeep\n(THIS DOCUMENT IS BATCH APPROVED BY BALALLO, NELSON SOLIVEN 11/16/2023 12:45 pm)",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-11-15T00:00:00"
+    },
+    {
+      "id": 7,
+      "code": "PA0810060017",
+      "name": "Jonathan Noarin",
+      "companyId": 1,
+      "branchId": 160,
+      "departmentId": 0,
+      "filing": {
+        "id": 9091,
+        "guid": "2b3b9761-1a23-4c20-be86-c2f5cf9afe97",
+        "dateFiled": "2023-11-14T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OT12311153227",
+        "actual": {
+          "dateFrom": "2023-11-14T16:30:00",
+          "dateTo": "2023-11-14T19:32:00"
+        },
+        "requested": {
+          "dateFrom": "2023-11-14T16:30:00",
+          "dateTo": "2023-11-14T19:30:00"
+        },
+        "dateTransaction": "2023-11-15T00:00:00",
+        "filingStatus": {
+          "id": 11,
+          "name": "Posted"
+        },
+        "numberOfHours": 0,
+        "reason": "jeep/ battery car\n(THIS DOCUMENT IS BATCH APPROVED BY BALALLO, NELSON SOLIVEN 11/16/2023 07:48 am)",
+        "fileAttachment": "[]"
+      },
+      "dateTransaction": "2023-11-15T00:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 30,
+  "pageCount": 1,
+  "total": 23
+}

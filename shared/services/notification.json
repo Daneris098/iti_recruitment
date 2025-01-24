@@ -1,0 +1,44 @@
+{
+  "notifications": [
+    {
+      "title": "Overtime Reviewed",
+      "description": "Jane Cooper reviewed your Ovcertime filing with ID ",
+      "document_no": "#DOC123001528",
+      "date_posted": "Today, 48 minutes ago",
+      "notif_status": 0,
+      "filing_status": "reviewed"
+    },
+    {
+      "title": "Leave Cancelled",
+      "description": "Jane Cooper cancelled your Leave filing with ID ",
+      "document_no": "#DOC123001528",
+      "date_posted": "Today, 48 minutes ago",
+      "notif_status": 1,
+      "filing_status": "cancelled"
+    },
+    {
+      "title": "Missed Logs Approved",
+      "description": "Jane Cooper approved your Missed Logs filing with ID ",
+      "document_no": "#DOC123001528",
+      "date_posted": "Today, 48 minutes ago",
+      "notif_status": 1,
+      "filing_status": "approved"
+    },
+    {
+      "title": "Missed Logs Cancelled",
+      "description": "Jane Cooper cancelled your Missed Logs filing with ID ",
+      "document_no": "#DOC123001528",
+      "date_posted": "Today, 48 minutes ago",
+      "notif_status": 0,
+      "filing_status": "cancelled"
+    },
+    {
+      "title": "Leave Approved",
+      "description": "Jane Cooper approved your Leave filing with ID ",
+      "document_no": "#DOC123001528",
+      "date_posted": "Today, 48 minutes ago",
+      "notif_status": 1,
+      "filing_status": "approved"
+    }
+  ]
+}

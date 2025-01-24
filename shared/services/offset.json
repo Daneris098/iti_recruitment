@@ -1,0 +1,1028 @@
+{
+  "items": [
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 35,
+        "guid": "da94256b-8def-45b5-9f8e-c4dec8ab6747",
+        "dateFiled": "2023-08-30T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12309010034",
+        "actual": {
+          "dateFrom": "2023-08-30T20:15:00",
+          "dateTo": "2023-08-30T21:15:00"
+        },
+        "requested": {
+          "dateFrom": "2023-08-30T20:15:00",
+          "dateTo": "2023-08-30T21:15:00"
+        },
+        "dateTransaction": "2023-09-01T00:00:00",
+        "filingStatus": {
+          "id": 3,
+          "name": "Cancelled"
+        },
+        "totalCredits": 0,
+        "usedCredits": 0,
+        "currentCredits": 0,
+        "reason": "for offset (THIS DOCUMENT IS CANCELLED) Reason: test",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2023-09-01T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 82,
+        "guid": "8f12862b-75b6-4e7d-a7ec-2927c9ff903a",
+        "dateFiled": "2024-01-18T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12401300045",
+        "actual": {
+          "dateFrom": "2024-01-18T04:26:00",
+          "dateTo": "2024-01-18T20:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-01-18T19:00:00",
+          "dateTo": "2024-01-18T20:00:00"
+        },
+        "dateTransaction": "2024-01-30T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0,
+        "usedCredits": 0,
+        "currentCredits": 0,
+        "reason": "For CTO\n(THIS DOCUMENT IS BATCH APPROVED BY CO, OLIVER RYAN CARAMANZA 01/31/2024 09:18 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-01-30T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 83,
+        "guid": "51546a47-76ba-49c9-a600-a69b842b5819",
+        "dateFiled": "2024-01-25T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12401300046",
+        "actual": {
+          "dateFrom": "2024-01-25T04:35:00",
+          "dateTo": "2024-01-25T20:30:00"
+        },
+        "requested": {
+          "dateFrom": "2024-01-25T19:30:00",
+          "dateTo": "2024-01-25T20:30:00"
+        },
+        "dateTransaction": "2024-01-30T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0,
+        "usedCredits": 0,
+        "currentCredits": 0,
+        "reason": "For CTO\n(THIS DOCUMENT IS BATCH APPROVED BY CO, OLIVER RYAN CARAMANZA 01/31/2024 09:18 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-01-30T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 103,
+        "guid": "b7402284-2181-4aad-ba6c-8e0e07398dc8",
+        "dateFiled": "2024-02-16T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12402290052",
+        "actual": {
+          "dateFrom": "2024-02-16T19:31:00",
+          "dateTo": "2024-02-16T21:05:00"
+        },
+        "requested": {
+          "dateFrom": "2024-02-16T19:31:00",
+          "dateTo": "2024-02-16T21:05:00"
+        },
+        "dateTransaction": "2024-02-29T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0,
+        "usedCredits": 0,
+        "currentCredits": 0,
+        "reason": "For CTO\n(THIS DOCUMENT IS BATCH APPROVED BY CO, OLIVER RYAN CARAMANZA 02/29/2024 09:59 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-02-29T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1107,
+        "guid": "7869b174-e83c-4956-835b-f2d59701c55c",
+        "dateFiled": "2024-02-28T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12402290058",
+        "actual": {
+          "dateFrom": "2024-02-28T20:27:00",
+          "dateTo": "2024-02-29T00:04:00"
+        },
+        "requested": {
+          "dateFrom": "2024-02-28T20:27:00",
+          "dateTo": "2024-02-29T00:04:00"
+        },
+        "dateTransaction": "2024-02-29T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0,
+        "usedCredits": 0,
+        "currentCredits": 0,
+        "reason": "For Offset\n(THIS DOCUMENT IS BATCH APPROVED BY CO, OLIVER RYAN CARAMANZA 03/01/2024 09:06 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-02-29T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1110,
+        "guid": "07229e0f-b02f-43c3-806a-4475809c08a7",
+        "dateFiled": "2024-02-29T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12403010060",
+        "actual": {
+          "dateFrom": "2024-02-29T19:12:00",
+          "dateTo": "2024-02-29T20:19:00"
+        },
+        "requested": {
+          "dateFrom": "2024-02-29T19:12:00",
+          "dateTo": "2024-02-29T20:19:00"
+        },
+        "dateTransaction": "2024-03-01T00:00:00",
+        "filingStatus": {
+          "id": 3,
+          "name": "Cancelled"
+        },
+        "totalCredits": 0,
+        "usedCredits": 0,
+        "currentCredits": 0,
+        "reason": "for offset (THIS DOCUMENT IS CANCELLED) Reason: test",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-03-01T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1112,
+        "guid": "fd5f5d96-235f-44c0-822a-1e486e4fb055",
+        "dateFiled": "2024-03-01T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12403080061",
+        "actual": {
+          "dateFrom": "2024-03-01T19:19:00",
+          "dateTo": "2024-03-01T20:23:00"
+        },
+        "requested": {
+          "dateFrom": "2024-03-01T19:19:00",
+          "dateTo": "2024-03-01T20:23:00"
+        },
+        "dateTransaction": "2024-03-08T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 0.1111,
+        "usedCredits": 0.1,
+        "currentCredits": 0.0111,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 03/15/2024 11:40 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-03-08T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1119,
+        "guid": "6876c1f2-36cc-40d8-9b18-da8f8fb034ff",
+        "dateFiled": "2024-03-22T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12403250064",
+        "actual": {
+          "dateFrom": "2024-03-22T19:41:00",
+          "dateTo": "2024-03-22T21:12:00"
+        },
+        "requested": {
+          "dateFrom": "2024-03-22T19:41:00",
+          "dateTo": "2024-03-22T21:12:00"
+        },
+        "dateTransaction": "2024-03-25T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.2222,
+        "usedCredits": 0.2,
+        "currentCredits": 0.0222,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 03/26/2024 01:52 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-03-25T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1122,
+        "guid": "be7332c1-514f-4c39-983c-7a8d6e492089",
+        "dateFiled": "2024-03-20T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12403260067",
+        "actual": {
+          "dateFrom": "2024-03-20T20:26:00",
+          "dateTo": "2024-03-20T21:30:00"
+        },
+        "requested": {
+          "dateFrom": "2024-03-20T20:26:00",
+          "dateTo": "2024-03-20T21:30:00"
+        },
+        "dateTransaction": "2024-03-26T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": 0.1,
+        "currentCredits": 0,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 03/27/2024 08:50 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-03-26T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1132,
+        "guid": "4dc584d2-1eef-4c84-a4e8-90c0b4fd2c05",
+        "dateFiled": "2024-04-02T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12404050072",
+        "actual": {
+          "dateFrom": "2024-04-02T03:19:00",
+          "dateTo": "2024-04-02T21:10:00"
+        },
+        "requested": {
+          "dateFrom": "2024-04-02T20:00:00",
+          "dateTo": "2024-04-02T21:10:00"
+        },
+        "dateTransaction": "2024-04-05T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": 0.1,
+        "currentCredits": 0,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 04/15/2024 05:40 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-04-05T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 1136,
+        "guid": "08b06921-bbca-4adb-a204-884e01f28e16",
+        "dateFiled": "2024-04-05T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12404150074",
+        "actual": {
+          "dateFrom": "2024-04-05T19:31:00",
+          "dateTo": "2024-04-05T20:47:00"
+        },
+        "requested": {
+          "dateFrom": "2024-04-05T19:31:00",
+          "dateTo": "2024-04-05T20:47:00"
+        },
+        "dateTransaction": "2024-04-15T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.1111,
+        "usedCredits": 0.1,
+        "currentCredits": 0.0111,
+        "reason": "For Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 04/26/2024 09:02 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-04-15T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2140,
+        "guid": "df1ff27d-a759-4121-af4d-bedfeb0719e3",
+        "dateFiled": "2024-04-23T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12404290081",
+        "actual": {
+          "dateFrom": "2024-04-23T20:41:00",
+          "dateTo": "2024-04-23T22:22:00"
+        },
+        "requested": {
+          "dateFrom": "2024-04-23T20:41:00",
+          "dateTo": "2024-04-23T22:22:00"
+        },
+        "dateTransaction": "2024-04-29T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0.2,
+        "usedCredits": 0.2,
+        "currentCredits": 0,
+        "reason": "For Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 04/30/2024 11:19 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-04-29T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2151,
+        "guid": "7b8d18e4-aa4a-4a9c-aeb5-6cc2bc042822",
+        "dateFiled": "2024-05-02T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405060084",
+        "actual": {
+          "dateFrom": "2024-05-02T19:27:00",
+          "dateTo": "2024-05-02T21:03:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-02T19:27:00",
+          "dateTo": "2024-05-02T21:03:00"
+        },
+        "dateTransaction": "2024-05-06T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.2222,
+        "usedCredits": 0.2,
+        "currentCredits": 0.0222,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/15/2024 05:06 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-06T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2152,
+        "guid": "b0f17581-3c0f-46af-99a5-906c8b1f8eec",
+        "dateFiled": "2024-05-03T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405060085",
+        "actual": {
+          "dateFrom": "2024-05-03T19:07:00",
+          "dateTo": "2024-05-03T21:41:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-03T19:07:00",
+          "dateTo": "2024-05-03T21:41:00"
+        },
+        "dateTransaction": "2024-05-06T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 0.2222,
+        "usedCredits": 0.2,
+        "currentCredits": 0.0222,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/15/2024 05:06 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-06T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2157,
+        "guid": "097bd8b8-abbf-4113-a5db-5d02523dab16",
+        "dateFiled": "2024-05-01T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF22405150084",
+        "actual": {
+          "dateFrom": "2024-05-01T09:00:00",
+          "dateTo": "2024-05-01T20:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-01T09:00:00",
+          "dateTo": "2024-05-01T20:00:00"
+        },
+        "dateTransaction": "2024-05-15T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 1.1,
+        "usedCredits": 0.1,
+        "currentCredits": 1,
+        "reason": "For offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/16/2024 08:55 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-15T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2164,
+        "guid": "3506d323-3767-4074-aa0e-f2bef848af64",
+        "dateFiled": "2024-05-16T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405240087",
+        "actual": {
+          "dateFrom": "2024-05-16T19:00:00",
+          "dateTo": "2024-05-16T21:01:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-16T19:00:00",
+          "dateTo": "2024-05-16T21:01:00"
+        },
+        "dateTransaction": "2024-05-24T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0.2222,
+        "usedCredits": 0.2,
+        "currentCredits": 0.0222,
+        "reason": "For Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 09:00 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-24T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2165,
+        "guid": "00654429-f3e5-4bef-a9c6-3fea60038ba7",
+        "dateFiled": "2024-05-20T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405240088",
+        "actual": {
+          "dateFrom": "2024-05-20T20:00:00",
+          "dateTo": "2024-05-20T21:13:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-20T20:00:00",
+          "dateTo": "2024-05-20T21:13:00"
+        },
+        "dateTransaction": "2024-05-24T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": 0.1,
+        "currentCredits": 0,
+        "reason": "For Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 09:00 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-24T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2166,
+        "guid": "87cb5d93-ef4a-417c-b429-2a5bd3c1e2f0",
+        "dateFiled": "2024-05-21T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405240089",
+        "actual": {
+          "dateFrom": "2024-05-21T20:14:00",
+          "dateTo": "2024-05-21T21:32:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-21T20:14:00",
+          "dateTo": "2024-05-21T21:32:00"
+        },
+        "dateTransaction": "2024-05-24T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": 0.1,
+        "currentCredits": 0,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 09:00 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-24T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2167,
+        "guid": "1ad1053f-dff0-4612-b2d5-bd1a17fee173",
+        "dateFiled": "2024-05-22T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405240090",
+        "actual": {
+          "dateFrom": "2024-05-22T20:29:00",
+          "dateTo": "2024-05-22T21:32:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-22T20:29:00",
+          "dateTo": "2024-05-22T21:32:00"
+        },
+        "dateTransaction": "2024-05-24T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": 0.1,
+        "currentCredits": 0,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 09:00 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-24T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2168,
+        "guid": "44b61a46-c2db-4971-a6ab-9d003e8e8964",
+        "dateFiled": "2024-05-23T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405240091",
+        "actual": {
+          "dateFrom": "2024-05-23T19:00:00",
+          "dateTo": "2024-05-23T20:30:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-23T19:00:00",
+          "dateTo": "2024-05-23T20:30:00"
+        },
+        "dateTransaction": "2024-05-24T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0.1111,
+        "usedCredits": 0.1,
+        "currentCredits": 0.0111,
+        "reason": "For offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 08:59 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-24T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2171,
+        "guid": "eb3f61d9-337f-430a-a550-ef2280203fa7",
+        "dateFiled": "2024-05-27T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405280094",
+        "actual": {
+          "dateFrom": "2024-05-27T20:09:00",
+          "dateTo": "2024-05-27T21:28:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-27T20:09:00",
+          "dateTo": "2024-05-27T21:28:00"
+        },
+        "dateTransaction": "2024-05-28T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": -0.3,
+        "currentCredits": 0.4,
+        "reason": "For Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 08:59 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-28T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2172,
+        "guid": "3c2e0ce9-ae99-4d84-bb9a-f47f32b2c2a5",
+        "dateFiled": "2024-05-28T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405310095",
+        "actual": {
+          "dateFrom": "2024-05-28T20:03:00",
+          "dateTo": "2024-05-28T21:22:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-28T20:03:00",
+          "dateTo": "2024-05-28T21:22:00"
+        },
+        "dateTransaction": "2024-05-31T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": -0.3,
+        "currentCredits": 0.4,
+        "reason": "For Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 05:05 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-31T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2173,
+        "guid": "9b12d404-8501-4a24-8a9f-772a267dad1c",
+        "dateFiled": "2024-05-29T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12405310096",
+        "actual": {
+          "dateFrom": "2024-05-29T20:19:00",
+          "dateTo": "2024-05-29T22:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-05-29T20:19:00",
+          "dateTo": "2024-05-29T22:00:00"
+        },
+        "dateTransaction": "2024-05-31T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 0.2,
+        "usedCredits": -0.6,
+        "currentCredits": 0.8,
+        "reason": "For offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 05/31/2024 05:05 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-05-31T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2180,
+        "guid": "7dc1763f-d804-4a96-b938-ac1e338c6b8d",
+        "dateFiled": "2024-06-13T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12406140097",
+        "actual": {
+          "dateFrom": "2024-06-13T19:04:00",
+          "dateTo": "2024-06-13T20:08:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-13T19:04:00",
+          "dateTo": "2024-06-13T20:08:00"
+        },
+        "dateTransaction": "2024-06-14T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0.1111,
+        "usedCredits": -0.3,
+        "currentCredits": 0.4111,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/16/2024 09:10 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-14T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2186,
+        "guid": "22b7e7db-0430-422c-8dc4-0a973c8257a3",
+        "dateFiled": "2024-06-14T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12406150103",
+        "actual": {
+          "dateFrom": "2024-06-14T19:00:00",
+          "dateTo": "2024-06-14T21:17:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-14T19:00:00",
+          "dateTo": "2024-06-14T21:17:00"
+        },
+        "dateTransaction": "2024-06-15T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.2222,
+        "usedCredits": -0.6,
+        "currentCredits": 0.8222,
+        "reason": "Offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/16/2024 09:10 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-15T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2190,
+        "guid": "d28cc880-f6f7-4179-8a29-9448c528aef6",
+        "dateFiled": "2024-06-19T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF22406200098",
+        "actual": {
+          "dateFrom": "2024-06-19T20:47:00",
+          "dateTo": "2024-06-19T22:10:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-19T20:47:00",
+          "dateTo": "2024-06-19T22:10:00"
+        },
+        "dateTransaction": "2024-06-20T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.2,
+        "usedCredits": -0.6,
+        "currentCredits": 0.8,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/26/2024 09:16 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-20T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2195,
+        "guid": "902c8a6c-0ac0-4de1-a98d-2f90d2219176",
+        "dateFiled": "2024-06-21T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12406250106",
+        "actual": {
+          "dateFrom": "2024-06-21T19:00:00",
+          "dateTo": "2024-06-21T20:54:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-21T19:00:00",
+          "dateTo": "2024-06-21T20:54:00"
+        },
+        "dateTransaction": "2024-06-25T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Reviewed"
+        },
+        "totalCredits": 0.1111,
+        "usedCredits": -0.3,
+        "currentCredits": 0.4111,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/26/2024 09:16 am)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-25T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2197,
+        "guid": "663b29db-7bb2-4617-8d7e-ebe067fc6b62",
+        "dateFiled": "2024-06-17T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12406260107",
+        "actual": {
+          "dateFrom": "2024-06-17T09:00:00",
+          "dateTo": "2024-06-17T23:00:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-17T09:00:00",
+          "dateTo": "2024-06-17T23:00:00"
+        },
+        "dateTransaction": "2024-06-26T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Filed"
+        },
+        "totalCredits": 1.4,
+        "usedCredits": -1.2,
+        "currentCredits": 2.6,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/28/2024 02:15 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-26T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2198,
+        "guid": "c0765f73-a218-4cbd-a61a-67b91c50c7dc",
+        "dateFiled": "2024-06-25T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12406260108",
+        "actual": {
+          "dateFrom": "2024-06-25T20:11:00",
+          "dateTo": "2024-06-25T21:33:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-25T20:11:00",
+          "dateTo": "2024-06-25T21:33:00"
+        },
+        "dateTransaction": "2024-06-26T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.1,
+        "usedCredits": -0.3,
+        "currentCredits": 0.4,
+        "reason": "for offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/28/2024 02:15 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-26T00:00:00"
+    },
+    {
+      "id": 9,
+      "code": "PA0914010040",
+      "name": "Jonalyn Jabulin",
+      "companyId": 1,
+      "branchId": 146,
+      "departmentId": 0,
+      "filing": {
+        "id": 2204,
+        "guid": "c74e5d8b-437e-4946-81b9-09be7416c78a",
+        "dateFiled": "2024-06-27T00:00:00",
+        "shiftSchedule": null,
+        "documentNo": "OFF12406290114",
+        "actual": {
+          "dateFrom": "2024-06-27T19:37:00",
+          "dateTo": "2024-06-27T21:23:00"
+        },
+        "requested": {
+          "dateFrom": "2024-06-27T19:37:00",
+          "dateTo": "2024-06-27T21:23:00"
+        },
+        "dateTransaction": "2024-06-29T00:00:00",
+        "filingStatus": {
+          "id": 2,
+          "name": "Approved"
+        },
+        "totalCredits": 0.2222,
+        "usedCredits": 0,
+        "currentCredits": 0.2222,
+        "reason": "For offset\n(THIS DOCUMENT IS APPROVED BY CO, OLIVER RYAN CARAMANZA 06/29/2024 08:44 pm)",
+        "fileAttachment": ""
+      },
+      "dateTransaction": "2024-06-29T00:00:00"
+    }
+  ],
+  "page": 1,
+  "pageSize": 30,
+  "pageCount": 2,
+  "total": 52
+}

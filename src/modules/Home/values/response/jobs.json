@@ -1,0 +1,384 @@
+[
+  {
+    "id": 1,
+    "position": "Senior UX Designer",
+    "workplace": "On-Site",
+    "employmentType": "Full-Time",
+    "jobDescription": "As a Senior UX Designer, you will lead design initiatives, ensuring a seamless user experience across our digital platforms. You will collaborate with product and engineering teams to create user-centric solutions.",
+    "requirements": [
+      "5+ years of experience in UX design.",
+      "Proficiency in design tools like Figma, Sketch, and Adobe XD.",
+      "Strong portfolio demonstrating expertise in UX design.",
+      "Ability to conduct user research and usability testing.",
+      "Excellent communication and collaboration skills."
+    ],
+    "benefits": [
+      "Health insurance",
+      "Paid time off",
+      "Retirement savings plan",
+      "Professional development opportunities"
+    ],
+    "desirable": [
+      "Experience with mobile app design",
+      "Knowledge of user psychology and behavior",
+      "Experience working in agile environments"
+    ],
+    "experienceLevel": "Senior",
+    "department": "Design",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "User Research",
+      "Usability Testing",
+      "Figma",
+      "Sketch",
+      "Adobe XD",
+      "Interaction Design",
+      "Wireframing",
+      "Prototyping"
+    ]
+  },
+  {
+    "id": 2,
+    "position": "Software Engineer",
+    "workplace": "Remote",
+    "employmentType": "Full-Time",
+    "jobDescription": "We are looking for a passionate Software Engineer to help build cutting-edge applications and scalable solutions. You will collaborate with a talented team to develop and maintain web and mobile applications.",
+    "requirements": [
+      "Bachelor's degree in Computer Science or related field.",
+      "Experience with JavaScript, React, and Node.js.",
+      "Familiarity with RESTful APIs and microservices.",
+      "Strong problem-solving skills.",
+      "Ability to work in an agile environment."
+    ],
+    "benefits": [
+      "Flexible work hours",
+      "Health insurance",
+      "401(k) matching",
+      "Stock options"
+    ],
+    "desirable": [
+      "Experience with TypeScript",
+      "Knowledge of cloud computing platforms (AWS, Azure)",
+      "Experience with DevOps tools"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Engineering",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "RESTful APIs",
+      "Microservices",
+      "Agile Methodologies",
+      "TypeScript",
+      "DevOps",
+      "Cloud Computing"
+    ]
+  },
+  {
+    "id": 3,
+    "position": "Data Scientist",
+    "workplace": "On-Site",
+    "employmentType": "Part-Time",
+    "jobDescription": "The Data Scientist will analyze large datasets to provide actionable insights and drive business decisions. You will be responsible for developing machine learning models and deploying them into production.",
+    "requirements": [
+      "Experience with Python, R, and machine learning libraries.",
+      "Strong understanding of statistical analysis and algorithms.",
+      "Experience working with big data tools (e.g., Hadoop, Spark).",
+      "Familiarity with SQL and data visualization tools.",
+      "Strong analytical and problem-solving skills."
+    ],
+    "benefits": [
+      "Flexible working hours",
+      "Health and dental insurance",
+      "Learning and development stipends"
+    ],
+    "desirable": [
+      "Experience with deep learning frameworks",
+      "Knowledge of cloud platforms like GCP or AWS",
+      "Experience with data pipelines"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Data Science",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "Python",
+      "R",
+      "Machine Learning",
+      "Hadoop",
+      "Spark",
+      "SQL",
+      "Data Visualization",
+      "Deep Learning",
+      "Cloud Computing"
+    ]
+  },
+  {
+    "id": 4,
+    "position": "Product Manager",
+    "workplace": "Hybrid",
+    "employmentType": "Full-Time",
+    "jobDescription": "The Product Manager will be responsible for defining product vision, roadmap, and execution. You will work closely with engineering, marketing, and sales teams to bring innovative products to life.",
+    "requirements": [
+      "3+ years of experience in product management.",
+      "Strong knowledge of agile methodologies.",
+      "Excellent communication and leadership skills.",
+      "Experience with product analytics tools.",
+      "Ability to think strategically and solve complex problems."
+    ],
+    "benefits": [
+      "Health insurance",
+      "Generous paid time off",
+      "401(k) with employer matching",
+      "Flexible working arrangements"
+    ],
+    "desirable": [
+      "Experience in a tech startup environment",
+      "Familiarity with product management tools like Jira or Asana"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Product",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "Product Management",
+      "Agile Methodologies",
+      "Leadership",
+      "Communication",
+      "Product Analytics",
+      "Strategic Thinking",
+      "Problem-Solving",
+      "Jira",
+      "Asana"
+    ]
+  },
+  {
+    "id": 5,
+    "position": "Marketing Specialist",
+    "workplace": "On-Site",
+    "employmentType": "Contract",
+    "jobDescription": "As a Marketing Specialist, you will create and implement marketing campaigns to drive brand awareness and lead generation. You will work closely with the marketing team to analyze performance and optimize strategies.",
+    "requirements": [
+      "2+ years of experience in digital marketing.",
+      "Proficiency in SEO, SEM, and content marketing.",
+      "Experience with marketing automation tools.",
+      "Strong writing and communication skills.",
+      "Ability to analyze and report on campaign performance."
+    ],
+    "benefits": [
+      "Flexible work schedule",
+      "Health insurance",
+      "Employee discounts"
+    ],
+    "desirable": [
+      "Experience with Google Analytics and AdWords",
+      "Familiarity with social media ad campaigns",
+      "Strong design skills"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Marketing",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "SEO",
+      "SEM",
+      "Content Marketing",
+      "Marketing Automation",
+      "Campaign Performance Analysis",
+      "Google Analytics",
+      "AdWords",
+      "Social Media Advertising",
+      "Design"
+    ]
+  },
+  {
+    "id": 6,
+    "position": "Frontend Developer",
+    "workplace": "Remote",
+    "employmentType": "Full-Time",
+    "jobDescription": "We are looking for a Frontend Developer who will be responsible for building visually appealing and interactive web applications. You will work closely with designers to create responsive and user-friendly interfaces.",
+    "requirements": [
+      "Proficiency in HTML, CSS, JavaScript, and React.",
+      "Experience with responsive design frameworks.",
+      "Familiarity with version control (Git).",
+      "Strong understanding of web performance optimization.",
+      "Ability to collaborate in an agile team environment."
+    ],
+    "benefits": [
+      "Health insurance",
+      "Flexible working hours",
+      "Home office stipend",
+      "Paid vacation"
+    ],
+    "desirable": [
+      "Experience with Vue.js or Angular",
+      "Familiarity with CSS pre-processors (SASS, LESS)",
+      "Knowledge of web accessibility standards"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Engineering",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React",
+      "Vue.js",
+      "Angular",
+      "Responsive Design",
+      "Version Control (Git)",
+      "Web Performance Optimization",
+      "CSS Pre-processors",
+      "Web Accessibility"
+    ]
+  },
+  {
+    "id": 7,
+    "position": "Backend Developer",
+    "workplace": "On-Site",
+    "employmentType": "Full-Time",
+    "jobDescription": "The Backend Developer will be responsible for creating server-side logic, databases, and APIs. You will ensure the backend runs smoothly and supports the frontend components of applications.",
+    "requirements": [
+      "Experience with Node.js, Express, or similar frameworks.",
+      "Strong knowledge of databases (SQL, NoSQL).",
+      "Familiarity with RESTful APIs.",
+      "Experience with cloud platforms (AWS, GCP).",
+      "Strong problem-solving and debugging skills."
+    ],
+    "benefits": [
+      "Health and dental insurance",
+      "401(k) plan",
+      "Paid time off",
+      "Opportunity for career growth"
+    ],
+    "desirable": [
+      "Experience with Docker and Kubernetes",
+      "Knowledge of serverless architecture"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Engineering",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "Node.js",
+      "Express",
+      "SQL",
+      "NoSQL",
+      "RESTful APIs",
+      "Cloud Platforms (AWS, GCP)",
+      "Problem-Solving",
+      "Docker",
+      "Kubernetes",
+      "Serverless Architecture"
+    ]
+  },
+  {
+    "id": 8,
+    "position": "Graphic Designer",
+    "workplace": "On-Site",
+    "employmentType": "Full-Time",
+    "jobDescription": "We are looking for a talented Graphic Designer to create visual concepts, designs, and layouts for marketing materials, websites, and branding. You will collaborate with the marketing and creative teams to produce visually compelling content.",
+    "requirements": [
+      "Proficiency in Adobe Creative Suite (Photoshop, Illustrator, InDesign).",
+      "Strong portfolio showcasing design skills.",
+      "Experience with web and print design.",
+      "Attention to detail and creativity.",
+      "Ability to meet deadlines and handle multiple projects."
+    ],
+    "benefits": [
+      "Health insurance",
+      "Paid time off",
+      "Creative work environment",
+      "Professional development opportunities"
+    ],
+    "desirable": [
+      "Experience with video editing software",
+      "Knowledge of UI/UX principles",
+      "Experience with motion graphics"
+    ],
+    "experienceLevel": "Mid-Level",
+    "department": "Design",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Adobe InDesign",
+      "Web Design",
+      "Print Design",
+      "UI/UX Principles",
+      "Video Editing",
+      "Motion Graphics",
+      "Creativity"
+    ]
+  },
+  {
+    "id": 9,
+    "position": "Human Resources Manager",
+    "workplace": "Hybrid",
+    "employmentType": "Full-Time",
+    "jobDescription": "The HR Manager will be responsible for overseeing HR functions, including recruitment, employee relations, and performance management. You will work closely with department heads to ensure HR practices align with company goals.",
+    "requirements": [
+      "5+ years of experience in HR management.",
+      "Strong knowledge of labor laws and HR policies.",
+      "Excellent interpersonal and communication skills.",
+      "Experience with HR software and tools.",
+      "Ability to resolve conflicts and handle sensitive situations."
+    ],
+    "benefits": [
+      "Health insurance",
+      "Paid time off",
+      "401(k) matching",
+      "Employee wellness programs"
+    ],
+    "desirable": [
+      "Experience with international HR practices",
+      "Familiarity with HR analytics tools"
+    ],
+    "experienceLevel": "Senior",
+    "department": "Human Resources",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "HR Management",
+      "Labor Laws",
+      "HR Policies",
+      "Interpersonal Skills",
+      "Communication",
+      "Conflict Resolution",
+      "HR Software",
+      "HR Analytics"
+    ]
+  },
+  {
+    "id": 10,
+    "position": "Customer Support Specialist",
+    "workplace": "Remote",
+    "employmentType": "Part-Time",
+    "jobDescription": "As a Customer Support Specialist, you will be responsible for providing exceptional support to our customers via phone, email, and chat. You will ensure customer inquiries are resolved promptly and effectively.",
+    "requirements": [
+      "1+ year of experience in customer service or support.",
+      "Excellent written and verbal communication skills.",
+      "Ability to troubleshoot technical issues.",
+      "Strong problem-solving skills.",
+      "Patience and empathy when dealing with customers."
+    ],
+    "benefits": [
+      "Flexible hours",
+      "Health insurance options",
+      "Employee discount programs"
+    ],
+    "desirable": [
+      "Experience with CRM tools",
+      "Knowledge of technical support processes"
+    ],
+    "experienceLevel": "Entry-Level",
+    "department": "Customer Support",
+    "dateCreated": "2025-01-23",
+    "skills": [
+      "Customer Service",
+      "Communication",
+      "Troubleshooting",
+      "Problem-Solving",
+      "Technical Support",
+      "CRM Tools",
+      "Empathy"
+    ]
+  }
+]
