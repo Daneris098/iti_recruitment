@@ -7,18 +7,16 @@ export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter } = HomeStore();
   const renderPills = (label: any, items: any) => {
     return (
-      <div className="flex flex-row items-center  mx-1 visibleFrom:md w-[20%] " >
-        <Text className="2xl:text-md text-[#6D6D6D]  w-auto ">{label}:</Text>
-        <div className=" flex flex-row overflow-x-auto h-full w-full items-center ">
-          {/* <Pill.Group className="flex"> */}
+      <div className="flex flex-row items-center w-[20%] gap-2" >
+        <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
+        <div className="flex sm:overflow-x-hidden sm:hover:overflow-x-auto h-full items-center">
             {items.map((item: string, index: number) => (
-              <div className="flex">
+              <div className="">
                 <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold" >{item}</Pill>
               </div>
             ))}
-          {/* </Pill.Group> */}
         </div>
-        {/* <Text size="xl" c="#eeeeee">|</Text> */}
+        <Text size="xl" c="#eeeeee">|</Text>
       </div>
     );
   };
@@ -56,17 +54,16 @@ export default function Filter() {
   });
 
   return (
-    <div className="w-full rounded-lg  flex flex-row justify-between items-center bg-white h-full ">
-      <div className="h-full w-full flex flex-row items-center  justify-between">
+    <div className="w-full rounded-lg  flex flex-row justify-between items-center bg-white h-full">
 
-        <div className=" h-full items-center  bg-[#D9D9D9] gap-2 rounded-l-lg flex  p-2 justify-center ">
+        <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-52">
             <ListFilter size={ListFilterSize} color="#6d6d6d" />
             <Text fw={600} visibleFrom="md" className="text-xs 2xl:text-[14px] text-[#6D6D6D]">
               FILTERS APPLIED
             </Text>
         </div>
 
-        <div className="flex flex-row  w-[85%] h-full">
+        <div className="flex flex-row h-full w-full overflow-hidden px-4 gap-2">
           {filter.dateFrom && filter.dateTo && renderPills(
             'Date Added',
             [`${new Date(filter.dateFrom).toLocaleDateString()} - ${new Date(filter.dateTo).toLocaleDateString()}`]
@@ -94,7 +91,7 @@ export default function Filter() {
         </div>
 
 
-      <div className="flex h-full items-center ">
+      <div className="flex h-full items-center">
         <ActionIcon
           onClick={() => setFilterDrawer(true)}
           variant="transparent"
@@ -123,7 +120,6 @@ export default function Filter() {
         </ActionIcon>
       </div>
 
-      </div>
 
 
     </div>
