@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.custom-gradient {
+  background-image: linear-gradient(
+    to right,
+    #559cda,
+    #7badff,
+    #ffb58d,
+    #ed8028
+  );
+}
+
+.br-gradient {
+  background-image: linear-gradient(
+    to right,
+    #559cda,
+    #7badff,
+    #ffb58d,
+    #ed8028
+  );
+}
+
+button.mantine-Pagination-control[data-active="true"] {
+  @apply bg-[#559CDA] text-white;
+}
+button.mantine-Pagination-control {
+  @apply bg-[#F5F5F5] border-[#EEEEEE] text-[#6D6D6D];
+}
+
+div.mantine-Indicator-indicator[data-with-label="true"] {
+  font-size: 12px;
+  border-radius: 20px;
+  height: 25px;
+  width: 25px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+
+body {
+  background-color: #e6f2fc;
+  font-family: "Poppins", sans-serif;
+}
+
+.enlarge {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1);
+  }
+}
+
+.f-gray {
+  color: var(--gray);
+}
+
+.f-black {
+  color: var(--black);
+}
+
+.f-blue {
+  color: var(--blue);
+}
+
+.f-dark-blue {
+  color: var(--dark-blue);
+}
+
+.f-white {
+  color: var(--white);
+}
+
+.h-screen-100 {
+  height: 100vh;
+}
+
+.h-screen-90 {
+  height: 90vh;
+}
+
+.h-screen-85 {
+  height: 85vh;
+}
+
+.h-screen-80 {
+  height: 80vh;
+}
+
+.h-screen-70 {
+  height: 70vh;
+}
+
+.h-screen-60 {
+  height: 60vh;
+}
+
+.h-screen-50 {
+  height: 50vh;
+}
+
+.left-center {
+  left: 45%;
+}
+
+.m-center {
+  margin: 0px auto;
+}
+
+.m-auto {
+  margin: auto;
+}
+
+.enlarge {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.3);
+  }
+}
+
+.not-selected {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.mantine-AppShell-header {
+  @apply flex justify-between;
+}
+
+.mantine-AppShell-main {
+  @apply bg-white h-full;
+}
+
+.active{
+  @apply pl-5  bg-black p-1 rounded-lg text-white cursor-pointer;
+}
+.inactive{
+  @apply pl-5 p-1 rounded-lg text-black bg-slate-200 cursor-pointer;
+}
+
+
+/* For Chrome, Edge, and Safari */
+.scrollbar::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+  height: 12px; /* Height of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar thumb color */
+  border-radius: 6px; /* Rounded corners */
+  border: 3px solid transparent; /* Creates a padding effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Scrollbar thumb hover color */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Scrollbar track color */
+  border-radius: 6px; /* Rounded corners */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Makes the scrollbar thin */
+  scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
+}
+
+/* Styling for Edge (uses WebKit styles) */
+html {
+  scroll-behavior: smooth; /* Smooth scrolling */
+}

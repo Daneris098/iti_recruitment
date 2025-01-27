@@ -1,0 +1,23 @@
+.mobile {
+  background-image: linear-gradient(to right, #72a7ff, #dbbfd3, #ff9c66);
+}
+
+.linear {
+  background-image: linear-gradient(
+    to right,
+    #0078eb,
+    #4491ff,
+    #ffa250,
+    #ff7800
+  );
+}
+
+.hrdotnet-gradient {
+  background-image: linear-gradient(
+    to right,
+    #559cda,
+    #7badff,
+    #ffb58d,
+    #ed8028
+  );
+}

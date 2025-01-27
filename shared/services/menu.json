@@ -1,0 +1,188 @@
+{
+  "menu": [
+    {
+      "label": "CHANGE OF SCHEDULE",
+      "path": "/change-of-schedule",
+      "id": 1,
+      "icon": "IconCalendarEvent"
+    },
+    {
+      "label": "CTO",
+      "path": "/cto",
+      "id": 2,
+      "icon": "IconCalendarTime"
+    },
+    {
+      "label": "LEAVE",
+      "path": "/leave",
+      "id": 3,
+      "icon": "IconBriefcase"
+    },
+    {
+      "label": "MISSED LOG",
+      "path": "/missed-log",
+      "id": 4,
+      "icon": "IconClockX"
+    },
+    {
+      "label": "OFFICIAL BUSINESS",
+      "path": "/official-business",
+      "id": 5,
+      "icon": "IconBuildings"
+    },
+    {
+      "label": "OFFSET",
+      "path": "/offset",
+      "id": 6,
+      "icon": "IconAlarm"
+    },
+    {
+      "label": "OVERTIME",
+      "path": "/overtime",
+      "id": 7,
+      "icon": "IconClockPlay"
+    },
+    {
+      "label": "LOAN",
+      "path": "/loan",
+      "id": 8,
+      "icon": "IconCalculator"
+    }
+  ],
+  "main": [
+    {
+      "label": "DASHBOARD",
+      "path": "/",
+      "id": 1,
+      "icon": "IconLayoutDashboard"
+    },
+    {
+      "label": "CALENDAR",
+      "path": "/calendar",
+      "id": 2,
+      "icon": "IconCalendarMonth"
+    }
+  ],
+  "201  FILES": [
+    {
+      "label": "EMPLOYEE LIST",
+      "path": "/employee-list",
+      "id": 1,
+      "icon": "IconUsersGroup"
+    },
+    {
+      "label": "PREVIOUS EMPLOYER",
+      "path": "/previous-employer",
+      "id": 2,
+      "icon": "IconBuildings"
+    },
+    {
+      "label": "EMPLOYEE MOVEMENT",
+      "path": "/employee-movement",
+      "id": 3,
+      "icon": "IconSitemap"
+    }
+  ],
+  "TIMEKEEPING": [
+    {
+      "label": "EMPLOYEE TIME RECORD",
+      "path": "/employee-list",
+      "id": 1,
+      "icon": "IconFileReport"
+    },
+    {
+      "label": "LEAVE ADJUSTMENTS",
+      "path": "/employee-movement",
+      "id": 3,
+      "icon": "IconReplace"
+    },
+    {
+      "label": "PROCESS TIMEKEEPING",
+      "path": "/process-timekeeping",
+      "id": 2,
+      "icon": "IconProgressDown"
+    },
+    {
+      "label": "WORK SCHEDULE",
+      "path": "/work-schedule",
+      "id": 3,
+      "icon": "IconClock2"
+    }
+  ],
+  "PAYROLL": [
+    {
+      "label": "LOAN APPLICATION",
+      "path": "/loan-application",
+      "id": 1,
+      "icon": "IconCoins"
+    },
+    {
+      "label": "INCOME DEDUCTION",
+      "path": "/income-deduction",
+      "id": 2,
+      "icon": "HandCoins"
+    },
+    {
+      "label": "FINAL PAY",
+      "path": "/employee-movement",
+      "id": 3,
+      "icon": "IconCash"
+    },
+    {
+      "label": "13 MONTH PROCESS",
+      "path": "/employee-movement",
+      "id": 4,
+      "icon": "IconCashRegister"
+    },
+    {
+      "label": "SERVICE CHARGE",
+      "path": "/employee-movement",
+      "id": 5,
+      "icon": "IconMoneybag"
+    },
+    {
+      "label": "CALCULATE PAYROLL",
+      "path": "/employee-movement",
+      "id": 6,
+      "icon": "IconCalculator"
+    }
+  ],
+  "REPORTS": [
+    {
+      "label": "HUMAN RESOURCE",
+      "path": "/human-resource",
+      "id": 1,
+      "icon": "ChartColumn"
+    },
+    {
+      "label": "TIMEKEEPING",
+      "path": "/timekeeping",
+      "id": 2,
+      "icon": "IconChartInfographic"
+    },
+    {
+      "label": "PAYROLL",
+      "path": "/payroll",
+      "id": 3,
+      "icon": "IconFileChart"
+    },
+    {
+      "label": "GOVERNMENT",
+      "path": "/government",
+      "id": 4,
+      "icon": "IconChartHistogram"
+    },
+    {
+      "label": "BANK REPORT",
+      "path": "/bank-report",
+      "id": 5,
+      "icon": "SquareChartGantt"
+    },
+    {
+      "label": "SYSTEM",
+      "path": "/system",
+      "id": 6,
+      "icon": "IconChartLine"
+    }
+  ]
+}
