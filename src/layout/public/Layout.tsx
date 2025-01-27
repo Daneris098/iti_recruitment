@@ -1,4 +1,4 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, useMatches } from "@mantine/core";
 import Header from "./Header";
 import Main from "./Main";
 import { GlobalStore } from "@src/utils/GlobalStore";
@@ -7,9 +7,13 @@ import { TailwindIndicator } from "@src/components/tailwind-indicator"
 function Layout() {
   const { is_fullscreen } = GlobalStore();
 
-  // Conditionally set the AppShell properties
+  const HeaderHeightSize = useMatches({
+    base: "50",
+    xl: "60"
+  });
+
   const appShellProps = !is_fullscreen
-    ? { header: { height: 50 } }
+    ? { header: { height: HeaderHeightSize } }
     : {};
 
   return (

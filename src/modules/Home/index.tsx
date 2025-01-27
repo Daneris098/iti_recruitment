@@ -8,8 +8,8 @@ export default function Home() {
     <div className=" h-full overflow-hidden">
       <DrawerFilter />
       <div className="bg-[url('bg2.png')] bg-cover bg-center h-[19%] 2xl:p-4 ">
-        <div className="h-full w-[90%] m-auto  flex flex-col justify-center">
-          <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-md">
+        <div className="h-full w-[89%] 2xl:w-[92%] m-auto  flex flex-col justify-center">
+          <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl">
             Search for vacancies or fill out the <span className=" underline cursor-pointer">APPLICATION FORM.</span>
           </div>
           <div className="h-[35%] 2xl:h-[45%] hidden lg:block text-sm 2xl:text-md">
@@ -20,7 +20,7 @@ export default function Home() {
 
       <div className="h-[79%] flex w-[92%] m-auto">
         <div className="h-auto w-full lg:w-[28%] sm:overflow-y-hidden overflow-y-auto sm:hover:overflow-y-auto ease-in-out p-5">
-          <p className="text-sm 2xl:text-md text-gray-500 pl-3 ">RELEVANT RESULTS: </p>
+          <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 2xl:font-semibold">RELEVANT RESULTS: </p>
           <List />
         </div>
 

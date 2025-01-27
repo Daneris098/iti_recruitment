@@ -1,5 +1,5 @@
 //--- Mantine Modules
-import { Popover, Flex, TextInput } from "@mantine/core";
+import { Popover, Flex, TextInput, useMatches } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 
 //--- Tabler Icons
@@ -30,13 +30,18 @@ export const DateRange = ({
   size
 }: DateRangeProps) => {
 
+  const inputPadding = useMatches({
+    base: 'py-0',
+    xl: 'py-4',
+  });
+
 
 
   return (
     <Flex
       direction={`${isColumn ? "column" : "row"}`}
       justify="space-between"
-      gap={(gapValue ?? 20)}
+      gap={(gapValue ?? 0)}
       className="w-full"
     >
       <Popover
@@ -49,8 +54,8 @@ export const DateRange = ({
           <TextInput
             value={
               value[0] === null
-                ? ""
-                : DateTimeUtils.dayWithDate(`${value[0]?.toString()}`)
+              ? ""
+              : DateTimeUtils.dayWithDate(`${value[0]?.toString()}`)
             }
             radius="md"
             size={size ?? 'xs'}

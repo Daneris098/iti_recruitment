@@ -11,6 +11,11 @@ export default function Details() {
     lg: "xs",
     xl: "lg"
   });
+  const iconSize: MantineSize = useMatches({
+    base: "xs",
+    lg: "xs",
+    xl: "md"
+  });
 
   useEffect(() => {
     console.log("desirable", selectedData.desirable);
@@ -19,7 +24,7 @@ export default function Details() {
   return (
     <div className="h-full w-full flex flex-col gap-4 2xl:gap-6 ">
       <div className="">
-        <p className="text-xl text-gray-500 font-semibold">{selectedData.position}</p>
+        <p className="text-xl text-gray-500 font-semibold 2xl:text-3xl">{selectedData.position}</p>
         <div className="w-full flex justify-between">
           <Pill.Group>
             <Pill className="rounded-md bg-green-500" size={pillSize}>
@@ -29,23 +34,23 @@ export default function Details() {
               <p className="text-white">{selectedData.employmentType}</p>
             </Pill>
           </Pill.Group>
-          <Button className="rounded-md " size="xs">
+          <Button className="rounded-md " size={iconSize}>
             Apply Now <IconArrowRight />{""}
           </Button>
         </div>
       </div>
       <div className=" flex flex-col gap-4 2xl:gap-6  hover:overflow-y-auto">
 
-        <p className="text-gray-500 text-sm font-semibold">Job Description</p>
-        <p className="text-gray-500 text-xs">{selectedData.jobDescription}</p>
-        <p className="text-gray-500 text-sm font-semibold">Qualification</p>
+        <p className="text-gray-500 text-sm font-semibold 2xl:text-2xl">Job Description</p>
+        <p className="text-gray-500 text-xs 2xl:text-xl">{selectedData.jobDescription}</p>
+        <p className="text-gray-500 text-sm font-semibold 2xl:text-2xl">Qualification</p>
         {selectedData.requirements.map((requirement: string) => {
-          return <p className="text-gray-500 text-xs">• {requirement}</p>;
+          return <p className="text-gray-500 text-xs 2xl:text-xl">• {requirement}</p>;
         })}
-        <p className="text-gray-500 text-sm font-semibold">Skills</p>
+        <p className="text-gray-500 text-sm font-semibold 2xl:text-xl">Skills</p>
         <Pill.Group >
           {selectedData.skills.map((skill: string) => {
-            return <Pill className="text-gray-600 text-xs"><p >{skill}</p></Pill>;
+            return <Pill className="text-gray-600 text-xs 2xl:text-lg" size={pillSize}><p >{skill}</p></Pill>;
           })}
         </Pill.Group>
         {/* <p className="text-gray-500 text-xl">Benefits</p>
