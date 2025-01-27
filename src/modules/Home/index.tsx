@@ -2,8 +2,14 @@ import Filter from "@src/modules/Home/components/Filter";
 import List from "@src/modules/Home/components/list";
 import Details from "@src/modules/Home/components/details";
 import DrawerFilter from "@src/modules/Home/components/DrawerFilter";
+import { HomeStore } from "@src/modules/Home/store";
+import { selectedDataVal } from "./values";
+import jobsJson from "@src/modules/Home/values/response/jobs.json";
+import { JobType } from "@src/modules/Home/types";
 
 export default function Home() {
+  const { selectedData } = HomeStore();
+  const jobs: JobType[] = jobsJson;
   return (
     <div className=" h-full overflow-hidden">
       <DrawerFilter />
@@ -19,14 +25,35 @@ export default function Home() {
       </div>
 
       <div className="h-[79%] flex w-[92%] m-auto">
-        <div className="h-auto w-full lg:w-[28%] sm:overflow-y-hidden overflow-y-auto sm:hover:overflow-y-auto ease-in-out p-5">
-          <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 2xl:font-semibold">RELEVANT RESULTS: </p>
-          <List />
-        </div>
 
-        <div className="hidden sm:block h-auto lg:w-[72%] sm:overflow-y-hidden  ease-in-out p-4">
-          <Details />
-        </div>
+        {jobs.length > 0 ? (
+          <>
+            <div className="h-auto w-full lg:w-[28%] sm:overflow-y-hidden overflow-y-auto sm:hover:overflow-y-auto ease-in-out p-5">
+              <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 2xl:font-semibold">RELEVANT RESULTS: </p>
+              <List />
+            </div>
+
+            <div className="hidden sm:block h-auto lg:w-[72%] sm:overflow-y-hidden  ease-in-out p-4">
+
+              {selectedData != selectedDataVal ? (
+                <Details />
+              ) : (
+                <div className=" w-full h-full flex flex-col items-center justify-center ">
+                  <img src="selectJob.png " className="w-[30%] h-auto p-8" alt="bg" />
+                  <p className="text-[#4F4F4F] text-md font-semibold">Select job from the list.</p>
+                  <p className="text-[#4F4F4F] text-xs">Job details will show here.</p>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className=" w-full h-full flex flex-col items-center justify-center">
+              <img src="no_vacancy.png " className="sm:w-[50%]  h-auto p-8" alt="bg" />
+            </div>
+          </>
+        )}
+
       </div>
     </div>
   );
