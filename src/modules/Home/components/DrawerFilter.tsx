@@ -10,7 +10,7 @@ import { filterVal } from "../values";
 export default function DrawerFilter() {
   const { value, setValue } = useDateRangeStore();
   const isMobile = useMediaQuery("(max-width: 425px)");
-  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter } = HomeStore();
+  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter } = HomeStore();
 
   useEffect(() => {
     setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
@@ -27,8 +27,9 @@ export default function DrawerFilter() {
   }
 
   useEffect(() => {
+    clear()
     return (
-      clear()
+      setClearFilter(false)
     )
   }, [clearFilter])
 
@@ -86,6 +87,7 @@ export default function DrawerFilter() {
 
           <Divider size={0.5} color="#edeeed" className="w-full" />
           <DateRange
+            isMobile={isMobile}
             size={inputSize}
             gapValue={gapValue}
             isColumn

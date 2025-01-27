@@ -14,6 +14,7 @@ interface DateRangeProps {
   fPlaceholder: string;
   lPlaceholder: string;
   isColumn?: boolean;
+  isMobile?: boolean;
   gapValue?: number
   size?: string
 }
@@ -26,16 +27,10 @@ export const DateRange = ({
   value,
   setValue,
   isColumn = false,
+  isMobile = false,
   gapValue,
   size
 }: DateRangeProps) => {
-
-  const inputPadding = useMatches({
-    base: 'py-0',
-    xl: 'py-4',
-  });
-
-
 
   return (
     <Flex
@@ -54,8 +49,8 @@ export const DateRange = ({
           <TextInput
             value={
               value[0] === null
-              ? ""
-              : DateTimeUtils.dayWithDate(`${value[0]?.toString()}`)
+                ? ""
+                : DateTimeUtils.dayWithDate(`${value[0]?.toString()}`)
             }
             radius="md"
             size={size ?? 'xs'}
@@ -70,7 +65,7 @@ export const DateRange = ({
         <Popover.Dropdown className="w-full">
           <DatePicker
             firstDayOfWeek={0}
-            numberOfColumns={2}
+            numberOfColumns={isMobile ? 1 : 2}
             type="range"
             value={value}
             onChange={setValue}
@@ -97,7 +92,7 @@ export const DateRange = ({
         </Popover.Target>
         <Popover.Dropdown>
           <DatePicker
-            numberOfColumns={2}
+            numberOfColumns={isMobile ? 1 : 2}
             type="range"
             value={value}
             onChange={setValue}

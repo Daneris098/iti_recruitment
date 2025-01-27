@@ -7,6 +7,8 @@ import { selectedDataVal } from "./values";
 import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { JobType } from "@src/modules/Home/types";
 import { ListFilter } from "lucide-react";
+import { ActionIcon } from "@mantine/core";
+import { IconFilter } from "@tabler/icons-react";
 
 export default function Home() {
   const { selectedData, setFilterDrawer } = HomeStore();
@@ -16,8 +18,10 @@ export default function Home() {
       <DrawerFilter />
       <div className="bg-[url('bg2.png')] bg-cover bg-center h-[19%] 2xl:p-4 ">
         <div className="h-full w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center">
-          <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-2 items-center">
-            <ListFilter size={50} color="white" className="sm:hidden" onClick={() => setFilterDrawer(true)}/>
+          <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-4 items-center">
+            <ActionIcon variant="filled" color="gray" size="lg" aria-label="Settings" className="sm:hidden" onClick={() => setFilterDrawer(true)}>
+              <IconFilter/>
+            </ActionIcon>
             <p>Search for vacancies or fill out the <span className=" underline cursor-pointer">APPLICATION FORM.</span></p>
           </div>
           <div>
