@@ -9,7 +9,7 @@ export default function index() {
   const { setSelectedData, selectedData } = HomeStore();
 
   return (
-    <div className="h-full flex flex-col gap-2 p-2 ">
+    <div className="flex flex-col  ">
       {jobs.map((job: JobType, index: number) => (
         <div
           key={index}

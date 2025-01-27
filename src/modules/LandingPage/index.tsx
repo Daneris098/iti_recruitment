@@ -13,10 +13,10 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="h-full w-full flex overflow-hidden " >
+    <div className="bg-[url('bg.png')] bg-cover bg-center object-fill h-full w-full flex overflow-hidden " >
       <img
         src="bg.png "
-        className="w-full h-full absolute object-fill z-10"
+        className="hidden sm:block  w-full h-full absolute object-fill z-10"
         alt="bg"
       />
       <div className="h-full w-full sm:w-1/2 gap-8  flex flex-col sm:justify-between  z-20 p-16 2xl:p-16 pt-6  2xl:pt-6 ">

@@ -15,7 +15,7 @@ function Layout() {
   return (
     <AppShell {...appShellProps}>
       {!is_fullscreen && <Header />}
-      <div className="h-screen-100">
+      <div className="h-screen">
         <Main />
         <TailwindIndicator />
       </div>

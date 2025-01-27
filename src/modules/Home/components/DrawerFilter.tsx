@@ -1,4 +1,4 @@
-import { Button, Divider, Drawer, Flex, Group, MultiSelect, Text, } from "@mantine/core";
+import { Button, Divider, Drawer, Flex, Group, MultiSelect, Text, useMatches, } from "@mantine/core";
 import { DateRange } from "@shared/template";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
@@ -32,13 +32,31 @@ export default function DrawerFilter() {
     )
   }, [clearFilter])
 
+  const drawerFilterSize = useMatches({
+    base: "100%",
+    xs: "30.8%",
+    sm: "22.8%",
+    md: "20.8%",
+    lg: "18.8%",
+    xl: "16.8%",
+  });
+
+  const buttonSize = useMatches({
+    base: "xs",
+    xs: "xs",
+    sm: "xs",
+    md: "xs",
+    lg: "xs",
+    xl: "sm",
+  });
+
   return (
     <Drawer
       opened={filterDrawer}
       onClose={() => setFilterDrawer(false)}
       position="right"
       withCloseButton={false}
-      size={isMobile ? "100%" : "xs"}
+      size={drawerFilterSize}
       overlayProps={{ backgroundOpacity: 0, blur: 0 }}
       styles={{ body: { height: '100%' } }}
     >
@@ -63,9 +81,7 @@ export default function DrawerFilter() {
 
           <Group style={{ flex: 1 }}>
             <Divider size={0.5} color="#edeeed" className="w-full" />
-            <p className="text-[#6d6d6d] text-xs">
-              Date Added
-            </p>
+
             <DateRange
               isColumn
               value={value}
@@ -80,12 +96,13 @@ export default function DrawerFilter() {
             <MultiSelect
               value={filter.department}
               size="xs"
-              label="Department"
-              placeholder=""
+              label="Select Department"
+              placeholder="Department"
               radius={8}
               data={["Engineering", "Human Resources", "Customer Support"]}
               rightSection={<IconCaretDownFilled size={'xs'} />}
-              className="border-none w-full"
+              className="border-none w-full text-sm"
+
               styles={{ label: { color: "#6d6d6d" } }}
               onChange={(value) => setFilter({ ...filter, department: value })}
             />
@@ -95,11 +112,11 @@ export default function DrawerFilter() {
               value={filter.employmentType}
               size="xs"
               label="Employment Type"
-              placeholder=""
+              placeholder="Select Employment type"
               radius={8}
               data={["Full-Time", "Part-Time"]}
               rightSection={<IconCaretDownFilled size={'xs'} />}
-              className="border-none w-full"
+              className="border-none w-full text-sm"
               styles={{ label: { color: "#6d6d6d" } }}
               onChange={(value) => setFilter({ ...filter, employmentType: value })}
             />
@@ -109,7 +126,7 @@ export default function DrawerFilter() {
               value={filter.workplaceType}
               size="xs"
               label="Workplace Type"
-              placeholder=""
+              placeholder="Select Workplace Type"
               radius={8}
               data={["On-site", "Remote"]}
               rightSection={<IconCaretDownFilled size={'xs'} />}
@@ -123,7 +140,7 @@ export default function DrawerFilter() {
               value={filter.experienceLevel}
               size="xs"
               label="Experience Level"
-              placeholder=""
+              placeholder="Select Experience Level"
               radius={8}
               data={["Entry-level", "Senior"]}
               rightSection={<IconCaretDownFilled size={'xs'} />}
@@ -140,19 +157,19 @@ export default function DrawerFilter() {
             <Button
               onClick={clear}
               variant="outline"
-              size="xs"
+              size={buttonSize}
               radius={10}
               w={100}
-              children={<Text fw={500}>CLEAR</Text>}
+              children={<Text fw={500} className="text-sm">CLEAR</Text>}
             />
             <Button
               variant="transparent"
               className="br-gradient"
-              size="xs"
+              size={buttonSize}
               radius={10}
               w={100}
               children={
-                <Text fw={500} c="white">
+                <Text fw={400} className="text-sm" c="white">
                   FILTER
                 </Text>
               }

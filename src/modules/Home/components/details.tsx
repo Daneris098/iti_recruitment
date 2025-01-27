@@ -4,7 +4,7 @@ import { Button, MantineSize, Pill } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useMatches } from '@mantine/core';
 
-export default function () {
+export default function Details() {
   const { selectedData } = HomeStore();
   const pillSize: MantineSize = useMatches({
     base: "xs",
@@ -43,7 +43,7 @@ export default function () {
           return <p className="text-gray-500 text-xs">• {requirement}</p>;
         })}
         <p className="text-gray-500 text-sm font-semibold">Skills</p>
-        <Pill.Group className="mb-10">
+        <Pill.Group >
           {selectedData.skills.map((skill: string) => {
             return <Pill className="text-gray-600 text-xs"><p >{skill}</p></Pill>;
           })}
