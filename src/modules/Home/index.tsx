@@ -8,7 +8,7 @@ import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { JobType } from "@src/modules/Home/types";
 
 export default function Home() {
-  const { selectedData } = HomeStore();
+  const { selectedData, setFilterDrawer } = HomeStore();
   const jobs: JobType[] = jobsJson;
   return (
     <div className=" h-full overflow-hidden">
