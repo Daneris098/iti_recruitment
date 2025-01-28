@@ -1,29 +1,33 @@
-import { Button, Divider, Drawer, Flex, Group, MultiSelect, Text, useMatches, } from "@mantine/core";
+import { Button, Divider, Drawer, Flex, Group, MultiSelect, Popover, Select, Text, TextInput, useMatches, } from "@mantine/core";
 import { DateRange } from "@shared/template";
-import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import { useMediaQuery } from "@mantine/hooks";
 import { HomeStore } from "../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { filterVal } from "../values";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { DatePicker } from "@mantine/dates";
 
 export default function DrawerFilter() {
-  const { value, setValue } = useDateRangeStore();
+  const [value, setValue] = useState<Date | null>(null);
+  // const { value, setValue } = useDateRangeStore();
   const isMobile = useMediaQuery("(max-width: 425px)");
-  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter } = HomeStore();
+  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = HomeStore();
 
   useEffect(() => {
-    setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
+    // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
   }, [value])
 
   useEffect(() => {
-    setValue([null, null])
+    // setValue([null, null])
   }, [])
 
 
   const clear = () => {
     setFilter(filterVal)
-    setValue([null, null])
+    setIsFiltered(false)
+    // setValue([null, null])
   }
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export default function DrawerFilter() {
     base: "100%",
     xs: "30.8%",
     sm: "22.8%",
-    md: "20.8%",
+    md: "18.8%",
     lg: "18.8%",
     xl: "16.8%",
   });
@@ -86,27 +90,40 @@ export default function DrawerFilter() {
           </Flex>
 
           <Divider size={0.5} color="#edeeed" className="w-full" />
-          <DateRange
-            isMobile={isMobile}
+          <TextInput
+            radius={8}
             size={inputSize}
-            gapValue={gapValue}
-            isColumn
-            value={value}
-            setValue={setValue}
-            fLabel="From"
-            lLabel="To"
-            fPlaceholder="Start Date"
-            lPlaceholder="End Date"
+            className="border-none w-full text-sm"
+            label="Job Title"
+            styles={{ label: { color: "#6d6d6d" } }}
+            placeholder="Search Job Title"
+            value={filter.jobTitle}
+            onChange={(event) => { setFilter({ ...filter, jobTitle: `${event.currentTarget.value}` }) }}
           />
+          <Divider size={0.5} color="#edeeed" className="w-full" />
+
+          <Select
+            value={filter.postedDate}
+            size={inputSize}
+            label="Date Posted"
+            placeholder={filter.postedDate != null ? '' : "Select Date Posted"}
+            radius={8}
+            data={["Last 24 hours", "Last Week", "Last Month", "Anytime"]}
+            rightSection={<IconCaretDownFilled size='18' />}
+            className="border-none w-full text-sm"
+            styles={{ label: { color: "#6d6d6d" } }}
+            onChange={(value) => { setFilter({ ...filter, postedDate: `${value}` }) }}
+          />
+
           <Divider size={0.5} color="#edeeed" className="w-full" />
           <MultiSelect
             value={filter.department}
             size={inputSize}
-            label="Select Department"
+            label="Department"
             placeholder={filter.department.length > 0 ? '' : "Department"}
             radius={8}
             data={["Engineering", "Human Resources", "Customer Support"]}
-            rightSection={<IconCaretDownFilled size='20' />}
+            rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
             onChange={(value) => setFilter({ ...filter, department: value })}
@@ -117,10 +134,10 @@ export default function DrawerFilter() {
             value={filter.employmentType}
             size={inputSize}
             placeholder={filter.employmentType.length > 0 ? "" : "Employment Type"}
-            label="Select Employment type"
+            label="Employment type"
             radius={8}
             data={["Full-Time", "Part-Time"]}
-            rightSection={<IconCaretDownFilled size='20' />}
+            rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
             onChange={(value) => setFilter({ ...filter, employmentType: value })}
@@ -130,11 +147,11 @@ export default function DrawerFilter() {
           <MultiSelect
             value={filter.workplaceType}
             size={inputSize}
-            placeholder="Workplace Type"
-            label={filter.workplaceType.length > 0 ? "" : "Select Workplace Type"}
+            placeholder={filter.workplaceType.length > 0 ? "" : "Select Workplace Type"}
+            label="Workplace Type"
             radius={8}
             data={["On-site", "Remote"]}
-            rightSection={<IconCaretDownFilled size='20' />}
+            rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full"
             styles={{ label: { color: "#6d6d6d" } }}
             onChange={(value) => setFilter({ ...filter, workplaceType: value })}
@@ -144,11 +161,11 @@ export default function DrawerFilter() {
           <MultiSelect
             value={filter.experienceLevel}
             size={inputSize}
-            label="Select Experience Level"
+            label="Experience Level"
             placeholder={filter.experienceLevel.length > 0 ? "" : "Select Experience Level"}
             radius={8}
             data={["Entry-level", "Senior"]}
-            rightSection={<IconCaretDownFilled size='20' />}
+            rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full"
             styles={{ label: { color: "#6d6d6d" } }}
             onChange={(value) => setFilter({ ...filter, experienceLevel: value })}
@@ -166,6 +183,7 @@ export default function DrawerFilter() {
             children={<Text fw={500} className="text-sm">CLEAR</Text>}
           />
           <Button
+            onClick={() => { setIsFiltered(true);  setFilterDrawer(false)}}
             variant="transparent"
             className="br-gradient border-none"
             size={buttonSize}

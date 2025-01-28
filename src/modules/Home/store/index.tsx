@@ -7,9 +7,11 @@ export const HomeStore = create<JobState>((set) => ({
   filterDrawer: false,
   filter: filterVal,
   clearFilter: false,
+  isFiltered: false,
 
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),
   setSelectedData: (selectedData: JobType) => set({ selectedData: selectedData }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
+  setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
 }));

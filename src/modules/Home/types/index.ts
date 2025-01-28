@@ -19,17 +19,21 @@ export interface JobState {
   filterDrawer: boolean;
   filter: FilterType;
   clearFilter: boolean
+  isFiltered: boolean
 
   setClearFilter: (clearFilter: boolean) => void;
   setFilter: (filter: FilterType) => void;
   setSelectedData: (selectedData: JobType) => void;
   setFilterDrawer: (filterDrawer: boolean) => void;
+  setIsFiltered: (isFiltered: boolean) => void;
 }
 
 
 export interface FilterType {
-  dateFrom: string;        
-  dateTo: string;        
+  dateFrom?: string;        
+  dateTo?: string;        
+  postedDate: string | null;        
+  jobTitle: string;        
   department: string[];        
   employmentType: string[];   
   workplaceType: string[];   

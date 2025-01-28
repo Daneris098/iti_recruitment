@@ -6,7 +6,6 @@ import { HomeStore } from "@src/modules/Home/store";
 import { selectedDataVal } from "./values";
 import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { JobType } from "@src/modules/Home/types";
-import { ListFilter } from "lucide-react";
 import { ActionIcon } from "@mantine/core";
 import { IconFilter } from "@tabler/icons-react";
 
@@ -37,7 +36,7 @@ export default function Home() {
         {jobs.length > 0 ? (
           <>
             <div className="h-auto w-full lg:w-[28%] sm:overflow-y-hidden overflow-y-auto sm:hover:overflow-y-auto ease-in-out p-5">
-              <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 2xl:font-semibold">RELEVANT RESULTS: </p>
+              <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 font-semibold">RELEVANT RESULTS: </p>
               <List />
             </div>
 

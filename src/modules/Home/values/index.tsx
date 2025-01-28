@@ -16,6 +16,8 @@ export const selectedDataVal = {
 export const filterVal = {
   dateFrom: '',
   dateTo: '',
+  postedDate: null,
+  jobTitle: '',
   department: [],
   employmentType: [],
   workplaceType: [],
