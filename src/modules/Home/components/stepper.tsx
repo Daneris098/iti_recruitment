@@ -6,6 +6,7 @@ export default function index() {
     const [active, setActive] = useState(1);
     const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
     const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+    const { setActiveStepper, activeStepper } = HomeStore();
 
     function StyledStepper(props: StepperProps) {
         return (
@@ -37,7 +38,7 @@ export default function index() {
     }
 
     return (
-        <StyledStepper active={active} onStepClick={setActive}>
+        <StyledStepper active={activeStepper} onStepClick={setActiveStepper}>
             <Stepper.Step label="" description="General and Personal Information" />
             <Stepper.Step label="" description="Education and Employment Record" />
             <Stepper.Step label="" description="Family Background and Other Information" />

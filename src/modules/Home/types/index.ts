@@ -18,10 +18,12 @@ export interface JobState {
   selectedData: JobType;
   filterDrawer: boolean;
   filter: FilterType;
-  clearFilter: boolean
-  isFiltered: boolean
-  applicationForm: boolean
+  clearFilter: boolean;
+  isFiltered: boolean;
+  applicationForm: boolean;
+  activeStepper: number;
 
+  setActiveStepper: (activeStepper: number) => void;
   setApplicationForm: (applicationForm: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
   setFilter: (filter: FilterType) => void;

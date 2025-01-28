@@ -1,5 +1,6 @@
-import { Divider, TextInput } from "@mantine/core";
+import { Divider, Select, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
+import { IconCaretDownFilled } from "@tabler/icons-react";
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -7,8 +8,21 @@ export default function index() {
         <div className="text-[#6D6D6D] flex flex-col gap-4">
             <p className="font-bold">General Information</p>
             <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-            <div className="flex flex-col sm:flex-row gap-4">
-                <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Position Applying for - First Choice" placeholder="First Choice" />
+            <div className="flex flex-col sm:flex-row gap-4 items-end">
+                <Select
+                    w={isMobile ? '25%' : '100%'}
+                    label="Position Applying for - First Choice"
+                    // placeholder={filter.postedDate != null ? '' : "First Choice"}
+                    radius={8}
+                    data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                    rightSection={<IconCaretDownFilled size='18' />}
+                    className="border-none w-full text-sm"
+                    classNames={{label:"p-1"}}
+                    styles={{ label: { color: "#6d6d6d" } }}
+                    // onChange={(value) => { setFilter({ ...filter, postedDate: `${value}` }) }}
+                />
+
+                {/* <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Position Applying for - First Choice" placeholder="First Choice" /> */}
                 <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Position Applying for - Second Choice" placeholder="Second Choice" />
             </div>
             <div className="flex flex-col sm:flex-row gap-4">

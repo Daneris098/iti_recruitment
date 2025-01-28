@@ -2,8 +2,13 @@ import { Modal, Divider, Button } from '@mantine/core';
 import { HomeStore } from "@src/modules/Home/store";
 import Stepper from "@modules/Home/components/stepper"
 import GeneralInformation from "@modules/Home/components/form/GeneralInformation"
+import { useEffect } from 'react';
 export default function index() {
-    const { applicationForm, setApplicationForm } = HomeStore();
+    const { applicationForm, setApplicationForm, activeStepper } = HomeStore();
+
+    useEffect(() => {
+        console.log(activeStepper)
+    }, [activeStepper])
 
     return (
         <>
@@ -13,7 +18,9 @@ export default function index() {
                     <div className='w-[80%] m-auto  pb-12 hidden sm:block'>
                         <Stepper />
                     </div>
-                    <GeneralInformation />
+                    {(
+                        activeStepper === 0 ? <GeneralInformation /> : <div></div>
+                    )}
                     <Button className="self-end sm:w-[10%] rounded-md br-gradient border-none">
                         Next
                     </Button>
