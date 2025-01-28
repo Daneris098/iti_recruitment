@@ -5,7 +5,7 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { useMatches } from '@mantine/core';
 
 export default function Details() {
-  const { selectedData } = HomeStore();
+  const { selectedData, setApplicationForm } = HomeStore();
   const pillSize: MantineSize = useMatches({
     base: "xs",
     lg: "xs",
@@ -34,7 +34,7 @@ export default function Details() {
               <p className="text-white">{selectedData.employmentType}</p>
             </Pill>
           </Pill.Group>
-          <Button className="rounded-md " size={iconSize}>
+          <Button className="rounded-md " size={iconSize} onClick={() => { setApplicationForm(true) }}>
             Apply Now <IconArrowRight />{""}
           </Button>
         </div>

@@ -20,7 +20,9 @@ export interface JobState {
   filter: FilterType;
   clearFilter: boolean
   isFiltered: boolean
+  applicationForm: boolean
 
+  setApplicationForm: (applicationForm: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
   setFilter: (filter: FilterType) => void;
   setSelectedData: (selectedData: JobType) => void;

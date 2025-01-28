@@ -1,27 +1,27 @@
 import Filter from "@src/modules/Home/components/Filter";
 import List from "@src/modules/Home/components/list";
 import Details from "@src/modules/Home/components/details";
-import DrawerFilter from "@src/modules/Home/components/DrawerFilter";
+import Modals from "@src/modules/Home/components/modal";
+import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { HomeStore } from "@src/modules/Home/store";
 import { selectedDataVal } from "./values";
-import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { JobType } from "@src/modules/Home/types";
 import { ActionIcon } from "@mantine/core";
 import { IconFilter } from "@tabler/icons-react";
 
 export default function Home() {
-  const { selectedData, setFilterDrawer } = HomeStore();
+  const { selectedData, setFilterDrawer, setApplicationForm } = HomeStore();
   const jobs: JobType[] = jobsJson;
   return (
     <div className=" h-full overflow-hidden">
-      <DrawerFilter />
+      <Modals />
       <div className="bg-[url('bg2.png')] bg-cover bg-center h-[19%] 2xl:p-4 ">
         <div className="h-full w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center">
           <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-4 items-center">
             <ActionIcon variant="filled" color="gray" size="lg" aria-label="Settings" className="sm:hidden" onClick={() => setFilterDrawer(true)}>
               <IconFilter/>
             </ActionIcon>
-            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer">APPLICATION FORM.</span></p>
+            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer" onClick={() => { setApplicationForm(true)}}>APPLICATION FORM.</span></p>
           </div>
           <div>
           </div>

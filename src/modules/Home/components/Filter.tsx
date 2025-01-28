@@ -17,9 +17,9 @@ export default function Filter() {
 
   const renderPills = (label: any, items: any) => {
     return (
-      <div className="flex flex-row items-center w-[20%] gap-2" >
+      <div className="flex flex-row items-center  gap-2" >
         <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
-        <div className="flex sm:overflow-x-hidden sm:hover:overflow-x-auto h-full items-center">
+        <div className="flex  h-full items-center">
           {items.map((item: string, index: number) => (
             <div className="">
               <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold" >{item}</Pill>
@@ -33,9 +33,9 @@ export default function Filter() {
 
   const renderSinglePill = (label: any, item: string) => {
     return (
-      <div className="flex flex-row items-center w-[20%] gap-2">
+      <div className="flex flex-row items-center  gap-2 ">
         <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
-        <div className="flex sm:overflow-x-hidden sm:hover:overflow-x-auto h-full items-center">
+        <div className="flex h-full items-center">
           <div className="">
             <Pill
               withRemoveButton
@@ -104,7 +104,7 @@ export default function Filter() {
         </Text>
       </div>
 
-      {isFiltered && (<div className="flex flex-row h-full w-full overflow-hidden px-4 gap-2">
+      {isFiltered && (<div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4 gap-2 sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
 
         {filter.jobTitle && renderSinglePill(
           'Job Title',

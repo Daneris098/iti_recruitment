@@ -10,16 +10,16 @@ export interface user_details_type {
 };
 
 export interface GlobalState {
-  user_details: user_details_type;
-  is_mobile: boolean;
-  is_fullscreen: boolean;
+  userDetails: user_details_type;
+  isMobile: boolean;
+  isFullscreen: boolean;
 
-  set_user_details: (user_details: any) => void;
-  set_is_mobile: (is_mobile: boolean) => void;
-  set_is_fullscreen: (is_mobile: boolean) => void;
+  setUserDetails: (userDetails: any) => void;
+  setIsMobile: (isMobile: boolean) => void;
+  setIsFullscreen: (isFullscreen: boolean) => void;
 }
 
-export const user_details_value = {
+export const userDetailsValue = {
   name: '',
   email: '',
   username: '',
@@ -28,11 +28,11 @@ export const user_details_value = {
 }
 
 export const GlobalStore = create<GlobalState>((set) => ({
-  user_details: user_details_value,
-  is_mobile: false,
-  is_fullscreen: false,
+  userDetails: userDetailsValue,
+  isMobile: false,
+  isFullscreen: false,
 
-  set_user_details: (user_details) => set({ user_details: user_details }),
-  set_is_mobile: (is_mobile) => set({ is_mobile: is_mobile }),
-  set_is_fullscreen: (is_fullscreen) => set({ is_fullscreen: is_fullscreen }),
+  setUserDetails: (userDetails) => set({ userDetails: userDetails }),
+  setIsMobile: (isMobile) => set({ isMobile: isMobile }),
+  setIsFullscreen: (isFullscreen) => set({ isFullscreen: isFullscreen }),
 }));

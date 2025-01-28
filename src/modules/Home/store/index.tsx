@@ -8,7 +8,9 @@ export const HomeStore = create<JobState>((set) => ({
   filter: filterVal,
   clearFilter: false,
   isFiltered: false,
+  applicationForm: false,
 
+  setApplicationForm: (applicationForm: boolean) => set({ applicationForm: applicationForm }),
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),
   setSelectedData: (selectedData: JobType) => set({ selectedData: selectedData }),

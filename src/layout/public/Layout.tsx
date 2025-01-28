@@ -5,20 +5,20 @@ import { GlobalStore } from "@src/utils/GlobalStore";
 import { TailwindIndicator } from "@src/components/tailwind-indicator"
 
 function Layout() {
-  const { is_fullscreen } = GlobalStore();
+  const { isFullscreen } = GlobalStore();
 
   const HeaderHeightSize = useMatches({
     base: "50",
     xl: "60"
   });
 
-  const appShellProps = !is_fullscreen
+  const appShellProps = !isFullscreen
     ? { header: { height: HeaderHeightSize } }
     : {};
 
   return (
     <AppShell {...appShellProps}>
-      {!is_fullscreen && <Header />}
+      {!isFullscreen && <Header />}
       <div className="h-screen">
         <Main />
         <TailwindIndicator />

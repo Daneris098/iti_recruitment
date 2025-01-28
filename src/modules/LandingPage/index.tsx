@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { set_is_fullscreen } = GlobalStore();
+  const { setIsFullscreen } = GlobalStore();
 
   useEffect(() => {
-    set_is_fullscreen(true);
+    setIsFullscreen(true);
   }, []);
 
   return (
@@ -34,7 +34,7 @@ export default function LandingPage() {
             className=" w-full sm:w-1/3 h-10 2xl:h-14 rounded-md br-gradient border-none"
             onClick={() => {
               navigate("/home");
-              set_is_fullscreen(false);
+              setIsFullscreen(false);
             }}
           >
             Search Jobs
