@@ -2,7 +2,10 @@ import { Modal, Divider, Button } from '@mantine/core';
 import { HomeStore } from "@src/modules/Home/store";
 import Stepper from "@modules/Home/components/stepper"
 import GeneralInformation from "@modules/Home/components/form/GeneralInformation"
+import EducationalAndEmployment from "@modules/Home/components/form/EducationalAndEmployment."
 import { useEffect } from 'react';
+import { cn } from "@src/lib/utils";
+
 export default function index() {
     const { applicationForm, setApplicationForm, activeStepper, setActiveStepper } = HomeStore();
 
@@ -19,13 +22,15 @@ export default function index() {
                         <Stepper />
                     </div>
                     {(
-                        activeStepper === 0 ? <GeneralInformation /> : <div></div>
+                        activeStepper === 0 ? <GeneralInformation /> :
+                            activeStepper === 1 ? <EducationalAndEmployment />
+                                : <div></div>
                     )}
-                    <div className='flex gap-2 self-end w-[25%]'>
-                        <Button variant='outline' className="self-end sm:w-[50%] rounded-md " onClick={() => { setActiveStepper((activeStepper > 0 ? activeStepper - 1 : activeStepper)) }}>
+                    <div className={cn('flex gap-2 self-end w-[100%] sm:w-[25%]', (activeStepper === 0 ) && 'sm:w-[10%]')}>
+                        {activeStepper > 0 && (<Button variant='outline' className={cn("self-end w-[50%] rounded-md ", )} onClick={() => { setActiveStepper((activeStepper > 0 ? activeStepper - 1 : activeStepper)) }}>
                             Back
-                        </Button>
-                        <Button className="self-end sm:w-[50%] rounded-md br-gradient border-none" onClick={() => { setActiveStepper((activeStepper < 4 ? activeStepper + 1 : activeStepper)) }}>
+                        </Button>)}
+                        <Button className={cn("self-end w-[50%] rounded-md br-gradient border-none", activeStepper === 0 && 'w-full')} onClick={() => { setActiveStepper((activeStepper < 4 ? activeStepper + 1 : activeStepper)) }}>
                             Next
                         </Button>
                     </div>

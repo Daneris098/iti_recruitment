@@ -34,7 +34,7 @@ export default function index() {
     }
 
     return (
-        <StyledStepper active={activeStepper} onStepClick={setActiveStepper}>
+        <StyledStepper active={activeStepper} >
             <Stepper.Step label="" description="General and Personal Information" />
             <Stepper.Step label="" description="Education and Employment Record" />
             <Stepper.Step label="" description="Family Background and Other Information" />
