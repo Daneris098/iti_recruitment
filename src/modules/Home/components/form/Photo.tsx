@@ -61,7 +61,7 @@ export default function Index() {
                 <span className="text-[#559CDA] cursor-pointer">TAKE PHOTO BUTTON</span> to start. Make sure to be in a place with proper lighting.
             </p>
 
-            <div className="h-96 w-full bg-[#4F4F4F] flex flex-col justify-center items-center">
+            <div className="h-96 w-full bg-[#4F4F4F] flex flex-col justify-center items-center overflow-hidden">
                 {capturedImage ? (
                     // Show circular captured image preview
                     <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-gray-300">
@@ -69,8 +69,11 @@ export default function Index() {
                     </div>
                 ) : (
                     // Show video stream
-                    <video ref={videoRef} autoPlay className="h-full w-auto rounded-lg"></video>
-                )}
+                    <div className="relative">
+                        <video ref={videoRef} autoPlay className="h-full w-auto rounded-lg"></video>
+                        {/* Circular guide overlay */}
+                        <div className="absolute top-1/2 left-1/2 w-80 h-80 rounded-full border-4 border-white transform -translate-x-1/2 -translate-y-1/2 opacity-50 pointer-events-none"></div>
+                    </div>)}
             </div>
 
             {/* Hidden canvas to capture image */}
