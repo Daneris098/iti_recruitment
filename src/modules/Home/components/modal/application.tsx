@@ -4,6 +4,7 @@ import Stepper from "@modules/Home/components/stepper"
 import GeneralInformation from "@modules/Home/components/form/GeneralInformation"
 import EducationalAndEmployment from "@modules/Home/components/form/EducationalAndEmployment."
 import FamilyAndOther from "@modules/Home/components/form/FamilyAndOther"
+import Reference from "@modules/Home/components/form/Reference"
 import { useEffect } from 'react';
 import { cn } from "@src/lib/utils";
 
@@ -22,12 +23,15 @@ export default function index() {
                     <div className='w-[80%] m-auto  pb-12 hidden sm:block'>
                         <Stepper />
                     </div>
+                    
                     {(
                         activeStepper === 0 ? <GeneralInformation /> :
                             activeStepper === 1 ? <EducationalAndEmployment /> :
-                                activeStepper === 2 ? <FamilyAndOther />
-                                    : <div></div>
+                                activeStepper === 2 ? <FamilyAndOther /> :
+                                    activeStepper === 3 ? <Reference /> :
+                                        <div>Else Page</div>
                     )}
+
                     <div className={cn('flex gap-2 self-end w-[100%] sm:w-[25%]', (activeStepper === 0) && 'sm:w-[10%]')}>
                         {activeStepper > 0 && (<Button variant='outline' className={cn("self-end w-[50%] rounded-md ",)} onClick={() => { setActiveStepper((activeStepper > 0 ? activeStepper - 1 : activeStepper)) }}>
                             Back
