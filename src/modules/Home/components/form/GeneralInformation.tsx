@@ -5,11 +5,11 @@ import { ApplicationStore } from "@modules/Home/store"
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { GeneralInformationVal } from "../../values";
-import { Step } from '@modules/Home/types';
+import { Step, GeneralInformation } from '@modules/Home/types';
 
 export default function index() {
     const { isMobile } = GlobalStore()
-    const { submit, activeStepper, setSubmit, setActiveStepper } = ApplicationStore()
+    const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
 
     const form = useForm({
@@ -19,31 +19,31 @@ export default function index() {
             firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
             secondChoice: (value: string) => value.length === 0 ? "Second choice is required" : null,
             desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
-            startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
+            // startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
-            personalInformation: {
-                fullname: {
-                    firstName: (value: string) => value.length === 0 ? "First name is required" : null,
-                    lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
-                },
-                presentAddress: {
-                    // city: (value: string) => value.length === 0 ? "City is required" : null,
-                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
-                },
-                permanentAddress: {
-                    // city: (value: string) => value.length === 0 ? "City is required" : null,
-                    // zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
-                },
-                dateOfBirth: (value: string) => value.length === 0 ? "Date of birth is required" : null,
-                age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
-                mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
-                workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
-            }
+            // personalInformation: {
+            //     fullname: {
+            //         firstName: (value: string) => value.length === 0 ? "First name is required" : null,
+            //         lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
+            //     },
+            //     presentAddress: {
+            //         // city: (value: string) => value.length === 0 ? "City is required" : null,
+            //         zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
+            //     },
+            //     permanentAddress: {
+            //         // city: (value: string) => value.length === 0 ? "City is required" : null,
+            //         // zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
+            //     },
+            //     dateOfBirth: (value: string) => value.length === 0 ? "Date of birth is required" : null,
+            //     age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
+            //     mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+            //     workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
+            // }
         }
     });
 
-    const onSubmit = async (params: any) => {
-        console.log(params)
+    const onSubmit = async (form: GeneralInformation) => {
+        setApplicationForm({...applicationForm, generalInformation: form})
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 

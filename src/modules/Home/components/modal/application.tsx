@@ -8,12 +8,13 @@ import Reference from "@modules/Home/components/form/Reference";
 import Photo from "@modules/Home/components/form/Photo";
 import { cn } from "@src/lib/utils";
 import { Step } from '@modules/Home/types';
+import { useEffect } from 'react';
 
 
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
-    const { activeStepper, setActiveStepper, setSubmit } = ApplicationStore();
+    const { activeStepper, setActiveStepper, setSubmit , applicationForm} = ApplicationStore();
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
@@ -29,6 +30,10 @@ export default function index() {
     } else {
         currentStepComponent = <div>Else Page</div>;
     }
+
+    useEffect(() => {
+        console.log('applicationForm: ',applicationForm)
+    }, [applicationForm])
 
     return (
         <>

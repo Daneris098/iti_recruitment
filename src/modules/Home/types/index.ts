@@ -33,7 +33,7 @@ export interface HomeState {
 export interface ApplicationState {
   activeStepper: number;
   submit: boolean;
-  applicationForm: { generalInformation: GeneralInformation }
+  applicationForm: ApplicationForm
   
   setSubmit: (submit: boolean) => void;
   setApplicationForm: (applicationForm: ApplicationForm) => void;
