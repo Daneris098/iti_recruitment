@@ -1,12 +1,15 @@
 import { Button, Divider, Select, TextInput } from "@mantine/core";
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
+import { ApplicationStore } from "@modules/Home/store"
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { GeneralInformationVal } from "../../values";
+import { Step } from '@modules/Home/types';
 
 export default function index() {
     const { isMobile } = GlobalStore()
+    const { submit, activeStepper, setSubmit, setActiveStepper } = ApplicationStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
 
     const form = useForm({
@@ -41,16 +44,15 @@ export default function index() {
 
     const onSubmit = async (params: any) => {
         console.log(params)
+        setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 
     useEffect(() => {
-        //how to programatically call submit here
-        setTimeout(() => {
-            if (formRef.current) {
-                // formRef.current.requestSubmit(); // Programmatically trigger form submission
-            }
-        }, 1000); // Delay submission to simulate some data fetching
-    },[])
+        if (submit === true && activeStepper === Step.GeneralInformation && formRef.current) {
+            formRef.current.requestSubmit(); // Programmatically trigger form submission
+        }
+        return (setSubmit(false))
+    }, [submit])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -139,7 +141,7 @@ export default function index() {
                 </div>
 
             </div>
-            
+
         </form>
 
     )

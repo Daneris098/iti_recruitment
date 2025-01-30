@@ -13,8 +13,8 @@ import { Step } from '@modules/Home/types';
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
-    const { activeStepper, setActiveStepper } = ApplicationStore();
-    
+    const { activeStepper, setActiveStepper, setSubmit } = ApplicationStore();
+
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
         currentStepComponent = <GeneralInformation />;
@@ -47,7 +47,9 @@ export default function index() {
                                 Back
                             </Button>
                         )}
-                        <Button className={cn("self-end w-[50%] rounded-md br-gradient border-none", activeStepper === Step.GeneralInformation && 'w-full')} onClick={() => setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)}>
+                        <Button className={cn("self-end w-[50%] rounded-md br-gradient border-none", activeStepper === Step.GeneralInformation && 'w-full')} onClick={() => {
+                            setSubmit(true)
+                        }}>
                             Next
                         </Button>
                     </div>

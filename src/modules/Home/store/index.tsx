@@ -22,7 +22,10 @@ export const HomeStore = create<HomeState>((set) => ({
 export const ApplicationStore = create<ApplicationState>((set) => ({
   activeStepper: 0,
   applicationForm: ApplicationFormVal,
+  submit: false,
 
+
+  setSubmit: (submit: boolean) => set({ submit: submit }),
   setApplicationForm: (applicationForm: ApplicationForm) => set({ applicationForm: applicationForm }),
   setActiveStepper: (activeStepper: number) => set({ activeStepper: activeStepper }),
 }));
