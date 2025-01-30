@@ -1,23 +1,19 @@
-import { Button, Divider, Drawer, Flex, Group, MultiSelect, Popover, Select, Text, TextInput, useMatches, } from "@mantine/core";
-import { DateRange } from "@shared/template";
-import { IconCalendarMonth, IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { useDateRangeStore } from "@shared/hooks/useDateRange";
-import { useMediaQuery } from "@mantine/hooks";
+import { Button, Divider, Drawer, Flex,  MultiSelect, Select, Text, TextInput, useMatches, } from "@mantine/core";
+import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
+// import { useMediaQuery } from "@mantine/hooks";
 import { HomeStore } from "../store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { filterVal } from "../values";
-import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
-import { DatePicker } from "@mantine/dates";
 
 export default function DrawerFilter() {
-  const [value, setValue] = useState<Date | null>(null);
+  // const [value, setValue] = useState<Date | null>(null);
   // const { value, setValue } = useDateRangeStore();
-  const isMobile = useMediaQuery("(max-width: 425px)");
+  // const isMobile = useMediaQuery("(max-width: 425px)");
   const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = HomeStore();
 
-  useEffect(() => {
-    // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
-  }, [value])
+  // useEffect(() => {
+  //   // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
+  // }, [value])
 
   useEffect(() => {
     // setValue([null, null])
@@ -51,10 +47,10 @@ export default function DrawerFilter() {
     xl: "sm",
   });
 
-  const gapValue = useMatches({
-    base: 2,
-    xl: 4,
-  });
+  // const gapValue = useMatches({
+  //   base: 2,
+  //   xl: 4,
+  // });
 
   const inputSize = useMatches({
     base: 'xs',

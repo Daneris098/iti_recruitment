@@ -2,6 +2,7 @@ import { Button } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import bg from '@assets/bg.png'; 
 
 
 export default function LandingPage() {
@@ -13,7 +14,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="bg-[url('bg.png')] bg-cover bg-center object-fill h-full w-full flex overflow-hidden " >
+    <div style={{ backgroundImage: `url(${bg})` }} className="bg-cover bg-center object-fill h-full w-full flex overflow-hidden " >
       <img
         src="bg.png "
         className="hidden sm:block  w-full h-full absolute object-fill z-10"

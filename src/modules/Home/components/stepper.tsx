@@ -2,7 +2,7 @@ import { Stepper, StepperProps } from '@mantine/core';
 import { HomeStore } from "@src/modules/Home/store";
 
 export default function index() {
-    const { setActiveStepper, activeStepper } = HomeStore();
+    const { activeStepper } = HomeStore();
 
     function StyledStepper(props: StepperProps) {
         return (
