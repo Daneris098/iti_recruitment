@@ -5,15 +5,15 @@ import Modals from "@src/modules/Home/components/modal";
 import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { HomeStore } from "@src/modules/Home/store";
 import { selectedDataVal } from "./values";
-import { JobType } from "@src/modules/Home/types";
+import { VacancyType } from "@src/modules/Home/types";
 import { ActionIcon } from "@mantine/core";
 import { IconFilter } from "@tabler/icons-react";
 import bg2 from '@assets/bg2.png'; 
 
 
 export default function Home() {
-  const { selectedData, setFilterDrawer, setApplicationForm } = HomeStore();
-  const jobs: JobType[] = jobsJson;
+  const { selectedData, setFilterDrawer, setApplicationFormModal } = HomeStore();
+  const jobs: VacancyType[] = jobsJson;
   return (
     <div className=" h-full overflow-hidden">
       <Modals />
@@ -23,7 +23,7 @@ export default function Home() {
             <ActionIcon variant="filled" color="gray" size="lg" aria-label="Settings" className="sm:hidden" onClick={() => setFilterDrawer(true)}>
               <IconFilter/>
             </ActionIcon>
-            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer" onClick={() => { setApplicationForm(true)}}>APPLICATION FORM.</span></p>
+            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer" onClick={() => { setApplicationFormModal(true)}}>APPLICATION FORM.</span></p>
           </div>
           <div>
           </div>

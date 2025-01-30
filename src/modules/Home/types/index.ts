@@ -1,4 +1,4 @@
-export type JobType = {
+export type VacancyType = {
   id: number;
   position: string;
   workplace: string;
@@ -13,24 +13,33 @@ export type JobType = {
   dateCreated: string;
 };
 
-
-export interface JobState {
-  selectedData: JobType;
+export interface HomeState {
+  selectedData: VacancyType;
   filterDrawer: boolean;
   filter: FilterType;
   clearFilter: boolean;
   isFiltered: boolean;
-  applicationForm: boolean;
-  activeStepper: number;
+  applicationFormModal: boolean;
 
-  setActiveStepper: (activeStepper: number) => void;
-  setApplicationForm: (applicationForm: boolean) => void;
+  setApplicationFormModal: (applicationFormModal: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
   setFilter: (filter: FilterType) => void;
-  setSelectedData: (selectedData: JobType) => void;
+  setSelectedData: (selectedData: VacancyType) => void;
   setFilterDrawer: (filterDrawer: boolean) => void;
   setIsFiltered: (isFiltered: boolean) => void;
 }
+
+
+export interface ApplicationState {
+  activeStepper: number;
+  ApplicationForm: {
+    generalInformation: GeneralInformation
+  } 
+
+  setActiveStepper: (activeStepper: number) => void;
+}
+
+
 export interface FilterType {
   dateFrom?: string;
   dateTo?: string;
@@ -41,6 +50,7 @@ export interface FilterType {
   workplaceType: string[];
   experienceLevel: string[];
 }
+
 export interface EmploymentRecord {
   employerCompany: string;
   location: string;
@@ -52,6 +62,7 @@ export interface EmploymentRecord {
   salary: string;
   reasonForLeaving: string;
 }
+
 export interface GeneralInformation {
   firstChoice: string;
   secondChoice: string;
@@ -98,6 +109,7 @@ export interface GeneralInformation {
     landlineNumber: string;
   }
 }
+
 export interface EducationBackground {
   nameOfSchool: string;
   educationalLevel: string;
@@ -189,11 +201,12 @@ export interface Reference {
   employmentReference: [EmploymentReference]
   applicationSource: [ApplicationSource]
 }
+
 export interface ApplicationForm {
   generalInformation: GeneralInformation;
-  educationBackground: EducationBackground;
-  employmentRecord: [EmploymentRecord];
-  familyBackground: FamilyBackground;
-  reference: Reference;
-  photo: string | null;
+  educationBackground?: EducationBackground;
+  employmentRecord?: [EmploymentRecord];
+  familyBackground?: FamilyBackground;
+  reference?: Reference;
+  photo?: string | null;
 }
