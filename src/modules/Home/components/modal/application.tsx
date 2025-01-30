@@ -4,7 +4,7 @@ import Stepper from "@modules/Home/components/stepper"
 import GeneralInformation from "@modules/Home/components/form/GeneralInformation"
 import { useEffect } from 'react';
 export default function index() {
-    const { applicationForm, setApplicationForm, activeStepper } = HomeStore();
+    const { applicationForm, setApplicationForm, activeStepper, setActiveStepper } = HomeStore();
 
     useEffect(() => {
         console.log(activeStepper)
@@ -21,9 +21,14 @@ export default function index() {
                     {(
                         activeStepper === 0 ? <GeneralInformation /> : <div></div>
                     )}
-                    <Button className="self-end sm:w-[10%] rounded-md br-gradient border-none">
-                        Next
-                    </Button>
+                    <div className='flex gap-2 self-end w-[25%]'>
+                        <Button variant='outline' className="self-end sm:w-[50%] rounded-md " onClick={() => { setActiveStepper((activeStepper > 0 ? activeStepper - 1 : activeStepper)) }}>
+                            Back
+                        </Button>
+                        <Button className="self-end sm:w-[50%] rounded-md br-gradient border-none" onClick={() => { setActiveStepper((activeStepper < 4 ? activeStepper + 1 : activeStepper)) }}>
+                            Next
+                        </Button>
+                    </div>
                 </div>
             </Modal>
         </>

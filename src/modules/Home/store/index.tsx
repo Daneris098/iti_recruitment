@@ -12,6 +12,9 @@ export const HomeStore = create<JobState>((set) => ({
   activeStepper: 0,
 
   setActiveStepper: (activeStepper: number) => set({ activeStepper: activeStepper }),
+  // nextStep: (activeStepper: number) => set({ activeStepper: (activeStepper < 4 ? activeStepper + 1 : activeStepper) }),
+
+  
   setApplicationForm: (applicationForm: boolean) => set({ applicationForm: applicationForm }),
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),

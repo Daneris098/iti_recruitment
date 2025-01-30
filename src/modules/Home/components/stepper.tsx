@@ -1,11 +1,7 @@
-import { Modal, Button, Divider, Stepper, StepperProps } from '@mantine/core';
+import { Stepper, StepperProps } from '@mantine/core';
 import { HomeStore } from "@src/modules/Home/store";
-import { useState } from 'react';
 
 export default function index() {
-    const [active, setActive] = useState(1);
-    const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
-    const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
     const { setActiveStepper, activeStepper } = HomeStore();
 
     function StyledStepper(props: StepperProps) {
