@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.mantine-InputWrapper-error{
+  position: absolute;
+}
+
 .poppins {
   font-family: "Poppins", sans-serif;
 }
