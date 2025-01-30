@@ -32,10 +32,8 @@ export interface HomeState {
 
 export interface ApplicationState {
   activeStepper: number;
-  ApplicationForm: {
-    generalInformation: GeneralInformation
-  } 
-
+  applicationForm: { generalInformation: GeneralInformation }
+  setApplicationForm: (applicationForm: ApplicationForm) => void;
   setActiveStepper: (activeStepper: number) => void;
 }
 
@@ -58,7 +56,7 @@ export interface EmploymentRecord {
   inclusiveDate: {
     from: string;
     to: string;
-  }
+  };
   salary: string;
   reasonForLeaving: string;
 }
@@ -144,7 +142,7 @@ export interface FamilyBackground {
   }
 
   siblings: [Siblings]
- 
+
   spouse?: {
     fullname: string;
     age: number;
@@ -204,9 +202,17 @@ export interface Reference {
 
 export interface ApplicationForm {
   generalInformation: GeneralInformation;
-  educationBackground?: EducationBackground;
-  employmentRecord?: [EmploymentRecord];
-  familyBackground?: FamilyBackground;
-  reference?: Reference;
-  photo?: string | null;
+  educationBackground: EducationBackground;
+  employmentRecord: [EmploymentRecord];
+  familyBackground: FamilyBackground;
+  reference: Reference;
+  photo: string | null;
+}
+
+export enum Step {
+  GeneralInformation,
+  EducationalAndEmployment,
+  FamilyAndOther,
+  Reference,
+  Photo
 }

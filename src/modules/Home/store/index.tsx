@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { HomeState, VacancyType, FilterType, ApplicationState } from "@modules/Home/types";
-import { filterVal, GeneralInformationVal, selectedDataVal } from "@src/modules/Home/values";
+import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm } from "@modules/Home/types";
+import { ApplicationFormVal, filterVal, GeneralInformationVal, selectedDataVal } from "@src/modules/Home/values";
 
 export const HomeStore = create<HomeState>((set) => ({
   selectedData: selectedDataVal,
@@ -21,10 +21,9 @@ export const HomeStore = create<HomeState>((set) => ({
 
 export const ApplicationStore = create<ApplicationState>((set) => ({
   activeStepper: 0,
-  ApplicationForm: {
-    generalInformation: GeneralInformationVal
-  },
+  applicationForm: ApplicationFormVal,
 
+  setApplicationForm: (applicationForm: ApplicationForm) => set({ applicationForm: applicationForm }),
   setActiveStepper: (activeStepper: number) => set({ activeStepper: activeStepper }),
 }));
 

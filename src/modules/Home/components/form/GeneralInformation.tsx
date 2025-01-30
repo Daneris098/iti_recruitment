@@ -2,11 +2,12 @@ import { Button, Divider, Select, TextInput } from "@mantine/core";
 import { hasLength, isEmail, useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCaretDownFilled } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GeneralInformationVal } from "../../values";
 
 export default function index() {
     const { isMobile } = GlobalStore()
+    const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -42,8 +43,17 @@ export default function index() {
         console.log(params)
     };
 
+    useEffect(() => {
+        //how to programatically call submit here
+        setTimeout(() => {
+            if (formRef.current) {
+                // formRef.current.requestSubmit(); // Programmatically trigger form submission
+            }
+        }, 1000); // Delay submission to simulate some data fetching
+    },[])
+
     return (
-        <form onSubmit={form.onSubmit(onSubmit)}>
+        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4">
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
@@ -129,9 +139,7 @@ export default function index() {
                 </div>
 
             </div>
-            <Button type="submit" className="border-none bg-blue-300 mt-7">
-                Submit
-            </Button>
+            
         </form>
 
     )
