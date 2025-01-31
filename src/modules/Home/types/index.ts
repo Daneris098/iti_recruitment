@@ -95,7 +95,7 @@ export interface GeneralInformation {
       barangay: string;
       city: string;
       zipCode: string;
-      addressType: string;
+      livingArrangement: string;
     }
     dateOfBirth: string;
     placeOfBirth: string;

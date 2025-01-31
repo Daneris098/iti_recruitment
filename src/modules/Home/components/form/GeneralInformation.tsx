@@ -1,11 +1,14 @@
-import {  Divider, Select, TextInput } from "@mantine/core";
-import {  useForm } from '@mantine/form';
+import { Divider, Select, TextInput, Popover } from "@mantine/core";
+import { useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore } from "@modules/Home/store"
-import { IconCaretDownFilled } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-// import { GeneralInformationVal } from "../../values";
+import { GeneralInformationVal } from "../../values";
 import { Step, GeneralInformation } from '@modules/Home/types';
+import { DatePicker } from "@mantine/dates";
+import dayjs from "dayjs";
+import { cn } from "@src/lib/utils";
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -14,36 +17,53 @@ export default function index() {
 
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: applicationForm.generalInformation,
+        initialValues: GeneralInformationVal,
         validate: {
             firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
-            secondChoice: (value: string) => value.length === 0 ? "Second choice is required" : null,
             desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
-            // startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
+            startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
-            // personalInformation: {
-            //     fullname: {
-            //         firstName: (value: string) => value.length === 0 ? "First name is required" : null,
-            //         lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
-            //     },
-            //     presentAddress: {
-            //         // city: (value: string) => value.length === 0 ? "City is required" : null,
-            //         zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
-            //     },
-            //     permanentAddress: {
-            //         // city: (value: string) => value.length === 0 ? "City is required" : null,
-            //         // zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
-            //     },
-            //     dateOfBirth: (value: string) => value.length === 0 ? "Date of birth is required" : null,
-            //     age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
-            //     mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
-            //     workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
-            // }
+            personalInformation: {
+                fullname: {
+                    firstName: (value: string) => value.length === 0 ? "First name is required" : null,
+                    lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
+                },
+                presentAddress: {
+                    unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
+                    houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
+                    street: (value: string) => value.length === 0 ? "Street is required" : null,
+                    subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
+                    barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
+                    city: (value: string) => value.length === 0 ? "City is required" : null,
+                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
+                    livingArrangement: (value: string) => value.length === 0 ? "Living arrangement is required" : null,
+                },
+
+                permanentAddress: {
+                    unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
+                    houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
+                    street: (value: string) => value.length === 0 ? "Street is required" : null,
+                    subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
+                    barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
+                    city: (value: string) => value.length === 0 ? "City is required" : null,
+                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
+                    livingArrangement: (value: string) => value.length === 0 ? "Address type is required" : null,
+                },
+
+
+                dateOfBirth: (value: string) => value.length === 0 ? "Date of birth is required" : null,
+                placeOfBirth: (value: string) => value.length === 0 ? "Places of birth is required" : null,
+                religion: (value: string) => value.length === 0 ? "Religion is required" : null,
+                age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
+                mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+                workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
+                landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+            }
         }
     });
 
     const onSubmit = async (form: GeneralInformation) => {
-        setApplicationForm({...applicationForm, generalInformation: form})
+        setApplicationForm({ ...applicationForm, generalInformation: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 
@@ -89,7 +109,29 @@ export default function index() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                     <TextInput {...form.getInputProps("desiredSalary")} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
-                    <TextInput {...form.getInputProps("startDateAvailability")} radius='md' w={isMobile ? '50%' : '100%'} label="Availability to Start" placeholder="Select Date" />
+                    <Popover
+                        position="bottom"
+                        shadow="md"
+                        trapFocus={true}
+                        returnFocus={true}
+                    >
+                        <Popover.Target>
+                            <TextInput
+                                {...form.getInputProps("startDateAvailability")}
+
+                                radius='md' w={isMobile ? '25%' : '100%'}
+                                readOnly
+                                label='Availability to Start'
+                                placeholder='Select Date'
+                                className="w-full cursor-default"
+                                rightSection={<IconCalendarMonth />}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                            />
+                        </Popover.Target>
+                        <Popover.Dropdown className="w-full">
+                            <DatePicker firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => { form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                        </Popover.Dropdown>
+                    </Popover>
                 </div>
 
                 <p className="font-bold">Personal Information</p>
@@ -102,42 +144,161 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Present Address" placeholder="Unit no." />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Barangay" />
-                    <TextInput {...form.getInputProps("personalInformation.presentAddress.city")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="City" />
-                    <TextInput {...form.getInputProps("personalInformation.presentAddress.zipCode")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Zip Code" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" />
+                    <TextInput {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Present Address" placeholder="Unit no." />
+                    <TextInput {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
+                    <TextInput {...form.getInputProps("personalInformation.presentAddress.street")} key={form.key('personalInformation.presentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
+                    <TextInput {...form.getInputProps("personalInformation.presentAddress.subdivision")} key={form.key('personalInformation.presentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
+                    <Select
+                        {...form.getInputProps("personalInformation.presentAddress.barangay")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Barangay"}
+                        radius={8}
+                        data={["1", "2", "3", "4"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    <Select
+                        {...form.getInputProps("personalInformation.presentAddress.city")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"City"}
+                        radius={8}
+                        data={["Caloocan City", "Quezon City", "Manila City"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    <Select
+                        {...form.getInputProps("personalInformation.presentAddress.zipCode")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Zip Code"}
+                        radius={8}
+                        data={["1400", "1500", "1600"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    <Select
+                        {...form.getInputProps("personalInformation.presentAddress.livingArrangement")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Living Arrangement"}
+                        radius={8}
+                        data={["1400", "1500", "1600"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    {/* <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" /> */}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Barangay" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="City" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Zip Code" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" />
+                    <div className={cn("w-[100%]", isMobile && "w-[25%]")}>
+                        <div onClick={() => {
+                            form.setValues({
+                                ...form.getValues(),
+                                personalInformation: {
+                                    ...form.getValues().personalInformation, // Preserve all existing fields
+                                    permanentAddress: form.getValues().personalInformation.presentAddress,
+                                },
+                            });
+                        }} className="absolute ml-40 text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer">SAME AS PRESENT ADDRESS</div>
+                        <TextInput {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
+                    </div>
+                    <TextInput {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
+                    <TextInput {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
+                    <TextInput {...form.getInputProps("personalInformation.permanentAddress.subdivision")} key={form.key('personalInformation.permanentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <Select
+                        key={form.key('personalInformation.permanentAddress.barangay')}
+                        {...form.getInputProps("personalInformation.permanentAddress.barangay")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Barangay"}
+                        radius={8}
+                        data={["1", "2", "3", "4"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    <Select
+                        key={form.key('personalInformation.permanentAddress.city')}
+                        {...form.getInputProps("personalInformation.permanentAddress.city")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"City"}
+                        radius={8}
+                        data={["Caloocan City", "Quezon City", "Manila City"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    <Select
+                        key={form.key('personalInformation.permanentAddress.zipCode')}
+                        {...form.getInputProps("personalInformation.permanentAddress.zipCode")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Zip Code"}
+                        radius={8}
+                        data={["1400", "1500", "1600"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    <Select
+                        key={form.key('personalInformation.permanentAddress.livingArrangement')}
+                        {...form.getInputProps("personalInformation.permanentAddress.livingArrangement")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Living Arrangement"}
+                        radius={8}
+                        data={["1400", "1500", "1600"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput  {...form.getInputProps("personalInformation.dateOfBirth")} radius='md' w={isMobile ? '25%' : '100%'} label="Date of birth" placeholder="Date of Birth" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Place of birth" placeholder="Place of birth" />
-                    <TextInput  {...form.getInputProps("personalInformation.age")} radius='md' w={isMobile ? '25%' : '100%'} label="Age" placeholder="Age" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
+                    <Popover
+                        position="bottom"
+                        shadow="md"
+                        trapFocus={true}
+                        returnFocus={true}
+                    >
+                        <Popover.Target>
+                            <TextInput
+                                {...form.getInputProps("personalInformation.dateOfBirth")}
+
+                                radius='md' w={isMobile ? '25%' : '100%'}
+                                readOnly
+                                label='Date of Birth'
+                                placeholder='Select Date'
+                                className="w-full cursor-default"
+                                rightSection={<IconCalendarMonth />}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                            />
+                        </Popover.Target>
+                        <Popover.Dropdown className="w-full">
+                            <DatePicker firstDayOfWeek={0}  {...form.getInputProps("personalInformation.dateOfBirth")} onChange={(value: Date | null) => { form.setFieldValue("personalInformation.dateOfBirth", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                        </Popover.Dropdown>
+                    </Popover>
+
+                    <TextInput {...form.getInputProps("personalInformation.placeOfBirth")} radius='md' w={isMobile ? '25%' : '100%'} label="Place of birth" placeholder="Place of birth" />
+                    <TextInput {...form.getInputProps("personalInformation.age")} radius='md' w={isMobile ? '25%' : '100%'} label="Age" placeholder="Age" />
+                    <TextInput {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput  {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
-                    <TextInput  {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
+                    <TextInput {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
+                    <TextInput {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
+                    <TextInput {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>
 
             </div>

@@ -56,7 +56,7 @@ export const GeneralInformationVal: GeneralInformation = {
       barangay: '',
       city: '',
       zipCode: '',
-      addressType: ''
+      livingArrangement: ''
     },
     dateOfBirth: '',
     placeOfBirth: '',

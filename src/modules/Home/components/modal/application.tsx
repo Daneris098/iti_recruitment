@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
-    const { activeStepper, setActiveStepper,  applicationForm} = ApplicationStore();
+    const { activeStepper, setActiveStepper, applicationForm, setSubmit } = ApplicationStore();
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
@@ -32,12 +32,14 @@ export default function index() {
     }
 
     useEffect(() => {
-        console.log('applicationForm: ',applicationForm)
+        console.log('applicationForm: ', applicationForm)
     }, [applicationForm])
 
     return (
         <>
-            <Modal size='100%' opened={applicationFormModal} centered onClose={() => setApplicationFormModal(false)} title="Application Form" className='text-[#559CDA]' >
+            <Modal size='100%' opened={applicationFormModal} centered onClose={() => setApplicationFormModal(false)} title="Application Form" className='text-[#559CDA]' styles={{
+                title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+            }} >
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                 <div className='m-auto w-[95%] flex flex-col gap-3'>
                     <div className='w-[80%] m-auto pb-12 hidden sm:block'>
@@ -53,8 +55,8 @@ export default function index() {
                             </Button>
                         )}
                         <Button className={cn("self-end w-[50%] rounded-md br-gradient border-none", activeStepper === Step.GeneralInformation && 'w-full')} onClick={() => {
-                            // setSubmit(true)
-                            setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
+                            setSubmit(true)
+                            // setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
                         }}>
                             Next
                         </Button>
