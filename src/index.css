@@ -188,3 +188,8 @@ html {
   scroll-behavior: smooth; /* Smooth scrolling */
 }
 
+/* .mantine-Indicator-indicator[data-with-label="true"]{
+  font-size: 10px !important;
+  color: blue;
+  background: greenyellow;
+} */

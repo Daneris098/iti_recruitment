@@ -4,7 +4,7 @@ import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore } from "@modules/Home/store"
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { GeneralInformationVal } from "../../values";
+// import { GeneralInformationVal } from "../../values";
 import { Step, GeneralInformation } from '@modules/Home/types';
 
 export default function index() {

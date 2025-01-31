@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
-    const { activeStepper, setActiveStepper, setSubmit , applicationForm} = ApplicationStore();
+    const { activeStepper, setActiveStepper,  applicationForm} = ApplicationStore();
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
@@ -53,7 +53,8 @@ export default function index() {
                             </Button>
                         )}
                         <Button className={cn("self-end w-[50%] rounded-md br-gradient border-none", activeStepper === Step.GeneralInformation && 'w-full')} onClick={() => {
-                            setSubmit(true)
+                            // setSubmit(true)
+                            setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
                         }}>
                             Next
                         </Button>
