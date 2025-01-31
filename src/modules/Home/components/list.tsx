@@ -1,11 +1,11 @@
 import jobsJson from "@src/modules/Home/values/response/jobs.json";
-import { JobType } from "@src/modules/Home/types";
+import { VacancyType } from "@src/modules/Home/types";
 import { MantineSize, Pill, useMatches } from "@mantine/core";
 import { HomeStore } from "@src/modules/Home/store";
 import { cn } from "@src/lib/utils";
 
 export default function index() {
-  const jobs: JobType[] = jobsJson;
+  const jobs: VacancyType[] = jobsJson;
   const { setSelectedData, selectedData } = HomeStore();
   const pillSize: MantineSize = useMatches({
     base: "xs",
@@ -14,7 +14,7 @@ export default function index() {
   });
   return (
     <div className="flex flex-col  gap-2 2xl:gap-0">
-      {jobs.map((job: JobType, index: number) => (
+      {jobs.map((job: VacancyType, index: number) => (
         <div
           key={index}
           className={cn(

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm } from "@modules/Home/types";
-import { ApplicationFormVal, filterVal, GeneralInformationVal, selectedDataVal } from "@src/modules/Home/values";
+import { ApplicationFormVal, filterVal, selectedDataVal } from "@src/modules/Home/values";
 
 export const HomeStore = create<HomeState>((set) => ({
   selectedData: selectedDataVal,
