@@ -13,12 +13,12 @@ export default function index() {
     xl: "lg"
   });
   return (
-    <div className="flex flex-col  gap-2 2xl:gap-0">
+    <div className="flex flex-col  gap-2 2xl:gap-4">
       {jobs.map((job: VacancyType, index: number) => (
         <div
           key={index}
           className={cn(
-            "gap-2 p-4 2xl:p-8 shadow-md rounded-xl flex flex-col 2xl:gap-2 ",
+            "gap-2 p-4 2xl:p-6 shadow-md rounded-xl flex flex-col 2xl:gap-2 ",
             selectedData.id === job.id && "bg-blue-500"
           )}
           onClick={() => {

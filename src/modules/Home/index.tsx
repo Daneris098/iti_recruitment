@@ -6,13 +6,10 @@ import jobsJson from "@src/modules/Home/values/response/jobs.json";
 import { HomeStore } from "@src/modules/Home/store";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { selectedDataVal } from "./values";
-import { FilterType, VacancyType } from "@src/modules/Home/types";
-import { ActionIcon, Indicator } from "@mantine/core";
+import { VacancyType } from "@src/modules/Home/types";
+import { ActionIcon } from "@mantine/core";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import bg2 from '@assets/bg2.png';
-import { useEffect, useState } from "react";
-
-
 
 export default function Home() {
   const { selectedData, setFilterDrawer, setApplicationFormModal, filter, isFiltered } = HomeStore();
@@ -27,11 +24,6 @@ export default function Home() {
       return count + (value && value !== '' ? 1 : 0);
     }, 0);
   };
-
-
-  useEffect(() => {
-    console.log('activeFiltersCount: ', getActiveFilterCount())
-  }, [filter])
 
   return (
     <div className=" h-full overflow-hidden">
