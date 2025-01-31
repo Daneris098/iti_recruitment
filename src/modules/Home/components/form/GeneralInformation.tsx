@@ -207,7 +207,7 @@ export default function index() {
                                     permanentAddress: form.getValues().personalInformation.presentAddress,
                                 },
                             });
-                        }} className="absolute ml-40 text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer">SAME AS PRESENT ADDRESS</div>
+                        }} className="absolute ml-36 sm:ml-40 text-xs sm:text-sm bg-[#D7FFB9] text-[#5A9D27] sm:px-2 rounded-full font-semibold cursor-pointer">SAME AS PRESENT ADDRESS</div>
                         <TextInput {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
                     </div>
                     <TextInput {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />

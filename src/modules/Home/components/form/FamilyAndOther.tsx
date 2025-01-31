@@ -11,6 +11,7 @@ export default function index() {
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null);
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
+    
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: familyBackgroundVal,
