@@ -51,97 +51,146 @@ export default function index() {
                         </div>
                     </div>
 
-                    <div className="flex h-full w-full">
+                    <div className="flex flex-col w-full">
 
 
-                        <div className="flex flex-col p-2 gap-5 w-1/2">
-                            <p className="text-[#0078EB] text-xl font-bold">Personal Details</p>
-                            <div>
-                                <p className="text-[#6D6D6D]">Applying for (First Choice)</p>
-                                <p className="font-bold">{applicationForm.generalInformation.firstChoice}</p>
+                        <div className="flex h-full w-full">
+
+
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Personal Details</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Applying for (First Choice)</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.firstChoice}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Desired Salary</p>
+                                    <p className="font-bold">PHP {applicationForm.generalInformation.desiredSalary}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Present Address</p>
+                                    <p className="font-bold">
+                                        {
+                                            applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.street + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.city
+                                        }
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Date of Birth</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.dateOfBirth}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Place of Birth</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.placeOfBirth}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Civil Status</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.civilStatus}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Desired Salary</p>
-                                <p className="font-bold">PHP {applicationForm.generalInformation.desiredSalary}</p>
+
+
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-14">
+                                <div>
+                                    <p className="text-[#6D6D6D]">Applying for (Second Choice)</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.secondChoice}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Availability to start</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.startDateAvailability}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Permanent Address</p>
+                                    <p className="font-bold">
+                                        {
+                                            applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.street + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.city
+                                        }
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-48">
+                                    <div className=" w-12">
+                                        <p className="text-[#6D6D6D]">Age</p>
+                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.age}</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Sex</p>
+                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.sex}</p>
+                                    </div>
+                                </div>
+
+
+                                <div className="flex gap-48">
+                                    <div className="w-12">
+                                        <p className="text-[#6D6D6D]">Height</p>
+                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.height}</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Weight</p>
+                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.weight}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Religion</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.religion}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Present Address</p>
-                                <p className="font-bold">
-                                    {
-                                        applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.street + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.city
-                                    }
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Date of Birth</p>
-                                <p className="font-bold">{applicationForm.generalInformation.personalInformation.dateOfBirth}</p>
-                            </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Place of Birth</p>
-                                <p className="font-bold">{applicationForm.generalInformation.personalInformation.placeOfBirth}</p>
-                            </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Civil Status</p>
-                                <p className="font-bold">{applicationForm.generalInformation.personalInformation.civilStatus}</p>
-                            </div>
+
                         </div>
 
+                        <div className="flex h-full w-full">
 
-                        <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-14">
-                            <div>
-                                <p className="text-[#6D6D6D]">Applying for (Second Choice)</p>
-                                <p className="font-bold">{applicationForm.generalInformation.secondChoice}</p>
-                            </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Availability to start</p>
-                                <p className="font-bold">{applicationForm.generalInformation.startDateAvailability}</p>
-                            </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Permanent Address</p>
-                                <p className="font-bold">
-                                    {
-                                        applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.street + " " +
-                                        applicationForm.generalInformation.personalInformation.presentAddress.city
-                                    }
-                                </p>
-                            </div>
 
-                            <div className="flex gap-48">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Government ID/Number</p>
                                 <div>
-                                    <p className="text-[#6D6D6D]">Age</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.age}</p>
+                                    <p className="text-[#6D6D6D]">SSS</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo}</p>
                                 </div>
-
                                 <div>
-                                    <p className="text-[#6D6D6D]">Sex</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.sex}</p>
+                                    <p className="text-[#6D6D6D]">Philhealth No.</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philheathNo}</p>
                                 </div>
+                      
+                                <div>
+                                    <p className="text-[#6D6D6D]">Driver License</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philheathNo}</p>
+                                </div>
+                      
                             </div>
 
 
-                            <div className="flex gap-48">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                                <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
-                                    <p className="text-[#6D6D6D]">Height</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.height}</p>
+                                    <p className="text-[#6D6D6D]">Pag-ibig No.</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo}</p>
                                 </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">TIN ID.</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo}</p>
+                                </div>
+                      
+                                <div>
+                                    <p className="text-[#6D6D6D]">Passport</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport}</p>
+                                </div>
+                      
+                            </div>
 
-                                <div>
-                                    <p className="text-[#6D6D6D]">Weight</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.weight}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p className="text-[#6D6D6D]">Religion</p>
-                                <p className="font-bold">{applicationForm.generalInformation.personalInformation.religion}</p>
-                            </div>
+
                         </div>
+
 
                     </div>
 
