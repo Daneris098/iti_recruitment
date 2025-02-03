@@ -102,17 +102,6 @@ export default function index() {
 
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} label="Government ID/Numbers" placeholder="SSs No." />
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} placeholder="Pagibig No." />
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} placeholder="Philhealth No." />
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} placeholder="TIN ID" />
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} placeholder="Drivers License" />
-                    <TextInput radius='md' w={isMobile ? '33%' : '100%'} placeholder="Passport" />
-                </div>
-
                 <p className="font-bold">Other Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <TextInput radius='md' w={'100%'} label="Special Technical Skills" placeholder="Enter Keyword to add skills" />

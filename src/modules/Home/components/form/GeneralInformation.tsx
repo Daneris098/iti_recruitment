@@ -188,7 +188,7 @@ export default function index() {
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"Living Arrangement"}
                         radius={8}
-                        data={["1400", "1500", "1600"]}
+                        data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1" }}
@@ -256,7 +256,7 @@ export default function index() {
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"Living Arrangement"}
                         radius={8}
-                        data={["1400", "1500", "1600"]}
+                        data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1" }}
@@ -291,14 +291,35 @@ export default function index() {
 
                     <TextInput {...form.getInputProps("personalInformation.placeOfBirth")} radius='md' w={isMobile ? '25%' : '100%'} label="Place of birth" placeholder="Place of birth" />
                     <TextInput {...form.getInputProps("personalInformation.age")} radius='md' w={isMobile ? '25%' : '100%'} label="Age" placeholder="Age" />
+                    <TextInput {...form.getInputProps("personalInformation.sex")} radius='md' w={isMobile ? '25%' : '100%'} label="Sex" placeholder="Sex" />
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <TextInput {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
+                    <TextInput {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
+                    <TextInput {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
                     <TextInput {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
                 </div>
+
+
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
                     <TextInput {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
                     <TextInput {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <TextInput  {...form.getInputProps("personalInformation.governmentIdOrNumber.sssNo")} radius='md' w={isMobile ? '33%' : '100%'} label="Government ID/Numbers" placeholder="SSs No." />
+                    <TextInput  {...form.getInputProps("personalInformation.governmentIdOrNumber.pagibigNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Pagibig-No." />
+                    <TextInput {...form.getInputProps("personalInformation.governmentIdOrNumber.philheathNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Philhealth No." />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <TextInput {...form.getInputProps("personalInformation.governmentIdOrNumber.tinNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="TIN ID" />
+                    <TextInput {...form.getInputProps("personalInformation.governmentIdOrNumber.driversLiscence")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Drivers License" />
+                    <TextInput {...form.getInputProps("personalInformation.governmentIdOrNumber.passport")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Passport" />
+                </div>
+
 
             </div>
 

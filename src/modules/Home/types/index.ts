@@ -101,6 +101,14 @@ export interface GeneralInformation {
       zipCode: string;
       livingArrangement: string;
     }
+    governmentIdOrNumber: {
+      sssNo: string;
+      pagibigNo: string;
+      philheathNo: string;
+      tinNo: string;
+      driversLiscence: string;
+      passport: string;
+    }
     dateOfBirth: string;
     placeOfBirth: string;
     age: number;
@@ -160,14 +168,7 @@ export interface FamilyBackground {
     numberOfChildren: number;
     ageRange: string;
   }
-  governmentIdOrNumber: {
-    sssNo: string;
-    pagibigNo: string;
-    philheathNo: string;
-    tinNo: string;
-    driversLiscence: string;
-    passport: string;
-  }
+
   otherInformation: {
     specialTechnicalSkills: string;
     isConvictedCrimeDetails: string;

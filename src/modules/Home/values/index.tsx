@@ -27,48 +27,56 @@ export const filterVal: FilterType = {
 }
 
 export const GeneralInformationVal: GeneralInformation = {
-  firstChoice: '',
-  secondChoice: '',
-  desiredSalary: 0,
-  startDateAvailability: '',
+  firstChoice: 'Web Developer',
+  secondChoice: 'Mobile Developer',
+  desiredSalary: 40000,
+  startDateAvailability: '2025-03-02',
   personalInformation: {
     fullname: {
-      firstName: '',
+      firstName: 'Jane',
       middleName: '',
-      lastName: '',
+      lastName: 'Cooper',
       suffix: ''
     },
     presentAddress: {
-      unitNo: '',
-      houseNo: '',
-      street: '',
-      subdivision: '',
-      barangay: '',
-      city: '',
-      zipCode: '',
-      livingArrangement: ''
+      unitNo: '0001',
+      houseNo: '0987',
+      street: 'Urban',
+      subdivision: 'Deca Homes',
+      barangay: '3',
+      city: 'Caloocan City',
+      zipCode: '1400',
+      livingArrangement: 'OWNED'
     },
     permanentAddress: {
-      unitNo: '',
-      houseNo: '',
-      street: '',
-      subdivision: '',
-      barangay: '',
-      city: '',
-      zipCode: '',
-      livingArrangement: ''
+      unitNo: '0001',
+      houseNo: '0987',
+      street: 'Urban',
+      subdivision: 'Deca Homes',
+      barangay: '3',
+      city: 'Caloocan City',
+      zipCode: '1400',
+      livingArrangement: 'OWNED'
     },
-    dateOfBirth: '',
-    placeOfBirth: '',
+    governmentIdOrNumber: {
+      sssNo: '1123457789',
+      pagibigNo: '1123457789',
+      philheathNo: '1123457789',
+      tinNo: '1123457789',
+      driversLiscence: '1123457789',
+      passport: '1123457789',
+    },
+    dateOfBirth: '2000-03-01',
+    placeOfBirth: 'Quezon City, PH',
     age: 0,
-    sex: '',
-    height: '',
-    weight: '',
-    civilStatus: '',
-    religion: '',
-    mobileNumber: '',
-    workingEmailAddress: '',
-    landlineNumber: ''
+    sex: 'Female',
+    height: "5'6",
+    weight: '60kg',
+    civilStatus: 'Single',
+    religion: 'Roman Catholic',
+    mobileNumber: '+63 93 8722 8380',
+    workingEmailAddress: 'jane@microsoft.com',
+    landlineNumber: '+44 20 7123 4567'
   }
 };
 
@@ -98,16 +106,16 @@ export const employmentRecordVal: [EmploymentRecord] = [{
 
 export const familyBackgroundVal: FamilyBackground = {
   father: {
-    fullname: '',
-    age: 0,
-    occupation: '',
-    contactNumber: '',
+    fullname: 'Melandro Jr.Taguinoid',
+    age: 70,
+    occupation: 'Graphic Designer',
+    contactNumber: '+255 555-0118',
   },
   mother: {
-    fullname: '',
-    age: 0,
-    occupation: '',
-    contactNumber: '',
+    fullname: 'Darlene Taguinoid',
+    age: 60,
+    occupation: 'Neurologist',
+    contactNumber: '60',
   },
   siblings: [
     {
@@ -127,14 +135,6 @@ export const familyBackgroundVal: FamilyBackground = {
     numberOfChildren: 0,
     ageRange: '',
   },
-  governmentIdOrNumber: {
-    sssNo: '',
-    pagibigNo: '',
-    philheathNo: '',
-    tinNo: '',
-    driversLiscence: '',
-    passport: '',
-  },
   otherInformation: {
     specialTechnicalSkills: '',
     isConvictedCrimeDetails: '',
@@ -147,18 +147,18 @@ export const familyBackgroundVal: FamilyBackground = {
 export const referenceValue: Reference = {
   characterReference: [
     {
-      fullname: '',
-      company: '',
-      positionHeld: '',
-      ContactNo: '',
+      fullname: 'Mary Ann Santiago',
+      company: 'Intellismart',
+      positionHeld: 'Project Manager',
+      ContactNo: '+63 94 7744 3626',
     },
   ],
   employmentReference: [
     {
-      fullname: '',
-      company: '',
-      positionHeld: '',
-      ContactNo: '',
+      fullname: 'Shane Santiago',
+      company: 'Intellismart',
+      positionHeld: 'Project Manager',
+      ContactNo: '+63 94 7744 3626',
     },
   ],
   applicationSource: [
