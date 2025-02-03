@@ -5,7 +5,6 @@ import { FamilyBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 import { useEffect, useRef } from "react";
 import { useForm } from "@mantine/form";
-import { familyBackgroundVal } from "../../values";
 
 export default function index() {
     const { isMobile } = GlobalStore()

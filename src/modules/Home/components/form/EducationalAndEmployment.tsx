@@ -3,7 +3,6 @@ import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { educationBackgroundVal } from "../../values";
 import { EducationBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 

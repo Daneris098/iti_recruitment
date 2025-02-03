@@ -53,10 +53,10 @@ export default function Index() {
         }
     };
 
-    const retakePhoto = () => {
-        setCapturedImage(null);
-        startCamera();
-    };
+    // const retakePhoto = () => {
+    //     setCapturedImage(null);
+    //     startCamera();
+    // };
     
     useEffect(() => {
         if (submit === true && activeStepper === Step.Photo ) {

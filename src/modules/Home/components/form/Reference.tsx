@@ -1,9 +1,8 @@
 import { Divider, Checkbox, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef, useState } from "react";
-import { useForm, FORM_INDEX } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
-import { referenceValue } from "../../values";
 import { Reference, Step } from "../../types";
 
 export default function index() {

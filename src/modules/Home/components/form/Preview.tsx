@@ -1,15 +1,12 @@
-import { Divider, Checkbox, TextInput } from "@mantine/core";
-import { GlobalStore } from "@src/utils/GlobalStore";
-import { useEffect, useRef, useState } from "react";
-import { useForm, FORM_INDEX } from "@mantine/form";
+import { useEffect, useRef } from "react";
+import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
-import { ApplicationFormVal, referenceValue } from "../../values";
-import { ApplicationForm, Reference, Step } from "../../types";
+import { ApplicationFormVal } from "../../values";
+import { ApplicationForm, Step } from "../../types";
 
 export default function index() {
-    const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
-    const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
+    const { submit, activeStepper, setSubmit, applicationForm } = ApplicationStore()
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -20,7 +17,7 @@ export default function index() {
     });
 
     const onSubmit = async (form: ApplicationForm) => {
-        console.log(applicationForm.photo)
+        console.log(form)
     };
 
     useEffect(() => {

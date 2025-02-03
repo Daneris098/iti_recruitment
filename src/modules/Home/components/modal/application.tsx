@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Select, Popover, Text } from '@mantine/core';
+import { Modal, Divider, Button, Popover } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/Home/store";
 import Stepper from "@modules/Home/components/stepper";
 import GeneralInformation from "@modules/Home/components/form/GeneralInformation";
@@ -16,7 +16,7 @@ import { IconCaretDownFilled } from '@tabler/icons-react';
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
-    const { activeStepper, setActiveStepper, applicationForm, setSubmit, isPhotoCaptured, setIsPhotoCapture } = ApplicationStore();
+    const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture } = ApplicationStore();
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {

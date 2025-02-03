@@ -4,7 +4,6 @@ import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore } from "@modules/Home/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { GeneralInformationVal } from "../../values";
 import { Step, GeneralInformation } from '@modules/Home/types';
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
