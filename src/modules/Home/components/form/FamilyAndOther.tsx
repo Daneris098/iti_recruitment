@@ -14,7 +14,7 @@ export default function index() {
     
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: familyBackgroundVal,
+        initialValues: applicationForm.familyBackground,
         validate: {
             // nameOfSchool: (value: string) => value.length === 0 ? "Name Of School is required" : null,
             father: {
@@ -69,7 +69,7 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Spuse (If Married)" placeholder="Full Name" />
+                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />

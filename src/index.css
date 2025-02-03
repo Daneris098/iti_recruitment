@@ -193,3 +193,11 @@ html {
   color: blue;
   background: greenyellow;
 } */
+
+.mantine-Button-inner{
+  /* @apply bg-red-400 p-0 m-0 w-full h-full */
+  
+  /* margin: 0% ;
+   background-color: red; */
+   /* width: 100% !important; */
+}

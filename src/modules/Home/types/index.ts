@@ -34,7 +34,11 @@ export interface ApplicationState {
   activeStepper: number;
   submit: boolean;
   applicationForm: ApplicationForm
-  
+  isPhotoCaptured: boolean;
+  isPhotoCapture: boolean;
+
+  setIsPhotoCapture: (submit: boolean) => void;
+  setIsPhotoCaptured: (submit: boolean) => void;
   setSubmit: (submit: boolean) => void;
   setApplicationForm: (applicationForm: ApplicationForm) => void;
   setActiveStepper: (activeStepper: number) => void;
@@ -198,9 +202,9 @@ export interface ApplicationSource {
 
 
 export interface Reference {
-  characterReference: [CharacterReference]
-  employmentReference: [EmploymentReference]
-  applicationSource: [ApplicationSource]
+  characterReference: CharacterReference[]
+  employmentReference: EmploymentReference[]
+  applicationSource: ApplicationSource[]
 }
 
 export interface ApplicationForm {
@@ -217,5 +221,6 @@ export enum Step {
   EducationalAndEmployment,
   FamilyAndOther,
   Reference,
-  Photo
+  Photo,
+  Preview
 }

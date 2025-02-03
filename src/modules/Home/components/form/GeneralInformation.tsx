@@ -17,7 +17,7 @@ export default function index() {
 
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: GeneralInformationVal,
+        initialValues: applicationForm.generalInformation,
         validate: {
             // firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
             // desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,

@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { ApplicationStore } from "../../store";
+import { Step } from "../../types";
 
 export default function Index() {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
     const [stream, setStream] = useState<MediaStream | null>(null);
+    const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm, setIsPhotoCaptured, isPhotoCapture, setIsPhotoCapture } = ApplicationStore()
 
     useEffect(() => {
         startCamera();
@@ -43,8 +46,10 @@ export default function Index() {
             canvas.height = videoRef.current.videoHeight;
             context.drawImage(videoRef.current, 0, 0);
             const imageData = canvas.toDataURL("image/png");
+            console.log('imageData: ', imageData)
             setCapturedImage(imageData);
             stopCamera(); // Stop the camera after capturing
+            setIsPhotoCaptured(true)
         }
     };
 
@@ -52,6 +57,27 @@ export default function Index() {
         setCapturedImage(null);
         startCamera();
     };
+    
+    useEffect(() => {
+        if (submit === true && activeStepper === Step.Photo ) {
+            setApplicationForm({ ...applicationForm, photo: capturedImage })
+            setActiveStepper(activeStepper + 1)
+        }
+        return (setSubmit(false))
+    }, [submit])
+    
+    
+    useEffect(() => {
+        if (isPhotoCapture === true && activeStepper === Step.Photo ) {
+            capturePhoto(); 
+        }
+        return (setIsPhotoCapture(false))
+    }, [isPhotoCapture])
+    
+    useEffect(() => {
+        setIsPhotoCaptured(false)
+    },[])
+
 
     return (
         <div className="text-[#6D6D6D] flex flex-col gap-4 items-center">
@@ -61,7 +87,7 @@ export default function Index() {
                 <span className="text-[#559CDA] cursor-pointer">TAKE PHOTO BUTTON</span> to start. Make sure to be in a place with proper lighting.
             </p>
 
-            <div className="h-96 w-full bg-[#4F4F4F] flex flex-col justify-center items-center overflow-hidden">
+            <div className="h-[30rem] w-full bg-[#4F4F4F] flex flex-col justify-center items-center overflow-hidden">
                 {capturedImage ? (
                     // Show circular captured image preview
                     <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-gray-300">
@@ -80,7 +106,7 @@ export default function Index() {
             <canvas ref={canvasRef} className="hidden"></canvas>
 
             {/* Capture & Retake Buttons */}
-            {capturedImage ? (
+            {/* {capturedImage ? (
                 <button
                     onClick={retakePhoto}
                     className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition"
@@ -94,7 +120,7 @@ export default function Index() {
                 >
                     Take Photo
                 </button>
-            )}
+            )} */}
         </div>
     );
 }

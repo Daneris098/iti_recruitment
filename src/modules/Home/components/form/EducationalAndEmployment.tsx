@@ -15,7 +15,7 @@ export default function index() {
 
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: educationBackgroundVal,
+        initialValues: applicationForm.educationBackground,
         validate: {
             // nameOfSchool: (value: string) => value.length === 0 ? "Name Of School is required" : null,
             // educationalLevel: (value: string) => value.length === 0 ? "Educational Level is required" : null,
