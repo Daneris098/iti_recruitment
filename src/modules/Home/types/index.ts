@@ -158,7 +158,7 @@ export interface FamilyBackground {
     contactNumber: string;
   }
 
-  siblings: [Siblings]
+  siblings: Siblings[]
 
   spouse?: {
     fullname: string;

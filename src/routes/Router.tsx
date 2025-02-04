@@ -15,6 +15,7 @@ import LandingPage from "@src/modules/LandingPage";
 import Expenses from "@src/modules/Expenses";
 import Settings from "@src/modules/Settings";
 import Home from "@src/modules/Home";
+import Test from "@src/modules/Home/components/ValidateArray";
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
           {
             path: "home",
             element: <Home />,
+          },
+          {
+            path: "test",
+            element: <Test />,
           },
         ],
       },

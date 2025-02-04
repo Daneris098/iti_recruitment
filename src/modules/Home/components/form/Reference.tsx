@@ -9,12 +9,7 @@ export default function index() {
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const [characterReferences, setCharacterReferences] = useState([
-        { fullname: "", company: "", positionHeld: "", contactNo: "" },
-    ]);
-    const [employmentReferences, setEmploymentReferences] = useState([
-        { fullname: "", company: "", positionHeld: "", contactNo: "" },
-    ]);
+
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -37,6 +32,7 @@ export default function index() {
 
 
     const onSubmit = async (form: Reference) => {
+        console.log(form)
         setApplicationForm({ ...applicationForm, reference: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -50,12 +46,17 @@ export default function index() {
 
 
     const addFieldCharacter = () => {
-        setCharacterReferences([...characterReferences, { fullname: "", company: "", positionHeld: "", contactNo: "" }]);
+        setApplicationForm({ ...applicationForm, reference: { ...applicationForm.reference, characterReference: [...applicationForm.reference.characterReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
     };
 
     const addFieldEmployment = () => {
-        setEmploymentReferences([...employmentReferences, { fullname: "", company: "", positionHeld: "", contactNo: "" }]);
+        setApplicationForm({ ...applicationForm, reference: { ...applicationForm.reference, employmentReference: [...applicationForm.reference.employmentReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
     };
+
+    useEffect(() => {
+        form.setValues({ characterReference: applicationForm.reference.characterReference });
+        form.setValues({ employmentReference: applicationForm.reference.employmentReference });
+    }, [applicationForm])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -65,8 +66,8 @@ export default function index() {
                     <p className="font-bold">Character Reference (NOT FAMILY MEMBERS)</p>
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col gap-4">
-                    {characterReferences.map((_, index) => (
+                <div className="flex flex-col gap-4" key={applicationForm.reference.characterReference.length}>
+                    {applicationForm.reference.characterReference.map((_, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
                                 {...form.getInputProps(`characterReference.${index}.fullname`)}
@@ -103,7 +104,7 @@ export default function index() {
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col gap-4">
-                    {employmentReferences.map((_, index) => (
+                    {applicationForm.reference.employmentReference.map((_, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
                                 {...form.getInputProps(`employmentReference.${index}.fullname`)}

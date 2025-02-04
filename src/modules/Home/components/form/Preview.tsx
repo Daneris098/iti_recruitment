@@ -10,7 +10,7 @@ export default function index() {
 
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: ApplicationFormVal,
+        initialValues: applicationForm,
         validate: {
 
         },
@@ -27,7 +27,9 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
-
+    useEffect(() => {
+        console.log(applicationForm)
+    },[])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -269,7 +271,7 @@ export default function index() {
                             </div>
                         </div>
 
-                        <div className="flex h-full w-full">
+                        <div className="flex h-full w-full bg-green-300">
                             <div className="flex flex-col p-2 gap-5 w-1/2">
                                 <p className="text-[#0078EB] text-xl font-bold">Family Background</p>
                                 <div>
@@ -312,6 +314,29 @@ export default function index() {
                                     <p className="font-bold">{applicationForm.familyBackground.mother.contactNumber}</p>
                                 </div>
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 bg-green-300 p-4">
+                            {applicationForm.familyBackground.siblings.map((sibling, index) => (
+                                <div key={index} className="flex flex-col p-2 gap-5">
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Sibling's Name</p>
+                                        <p className="font-bold">{sibling.fullname}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Age</p>
+                                        <p className="font-bold">{sibling.age}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Occupation</p>
+                                        <p className="font-bold">{sibling.occupation}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Contact Number</p>
+                                        <p className="font-bold">{sibling.contactNumber}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
 
                         <div className="flex h-full w-full">

@@ -1,4 +1,4 @@
-import { Divider, Select, TextInput } from "@mantine/core";
+import { Divider, Flex, Select, Text, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";
@@ -32,6 +32,7 @@ export default function index() {
         }
     });
     const onSubmit = async (form: FamilyBackground) => {
+        console.log(form)
         setApplicationForm({ ...applicationForm, familyBackground: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -42,6 +43,24 @@ export default function index() {
         }
         return (setSubmit(false))
     }, [submit])
+
+    const addFieldCharacter = () => {
+        setApplicationForm({
+            ...applicationForm, familyBackground: {
+                ...applicationForm.familyBackground, siblings: [...applicationForm.familyBackground.siblings, {
+                    fullname: '',
+                    age: 0,
+                    occupation: '',
+                    contactNumber: '',
+                }]
+            }
+        })
+    };
+
+    useEffect(() => {
+        form.setValues({ siblings: applicationForm.familyBackground.siblings });
+    }, [applicationForm])
+
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -55,18 +74,29 @@ export default function index() {
                     <TextInput {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput  {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label="Mother" placeholder="Full Name" />
+                    <TextInput {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label="Mother" placeholder="Full Name" />
                     <TextInput {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <TextInput {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
-                </div>
+                {applicationForm.familyBackground.siblings.map((_, index) => (
+                    <div className="flex flex-col sm:flex-row gap-4 items-end" >
+                        <TextInput {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label={
+                            <Flex justify="center" gap={2} direction='row' align='center'>
+                                <p>Siblings</p>
+                                {index === 0 && (<p className="m-2 text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer"
+                                    onClick={addFieldCharacter}
+                                >Add Field
+                                </p>
+                                )}
+                            </Flex>
+                        } placeholder="Full Name" />
 
+                        <TextInput {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                        <TextInput {...form.getInputProps(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
+                        <TextInput {...form.getInputProps(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    </div>
+                ))}
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
