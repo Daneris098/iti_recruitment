@@ -6,7 +6,7 @@ import { ApplicationForm, Step } from "../../types";
 
 export default function index() {
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
-    const { submit, activeStepper, setSubmit, applicationForm } = ApplicationStore()
+    const { submit, activeStepper, setSubmit, applicationForm, setActiveStepper } = ApplicationStore()
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -16,8 +16,8 @@ export default function index() {
         },
     });
 
-    const onSubmit = async (form: ApplicationForm) => {
-        console.log(form)
+    const onSubmit = async () => {
+        setActiveStepper(activeStepper < Step.Oath ? activeStepper + 1 : activeStepper)
     };
 
     useEffect(() => {

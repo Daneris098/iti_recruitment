@@ -10,7 +10,7 @@ export default function index() {
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null);
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: applicationForm.familyBackground,
@@ -104,11 +104,11 @@ export default function index() {
 
                 <p className="font-bold">Other Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <TextInput radius='md' w={'100%'} label="Special Technical Skills" placeholder="Enter Keyword to add skills" />
-                <TextInput radius='md' w={'100%'} label="Have you ever been convicted of a crime ? if yes, please give details." placeholder="if you answer yes, please give details." />
-                <TextInput radius='md' w={'100%'} label="Have you ever been hospitalized ? if yes, please give details." placeholder="if you answer yes, please give details." />
-                <TextInput radius='md' w={'100%'} label="Do you have any medical condition that may prevent  you from performing certain types of jobs ? please specify." placeholder="if you answer yes, please give details." />
-                <TextInput radius='md' w={'100%'} label="Do you have any relatives/family/people in a relationship with you, who are working with us?" placeholder="Answer yes or no." />
+                <TextInput {...form.getInputProps("otherInformation.specialTechnicalSkills")} radius='md' w={'100%'} label="Special Technical Skills" placeholder="Enter Keyword to add skills" />
+                <TextInput {...form.getInputProps("otherInformation.isConvictedCrimeDetails")} radius='md' w={'100%'} label="Have you ever been convicted of a crime ? if yes, please give details." placeholder="if you answer yes, please give details." />
+                <TextInput {...form.getInputProps("otherInformation.isBeenHospitalizedDetails")} radius='md' w={'100%'} label="Have you ever been hospitalized ? if yes, please give details." placeholder="if you answer yes, please give details." />
+                <TextInput {...form.getInputProps("otherInformation.medicalConditionDetails")} radius='md' w={'100%'} label="Do you have any medical condition that may prevent  you from performing certain types of jobs ? please specify." placeholder="if you answer yes, please give details." />
+                <TextInput {...form.getInputProps("otherInformation.relativeWorkingWithUsDetails")} radius='md' w={'100%'} label="Do you have any relatives/family/people in a relationship with you, who are working with us?" placeholder="Answer yes or no." />
 
             </div>
         </form>

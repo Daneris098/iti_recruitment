@@ -20,7 +20,9 @@ export interface HomeState {
   clearFilter: boolean;
   isFiltered: boolean;
   applicationFormModal: boolean;
+  alert: string;
 
+  setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
   setFilter: (filter: FilterType) => void;
@@ -223,5 +225,12 @@ export enum Step {
   FamilyAndOther,
   Reference,
   Photo,
-  Preview
+  Preview,
+  Oath
+}
+
+export enum AlertType {
+  applicationSuccesfull = 'applicationSuccessfull',
+  cancelApplication = 'cancelApplication',
+  cancelledApplication = 'cancelledApplication',
 }

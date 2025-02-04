@@ -10,6 +10,7 @@ import { VacancyType } from "@src/modules/Home/types";
 import { ActionIcon } from "@mantine/core";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import bg2 from '@assets/bg2.png';
+import Alert from "@src/modules/Home/components/modal/Alert";
 
 export default function Home() {
   const { selectedData, setFilterDrawer, setApplicationFormModal, filter, isFiltered } = HomeStore();
@@ -28,6 +29,7 @@ export default function Home() {
   return (
     <div className=" h-full overflow-hidden">
       <Modals />
+      <Alert/>
       <div style={{ backgroundImage: `url(${bg2})` }} className=" bg-cover bg-center h-[19%] 2xl:p-4 ">
         <div className="h-full w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center">
           <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-4 items-center ">

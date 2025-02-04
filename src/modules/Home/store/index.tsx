@@ -9,8 +9,9 @@ export const HomeStore = create<HomeState>((set) => ({
   clearFilter: false,
   isFiltered: false,
   applicationFormModal: false,
+  alert: '',
 
-
+  setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),
@@ -26,7 +27,7 @@ export const ApplicationStore = create<ApplicationState>((set) => ({
   submit: false,
   isPhotoCaptured: false,
   isPhotoCapture: false,
-  
+
 
   setIsPhotoCapture: (isPhotoCapture: boolean) => set({ isPhotoCapture: isPhotoCapture }),
   setIsPhotoCaptured: (isPhotoCaptured: boolean) => set({ isPhotoCaptured: isPhotoCaptured }),
