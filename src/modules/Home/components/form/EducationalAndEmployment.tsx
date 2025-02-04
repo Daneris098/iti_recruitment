@@ -1,10 +1,12 @@
-import { Divider, Select, TextInput } from "@mantine/core";
+import { Divider, Popover, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCaretDownFilled } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
 import { EducationBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
+import { DatePicker } from "@mantine/dates";
+import dayjs from "dayjs";
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -14,7 +16,10 @@ export default function index() {
 
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: applicationForm.educationBackground,
+        initialValues: {
+            ...applicationForm.educationBackground,
+            ...applicationForm.employmentRecord
+        },
         validate: {
             // nameOfSchool: (value: string) => value.length === 0 ? "Name Of School is required" : null,
             // educationalLevel: (value: string) => value.length === 0 ? "Educational Level is required" : null,
@@ -25,7 +30,6 @@ export default function index() {
             //     from: (value: string) => value.length === 0 ? "Years Attended From is required" : null,
             //     to: (value: string) => value.length === 0 ? "Years Attended To is required" : null,
             // },
-
         }
     });
 
@@ -40,6 +44,11 @@ export default function index() {
         }
         return (setSubmit(false))
     }, [submit])
+
+    useEffect(() => {
+        const mergedData = { ...applicationForm.educationBackground, ...applicationForm.employmentRecord }
+        console.log('mergedData: ', mergedData)
+    }, [])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -60,7 +69,7 @@ export default function index() {
                             label="Years Attended"
                             placeholder={"From"}
                             radius={8}
-                            data={["2020", "2021", "2022","2023","2024"]}
+                            data={["2020", "2021", "2022", "2023", "2024"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1" }}
@@ -92,42 +101,69 @@ export default function index() {
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Employer/Company" placeholder="Employer/Company" />
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Location" placeholder="Office Location" />
+                    <TextInput   {...form.getInputProps(`0.employerCompany`)} radius='md' w={isMobile ? '50%' : '100%'} label="Employer/Company" placeholder="Employer/Company" />
+                    <TextInput   {...form.getInputProps(`0.location`)} radius='md' w={isMobile ? '50%' : '100%'} label="Location" placeholder="Office Location" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Position Held" placeholder="Position Held" />
+                    <TextInput  {...form.getInputProps(`0.positionHeld`)} radius='md' w={isMobile ? '50%' : '100%'} label="Position Held" placeholder="Position Held" />
                     <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%] " >
+                   
 
-                        <Select
-                            w={isMobile ? '100%' : '100%'}
-                            label="Inclusive Date"
-                            placeholder={ "From"}
-                            radius={8}
-                            data={["2020", "2021", "2022"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                        />
-                        <Select
-                            w={isMobile ? '100%' : '100%'}
-                            placeholder={"To"}
-                            radius={8}
-                            data={["2020", "2021", "2022"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                        />
+                        <Popover
+                            position="bottom"
+                            shadow="md"
+                            trapFocus={true}
+                            returnFocus={true}
+                        >
+                            <Popover.Target>
+                                <TextInput
+                                    {...form.getInputProps("0.inclusiveDate.from")}
+                                    key={form.key('0.inclusiveDate.from')}
+                                    radius='md' w={isMobile ? '25%' : '100%'}
+                                    readOnly
+                                    label='Inclusive Date'
+                                    placeholder='From'
+                                    className="w-full cursor-default"
+                                    rightSection={<IconCalendarMonth />}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                />
+                            </Popover.Target>
+                            <Popover.Dropdown className="w-full">
+                                <DatePicker firstDayOfWeek={0}  {...form.getInputProps("0.inclusiveDate.from")} onChange={(value: Date | null) => { form.setFieldValue("0.inclusiveDate.from", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            </Popover.Dropdown>
+                        </Popover>
+
+                        <Popover
+                            position="bottom"
+                            shadow="md"
+                            trapFocus={true}
+                            returnFocus={true}
+                        >
+                            <Popover.Target>
+                                <TextInput
+                                    key={form.key('0.inclusiveDate.to')}
+                                    {...form.getInputProps("0.inclusiveDate.to")}
+                                    radius='md' w={isMobile ? '25%' : '100%'}
+                                    readOnly
+                                    label=''
+                                    placeholder='To'
+                                    className="w-full cursor-default"
+                                    rightSection={<IconCalendarMonth />}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                />
+                            </Popover.Target>
+                            <Popover.Dropdown className="w-full">
+                                <DatePicker firstDayOfWeek={0}  {...form.getInputProps("0.inclusiveDate.to")} onChange={(value: Date | null) => { form.setFieldValue("0.inclusiveDate.to", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            </Popover.Dropdown>
+                        </Popover>
 
                     </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Salary" placeholder="Salary in PESO" />
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Reason for Leaving" placeholder="Reason for Leaving" />
+                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Salary" placeholder="Salary in PESO"  {...form.getInputProps(`0.salary`)} />
+                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Reason for Leaving" placeholder="Reason for Leaving"  {...form.getInputProps(`0.reasonForLeaving`)} />
                 </div>
 
 

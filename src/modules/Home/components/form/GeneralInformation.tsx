@@ -18,46 +18,46 @@ export default function index() {
         mode: 'uncontrolled',
         initialValues: applicationForm.generalInformation,
         validate: {
-            // firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
-            // desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
-            // startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
+            firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
+            desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
+            startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
-            // personalInformation: {
-            //     fullname: {
-            //         firstName: (value: string) => value.length === 0 ? "First name is required" : null,
-            //         lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
-            //     },
-            //     presentAddress: {
-            //         unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
-            //         houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
-            //         street: (value: string) => value.length === 0 ? "Street is required" : null,
-            //         subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
-            //         barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
-            //         city: (value: string) => value.length === 0 ? "City is required" : null,
-            //         zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
-            //         livingArrangement: (value: string) => value.length === 0 ? "Living arrangement is required" : null,
-            //     },
+            personalInformation: {
+                fullname: {
+                    firstName: (value: string) => value.length === 0 ? "First name is required" : null,
+                    lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
+                },
+                presentAddress: {
+                    unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
+                    houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
+                    street: (value: string) => value.length === 0 ? "Street is required" : null,
+                    subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
+                    barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
+                    city: (value: string) => value.length === 0 ? "City is required" : null,
+                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
+                    livingArrangement: (value: string) => value.length === 0 ? "Living arrangement is required" : null,
+                },
 
-            //     permanentAddress: {
-            //         unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
-            //         houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
-            //         street: (value: string) => value.length === 0 ? "Street is required" : null,
-            //         subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
-            //         barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
-            //         city: (value: string) => value.length === 0 ? "City is required" : null,
-            //         zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
-            //         livingArrangement: (value: string) => value.length === 0 ? "Address type is required" : null,
-            //     },
+                permanentAddress: {
+                    unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
+                    houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
+                    street: (value: string) => value.length === 0 ? "Street is required" : null,
+                    subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
+                    barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
+                    city: (value: string) => value.length === 0 ? "City is required" : null,
+                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
+                    livingArrangement: (value: string) => value.length === 0 ? "Address type is required" : null,
+                },
 
 
-            //     dateOfBirth: (value: string) => value.length === 0 ? "Date of birth is required" : null,
-            //     placeOfBirth: (value: string) => value.length === 0 ? "Places of birth is required" : null,
-            //     religion: (value: string) => value.length === 0 ? "Religion is required" : null,
-            //     age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
-            //     mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
-            //     workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
-            //     landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
-            // }
+                dateOfBirth: (value: string) => value.length === 0 ? "Date of birth is required" : null,
+                placeOfBirth: (value: string) => value.length === 0 ? "Places of birth is required" : null,
+                religion: (value: string) => value.length === 0 ? "Religion is required" : null,
+                age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
+                mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+                workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
+                landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+            }
         }
     });
 
@@ -117,7 +117,7 @@ export default function index() {
                         <Popover.Target>
                             <TextInput
                                 {...form.getInputProps("startDateAvailability")}
-
+                                key={form.key('startDateAvailability')}
                                 radius='md' w={isMobile ? '25%' : '100%'}
                                 readOnly
                                 label='Availability to Start'
@@ -274,7 +274,7 @@ export default function index() {
                         <Popover.Target>
                             <TextInput
                                 {...form.getInputProps("personalInformation.dateOfBirth")}
-
+                                key={form.key('personalInformation.dateOfBirth')}
                                 radius='md' w={isMobile ? '25%' : '100%'}
                                 readOnly
                                 label='Date of Birth'

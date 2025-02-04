@@ -213,7 +213,7 @@ export interface Reference {
 export interface ApplicationForm {
   generalInformation: GeneralInformation;
   educationBackground: EducationBackground;
-  employmentRecord: [EmploymentRecord];
+  employmentRecord: EmploymentRecord[];
   familyBackground: FamilyBackground;
   reference: Reference;
   photo: string | null;

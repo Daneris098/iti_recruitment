@@ -20,7 +20,7 @@ export default function AlertModals() {
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setAlert("");
-            }, 1500);
+            }, 1600);
             return () => clearTimeout(timer);
         }
     }, [alert, setAlert]);

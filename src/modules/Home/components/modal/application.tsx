@@ -69,7 +69,6 @@ export default function index() {
                     <div className={cn('flex gap-2 self-end w-[100%] sm:w-[25%] ', (activeStepper === Step.GeneralInformation) && 'sm:w-[10%]', (activeStepper === Step.Oath) && 'sm:w-[100%] justify-between')}>
                         {activeStepper > Step.GeneralInformation && (
                             <Button variant='outline' className={cn("self-end w-[50%] rounded-md ", (activeStepper === Step.Oath) && 'sm:w-[15%]')} onClick={() => {
-                                console.log(activeStepper)
                                 setActiveStepper(activeStepper - 1)
                             }}>
                                 {activeStepper === Step.Preview ? 'Edit' : 'Back'}
@@ -91,6 +90,7 @@ export default function index() {
                                     } else {
                                         setSubmit(true)
                                     }
+                                    setOpened(false)
                                 }}>
                                     <p className={cn('text-xs sm:text-sm', isPhotoCaptured && 'mr-6')}>
                                         {activeStepper === Step.Photo && !isPhotoCaptured ? 'TAKE PHOTO' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'Submit' : 'Next'}
@@ -98,13 +98,16 @@ export default function index() {
 
                                     {activeStepper == Step.Photo && (<Button variant='transparent'>
                                         {activeStepper === Step.Photo && (
-                                            < IconCaretDownFilled className="text-white" onClick={togglePopover} />
+                                            < IconCaretDownFilled className="text-white" onClick={(e) => {
+                                                e.stopPropagation()
+                                                togglePopover()
+                                            }} />
                                         )}
                                     </Button>)}
                                 </div>
                             </Popover.Target>
                             <Popover.Dropdown className="p-0 rounded-lg">
-                                <Button variant="transparent">SKIP THIS STEP</Button>
+                                <Button variant="transparent" onClick={() => { setSubmit(true); setOpened(false) }}>SKIP THIS STEP</Button>
                             </Popover.Dropdown>
                         </Popover>
                     </div>

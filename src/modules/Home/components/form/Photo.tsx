@@ -91,7 +91,7 @@ export default function Index() {
                 {capturedImage ? (
                     // Show circular captured image preview
                     <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-gray-300">
-                        <img src={capturedImage} alt="Captured" className="w-full h-full object-cover" />
+                        <img src={capturedImage} alt="Profile Picture" className="w-full h-full object-cover" />
                     </div>
                 ) : (
                     // Show video stream

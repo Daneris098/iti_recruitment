@@ -68,7 +68,7 @@ export const GeneralInformationVal: GeneralInformation = {
     },
     dateOfBirth: '2000-03-01',
     placeOfBirth: 'Quezon City, PH',
-    age: 0,
+    age: 20,
     sex: 'Female',
     height: "5'6",
     weight: '60kg',
@@ -92,7 +92,7 @@ export const educationBackgroundVal: EducationBackground = {
   certfications: '',
 };
 
-export const employmentRecordVal: [EmploymentRecord] = [{
+export const employmentRecordVal: EmploymentRecord[] = [{
   employerCompany: 'Microsoft',
   location: 'Quezon City',
   positionHeld: 'Senior Consultant',

@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { ApplicationFormVal } from "../../values";
-import { ApplicationForm, Step } from "../../types";
+import { Step } from "../../types";
 
 export default function index() {
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -35,7 +35,7 @@ export default function index() {
                 <div className="flex flex-col sm:flex-row">
 
                     <div className="flex flex-col h-full  sm:w-[20%] p-2 gap-6 ">
-                        <img src={applicationForm.photo ?? ""} alt="Captured" className="w-[90%] h-auto object-cover rounded-lg" />
+                        <img src={applicationForm.photo ?? ""} alt="Profile Picture" className="w-[90%] h-auto object-cover rounded-lg" />
                         <p className="text-[#0078EB] text-2xl">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
                         <p>{applicationForm.generalInformation.firstChoice}</p>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
@@ -291,7 +291,7 @@ export default function index() {
                                     <p className="font-bold">{applicationForm.familyBackground.father.contactNumber}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 ">
                                 <p className="text-[#0078EB] text-xl font-bold mt-2">Mother's Name</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Father's Name</p>
@@ -326,7 +326,7 @@ export default function index() {
                                     <p className="font-bold">{applicationForm.familyBackground.otherInformation.medicalConditionDetails}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
                                 <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Hospitalized</p>
@@ -360,7 +360,7 @@ export default function index() {
                                     <p className="font-bold">{applicationForm.reference.characterReference[0].ContactNo}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
                                 <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Full Name</p>
@@ -401,7 +401,7 @@ export default function index() {
                                     <p className="font-bold">{applicationForm.reference.employmentReference[0].ContactNo}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
                                 <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Full Name</p>
