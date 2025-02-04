@@ -81,27 +81,27 @@ export const GeneralInformationVal: GeneralInformation = {
 };
 
 export const educationBackgroundVal: EducationBackground = {
-  nameOfSchool: '',
-  educationalLevel: '',
-  course: '',
+  nameOfSchool: 'UP',
+  educationalLevel: 'Bachelor Degree',
+  course: 'Computer Science',
   yearsAttended: {
-    from: '',
-    to: '',
+    from: '2020',
+    to: '2024',
   },
-  professionalLiscenses: '',
+  professionalLiscenses: 'AWS Practitioner',
   certfications: '',
 };
 
 export const employmentRecordVal: [EmploymentRecord] = [{
-  employerCompany: '',
-  location: '',
-  positionHeld: '',
+  employerCompany: 'Microsoft',
+  location: 'Quezon City',
+  positionHeld: 'Senior Consultant',
   inclusiveDate: {
-    from: '',
-    to: '',
+    from: '2016-01-02',
+    to: '2020-01-02'
   },
-  salary: '',
-  reasonForLeaving: '',
+  salary: '50000',
+  reasonForLeaving: 'Better Opportunity',
 }];
 
 export const familyBackgroundVal: FamilyBackground = {
@@ -136,11 +136,11 @@ export const familyBackgroundVal: FamilyBackground = {
     ageRange: '',
   },
   otherInformation: {
-    specialTechnicalSkills: '',
-    isConvictedCrimeDetails: '',
-    isBeenHospitalizedDetails: '',
-    medicalConditionDetails: '',
-    relativeWorkingWithUsDetails: '',
+    specialTechnicalSkills: 'No',
+    isConvictedCrimeDetails: 'No',
+    isBeenHospitalizedDetails: 'No',
+    medicalConditionDetails: 'No',
+    relativeWorkingWithUsDetails: 'No',
   },
 };
 

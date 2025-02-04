@@ -66,7 +66,7 @@ export default function index() {
                                 console.log(activeStepper)
                                 setActiveStepper(activeStepper - 1)
                             }}>
-                                Back
+                                {activeStepper === Step.Preview ? 'Edit' : 'Back'}
                             </Button>
                         )}
 
@@ -87,7 +87,7 @@ export default function index() {
                                     }
                                 }}>
                                     <p className={cn('text-xs sm:text-sm', isPhotoCaptured && 'mr-6')}>
-                                        {activeStepper === Step.Photo && !isPhotoCaptured ? 'TAKE PHOTO' : 'Next'}
+                                        {activeStepper === Step.Photo && !isPhotoCaptured ? 'TAKE PHOTO' : activeStepper === Step.Preview ? 'Submit' : 'Next'}
                                     </p>
 
                                     {activeStepper == Step.Photo && (<Button variant='transparent'>

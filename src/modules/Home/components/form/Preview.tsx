@@ -33,6 +33,7 @@ export default function index() {
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-3  p-2 text-sm sm:text-md">
                 <div className="flex flex-col sm:flex-row">
+
                     <div className="flex flex-col h-full  sm:w-[20%] p-2 gap-6 ">
                         <img src={applicationForm.photo ?? ""} alt="Captured" className="w-[90%] h-auto object-cover rounded-lg" />
                         <p className="text-[#0078EB] text-2xl">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
@@ -51,7 +52,7 @@ export default function index() {
                         </div>
                     </div>
 
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full gap-6">
 
 
                         <div className="flex h-full w-full">
@@ -116,7 +117,7 @@ export default function index() {
                                     </p>
                                 </div>
 
-                                <div className="flex gap-48">
+                                <div className="flex sm:gap-48">
                                     <div className=" w-12">
                                         <p className="text-[#6D6D6D]">Age</p>
                                         <p className="font-bold">{applicationForm.generalInformation.personalInformation.age}</p>
@@ -129,7 +130,7 @@ export default function index() {
                                 </div>
 
 
-                                <div className="flex gap-48">
+                                <div className="flex sm:gap-48">
                                     <div className="w-12">
                                         <p className="text-[#6D6D6D]">Height</p>
                                         <p className="font-bold">{applicationForm.generalInformation.personalInformation.height}</p>
@@ -161,12 +162,12 @@ export default function index() {
                                     <p className="text-[#6D6D6D]">Philhealth No.</p>
                                     <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philheathNo}</p>
                                 </div>
-                      
+
                                 <div>
                                     <p className="text-[#6D6D6D]">Driver License</p>
                                     <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philheathNo}</p>
                                 </div>
-                      
+
                             </div>
 
 
@@ -180,15 +181,245 @@ export default function index() {
                                     <p className="text-[#6D6D6D]">TIN ID.</p>
                                     <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo}</p>
                                 </div>
-                      
+
                                 <div>
                                     <p className="text-[#6D6D6D]">Passport</p>
                                     <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport}</p>
                                 </div>
-                      
+
                             </div>
 
 
+                        </div>
+
+                        <div className="flex h-full w-full">
+
+
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Education</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">School Name</p>
+                                    <p className="font-bold">{applicationForm.educationBackground.nameOfSchool}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Educational Level</p>
+                                    <p className="font-bold">{applicationForm.educationBackground.educationalLevel}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Course</p>
+                                    <p className="font-bold">{applicationForm.educationBackground.course}</p>
+                                </div>
+
+                                <div className="flex sm:gap-48">
+                                    <div className="w-28">
+                                        <p className="text-[#6D6D6D]">Start Date</p>
+                                        <p className="font-bold">{applicationForm.educationBackground.yearsAttended.from}</p>
+                                    </div>
+
+                                    <div className="w-28">
+                                        <p className="text-[#6D6D6D]">End Date</p>
+                                        <p className="font-bold">{applicationForm.educationBackground.yearsAttended.to}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Professional Liscences</p>
+                                    <p className="font-bold">{applicationForm.educationBackground.professionalLiscenses}</p>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div className="flex h-full w-full">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Employment Record</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Employer Name</p>
+                                    <p className="font-bold">{applicationForm.employmentRecord[0].employerCompany}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Location</p>
+                                    <p className="font-bold">{applicationForm.employmentRecord[0].location}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Position Held</p>
+                                    <p className="font-bold">{applicationForm.employmentRecord[0].positionHeld}</p>
+                                </div>
+
+                                <div className="flex sm:gap-48">
+                                    <div className="w-28">
+                                        <p className="text-[#6D6D6D]">Start Date</p>
+                                        <p className="font-bold">{applicationForm.employmentRecord[0].inclusiveDate.from}</p>
+                                    </div>
+
+                                    <div className="w-28">
+                                        <p className="text-[#6D6D6D]">End Date</p>
+                                        <p className="font-bold">{applicationForm.employmentRecord[0].inclusiveDate.to}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Salary</p>
+                                    <p className="font-bold">PHP {applicationForm.employmentRecord[0].salary}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex h-full w-full">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Family Background</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Father's Name</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.father.fullname}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Age</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.father.age}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Occupation</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.father.occupation}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.father.contactNumber}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold mt-2">Mother's Name</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Father's Name</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.mother.fullname}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Age</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.mother.age}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Occupation</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.mother.occupation}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.mother.contactNumber}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex h-full w-full">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Other Information</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Convicted Crime</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Medical Condition</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.medicalConditionDetails}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                                <p className="text-[#0078EB] text-xl font-bold"></p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Hospitalized</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.isBeenHospitalizedDetails}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Family Employed within the Company</p>
+                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.relativeWorkingWithUsDetails}</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div className="flex h-full w-full">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Character Reference</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Full Name</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].fullname}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Company</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].company}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Position Held</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].positionHeld}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].ContactNo}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                                <p className="text-[#0078EB] text-xl font-bold"></p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Full Name</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].fullname}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Company</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].company}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Position Held</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].positionHeld}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="font-bold">{applicationForm.reference.characterReference[0].ContactNo}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex h-full w-full">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <p className="text-[#0078EB] text-xl font-bold">Employment Reference</p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Full Name</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].fullname}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Company</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].company}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Position Held</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].positionHeld}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].ContactNo}</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
+                                <p className="text-[#0078EB] text-xl font-bold"></p>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Full Name</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].fullname}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Company</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].company}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Position Held</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].positionHeld}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].ContactNo}</p>
+                                </div>
+                            </div>
                         </div>
 
 

@@ -60,7 +60,7 @@ export default function index() {
                             label="Years Attended"
                             placeholder={"From"}
                             radius={8}
-                            data={["2020", "2021", "2022"]}
+                            data={["2020", "2021", "2022","2023","2024"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1" }}
@@ -71,7 +71,7 @@ export default function index() {
                             w={isMobile ? '100%' : '100%'}
                             placeholder={"To"}
                             radius={8}
-                            data={["2020", "2021", "2022"]}
+                            data={["2020", "2021", "2022", "2023", "2024"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1" }}
@@ -80,6 +80,12 @@ export default function index() {
 
                     </div>
                 </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <TextInput   {...form.getInputProps("professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
+                    <TextInput   {...form.getInputProps("certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
+                </div>
+
                 <div>
                     <p className="absolute ml-[11rem] text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer">Add Experience</p>
                     <p className="font-bold">Employment Record</p>
