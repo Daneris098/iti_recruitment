@@ -1,0 +1,297 @@
+[
+  {
+    "id": 1,
+    "position": "Software Engineer",
+    "workplace": "Remote",
+    "department": "Engineering",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Develop and maintain web applications.",
+    "requirements": [
+      "Bachelor's degree in Computer Science",
+      "3+ years of experience in software development"
+    ],
+    "skills": ["JavaScript", "React", "Node.js"],
+    "benefits": ["Health insurance", "401(k) plan", "Paid time off"],
+    "desirable": ["Experience with TypeScript", "Familiarity with Docker"],
+    "dateCreated": "2023-01-15",
+    "datePublish": "2023-01-20",
+    "interviewer": "John Doe",
+    "quantity": 2,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-01-20",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "JavaScript, React",
+    "qualification": "Bachelor's degree in a related field"
+  },
+  {
+    "id": 2,
+    "position": "Product Manager",
+    "workplace": "On-site",
+    "department": "Product",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Lead product development and strategy.",
+    "requirements": [
+      "5+ years of experience in product management",
+      "Strong analytical skills"
+    ],
+    "skills": [
+      "Agile methodologies",
+      "Market research",
+      "Stakeholder management"
+    ],
+    "benefits": [
+      "Stock options",
+      "Flexible working hours",
+      "Professional development"
+    ],
+    "desirable": ["Experience in SaaS products", "Familiarity with UX design"],
+    "dateCreated": "2023-02-01",
+    "datePublish": "2023-02-05",
+    "interviewer": "Jane Smith",
+    "quantity": 1,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-02-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Agile methodologies, Market research",
+    "qualification": "Master's degree in Business Administration"
+  },
+  {
+    "id": 3,
+    "position": "Data Analyst",
+    "workplace": "Hybrid",
+    "department": "Data Science",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Analyze data to provide insights for business decisions.",
+    "requirements": [
+      "Bachelor's degree in Data Science or related field",
+      "Proficiency in Excel"
+    ],
+    "skills": ["SQL", "Python", "Data visualization"],
+    "benefits": ["Health insurance", "Gym membership", "Remote work options"],
+    "desirable": ["Experience with Tableau", "Knowledge of machine learning"],
+    "dateCreated": "2023-03-10",
+    "datePublish": "2023-03-15",
+    "interviewer": "Alice Johnson",
+    "quantity": 3,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-03-15",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "SQL, Python",
+    "qualification": "Bachelor's degree in a related field"
+  },
+  {
+    "id": 4,
+    "position": "Marketing Specialist",
+    "workplace": "Remote",
+    "department": "Marketing",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Part-time",
+    "jobDescription": "Develop and execute marketing campaigns.",
+    "requirements": [
+      "2+ years of experience in marketing",
+      "Strong communication skills"
+    ],
+    "skills": ["SEO", "Content creation", "Social media management"],
+    "benefits": ["Flexible hours", "Work from home", "Training opportunities"],
+    "desirable": [
+      "Experience with Google Analytics",
+      "Familiarity with email marketing"
+    ],
+    "dateCreated": "2023-04-01",
+    "datePublish": "2023-04-05",
+    "interviewer": "Bob Brown",
+    "quantity": 2,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-04-05",
+      "from": "3 months"
+    },
+    "mustHaveSkills": "SEO, Content creation",
+    "qualification": "Bachelor's degree in Marketing or related field"
+  },
+  {
+    "id": 5,
+    "position": "UX/UI Designer",
+    "workplace": "On-site",
+    "department": "Design",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Design user-friendly interfaces and experiences.",
+    "requirements": [
+      "3+ years of experience in UX/UI design",
+      "Strong portfolio"
+    ],
+    "skills": ["Figma", "Adobe XD", "User  research"],
+    "benefits": ["Health insurance", "Paid vacation", "Creative environment"],
+    "desirable": ["Experience with responsive design", "Knowledge of HTML/CSS"],
+    "dateCreated": "2023-05-10",
+    "datePublish": "2023-05-15",
+    "interviewer": "Charlie Green",
+    "quantity": 1,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-05-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Figma, Adobe XD",
+    "qualification": "Bachelor's degree in Design or related field"
+  },
+  {
+    "id": 6,
+    "position": "DevOps Engineer",
+    "workplace": "Remote",
+    "department": "Engineering",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Manage and optimize cloud infrastructure.",
+    "requirements": [
+      "3+ years of experience in DevOps",
+      "Familiarity with CI/CD tools"
+    ],
+    "skills": ["AWS", "Docker", "Kubernetes"],
+    "benefits": ["Remote work", "Health benefits", "Annual bonus"],
+    "desirable": [
+      "Experience with Terraform",
+      "Knowledge of scripting languages"
+    ],
+    "dateCreated": "2023-06-01",
+    "datePublish": "2023-06-05",
+    "interviewer": "David White",
+    "quantity": 2,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-06-05",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "AWS, Docker",
+    "qualification": "Bachelor's degree in Computer Science or related field"
+  },
+  {
+    "id": 7,
+    "position": "Sales Executive",
+    "workplace": "On-site",
+    "department": "Sales",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Drive sales and build client relationships.",
+    "requirements": [
+      "1+ years of experience in sales",
+      "Strong negotiation skills"
+    ],
+    "skills": ["CRM software", "Cold calling", "Lead generation"],
+    "benefits": [
+      "Commission-based pay",
+      "Health insurance",
+      "Training programs"
+    ],
+    "desirable": ["Experience in B2B sales", "Familiarity with Salesforce"],
+    "dateCreated": "2023-07-10",
+    "datePublish": "2023-07-15",
+    "interviewer": "Eve Black",
+    "quantity": 4,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-07-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "CRM software, Cold calling",
+    "qualification": "Bachelor's degree in Business or related field"
+  },
+  {
+    "id": 8,
+    "position": "Content Writer",
+    "workplace": "Remote",
+    "department": "Content",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Part-time",
+    "jobDescription": "Create engaging content for various platforms.",
+    "requirements": [
+      "2+ years of experience in content writing",
+      "Strong writing skills"
+    ],
+    "skills": ["SEO", "Copywriting", "Research"],
+    "benefits": ["Flexible hours", "Work from home", "Creative freedom"],
+    "desirable": ["Experience with WordPress", "Familiarity with social media"],
+    "dateCreated": "2023-08-01",
+    "datePublish": "2023-08-05",
+    "interviewer": "Frank Blue",
+    "quantity": 3,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-08-05",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "SEO, Copywriting",
+    "qualification": "Bachelor's degree in English or related field"
+  },
+  {
+    "id": 9,
+    "position": "Network Administrator",
+    "workplace": "On-site",
+    "department": "IT",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Manage and maintain network infrastructure.",
+    "requirements": [
+      "5+ years of experience in network administration",
+      "CCNA certification"
+    ],
+    "skills": ["Network security", "Troubleshooting", "Firewall management"],
+    "benefits": ["Health insurance", "Retirement plan", "Paid training"],
+    "desirable": [
+      "Experience with cloud networking",
+      "Knowledge of VoIP systems"
+    ],
+    "dateCreated": "2023-09-10",
+    "datePublish": "2023-09-15",
+    "interviewer": "Grace Yellow",
+    "quantity": 1,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-09-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Network security, Troubleshooting",
+    "qualification": "Bachelor's degree in Information Technology or related field"
+  },
+  {
+    "id": 10,
+    "position": "HR Manager",
+    "workplace": "Hybrid",
+    "department": "Human Resources",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Oversee HR functions and employee relations.",
+    "requirements": [
+      "5+ years of experience in HR",
+      "Strong leadership skills"
+    ],
+    "skills": ["Recruitment", "Performance management", " Employee engagement"],
+    "benefits": [
+      "Health insurance",
+      "Paid time off",
+      "Professional development"
+    ],
+    "desirable": ["Experience with HR software", "Knowledge of labor laws"],
+    "dateCreated": "2023-10-01",
+    "datePublish": "2023-10-05",
+    "interviewer": "Henry Silver",
+    "quantity": 1,
+    "status": "Open",
+    "vacancyDuration": {
+      "start": "2023-10-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Recruitment, Performance management",
+    "qualification": "Bachelor's degree in Human Resources or related field"
+  }
+]
