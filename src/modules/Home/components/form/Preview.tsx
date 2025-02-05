@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { ApplicationFormVal } from "../../values";
 import { Step } from "../../types";
+import { cn } from "@src/lib/utils";
 
 export default function index() {
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -29,7 +30,7 @@ export default function index() {
 
     useEffect(() => {
         console.log(applicationForm)
-    },[])
+    }, [])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -271,7 +272,7 @@ export default function index() {
                             </div>
                         </div>
 
-                        <div className="flex h-full w-full bg-green-300">
+                        <div className="flex h-full w-full">
                             <div className="flex flex-col p-2 gap-5 w-1/2">
                                 <p className="text-[#0078EB] text-xl font-bold">Family Background</p>
                                 <div>
@@ -316,9 +317,9 @@ export default function index() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4 bg-green-300 p-4">
+                        <div className="flex h-full w-full flex-wrap">
                             {applicationForm.familyBackground.siblings.map((sibling, index) => (
-                                <div key={index} className="flex flex-col p-2 gap-5">
+                                <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>
                                         <p className="text-[#6D6D6D]">Sibling's Name</p>
                                         <p className="font-bold">{sibling.fullname}</p>
@@ -365,91 +366,54 @@ export default function index() {
                             </div>
                         </div>
 
-                        <div className="flex h-full w-full">
-                            <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Character Reference</p>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Full Name</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].fullname}</p>
+                        <div className="flex h-full w-full flex-wrap">
+                            {applicationForm.reference.characterReference.map((ref, index) => (
+                                <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
+                                    <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Character Reference</p>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Full Name</p>
+                                        <p className="font-bold">{ref.fullname}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Company</p>
+                                        <p className="font-bold">{ref.company}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Position Held</p>
+                                        <p className="font-bold">{ref.positionHeld}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Contact Number</p>
+                                        <p className="font-bold">{ref.ContactNo}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Company</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].company}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Position Held</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].positionHeld}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Contact Number</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].ContactNo}</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
-                                <p className="text-[#0078EB] text-xl font-bold"></p>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Full Name</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].fullname}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Company</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].company}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Position Held</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].positionHeld}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Contact Number</p>
-                                    <p className="font-bold">{applicationForm.reference.characterReference[0].ContactNo}</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
-                        <div className="flex h-full w-full">
-                            <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Employment Reference</p>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Full Name</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].fullname}</p>
+                        <div className="flex h-full w-full flex-wrap">
+                            {applicationForm.reference.characterReference.map((ref, index) => (
+                                <div className="flex flex-col p-2 gap-5 w-1/2">
+                                    <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Reference</p>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Full Name</p>
+                                        <p className="font-bold">{ref.fullname}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Company</p>
+                                        <p className="font-bold">{ref.company}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Position Held</p>
+                                        <p className="font-bold">{ref.positionHeld}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Contact Number</p>
+                                        <p className="font-bold">{ref.ContactNo}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Company</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].company}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Position Held</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].positionHeld}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Contact Number</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].ContactNo}</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
-                                <p className="text-[#0078EB] text-xl font-bold"></p>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Full Name</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].fullname}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Company</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].company}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Position Held</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].positionHeld}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Contact Number</p>
-                                    <p className="font-bold">{applicationForm.reference.employmentReference[0].ContactNo}</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
         </form>
