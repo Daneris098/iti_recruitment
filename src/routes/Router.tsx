@@ -12,8 +12,6 @@ import PublicLayout from "@src/layout/public/Layout";
 import Login from "@modules/Login";
 import Dashboard from "@modules/Dashboard";
 import LandingPage from "@src/modules/LandingPage";
-import Expenses from "@src/modules/Expenses";
-import Settings from "@src/modules/Settings";
 import Home from "@src/modules/Home";
 import Test from "@src/modules/Home/components/ValidateArray";
 
@@ -65,7 +63,8 @@ const isAuthenticated = () => {
 
 // Authentication wrapper
 const RequireAuth: React.FC = () => {
-  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
+  // return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
+  return <Outlet />
 };
 
 // Redirect wrapper for public routes
@@ -111,14 +110,6 @@ const router = createBrowserRouter([
           {
             path: "dashboard",
             element: <Dashboard />,
-          },
-          {
-            path: "Expenses",
-            element: <Expenses />,
-          },
-          {
-            path: "Settings",
-            element: <Settings />,
           },
         ],
       },

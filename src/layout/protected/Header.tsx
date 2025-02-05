@@ -13,8 +13,8 @@ const Header: React.FC<HeaderProps> = ({  toggleMobile, toggleDesktop }) => {
       <div className="flex justify-between w-full">
 
         <Group h="100%" className="sm:pl-6 pl-4 font-semibold text-2xl cursor-pointer">
-          {isMobile ? (<p onClick={toggleMobile} >Expenses Tracker</p>) : (
-            <p onClick={toggleDesktop} >Expenses Tracker</p>
+          {isMobile ? (<p onClick={toggleMobile} >Logo</p>) : (
+            <p onClick={toggleDesktop} >Logo</p>
           )}
         </Group>
         <ProfileDropdown />
