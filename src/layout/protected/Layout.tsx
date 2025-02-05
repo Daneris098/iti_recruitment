@@ -9,12 +9,12 @@ import { GlobalStore } from '@src/utils/GlobalStore';
 function Layout() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-  const { set_is_mobile } = GlobalStore()
+  const { setIsMobile } = GlobalStore()
 
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth <= 768;
-      set_is_mobile(isMobile);
+      setIsMobile(isMobile);
     };
   
     handleResize(); // Set the initial value
@@ -23,7 +23,7 @@ function Layout() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [set_is_mobile]); // Make sure `set_is_mobile` is stable
+  }, [setIsMobile]); // Make sure `setIsMobile` is stable
   
 
   return (

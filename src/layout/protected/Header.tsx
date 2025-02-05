@@ -6,15 +6,23 @@ interface HeaderProps {
   toggleDesktop: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({  toggleMobile, toggleDesktop }) => {
-  const { is_mobile } = GlobalStore()
+const Header: React.FC<HeaderProps> = ({ toggleMobile, toggleDesktop }) => {
+  const { isMobile } = GlobalStore()
   return (
     <AppShell.Header>
       <div className="flex justify-between w-full">
 
         <Group h="100%" className="sm:pl-6 pl-4 font-semibold text-2xl cursor-pointer">
-          {is_mobile ? (<p onClick={toggleMobile} >Expenses Tracker</p>) : (
-            <p onClick={toggleDesktop} >Expenses Tracker</p>
+          {isMobile ? (<p onClick={toggleMobile} >  <img
+            src="logo.png "
+            className="w-28 2xl:w-40 cursor-pointer"
+            alt="bg"
+          /></p>) : (
+            <p onClick={toggleDesktop} >  <img
+              src="logo.png "
+              className="w-28 2xl:w-40 cursor-pointer"
+              alt="bg"
+            /></p>
           )}
         </Group>
         <ProfileDropdown />

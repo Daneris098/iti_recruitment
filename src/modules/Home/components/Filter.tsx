@@ -1,99 +1,150 @@
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { ListFilter } from "lucide-react";
-import { ActionIcon, Pill, Text } from "@mantine/core";
+import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { HomeStore } from "@src/modules/Home/store";
+import { useEffect } from "react";
+import { filterVal } from "../values";
 
 export default function Filter() {
-  const { setFilterDrawer, filter, setFilter, setClearFilter } = HomeStore();
+  const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = HomeStore();
+
+  useEffect(() => {
+    if (filter === filterVal) {
+      setIsFiltered(false)
+    }
+  }, [filter])
+
+
   const renderPills = (label: any, items: any) => {
     return (
-      <div className="flex flex-row items-center gap-7 mx-8 visibleFrom:md" >
-        <Text>{label}:</Text>
-        <Pill.Group>
+      <div className="flex flex-row items-center  gap-2" >
+        <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
+        <div className="flex  h-full items-center">
           {items.map((item: string, index: number) => (
-            <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} >{item}</Pill>
+            <div className="">
+              <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold" >{item}</Pill>
+            </div>
           ))}
-        </Pill.Group>
+        </div>
         <Text size="xl" c="#eeeeee">|</Text>
       </div>
     );
   };
+
+  const renderSinglePill = (label: any, item: string) => {
+    return (
+      <div className="flex flex-row items-center  gap-2 ">
+        <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
+        <div className="flex h-full items-center">
+          <div className="">
+            <Pill
+              withRemoveButton
+              onRemove={() => removeFilter(label, item)}
+              className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
+            >
+              {item}
+            </Pill>
+          </div>
+        </div>
+        <Text size="xl" c="#eeeeee">
+          |
+        </Text>
+      </div>
+    );
+  };
+
 
   const toCamelCase = (str: string): string => {
     return str
       .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
         index === 0 ? match.toLowerCase() : match.toUpperCase()
       )
-      .replace(/\s+/g, '');  // Remove spaces
+      .replace(/\s+/g, '');
   };
 
   const removeFilter = (label: string, item: any) => {
-    let updatedFilter = { ...filter }; // Make a copy of the filter to modify it
-    if (Array.isArray((updatedFilter as any)[toCamelCase(label)])) {
-      console.log('hey');
-      (updatedFilter as any)[toCamelCase(label)] = (updatedFilter as any)[toCamelCase(label)].filter((i: string) => {
-        console.log('item', item)
-        console.log('i', i)
-        console.log('condition ', (item !== i))
-        return (item !== i)
-      });
-    } else if (label === 'Date Added') {
-      updatedFilter.dateFrom = '';
-      updatedFilter.dateTo = '';
+    let updatedFilter = { ...filter };
+    console.log(updatedFilter)
+    const camelCaseLabel = toCamelCase(label);
+    
+    const filterValue = (updatedFilter as any)[camelCaseLabel];
+    
+    // If it's an array, filter the item out
+    if (Array.isArray(filterValue)) {
+      (updatedFilter as any)[camelCaseLabel] = filterValue.filter((i: string) => i !== item);
     }
-    setFilter(updatedFilter)
+    // If it's a string, check if the value matches the item and clear it
+    else if (typeof filterValue === 'string' && filterValue === item) {
+      (updatedFilter as any)[camelCaseLabel] = '';  // Reset the string value
+    }
+    
+    // Log updated filter state for debugging
+    console.log('Updated Filter:', updatedFilter);
+    
+    setFilter(updatedFilter);
   };
 
+  const iconSize: MantineSize = useMatches({
+    base: "md",
+    xl: "xl"
+  });
+
+  const ListFilterSize = useMatches({
+    base: "20",
+    xl: "25"
+  });
 
   return (
-    <div className="w-full rounded-md  flex flex-row justify-between items-center bg-white h-full text-gray-600">
-      <div className="h-full flex flex-row items-center justify-center ">
+    <div className="w-full rounded-lg  flex flex-row justify-between items-center bg-white h-full">
 
-
-        <div className="h-full items-center bg-[#eeeeee] gap-2 rounded-l-md flex p-2">
-          <ListFilter size={20} color="#6d6d6d" />
-          <Text fw={500} visibleFrom="md" className="text-xs 2xl:text-sm">
-            FILTERS APPLIED
-          </Text>
-        </div>
-
-
-        <div className="flex">
-          {filter.dateFrom && filter.dateTo && renderPills(
-            'Date Added',
-            [`${new Date(filter.dateFrom).toLocaleDateString()} - ${new Date(filter.dateTo).toLocaleDateString()}`]
-          )}
-
-          {filter.department && filter.department.length > 0 && renderPills(
-            'Department',
-            filter.department
-          )}
-
-          {filter.workplaceType && filter.workplaceType.length > 0 && renderPills(
-            'Workplace Type',
-            filter.workplaceType
-          )}
-
-          {filter.employmentType && filter.employmentType.length > 0 && renderPills(
-            'Employment Type',
-            filter.employmentType
-          )}
-
-          {filter.experienceLevel && filter.experienceLevel.length > 0 && renderPills(
-            'Experience Level',
-            filter.experienceLevel
-          )}
-        </div>
-
-
+      <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-52">
+        <ListFilter size={ListFilterSize} color="#6d6d6d" />
+        <Text fw={600} visibleFrom="md" className="text-xs 2xl:text-[14px] text-[#6D6D6D]">
+          FILTERS APPLIED
+        </Text>
       </div>
 
-      <div className="pr-2 2xl:pr-10 py-8 2xl:gap-5 flex">
+      {isFiltered && (<div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4 gap-2 sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
+
+        {filter.jobTitle && renderSinglePill(
+          'Job Title',
+          filter.jobTitle
+        )}
+
+
+        {filter.postedDate && renderSinglePill(
+          'Posted Date',
+          filter.postedDate
+        )}
+
+        {filter.department && filter.department.length > 0 && renderPills(
+          'Department',
+          filter.department
+        )}
+
+        {filter.workplaceType && filter.workplaceType.length > 0 && renderPills(
+          'Workplace Type',
+          filter.workplaceType
+        )}
+
+        {filter.employmentType && filter.employmentType.length > 0 && renderPills(
+          'Employment Type',
+          filter.employmentType
+        )}
+
+        {filter.experienceLevel && filter.experienceLevel.length > 0 && renderPills(
+          'Experience Level',
+          filter.experienceLevel
+        )}
+      </div>
+      )}
+
+      <div className="flex h-full items-center px-3">
         <ActionIcon
           onClick={() => setFilterDrawer(true)}
           variant="transparent"
           color="gray"
-          size="md"
+          size={iconSize}
           aria-label="Settings"
         >
           <IconCirclePlus
@@ -106,7 +157,7 @@ export default function Filter() {
           onClick={() => setClearFilter(true)}
           variant="transparent"
           color="gray"
-          size="md"
+          size={iconSize}
           aria-label="Settings"
         >
           <IconTrash
@@ -116,7 +167,9 @@ export default function Filter() {
           />
         </ActionIcon>
       </div>
-      
+
+
+
     </div>
   );
 }
