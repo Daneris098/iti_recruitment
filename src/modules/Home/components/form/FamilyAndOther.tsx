@@ -47,7 +47,7 @@ export default function index() {
     const addFieldCharacter = () => {
         setApplicationForm({
             ...applicationForm, familyBackground: {
-                ...applicationForm.familyBackground, siblings: [...applicationForm.familyBackground.siblings, {
+                ...applicationForm.familyBackground, siblings: [...form.getValues().siblings, {
                     fullname: '',
                     age: 0,
                     occupation: '',

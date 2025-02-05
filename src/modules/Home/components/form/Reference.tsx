@@ -39,18 +39,18 @@ export default function index() {
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Reference && formRef.current) {
-            formRef.current.requestSubmit(); // Programmatically trigger form submission
+            formRef.current.requestSubmit(); 
         }
         return (setSubmit(false))
     }, [submit])
 
 
     const addFieldCharacter = () => {
-        setApplicationForm({ ...applicationForm, reference: { ...applicationForm.reference, characterReference: [...applicationForm.reference.characterReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
+        setApplicationForm({ ...applicationForm, reference: { ...form.getValues(), characterReference: [...form.getValues().characterReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
     };
 
     const addFieldEmployment = () => {
-        setApplicationForm({ ...applicationForm, reference: { ...applicationForm.reference, employmentReference: [...applicationForm.reference.employmentReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
+        setApplicationForm({ ...applicationForm, reference: { ...form.getValues(), employmentReference: [...form.getValues().employmentReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
     };
 
     useEffect(() => {
