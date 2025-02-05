@@ -1,4 +1,4 @@
-import { EducationBackground, FilterType, GeneralInformation, VacancyType, EmploymentRecord, FamilyBackground, Reference, ApplicationForm } from "@modules/Home/types";
+import { EducationBackground, FilterType, GeneralInformation, VacancyType, EmploymentRecord, FamilyBackground, Reference, ApplicationForm, EducationalAndEmployment } from "@modules/Home/types";
 
 export const selectedDataVal: VacancyType = {
   id: 0,
@@ -85,8 +85,8 @@ export const educationBackgroundVal: EducationBackground = {
   educationalLevel: 'Bachelor Degree',
   course: 'Computer Science',
   yearsAttended: {
-    from: '2020',
-    to: '2024',
+    from: new Date('Wed Jan 01 2020 00:00:00 GMT+0800 (Philippine Standard Time)'),
+    to: new Date('Wed Jan 01 2024 00:00:00 GMT+0800 (Philippine Standard Time)'),
   },
   professionalLiscenses: 'AWS Practitioner',
   certfications: '',
@@ -103,6 +103,11 @@ export const employmentRecordVal: EmploymentRecord[] = [{
   salary: '50000',
   reasonForLeaving: 'Better Opportunity',
 }];
+
+export const educationAndEmploymentVal: EducationalAndEmployment = {
+  educationBackground: educationBackgroundVal,
+  employmentRecord: employmentRecordVal  
+}
 
 export const familyBackgroundVal: FamilyBackground = {
   father: {
@@ -176,8 +181,7 @@ export const referenceValue: Reference = {
 
 export const ApplicationFormVal: ApplicationForm = {
   generalInformation: GeneralInformationVal,
-  educationBackground: educationBackgroundVal,
-  employmentRecord: employmentRecordVal,
+  educationAndEmployment: educationAndEmploymentVal,
   familyBackground: familyBackgroundVal,
   reference: referenceValue,
   photo: null

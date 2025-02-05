@@ -130,8 +130,8 @@ export interface EducationBackground {
   educationalLevel: string;
   course: string;
   yearsAttended: {
-    from: string;
-    to: string;
+    from: Date | string | null;
+    to: Date | string | null;
   }
   professionalLiscenses: string;
   certfications: string;
@@ -210,10 +210,14 @@ export interface Reference {
   applicationSource: ApplicationSource[]
 }
 
-export interface ApplicationForm {
-  generalInformation: GeneralInformation;
+export interface EducationalAndEmployment {
   educationBackground: EducationBackground;
   employmentRecord: EmploymentRecord[];
+}
+
+export interface ApplicationForm {
+  generalInformation: GeneralInformation;
+  educationAndEmployment: EducationalAndEmployment;
   familyBackground: FamilyBackground;
   reference: Reference;
   photo: string | null;

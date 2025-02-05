@@ -195,81 +195,76 @@ export default function index() {
 
                         </div>
 
+
                         <div className="flex h-full w-full">
-
-
                             <div className="flex flex-col p-2 gap-5 w-1/2">
                                 <p className="text-[#0078EB] text-xl font-bold">Education</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">School Name</p>
-                                    <p className="font-bold">{applicationForm.educationBackground.nameOfSchool}</p>
+                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.nameOfSchool}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Educational Level</p>
-                                    <p className="font-bold">{applicationForm.educationBackground.educationalLevel}</p>
+                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.educationalLevel}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Course</p>
-                                    <p className="font-bold">{applicationForm.educationBackground.course}</p>
+                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.course}</p>
                                 </div>
 
                                 <div className="flex sm:gap-48">
                                     <div className="w-28">
                                         <p className="text-[#6D6D6D]">Start Date</p>
-                                        <p className="font-bold">{applicationForm.educationBackground.yearsAttended.from}</p>
+                                        <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.yearsAttended.from?.toString()}</p>
                                     </div>
 
                                     <div className="w-28">
                                         <p className="text-[#6D6D6D]">End Date</p>
-                                        <p className="font-bold">{applicationForm.educationBackground.yearsAttended.to}</p>
+                                        <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.yearsAttended.to?.toString()}</p>
                                     </div>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Professional Liscences</p>
-                                    <p className="font-bold">{applicationForm.educationBackground.professionalLiscenses}</p>
+                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.professionalLiscenses}</p>
                                 </div>
-
-
                             </div>
-
                         </div>
 
-                        <div className="flex h-full w-full">
-                            <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Employment Record</p>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Employer Name</p>
-                                    <p className="font-bold">{applicationForm.employmentRecord[0].employerCompany}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Location</p>
-                                    <p className="font-bold">{applicationForm.employmentRecord[0].location}</p>
-                                </div>
 
-                                <div>
-                                    <p className="text-[#6D6D6D]">Position Held</p>
-                                    <p className="font-bold">{applicationForm.employmentRecord[0].positionHeld}</p>
-                                </div>
-
-                                <div className="flex sm:gap-48">
-                                    <div className="w-28">
-                                        <p className="text-[#6D6D6D]">Start Date</p>
-                                        <p className="font-bold">{applicationForm.employmentRecord[0].inclusiveDate.from}</p>
+                        <div className="flex h-full w-full flex-wrap">
+                            {applicationForm.educationAndEmployment.employmentRecord.map((employment, index) => (
+                                <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
+                                    <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Record</p>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Employer Name</p>
+                                        <p className="font-bold">{employment.employerCompany}</p>
                                     </div>
-
-                                    <div className="w-28">
-                                        <p className="text-[#6D6D6D]">End Date</p>
-                                        <p className="font-bold">{applicationForm.employmentRecord[0].inclusiveDate.to}</p>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Location</p>
+                                        <p className="font-bold">{employment.location}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Position Held</p>
+                                        <p className="font-bold">{employment.positionHeld}</p>
+                                    </div>
+                                    <div className="flex sm:gap-48">
+                                        <div className="w-28">
+                                            <p className="text-[#6D6D6D]">Start Date</p>
+                                            <p className="font-bold">{employment.inclusiveDate.from}</p>
+                                        </div>
+                                        <div className="w-28">
+                                            <p className="text-[#6D6D6D]">End Date</p>
+                                            <p className="font-bold">{employment.inclusiveDate.to}</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Salary</p>
+                                        <p className="font-bold">PHP {employment.salary}</p>
                                     </div>
                                 </div>
-
-                                <div>
-                                    <p className="text-[#6D6D6D]">Salary</p>
-                                    <p className="font-bold">PHP {applicationForm.employmentRecord[0].salary}</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
                         <div className="flex h-full w-full">
@@ -318,10 +313,10 @@ export default function index() {
                         </div>
 
                         <div className="flex h-full w-full flex-wrap">
-                            {applicationForm.familyBackground.siblings.map((sibling, index) => (
+                            {applicationForm.familyBackground.siblings.length > 0 && applicationForm.familyBackground.siblings != ApplicationFormVal.familyBackground.siblings &&  applicationForm.familyBackground.siblings.map((sibling, index) => (
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>
-                                        <p className="text-[#6D6D6D]">Sibling's Name</p>
+                                        <p className="text-[#6D6D6D]">Sibling's Name {applicationForm.familyBackground.siblings.length}</p>
                                         <p className="font-bold">{sibling.fullname}</p>
                                     </div>
                                     <div>

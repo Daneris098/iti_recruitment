@@ -2,10 +2,10 @@ import { Divider, Popover, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
-import { EducationBackground, Step } from "../../types";
+import { useEffect, useRef, useState } from "react";
+import { EducationalAndEmployment, Step } from "../../types";
 import { ApplicationStore } from "../../store";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, YearPickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
 
 export default function index() {
@@ -13,13 +13,10 @@ export default function index() {
 
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-
+    const [value, setValue] = useState<Date | null>(new Date('Wed Jan 01 2021 00:00:00 GMT+0800 (Philippine Standard Time)'));
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: {
-            ...applicationForm.educationBackground,
-            ...applicationForm.employmentRecord
-        },
+        initialValues: applicationForm.educationAndEmployment,
         validate: {
             // nameOfSchool: (value: string) => value.length === 0 ? "Name Of School is required" : null,
             // educationalLevel: (value: string) => value.length === 0 ? "Educational Level is required" : null,
@@ -33,8 +30,9 @@ export default function index() {
         }
     });
 
-    const onSubmit = async (form: EducationBackground) => {
-        setApplicationForm({ ...applicationForm, educationBackground: form })
+    const onSubmit = async (form: EducationalAndEmployment) => {
+        console.log(form)
+        setApplicationForm({ ...applicationForm, educationAndEmployment: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 
@@ -46,9 +44,31 @@ export default function index() {
     }, [submit])
 
     useEffect(() => {
-        const mergedData = { ...applicationForm.educationBackground, ...applicationForm.employmentRecord }
-        console.log('mergedData: ', mergedData)
-    }, [])
+        console.log(value)
+    }, [value])
+
+    const addFieldCharacter = () => {
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, employmentRecord: [...form.getValues().employmentRecord, {
+                    employerCompany: '',
+                    location: '',
+                    positionHeld: '',
+                    inclusiveDate: {
+                        from: '',
+                        to: ''
+                    },
+                    salary: '',
+                    reasonForLeaving: '',
+                }]
+            }
+        })
+    };
+
+    useEffect(() => {
+        form.setValues({ employmentRecord: applicationForm.educationAndEmployment.employmentRecord });
+    }, [applicationForm])
+
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -56,116 +76,176 @@ export default function index() {
                 <p className="font-bold">Educational Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput   {...form.getInputProps("nameOfSchool")} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
-                    <TextInput   {...form.getInputProps("educationalLevel")} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
+                    <TextInput   {...form.getInputProps("educationBackground.nameOfSchool")} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
+                    <TextInput   {...form.getInputProps("educationBackground.educationalLevel")} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
                 </div>
 
                 <div className="flex flex-col items-end sm:flex-row gap-4">
-                    <TextInput  {...form.getInputProps("course")} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
+                    <TextInput  {...form.getInputProps("educationBackground.course")} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
                     <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
-                        <Select
-                            {...form.getInputProps("yearsAttended.from")}
+
+
+                        <YearPickerInput
+                            {...form.getInputProps("educationBackground.yearsAttended.from")}
                             w={isMobile ? '100%' : '100%'}
                             label="Years Attended"
                             placeholder={"From"}
                             radius={8}
-                            data={["2020", "2021", "2022", "2023", "2024"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1" }}
                             styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(value: Date | null) => {
+                                form.setFieldValue(
+                                    `educationBackground.yearsAttended.from`,
+                                    value
+                                );
+                                console.log(form.getValues())
+                            }}
                         />
-                        <Select
-                            {...form.getInputProps("yearsAttended.to")}
+
+                        <YearPickerInput
+                            {...form.getInputProps("educationBackground.yearsAttended.to")}
                             w={isMobile ? '100%' : '100%'}
+                            label=""
                             placeholder={"To"}
                             radius={8}
-                            data={["2020", "2021", "2022", "2023", "2024"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1" }}
                             styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(value: Date | null) => {
+                                form.setFieldValue(
+                                    `educationBackground.yearsAttended.to`,
+                                    value
+                                );
+                                console.log(form.getValues())
+                            }}
                         />
 
                     </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput   {...form.getInputProps("professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
-                    <TextInput   {...form.getInputProps("certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
+                    <TextInput   {...form.getInputProps("educationBackground.professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
+                    <TextInput   {...form.getInputProps("educationBackground.certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
                 </div>
 
                 <div>
-                    <p className="absolute ml-[11rem] text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer">Add Experience</p>
+                    <p className="absolute ml-[11rem] text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer" onClick={addFieldCharacter}>Add Experience</p>
                     <p className="font-bold">Employment Record</p>
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput   {...form.getInputProps(`0.employerCompany`)} radius='md' w={isMobile ? '50%' : '100%'} label="Employer/Company" placeholder="Employer/Company" />
-                    <TextInput   {...form.getInputProps(`0.location`)} radius='md' w={isMobile ? '50%' : '100%'} label="Location" placeholder="Office Location" />
-                </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput  {...form.getInputProps(`0.positionHeld`)} radius='md' w={isMobile ? '50%' : '100%'} label="Position Held" placeholder="Position Held" />
-                    <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%] " >
-                   
+                {applicationForm.educationAndEmployment.employmentRecord.map((_, index) => (
+                    <div key={index}>
+                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                            <TextInput
+                                {...form.getInputProps(`employmentRecord.${index}.employerCompany`)}
+                                radius='md'
+                                w={isMobile ? '50%' : '100%'}
+                                label="Employer/Company"
+                                placeholder="Employer/Company"
+                            />
+                            <TextInput
+                                {...form.getInputProps(`employmentRecord.${index}.location`)}
+                                radius='md'
+                                w={isMobile ? '50%' : '100%'}
+                                label="Location"
+                                placeholder="Office Location"
+                            />
+                        </div>
 
-                        <Popover
-                            position="bottom"
-                            shadow="md"
-                            trapFocus={true}
-                            returnFocus={true}
-                        >
-                            <Popover.Target>
-                                <TextInput
-                                    {...form.getInputProps("0.inclusiveDate.from")}
-                                    key={form.key('0.inclusiveDate.from')}
-                                    radius='md' w={isMobile ? '25%' : '100%'}
-                                    readOnly
-                                    label='Inclusive Date'
-                                    placeholder='From'
-                                    className="w-full cursor-default"
-                                    rightSection={<IconCalendarMonth />}
-                                    styles={{ label: { color: "#6d6d6d" } }}
-                                />
-                            </Popover.Target>
-                            <Popover.Dropdown className="w-full">
-                                <DatePicker firstDayOfWeek={0}  {...form.getInputProps("0.inclusiveDate.from")} onChange={(value: Date | null) => { form.setFieldValue("0.inclusiveDate.from", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
-                            </Popover.Dropdown>
-                        </Popover>
+                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                            <TextInput
+                                {...form.getInputProps(`employmentRecord.${index}.positionHeld`)}
+                                radius='md'
+                                w={isMobile ? '50%' : '100%'}
+                                label="Position Held"
+                                placeholder="Position Held"
+                            />
+                            <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]">
+                                {/* Inclusive Date From */}
+                                <Popover position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
+                                    <Popover.Target>
+                                        <TextInput
+                                            key={form.key(`employmentRecord.${index}.inclusiveDate.from`)}
+                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.from`)}
+                                            radius='md'
+                                            w={isMobile ? '25%' : '100%'}
+                                            readOnly
+                                            label="Inclusive Date"
+                                            placeholder="From"
+                                            className="w-full cursor-default"
+                                            rightSection={<IconCalendarMonth />}
+                                            styles={{ label: { color: "#6d6d6d" } }}
+                                        />
+                                    </Popover.Target>
+                                    <Popover.Dropdown className="w-full">
+                                        <DatePicker
+                                            firstDayOfWeek={0}
+                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.from`)}
+                                            onChange={(value: Date | null) => {
+                                                form.setFieldValue(
+                                                    `employmentRecord.${index}.inclusiveDate.from`,
+                                                    value ? dayjs(value).format("YYYY-MM-DD") : ''
+                                                );
+                                                console.log(form.getValues())
+                                            }}
+                                        />
+                                    </Popover.Dropdown>
+                                </Popover>
 
-                        <Popover
-                            position="bottom"
-                            shadow="md"
-                            trapFocus={true}
-                            returnFocus={true}
-                        >
-                            <Popover.Target>
-                                <TextInput
-                                    key={form.key('0.inclusiveDate.to')}
-                                    {...form.getInputProps("0.inclusiveDate.to")}
-                                    radius='md' w={isMobile ? '25%' : '100%'}
-                                    readOnly
-                                    label=''
-                                    placeholder='To'
-                                    className="w-full cursor-default"
-                                    rightSection={<IconCalendarMonth />}
-                                    styles={{ label: { color: "#6d6d6d" } }}
-                                />
-                            </Popover.Target>
-                            <Popover.Dropdown className="w-full">
-                                <DatePicker firstDayOfWeek={0}  {...form.getInputProps("0.inclusiveDate.to")} onChange={(value: Date | null) => { form.setFieldValue("0.inclusiveDate.to", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
-                            </Popover.Dropdown>
-                        </Popover>
+                                {/* Inclusive Date To */}
+                                <Popover position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
+                                    <Popover.Target>
+                                        <TextInput
+                                            key={form.key(`employmentRecord.${index}.inclusiveDate.to`)}
+                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.to`)}
+                                            radius='md'
+                                            w={isMobile ? '25%' : '100%'}
+                                            readOnly
+                                            label=""
+                                            placeholder="To"
+                                            className="w-full cursor-default"
+                                            rightSection={<IconCalendarMonth />}
+                                            styles={{ label: { color: "#6d6d6d" } }}
+                                        />
+                                    </Popover.Target>
+                                    <Popover.Dropdown className="w-full">
+                                        <DatePicker
+                                            firstDayOfWeek={0}
+                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.to`)}
+                                            onChange={(value: Date | null) => {
+                                                form.setFieldValue(
+                                                    `employmentRecord.${index}.inclusiveDate.to`,
+                                                    value ? dayjs(value).format("YYYY-MM-DD") : ''
+                                                );
+                                            }}
+                                        />
+                                    </Popover.Dropdown>
+                                </Popover>
+                            </div>
+                        </div>
 
+                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                            <TextInput
+                                radius='md'
+                                w={isMobile ? '50%' : '100%'}
+                                label="Salary"
+                                placeholder="Salary in PESO"
+                                {...form.getInputProps(`employmentRecord.${index}.salary`)}
+                            />
+                            <TextInput
+                                radius='md'
+                                w={isMobile ? '50%' : '100%'}
+                                label="Reason for Leaving"
+                                placeholder="Reason for Leaving"
+                                {...form.getInputProps(`employmentRecord.${index}.reasonForLeaving`)}
+                            />
+                        </div>
                     </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Salary" placeholder="Salary in PESO"  {...form.getInputProps(`0.salary`)} />
-                    <TextInput radius='md' w={isMobile ? '50%' : '100%'} label="Reason for Leaving" placeholder="Reason for Leaving"  {...form.getInputProps(`0.reasonForLeaving`)} />
-                </div>
-
+                ))}
 
 
             </div>
