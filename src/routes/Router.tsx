@@ -12,6 +12,7 @@ import PublicLayout from "@src/layout/public/Layout";
 import Login from "@modules/Login";
 import Dashboard from "@modules/Dashboard";
 import LandingPage from "@src/modules/LandingPage";
+import Vacancies from "@src/modules/Vacancies";
 import Home from "@src/modules/Home";
 import Test from "@src/modules/Home/components/ValidateArray";
 
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
           {
             path: "dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "vacancies",
+            element: <Vacancies />,
           },
         ],
       },

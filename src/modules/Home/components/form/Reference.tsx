@@ -1,6 +1,6 @@
 import { Divider, Checkbox, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";

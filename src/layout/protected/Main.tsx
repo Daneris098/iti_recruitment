@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 export default function Main() {
   return (
-    <AppShell.Main
+    <AppShell.Main className="protected"
     >
       <Outlet />
     </AppShell.Main>

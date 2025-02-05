@@ -4,6 +4,7 @@ import { ApplicationStore } from "../../store";
 import { ApplicationFormVal } from "../../values";
 import { Step } from "../../types";
 import { cn } from "@src/lib/utils";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils"
 
 export default function index() {
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -27,10 +28,6 @@ export default function index() {
         }
         return (setSubmit(false))
     }, [submit])
-
-    useEffect(() => {
-        console.log(applicationForm)
-    }, [])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -216,12 +213,12 @@ export default function index() {
                                 <div className="flex sm:gap-48">
                                     <div className="w-28">
                                         <p className="text-[#6D6D6D]">Start Date</p>
-                                        <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.yearsAttended.from?.toString()}</p>
+                                        <p className="font-bold">{DateTimeUtils.dateToYearOnly(applicationForm.educationAndEmployment.educationBackground.yearsAttended.from?.toString())}</p>
                                     </div>
 
                                     <div className="w-28">
                                         <p className="text-[#6D6D6D]">End Date</p>
-                                        <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.yearsAttended.to?.toString()}</p>
+                                        <p className="font-bold">{DateTimeUtils.dateToYearOnly(applicationForm.educationAndEmployment.educationBackground.yearsAttended.to?.toString())}</p>
                                     </div>
                                 </div>
 

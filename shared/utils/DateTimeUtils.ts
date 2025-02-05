@@ -53,7 +53,8 @@ export const DateTimeUtils = {
     dayjs(date, "YYYY-MM-DD").add(1, "day").format("YYYY-MM-DD"),
   dateDashToDefaultLessDay: (date: string) =>
     dayjs(date, "YYYY-MM-DD").subtract(1, "day").format("YYYY-MM-DD"),
-
+  dateToYearOnly: (date: any) =>
+    Intl.DateTimeFormat("en-PH", { year: "numeric" }).format(new Date(date)),
   dateDefaultToHalfMonthWord: (date: string) =>
     dayjs(date, "YYYYMMDD").format("MMM DD, YYYY"),
   dateDefaultToHalfMonthDay: (date: string) =>

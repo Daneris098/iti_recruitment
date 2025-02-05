@@ -1,4 +1,4 @@
-import { Divider, Flex, Select, Text, TextInput } from "@mantine/core";
+import { Divider, Flex, Select, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";

@@ -1,8 +1,8 @@
-import { Divider, Popover, Select, TextInput } from "@mantine/core";
+import { Divider, Popover,  TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { EducationalAndEmployment, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
@@ -13,7 +13,6 @@ export default function index() {
 
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const [value, setValue] = useState<Date | null>(new Date('Wed Jan 01 2021 00:00:00 GMT+0800 (Philippine Standard Time)'));
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: applicationForm.educationAndEmployment,
@@ -42,10 +41,6 @@ export default function index() {
         }
         return (setSubmit(false))
     }, [submit])
-
-    useEffect(() => {
-        console.log(value)
-    }, [value])
 
     const addFieldCharacter = () => {
         setApplicationForm({
