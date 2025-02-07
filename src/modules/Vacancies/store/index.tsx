@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm } from "@modules/Home/types";
-import { ApplicationFormVal, filterVal, selectedDataVal } from "@src/modules/Home/values";
+import { DialogState, DataTableState, VacancyType, VacancyState, FilterType } from "@modules/Vacancies/types";
+import { filterVal, selectedDataVal } from "@src/modules/Vacancies/values";
 
-export const HomeStore = create<HomeState>((set) => ({
+
+export const Vacancytore = create<VacancyState>((set) => ({
   selectedData: selectedDataVal,
   filterDrawer: false,
   filter: filterVal,
@@ -21,18 +22,27 @@ export const HomeStore = create<HomeState>((set) => ({
 }));
 
 
-export const ApplicationStore = create<ApplicationState>((set) => ({
-  activeStepper: 0,
-  applicationForm: ApplicationFormVal,
-  submit: false,
-  isPhotoCaptured: false,
-  isPhotoCapture: false,
+export const DialogStore = create<DialogState>((set) => ({
+  action: '',
+  selectedData: selectedDataVal,
+  loading: false,
 
+  setLoading: (loading:boolean) => set({ loading: loading }),
+  setSelectedData: (selected_data: VacancyType) => set({ selectedData: selected_data }),
+  setAction: (action: string) => set({ action: action }),
+}));
 
-  setIsPhotoCapture: (isPhotoCapture: boolean) => set({ isPhotoCapture: isPhotoCapture }),
-  setIsPhotoCaptured: (isPhotoCaptured: boolean) => set({ isPhotoCaptured: isPhotoCaptured }),
-  setSubmit: (submit: boolean) => set({ submit: submit }),
-  setApplicationForm: (applicationForm: ApplicationForm) => set({ applicationForm: applicationForm }),
-  setActiveStepper: (activeStepper: number) => set({ activeStepper: activeStepper }),
+export const DataTableStore = create<DataTableState>((set) => ({
+  search: '',
+  totalRecords: 0,
+  page: 1,
+  pageSize: 20,
+  sortStatus: { columnAccessor: 'createdAt', direction: 'desc' },
+
+  setSearch: (search: string) => set({ search: search }),
+  setTotalRecords: (total:number) => set({ totalRecords: total }),
+  setPage: (page:number) => set({ page }),
+  setPageSize: (size:number) => set({ pageSize: size }),
+  setSortStatus: (status:any) => set({ sortStatus: status }),
 }));
 

@@ -203,7 +203,6 @@ export interface ApplicationSource {
   others: boolean;
 }
 
-
 export interface Reference {
   characterReference: CharacterReference[]
   employmentReference: EmploymentReference[]

@@ -36,7 +36,7 @@ function Layout() {
       }}
       padding="md"
     >
-      <div className='h-screen-100'>
+      <div className='h-screen'>
         <Header
           toggleMobile={toggleMobile}
           toggleDesktop={toggleDesktop}

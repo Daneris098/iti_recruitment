@@ -3,6 +3,7 @@ import { ApplicationStore } from "@src/modules/Home/store";
 
 export default function index() {
     const { activeStepper } = ApplicationStore();
+    
 
     function StyledStepper(props: StepperProps) {
         return (
@@ -13,13 +14,15 @@ export default function index() {
                         marginTop: 50,
                         alignItems: 'center',
                         position: 'absolute',
-                        textAlign: 'center'
+                        textAlign: 'center',
                     },
                     step: {
                         display: 'flex',
                         flexDirection: 'column',
                     },
                     stepIcon: {
+                        background: 'blue',
+                        color:'white',
                         borderWidth: 4,
                     },
                     separator: {

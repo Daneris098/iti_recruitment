@@ -205,3 +205,12 @@ html {
 .protected {
   @apply bg-[#DEECFF] ;
 }
+
+.mantine-Table-td {
+  padding: 0.8rem;
+}
+
+.mantine-datatable-table tbody .mantine-Table-tr {
+  padding: 0.6rem;
+  @apply cursor-pointer hover:bg-gray-50;
+}
