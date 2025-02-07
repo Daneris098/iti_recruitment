@@ -1,40 +1,96 @@
 import { Divider, Modal } from "@mantine/core";
 import { VacancyStore } from "../../store";
 import { selectedDataVal } from "../../values";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { VacancyType } from "../../types";
+import Vacancies from '@src/modules/vacancies/values/response/Vacancies.json';
+import { DataTable } from "mantine-datatable";
+import "@modules/Vacancies/style.css"
+
 
 export default function index() {
     const { selectedData, setSelectedData } = VacancyStore();
+    const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
+    const [page, setPage] = useState(1);
+    const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
+        columnAccessor: "position", // Use a valid key from VacancyType
+        direction: "asc",
+    });
+
+    const pageSize = 10;
+
     useEffect(() => {
-        console.log(selectedData)
-    }, [selectedData])
+        setVacancyRecords(Vacancies as VacancyType[]); // Type assertion
+    }, []);
+
+    const sortedRecords = [...vacancyRecords].sort((a, b) => {
+        if (!sortStatus.columnAccessor) return 0;
+        const valueA = a[sortStatus.columnAccessor as keyof VacancyType];
+        const valueB = b[sortStatus.columnAccessor as keyof VacancyType];
+
+        if (typeof valueA === 'string' && typeof valueB === 'string') {
+            return sortStatus.direction === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
+        }
+
+        if (typeof valueA === 'number' && typeof valueB === 'number') {
+            return sortStatus.direction === 'asc' ? valueA - valueB : valueB - valueA;
+        }
+        return 0;
+    });
+
+    const paginatedRecords = sortedRecords.slice((page - 1) * pageSize, page * pageSize);
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    };
+
     return (
-        <Modal size={'80%'} opened={selectedData != selectedDataVal} centered onClose={() => setSelectedData(selectedDataVal)} title={'View Applicant'}
-            className='text-[#559CDA]' styles={{
-                header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
-                title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
-            }}>
-            <div className='m-auto w-[95%] '>
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
-                <div className="grid grid-cols-5">
-                    <div>
-                        <p className="text-[#0078EB]">Applied</p>
-                    </div>
-                    <div >
-                        <p className="text-[#FF7800]">For Interview</p>
-                    </div>
-                    <div >
-                        <p className="text-[#FEC001]">Offered</p>
-                    </div>
-                    <div>
-                        <p className="text-[#5A9D27]">Hired</p>
-                    </div>
-                    <div>
-                        <p className="text-[#FF554A]">Archived</p>
-                    </div>
+        <>
+            <Modal size={'80%'} opened={selectedData != selectedDataVal} centered onClose={() => setSelectedData(selectedDataVal)} title={'View Applicant'}
+                className='text-[#559CDA]' styles={{
+                    header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}>
+                <div className='m-auto w-[95%] '>
+                    <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
+                    <DataTable
+                        defaultColumnProps={{
+                            textAlign: 'right',
+                            noWrap: true,
+                            ellipsis: true,
+                        }}
+                        style={{
+                            color: "#6D6D6D",
+                        }}
+                        withTableBorder
+                        borderRadius="sm"
+                        highlightOnHover
+                        records={paginatedRecords}
+                        columns={[
+                            {
+                                accessor: 'position',
+                                title: 'Applied',
+                                textAlign: "left",
+                                sortable: true,
+                                titleStyle: (theme) => ({ color: theme.colors.blue[6] })
+                            },
+                            { accessor: 'position', title: 'For Interview', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6] }) },
+                            { accessor: 'position', title: 'Offered', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6] }) },
+                            { accessor: 'position', title: 'Hired', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6] }) },
+                            { accessor: 'position', title: 'Archived', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6] }) },
+                        ]}
+                        totalRecords={vacancyRecords.length}
+                        recordsPerPage={pageSize}
+                        page={page}
+                        onPageChange={setPage}
+                        sortStatus={sortStatus}
+                        onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
+                    />
 
                 </div>
-            </div>
-        </Modal>
+            </Modal>
+        </>
+
     )
 }
