@@ -3,6 +3,7 @@ import { DataTable } from 'mantine-datatable';
 import Vacancies from '@src/modules/vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
+import { VacancyStore } from '../store';
 
 enum StatusColor {
     Published = '#5A9D27',
@@ -11,6 +12,7 @@ enum StatusColor {
 }
 
 export default function index() {
+    const { selectedData, setSelectedData } = VacancyStore();
     const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
@@ -83,8 +85,8 @@ export default function index() {
                     accessor: '',
                     title: 'Action',
                     textAlign: "center",
-                    render: () => (
-                        <div className='rounded-xl p-1 text-center border border-black cursor-pointer' >
+                    render: (data) => (
+                        <div className='rounded-xl p-1 text-center border border-black cursor-pointer' onClick={() => { setSelectedData(data) }}>
                             View Applicant
                         </div>
                     ),

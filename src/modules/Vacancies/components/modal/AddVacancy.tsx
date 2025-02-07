@@ -5,13 +5,13 @@ import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useEffect, useRef } from "react";
 import { DateRange } from '../DateRange';
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
-import { Vacancytore, DialogStore } from "@modules/Vacancies/store";
+import { VacancyStore, DialogStore } from "@modules/Vacancies/store";
 import { AlertType } from '../../types';
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const { action, setAction } = DialogStore()
-    const { setAlert } = Vacancytore();
+    const { setAlert } = VacancyStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const form = useForm({
         mode: 'uncontrolled',

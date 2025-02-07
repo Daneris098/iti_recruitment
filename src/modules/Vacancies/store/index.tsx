@@ -3,7 +3,7 @@ import { DialogState, DataTableState, VacancyType, VacancyState, FilterType } fr
 import { filterVal, selectedDataVal } from "@src/modules/Vacancies/values";
 
 
-export const Vacancytore = create<VacancyState>((set) => ({
+export const VacancyStore = create<VacancyState>((set) => ({
   selectedData: selectedDataVal,
   filterDrawer: false,
   filter: filterVal,
