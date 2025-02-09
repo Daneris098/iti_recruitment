@@ -1,5 +1,5 @@
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
-import { ListFilter } from "lucide-react";
+import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { HomeStore } from "@src/modules/Home/store";
 import { useEffect } from "react";
@@ -98,7 +98,7 @@ export default function Filter() {
     <div className="w-full rounded-lg  flex flex-row justify-between items-center bg-white h-full">
 
       <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-52">
-        <ListFilter size={ListFilterSize} color="#6d6d6d" />
+        <IconAdjustmentsHorizontal size={ListFilterSize} color="#6d6d6d" />
         <Text fw={600} visibleFrom="md" className="text-xs 2xl:text-[14px] text-[#6D6D6D]">
           FILTERS APPLIED
         </Text>

@@ -1,6 +1,6 @@
 import { Divider, Flex, Select, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCaretDownFilled } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 import { useEffect, useRef } from "react";
@@ -57,6 +57,22 @@ export default function index() {
         })
     };
 
+    const removeField = (index: number) => {
+        console.log(index)
+        const updatedSiblings = [...form.getValues().siblings]; // Clone the array
+        console.log(updatedSiblings)
+        updatedSiblings.splice(index, 1); // Remove the item at the given index
+    
+        setApplicationForm({
+            ...applicationForm,
+            familyBackground: {
+                ...applicationForm.familyBackground,
+                siblings: updatedSiblings, // Set the updated array
+            }
+        });
+    };
+    
+
     useEffect(() => {
         form.setValues({ siblings: applicationForm.familyBackground.siblings });
     }, [applicationForm])
@@ -81,22 +97,17 @@ export default function index() {
                 </div>
                 {applicationForm.familyBackground.siblings.map((_, index) => (
                     <div className="flex flex-col sm:flex-row gap-4 items-end" >
-                        <TextInput {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label={
-                            <Flex justify="center" gap={2} direction='row' align='center'>
-                                <p>Siblings</p>
-                                {index === 0 && (<p className="m-2 text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer"
-                                    onClick={addFieldCharacter}
-                                >Add Field
-                                </p>
-                                )}
-                            </Flex>
-                        } placeholder="Full Name" />
-
+                        <TextInput {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
                         <TextInput {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                         <TextInput {...form.getInputProps(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                         <TextInput {...form.getInputProps(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                        {index === applicationForm.familyBackground.siblings.length -1 && (<div>
+                            <IconCircleMinus size={35} className="" onClick={()=>{removeField(index)}}/>
+                        </div>)}
                     </div>
                 ))}
+                <p className=" w-[12%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Siblings</p>
+
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
                     <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />

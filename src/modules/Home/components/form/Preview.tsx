@@ -313,7 +313,7 @@ export default function index() {
                             {applicationForm.familyBackground.siblings.length > 0 && applicationForm.familyBackground.siblings != ApplicationFormVal.familyBackground.siblings &&  applicationForm.familyBackground.siblings.map((sibling, index) => (
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>
-                                        <p className="text-[#6D6D6D]">Sibling's Name {applicationForm.familyBackground.siblings.length}</p>
+                                        <p className="text-[#6D6D6D]">Sibling's Name </p>
                                         <p className="font-bold">{sibling.fullname}</p>
                                     </div>
                                     <div>

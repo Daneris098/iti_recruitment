@@ -35,7 +35,7 @@ export default function Home() {
           <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-4 items-center ">
 
 
-            <ActionIcon variant="filled" color="white" size="lg" aria-label="Settings" className="sm:hidden" onClick={() => setFilterDrawer(true)}>
+            <ActionIcon variant="filled" color="white" size="lg" aria-label="Settings" className="lg:hidden" onClick={() => setFilterDrawer(true)}>
               <IconAdjustmentsHorizontal className="text-[#559CDA]" />
             </ActionIcon>
 
@@ -44,7 +44,7 @@ export default function Home() {
             </p>)}
 
 
-            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer" onClick={() => { setApplicationFormModal(true) }}>APPLICATION FORM.</span></p>
+            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer font-bold" onClick={() => { setApplicationFormModal(true) }}>APPLICATION FORM.</span></p>
           </div>
           <div>
           </div>

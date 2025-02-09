@@ -1,7 +1,7 @@
-import { Divider, Popover,  TextInput } from "@mantine/core";
+import { Divider, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
 import { EducationalAndEmployment, Step } from "../../types";
 import { ApplicationStore } from "../../store";
@@ -127,7 +127,6 @@ export default function index() {
                 </div>
 
                 <div>
-                    <p className="absolute ml-[11rem] text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer" onClick={addFieldCharacter}>Add Experience</p>
                     <p className="font-bold">Employment Record</p>
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
@@ -239,8 +238,10 @@ export default function index() {
                                 {...form.getInputProps(`employmentRecord.${index}.reasonForLeaving`)}
                             />
                         </div>
+
                     </div>
                 ))}
+                <p className="w-[13%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Experience</p>
 
 
             </div>

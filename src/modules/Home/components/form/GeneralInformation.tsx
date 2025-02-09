@@ -1,4 +1,4 @@
-import { Divider, Select, TextInput, Popover } from "@mantine/core";
+import { Divider, Select, TextInput, Popover, Checkbox } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore } from "@modules/Home/store"
@@ -202,15 +202,21 @@ export default function index() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <div className={cn("w-[100%]", isMobile && "w-[25%]")}>
-                        <div onClick={() => {
-                            form.setValues({
-                                ...form.getValues(),
-                                personalInformation: {
-                                    ...form.getValues().personalInformation, // Preserve all existing fields
-                                    permanentAddress: form.getValues().personalInformation.presentAddress,
-                                },
-                            });
-                        }} className="absolute ml-36 sm:ml-40 text-xs sm:text-sm bg-[#D7FFB9] text-[#5A9D27] sm:px-2 rounded-full font-semibold cursor-pointer">SAME AS PRESENT ADDRESS</div>
+                        <Checkbox
+                            label="Same as Present Address"
+                            className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
+                            onChange={(value)=>{
+                                if(value.target.checked){
+                                    form.setValues({
+                                        ...form.getValues(),
+                                        personalInformation: {
+                                            ...form.getValues().personalInformation, // Preserve all existing fields
+                                            permanentAddress: form.getValues().personalInformation.presentAddress,
+                                        },
+                                    });
+                                }
+                            }}
+                        />
                         <TextInput {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
                     </div>
                     <TextInput {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";
+import { IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -39,7 +40,7 @@ export default function index() {
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Reference && formRef.current) {
-            formRef.current.requestSubmit(); 
+            formRef.current.requestSubmit();
         }
         return (setSubmit(false))
     }, [submit])
@@ -47,6 +48,32 @@ export default function index() {
 
     const addFieldCharacter = () => {
         setApplicationForm({ ...applicationForm, reference: { ...form.getValues(), characterReference: [...form.getValues().characterReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
+    };
+    
+    const removeFieldCharacter = (index: number) => {
+        const updatedCharacterReference = [...form.getValues().characterReference]; 
+        updatedCharacterReference.splice(index, 1); 
+    
+        setApplicationForm({
+            ...applicationForm,
+            reference: {
+                ...applicationForm.reference,
+                characterReference: updatedCharacterReference, 
+            }
+        });
+    };
+    
+    const removeFieldEmployment = (index: number) => {
+        const updatedEmploymentReference = [...form.getValues().employmentReference]; 
+        updatedEmploymentReference.splice(index, 1); 
+    
+        setApplicationForm({
+            ...applicationForm,
+            reference: {
+                ...applicationForm.reference,
+                employmentReference: updatedEmploymentReference, 
+            }
+        });
     };
 
     const addFieldEmployment = () => {
@@ -62,7 +89,6 @@ export default function index() {
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4 ">
                 <div>
-                    <p className="absolute mt-7 ml-24 sm:mt-0 sm:ml-[23rem] text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer" onClick={addFieldCharacter}>Add Field</p>
                     <p className="font-bold">Character Reference (NOT FAMILY MEMBERS)</p>
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
@@ -94,12 +120,16 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Contact Number"
                             />
+                            {index === applicationForm.reference.characterReference.length - 1 && index > 0 && (<div>
+                                <IconCircleMinus size={35} className="" onClick={() => { removeFieldCharacter(index) }} />
+                            </div>)}
                         </div>
                     ))}
+                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Character Reference</p>
+
                 </div>
 
                 <div>
-                    <p className="absolute mt-7 ml-24 sm:mt-0 sm:ml-[25rem] text-sm bg-[#D7FFB9] text-[#5A9D27] px-2 rounded-full font-semibold cursor-pointer" onClick={addFieldEmployment}>Add Field</p>
                     <p className="font-bold">Employment Reference (NOT FAMILY MEMBERS)</p>
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
@@ -110,7 +140,7 @@ export default function index() {
                                 {...form.getInputProps(`employmentReference.${index}.fullname`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
-                                label={`Character Reference ${index + 1}`}
+                                label={`Employment Reference ${index + 1}`}
                                 placeholder="Full Name"
                             />
                             <TextInput
@@ -131,8 +161,13 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Contact Number"
                             />
+                             {index === applicationForm.reference.employmentReference.length - 1 && index > 0 && (<div>
+                                <IconCircleMinus size={35} className="" onClick={() => { removeFieldEmployment(index) }} />
+                            </div>)}
                         </div>
                     ))}
+                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldEmployment}><IconCirclePlus size={20} />Add Employment Reference</p>
+
                 </div>
                 <p className="font-bold">Application Source</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
