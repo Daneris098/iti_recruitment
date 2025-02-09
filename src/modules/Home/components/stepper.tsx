@@ -1,14 +1,15 @@
 import { Stepper, StepperProps } from '@mantine/core';
 import { ApplicationStore } from "@src/modules/Home/store";
-
+import "@modules/Home/styles/index.css"
 export default function index() {
-    const { activeStepper } = ApplicationStore();
+    const { activeStepper, setActiveStepper } = ApplicationStore();
     
 
     function StyledStepper(props: StepperProps) {
         return (
             <Stepper
                 styles={{
+
                     stepBody: {
                         width: '15%',
                         marginTop: 50,
@@ -21,14 +22,16 @@ export default function index() {
                         flexDirection: 'column',
                     },
                     stepIcon: {
-                        background: 'blue',
+                        background: '#cfcfcf',
                         color:'white',
-                        borderWidth: 4,
+                        borderStyle:'hidden'
                     },
                     separator: {
                         marginLeft: -2,
                         marginRight: -2,
-                        height: 10,
+                        height: 4,
+                        margin:'0.1rem',
+                        background: '#cfcfcf'
                     },
                 }}
                 {...props}
@@ -37,7 +40,7 @@ export default function index() {
     }
 
     return (
-        <StyledStepper active={activeStepper} >
+        <StyledStepper active={activeStepper}  onStepClick={(data:number)=>{data < activeStepper && setActiveStepper(data)}}>
             <Stepper.Step label="" description="General and Personal Information" />
             <Stepper.Step label="" description="Education and Employment Record" />
             <Stepper.Step label="" description="Family Background and Other Information" />
