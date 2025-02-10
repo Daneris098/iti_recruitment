@@ -38,10 +38,10 @@ const MessageGradient = ({
             gradientUnits="userSpaceOnUse"
           >
             <stop stopColor="gray" />
-            {/* <stop stopColor="#559CDA" /> */}
-            {/* <stop offset="0.24" stopColor="#7BADFF" /> */}
-            {/* <stop offset="0.73" stopColor="#FFB58D" /> */}
-            {/* <stop offset="1" stopColor="#ED8028" /> */}
+            <stop stopColor="#559CDA" />
+            <stop offset="0.24" stopColor="#7BADFF" />
+            <stop offset="0.73" stopColor="#FFB58D" />
+            <stop offset="1" stopColor="#ED8028" />
           </linearGradient>
         </defs>
       </svg>

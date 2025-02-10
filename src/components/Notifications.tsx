@@ -41,7 +41,7 @@ export const Notifications = () => {
           </Text>
           <MessageGradient size={22} tooltip="Mark All as Read" />
         </Flex>
-        <Tabs color="orange" variant="pills" radius="xs" defaultValue="all">
+        <Tabs color="orange" variant="pills"  radius="xs" defaultValue="all">
           <Tabs.List grow justify="center" px={10} pb={10}>
             <Tabs.Tab value="all" onClick={() => { setFilter('all') }}>All</Tabs.Tab>
             <Tabs.Tab value="application" onClick={() => { setFilter('application') }}>Application</Tabs.Tab>
