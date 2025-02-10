@@ -43,9 +43,10 @@ export const ProfileDropdown = () => {
           direction="column"
           wrap="wrap"
         >
-          <p className="font-semibold text-xl">
-            {userDetails.name}
+          <p className="border-none br-gradient bg-clip-text text-transparent  font-semibold text-xl">
+            Welcome, Raisah!
           </p>
+          <p className="text-xs text-gray-600 poppins">Customize your account here</p>
         </Flex>
         <Menu.Item
           className="poppins"

@@ -1,6 +1,6 @@
 import 'mantine-datatable/styles.layer.css';
 import { DataTable } from 'mantine-datatable';
-import Vacancies from '@src/modules/vacancies/values/response/Vacancies.json';
+import Vacancies from '@src/modules/Vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
 import { VacancyStore } from '../store';

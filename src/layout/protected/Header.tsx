@@ -1,5 +1,7 @@
 import { AppShell, Group } from "@mantine/core";
+import { Notifications } from "@src/components/Notifications";
 import { ProfileDropdown } from "@src/components/ProfileDropdown";
+import { Settings } from "@src/components/Settings";
 import { GlobalStore } from '@src/utils/GlobalStore';
 interface HeaderProps {
   toggleMobile: () => void;
@@ -25,7 +27,11 @@ const Header: React.FC<HeaderProps> = ({ toggleMobile, toggleDesktop }) => {
             /></p>
           )}
         </Group>
-        <ProfileDropdown />
+        <div className="flex items-center gap-3">
+          <Notifications />
+          <Settings />
+          <ProfileDropdown />
+        </div>
       </div>
     </AppShell.Header>
   );

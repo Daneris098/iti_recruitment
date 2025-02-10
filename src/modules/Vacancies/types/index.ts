@@ -1,3 +1,5 @@
+import { Interface } from "readline";
+
 export interface VacancyState {
   selectedData: VacancyType;
   filterDrawer: boolean;
@@ -28,7 +30,7 @@ export interface FilterType {
 }
 
 
-export type VacancyType = {
+export interface VacancyType {
   id: number;
   position: string;
   workplace: string;

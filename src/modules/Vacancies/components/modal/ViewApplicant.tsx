@@ -3,14 +3,14 @@ import { VacancyStore } from "../../store";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
 import { VacancyType } from "../../types";
-import Vacancies from '@src/modules/vacancies/values/response/Vacancies.json';
+import Vacancies from '@src/modules/Vacancies/values/response/Applicants.json';
 import { DataTable } from "mantine-datatable";
 import "@modules/Vacancies/style.css"
 
 
 export default function index() {
     const { selectedData, setSelectedData } = VacancyStore();
-    const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
+    const [vacancyRecords, setVacancyRecords] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
         columnAccessor: "position", // Use a valid key from VacancyType
@@ -20,7 +20,7 @@ export default function index() {
     const pageSize = 10;
 
     useEffect(() => {
-        setVacancyRecords(Vacancies as VacancyType[]); // Type assertion
+        setVacancyRecords(Vacancies); // Type assertion
     }, []);
 
     const sortedRecords = [...vacancyRecords].sort((a, b) => {
@@ -68,17 +68,11 @@ export default function index() {
                         highlightOnHover
                         records={paginatedRecords}
                         columns={[
-                            {
-                                accessor: 'position',
-                                title: 'Applied',
-                                textAlign: "left",
-                                sortable: true,
-                                titleStyle: (theme) => ({ color: theme.colors.blue[6] })
-                            },
-                            { accessor: 'position', title: 'For Interview', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6] }) },
-                            { accessor: 'position', title: 'Offered', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6] }) },
-                            { accessor: 'position', title: 'Hired', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6] }) },
-                            { accessor: 'position', title: 'Archived', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6] }) },
+                            { accessor: 'applied', title: 'Applied', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[6] })},
+                            { accessor: 'forInterview', title: 'For Interview', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6] }) },
+                            { accessor: 'offered', title: 'Offered', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6] }) },
+                            { accessor: 'hired', title: 'Hired', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6] }) },
+                            { accessor: 'archived', title: 'Archived', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6] }) },
                         ]}
                         totalRecords={vacancyRecords.length}
                         recordsPerPage={pageSize}

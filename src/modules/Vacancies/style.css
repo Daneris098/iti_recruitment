@@ -1,3 +1,40 @@
-.mantine-Table-thead{
-    border: 2px solid rgba(0, 120, 235, 0.2); /* 0.5 is 50% opacity */
+
+.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title='Applied']) {
+    font-weight: 400;
+    background-color: rgb(222,236,255, 0.3);
+    color: #0078EB;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title='For Interview']) {
+    font-weight: 400;
+    background-color: rgb(255,216,182, 0.3);
+    color: #FF7800;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title='Offered']) {
+    font-weight: 400;
+    background-color: rgb(255,240,192,0.3);
+    color: #FEC001;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title='Hired']) {
+    font-weight: 400;
+    background-color:rgb(215,255,185, 0.3);
+    color: #5A9D27;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+}
+
+.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title='Archived']) {
+    font-weight: 400;
+    background-color: rgb(255,203,199, 0.3);
+    color: #FF554A;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
 }
