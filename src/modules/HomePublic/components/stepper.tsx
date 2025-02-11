@@ -1,6 +1,6 @@
 import { Stepper, StepperProps } from '@mantine/core';
-import { ApplicationStore } from "@src/modules/Home/store";
-import "@modules/Home/styles/index.css"
+import { ApplicationStore } from "@src/modules/HomePublic/store";
+import "@modules/HomePublic/styles/index.css"
 export default function index() {
     const { activeStepper, setActiveStepper } = ApplicationStore();
     

@@ -63,6 +63,8 @@ export default function index() {
                         style={{
                             color: "#6D6D6D",
                         }}
+                        withColumnBorders
+                        withRowBorders={false}
                         withTableBorder
                         borderRadius="sm"
                         highlightOnHover

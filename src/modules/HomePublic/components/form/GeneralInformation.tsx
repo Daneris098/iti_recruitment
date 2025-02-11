@@ -1,10 +1,10 @@
 import { Divider, Select, TextInput, Popover, Checkbox } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { ApplicationStore } from "@modules/Home/store"
+import { ApplicationStore } from "@modules/HomePublic/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { Step, GeneralInformation } from '@modules/Home/types';
+import { Step, GeneralInformation } from '@modules/HomePublic/types';
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";

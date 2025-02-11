@@ -1,7 +1,7 @@
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
-import { HomeStore } from "@src/modules/Home/store";
+import { HomeStore } from "@src/modules/HomePublic/store";
 import { useEffect } from "react";
 import { filterVal } from "../values";
 

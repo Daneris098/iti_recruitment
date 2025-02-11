@@ -1,4 +1,4 @@
-import { HomeStore } from "@src/modules/Home/store";
+import { HomeStore } from "@src/modules/HomePublic/store";
 import { useEffect } from "react";
 import { Button, MantineSize, Pill } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";

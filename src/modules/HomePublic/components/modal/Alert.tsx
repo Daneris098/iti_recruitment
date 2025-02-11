@@ -1,4 +1,4 @@
-import { ApplicationStore, HomeStore } from "@modules/Home/store";
+import { ApplicationStore, HomeStore } from "@modules/HomePublic/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleCheckBig } from "lucide-react";

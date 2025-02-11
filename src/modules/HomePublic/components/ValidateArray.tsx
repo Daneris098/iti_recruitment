@@ -2,7 +2,7 @@ import { Divider, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
-import { ApplicationStore } from "@modules/Home/store";
+import { ApplicationStore } from "@modules/HomePublic/store";
 
 export default function Index() {
     const { isMobile } = GlobalStore();

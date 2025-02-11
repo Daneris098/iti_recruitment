@@ -10,11 +10,14 @@ import ProtectedLayout from "@src/layout/protected/Layout";
 import PublicLayout from "@src/layout/public/Layout";
 // Modules
 import Login from "@modules/Login";
-import Dashboard from "@modules/Dashboard";
+import Home from "@src/modules/Home";
 import LandingPage from "@src/modules/LandingPage";
 import Vacancies from "@src/modules/Vacancies";
-import Home from "@src/modules/Home";
-import Test from "@src/modules/Home/components/ValidateArray";
+import HomePublic from "@src/modules/HomePublic";
+import Test from "@src/modules/HomePublic/components/ValidateArray";
+import Calendar from "@src/modules/Calendar";
+import JobOffers from "@src/modules/JobOffers";
+import Reports from "@src/modules/Reports";
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -90,8 +93,8 @@ const router = createBrowserRouter([
             element: <Login />,
           },
           {
-            path: "home",
-            element: <Home />,
+            path: "vacancyList",
+            element: <HomePublic />,
           },
           {
             path: "test",
@@ -109,12 +112,24 @@ const router = createBrowserRouter([
         element: <ProtectedLayout />,
         children: [
           {
-            path: "dashboard",
-            element: <Dashboard />,
+            path: "home",
+            element: <Home />,
+          },
+          {
+            path: "calendar",
+            element: <Calendar />,
           },
           {
             path: "vacancies",
             element: <Vacancies />,
+          },
+          {
+            path: "jobOffers",
+            element: <JobOffers />,
+          },
+          {
+            path: "reports",
+            element: <Reports />,
           },
         ],
       },

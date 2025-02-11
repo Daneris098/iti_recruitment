@@ -1,19 +1,19 @@
 import { Modal, Divider, Button, Popover } from '@mantine/core';
-import { HomeStore, ApplicationStore } from "@src/modules/Home/store";
-import Stepper from "@modules/Home/components/stepper";
-import GeneralInformation from "@modules/Home/components/form/GeneralInformation";
-import EducationalAndEmployment from "@modules/Home/components/form/EducationalAndEmployment";
-import FamilyAndOther from "@modules/Home/components/form/FamilyAndOther";
-import Reference from "@modules/Home/components/form/Reference";
-import Photo from "@modules/Home/components/form/Photo";
-import Preview from "@modules/Home/components/form/Preview";
-import Oath from "@modules/Home/components/Oath"
+import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
+import Stepper from "@modules/HomePublic/components/stepper";
+import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
+import EducationalAndEmployment from "@modules/HomePublic/components/form/EducationalAndEmployment";
+import FamilyAndOther from "@modules/HomePublic/components/form/FamilyAndOther";
+import Reference from "@modules/HomePublic/components/form/Reference";
+import Photo from "@modules/HomePublic/components/form/Photo";
+import Preview from "@modules/HomePublic/components/form/Preview";
+import Oath from "@modules/HomePublic/components/Oath"
 import { cn } from "@src/lib/utils";
-import { Step } from '@modules/Home/types';
+import { Step } from '@modules/HomePublic/types';
 import { useEffect, useState } from 'react';
 import { IconCaretDownFilled } from '@tabler/icons-react';
 import { ScrollArea } from '@mantine/core';
-import "@modules/Home/styles/index.css"
+import "@modules/HomePublic/styles/index.css"
 
 
 export default function index() {

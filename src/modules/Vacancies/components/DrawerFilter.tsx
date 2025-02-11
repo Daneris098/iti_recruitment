@@ -1,7 +1,7 @@
 import { Button, Divider, Drawer, Flex,  MultiSelect, Select, Text, TextInput, useMatches, } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 // import { useMediaQuery } from "@mantine/hooks";
-import { HomeStore } from "@src/modules/Vacancies/store";
+import { VacancyStore } from "@src/modules/Vacancies/store";
 import { useEffect } from "react";
 import { filterVal } from "../values";
 
@@ -9,7 +9,7 @@ export default function DrawerFilter() {
   // const [value, setValue] = useState<Date | null>(null);
   // const { value, setValue } = useDateRangeStore();
   // const isMobile = useMediaQuery("(max-width: 425px)");
-  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = HomeStore();
+  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = VacancyStore();
 
   // useEffect(() => {
   //   // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })

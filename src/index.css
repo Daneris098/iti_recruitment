@@ -149,10 +149,10 @@ body {
 }
 
 .active{
-  @apply pl-5  bg-black p-1 rounded-lg text-white cursor-pointer;
+  @apply pl-5 border-none br-gradient p-1 rounded-lg text-white cursor-pointer;
 }
 .inactive{
-  @apply pl-5 p-1 rounded-lg text-black bg-slate-200 cursor-pointer;
+  @apply pl-5 p-1 rounded-lg text-[#6D6D6D] cursor-pointer;
 }
 
 
