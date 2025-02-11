@@ -18,6 +18,7 @@ import Test from "@src/modules/HomePublic/components/ValidateArray";
 import Calendar from "@src/modules/Calendar";
 import JobOffers from "@src/modules/JobOffers";
 import Reports from "@src/modules/Reports";
+import ProfileSettings from "@src/modules/ProfileSettings";
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -130,6 +131,10 @@ const router = createBrowserRouter([
           {
             path: "reports",
             element: <Reports />,
+          },
+          {
+            path: "profileSettings",
+            element: <ProfileSettings />,
           },
         ],
       },

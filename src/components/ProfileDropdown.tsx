@@ -58,6 +58,7 @@ export const ProfileDropdown = () => {
               style={{ width: rem(20), height: rem(20) }}
             />
           }
+          onClick={() => { navigate("/profileSettings"); }}
         >
           Profile
         </Menu.Item>
