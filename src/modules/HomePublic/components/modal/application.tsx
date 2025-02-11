@@ -12,7 +12,6 @@ import { cn } from "@src/lib/utils";
 import { Step } from '@modules/HomePublic/types';
 import { useEffect, useState } from 'react';
 import { IconCaretDownFilled } from '@tabler/icons-react';
-import { ScrollArea } from '@mantine/core';
 import "@modules/HomePublic/styles/index.css"
 
 

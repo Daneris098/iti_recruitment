@@ -1,4 +1,4 @@
-import { EducationBackground, FilterType, GeneralInformation, VacancyType, EmploymentRecord, FamilyBackground, Reference, ApplicationForm, EducationalAndEmployment } from "@modules/Home/types";
+import { EducationBackground, FilterType, GeneralInformation, VacancyType, EmploymentRecord, FamilyBackground, Reference, ApplicationForm, EducationalAndEmployment } from "@modules/HomePublic/types";
 
 export const selectedDataVal: VacancyType = {
   id: 0,

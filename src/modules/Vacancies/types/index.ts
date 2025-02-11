@@ -1,5 +1,3 @@
-import { Interface } from "readline";
-
 export interface VacancyState {
   selectedData: VacancyType;
   filterDrawer: boolean;

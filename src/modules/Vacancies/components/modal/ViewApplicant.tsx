@@ -40,11 +40,6 @@ export default function index() {
 
     const paginatedRecords = sortedRecords.slice((page - 1) * pageSize, page * pageSize);
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    };
-
     return (
         <>
             <Modal size={'80%'} opened={selectedData != selectedDataVal} centered onClose={() => setSelectedData(selectedDataVal)} title={'View Applicant'}

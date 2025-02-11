@@ -12,7 +12,7 @@ enum StatusColor {
 }
 
 export default function index() {
-    const { selectedData, setSelectedData } = VacancyStore();
+    const { setSelectedData } = VacancyStore();
     const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({

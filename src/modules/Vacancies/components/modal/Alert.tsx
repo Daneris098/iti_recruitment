@@ -11,7 +11,7 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const { setApplicationFormModal, setAlert, alert } = VacancyStore();
+    const {  setAlert, alert } = VacancyStore();
     const { setAction } = DialogStore();
     useEffect(() => {
         console.log(alert)

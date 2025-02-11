@@ -1,15 +1,13 @@
-import { Modal, Divider, Button, Popover, Select, TextInput, Textarea } from '@mantine/core';
+import { Modal, Divider, Button, Select, TextInput, Textarea } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { GlobalStore } from '@src/utils/GlobalStore';
 import { IconCaretDownFilled } from '@tabler/icons-react';
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { DateRange } from '../DateRange';
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import { VacancyStore, DialogStore } from "@modules/Vacancies/store";
 import { AlertType } from '../../types';
 
 export default function index() {
-    const { isMobile } = GlobalStore()
     const { action, setAction } = DialogStore()
     const { setAlert } = VacancyStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -23,7 +21,7 @@ export default function index() {
         }
     });
 
-    const onSubmit = async (form: any) => {
+    const onSubmit = async () => {
     };
 
     const { value, setValue } = useDateRangeStore();

@@ -88,7 +88,7 @@ export default function AlertModals() {
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
                     <CircleCheckBig color="#559cda" size={70} />
-                    <Text className="text-xl font-bold">
+                    <Text className="text-xl font-bold text-center">
                         Are you sure you want to cancel the changes?
                     </Text>
                     <div className="flex gap-2 w-[80%]">

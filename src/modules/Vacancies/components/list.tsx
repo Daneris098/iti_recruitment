@@ -1,7 +1,7 @@
-import jobsJson from "@src/modules/Home/values/response/jobs.json";
-import { VacancyType } from "@src/modules/Home/types";
+import jobsJson from "@src/modules/HomePublic/values/response/jobs.json";
+import { VacancyType } from "@src/modules/HomePublic/types";
 import { MantineSize, Pill, useMatches } from "@mantine/core";
-import { HomeStore } from "@src/modules/Home/store";
+import { HomeStore } from "@src/modules/HomePublic/store";
 import { cn } from "@src/lib/utils";
 
 export default function index() {

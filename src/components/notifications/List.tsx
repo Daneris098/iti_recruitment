@@ -1,6 +1,6 @@
 import { IconChecklist, IconClock, IconPhoneCall, IconUserPlus } from "@tabler/icons-react";
 import { Avatar, Container, Divider, Flex, Text } from "@mantine/core";
-import items from "@components/Notifications/value.json";
+import items from "@components/notifications/value.json";
 import { useEffect } from "react";
 import { NotificationStore } from "./store";
 import { Notification } from "@components/notifications/types"

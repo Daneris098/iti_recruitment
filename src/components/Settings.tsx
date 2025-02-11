@@ -4,7 +4,6 @@ import {
   IconUsers,
   IconPhoneCall,
   IconAddressBook,
-  IconInfoCircle,
 } from "@tabler/icons-react";
 import "@shared/layout/base/styles/navbar.css";
 export const Settings = () => {

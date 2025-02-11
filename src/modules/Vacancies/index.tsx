@@ -6,7 +6,7 @@ import { DialogStore } from '@src/modules/Vacancies/store'
 import Modals from '@modules/Vacancies/components/modal/index'
 
 export default function index() {
-  const { action, setAction } = DialogStore()
+  const { setAction } = DialogStore()
     return (
         <div className="rounded-md h-full flex flex-col gap-5 p-6 bg-white relative">
             <Modals />

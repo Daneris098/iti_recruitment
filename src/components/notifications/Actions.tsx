@@ -1,4 +1,4 @@
-import { IconClock, IconPhoneCall, IconChecklist } from "@tabler/icons-react";
+import { IconClock, IconChecklist } from "@tabler/icons-react";
 import { Avatar, Container, Divider, Flex, Text } from "@mantine/core";
 import items from "@shared/services/notification.json";
 

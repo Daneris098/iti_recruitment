@@ -10,7 +10,7 @@ interface HeaderProps {
   desktopOpened: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleMobile, toggleDesktop, desktopOpened }) => {
+const Header: React.FC<HeaderProps> = ({ toggleMobile, toggleDesktop }) => {
   const { isMobile, isDrawerOpened } = GlobalStore()
 
   useEffect(() => {

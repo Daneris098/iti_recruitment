@@ -1,6 +1,6 @@
 import { AppShell, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import {  IconUsers, IconHome, IconCalendarWeek, IconFileDescription, IconArchive, IconTransfer, IconUserPlus, IconBriefcase, IconMessageCirclePlus, IconMessageCircleUser, IconUser } from '@tabler/icons-react';
+import {  IconUsers, IconHome, IconCalendarWeek, IconFileDescription, IconArchive, IconTransfer, IconUserPlus, IconBriefcase,  IconMessageCircleUser, IconUser } from '@tabler/icons-react';
 import { Search, Files, FileUp, FileUser } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
