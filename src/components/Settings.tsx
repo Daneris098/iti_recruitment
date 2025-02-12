@@ -67,6 +67,7 @@ export const Settings = () => {
           leftSection={
             <IconAddressBook style={{ width: rem(20), height: rem(20) }} />
           }
+          onClick={() => { navigate("/administratorSettings"); }}
         >
           <p className="ml-4" >Administrator Settings</p>
         </Menu.Item>

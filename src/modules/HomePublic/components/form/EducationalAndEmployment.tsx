@@ -1,7 +1,7 @@
 import { Divider, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCalendarMonth, IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
 import { EducationalAndEmployment, Step } from "../../types";
 import { ApplicationStore } from "../../store";
@@ -64,7 +64,10 @@ export default function index() {
         form.setValues({ employmentRecord: applicationForm.educationAndEmployment.employmentRecord });
     }, [applicationForm])
 
+    const removeExperience = () => {
 
+    }
+    
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4">
@@ -132,7 +135,8 @@ export default function index() {
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
 
                 {applicationForm.educationAndEmployment.employmentRecord.map((_, index) => (
-                    <div key={index}>
+                    <div key={index} className="flex flex-col">
+                        {/* <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} /> */}
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
                                 {...form.getInputProps(`employmentRecord.${index}.employerCompany`)}

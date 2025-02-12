@@ -62,7 +62,7 @@ export default function index() {
         const updatedSiblings = [...form.getValues().siblings]; // Clone the array
         console.log(updatedSiblings)
         updatedSiblings.splice(index, 1); // Remove the item at the given index
-    
+
         setApplicationForm({
             ...applicationForm,
             familyBackground: {
@@ -71,7 +71,7 @@ export default function index() {
             }
         });
     };
-    
+
 
     useEffect(() => {
         form.setValues({ siblings: applicationForm.familyBackground.siblings });
@@ -101,8 +101,8 @@ export default function index() {
                         <TextInput {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                         <TextInput {...form.getInputProps(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                         <TextInput {...form.getInputProps(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
-                        {index === applicationForm.familyBackground.siblings.length -1 && (<div>
-                            <IconCircleMinus size={35} className="" onClick={()=>{removeField(index)}}/>
+                        {index === applicationForm.familyBackground.siblings.length - 1 && index != 0 && (<div>
+                            <IconCircleMinus size={35} className="" onClick={() => { removeField(index) }} />
                         </div>)}
                     </div>
                 ))}
