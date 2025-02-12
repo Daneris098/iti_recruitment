@@ -18,7 +18,7 @@ export default function index() {
     const { activePanel } = OrganizationSettingsStore()
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Company[]>(data.slice(0, PAGE_SIZE));
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm] = useState('');
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof Company; direction: 'asc' | 'desc' }>({
         columnAccessor: 'name',
         direction: 'asc',
