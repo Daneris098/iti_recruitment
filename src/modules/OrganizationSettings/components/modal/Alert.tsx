@@ -1,4 +1,4 @@
-import { OrganizationSettingsStore } from "@modules/OrganizationSettings/store";
+import { ProfileSettingsStore } from "@modules/ProfileSettings/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleCheckBig } from "lucide-react";
@@ -7,7 +7,7 @@ import { AlertType } from "@modules/ProfileSettings/types";
 
 
 export default function AlertModals() {
-    const { setAlert, alert } = OrganizationSettingsStore();
+    const { setAlert, alert } = ProfileSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
         [AlertType.cancellled]: true,

@@ -19,6 +19,7 @@ import Calendar from "@src/modules/Calendar";
 import JobOffers from "@src/modules/JobOffers";
 import Reports from "@src/modules/Reports";
 import ProfileSettings from "@src/modules/ProfileSettings";
+import OrganizationSettings from "@src/modules/OrganizationSettings"
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -135,6 +136,10 @@ const router = createBrowserRouter([
           {
             path: "profileSettings",
             element: <ProfileSettings />,
+          },
+          {
+            path: "organizationSettings",
+            element: <OrganizationSettings />,
           },
         ],
       },

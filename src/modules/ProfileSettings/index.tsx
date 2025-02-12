@@ -1,4 +1,4 @@
-import {  Button, PasswordInput, Tabs, TextInput } from "@mantine/core";
+import { Button, PasswordInput, Tabs, TextInput } from "@mantine/core";
 import avatar from "@assets/avatar.png";
 import "@modules/ProfileSettings/style.css"
 import Modals from "@modules/ProfileSettings/modal"
@@ -10,18 +10,18 @@ export const ProfileSettings = () => {
         <div className="bg-white h-full  rounded-md">
             <Modals />
             <div className="h-[15%] br-gradient rounded-t-md flex flex-col items-center">
-                <div className=" flex items-center justify-between w-[90%] m-auto">
+                <div className=" flex items-center gap-4 sm:gap-0 sm:justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
                         <p className="sm:text-3xl text-white ">Profile Settings</p>
                         <p className="sm:text-xl text-white ">Customize your profile.</p>
                     </div>
-                    <div className="flex gap-3">
-                        <Button className="rounded-md" onClick={() => { setAlert(AlertType.cancel) }} color="white" variant="outline">Cancel</Button>
-                        <Button className="rounded-md" onClick={() => { setAlert(AlertType.saved) }}>Save</Button>
+                    <div className="flex gap-2   sm:w-[15%] ">
+                        <Button className="text-xs rounded-md w-[52%]" onClick={() => { setAlert(AlertType.cancel) }} color="white" variant="outline">Cancel</Button>
+                        <Button className="text-xs rounded-md w-[48%]" onClick={() => { setAlert(AlertType.saved) }}>Save</Button>
                     </div>
                 </div>
             </div>
-            <Tabs defaultValue="profileDetails" variant="default" className=" h-[75%]">
+            <Tabs defaultValue="profileDetails" variant="default" className=" h-[75%] p-2">
                 <Tabs.List className="px-4">
                     <Tabs.Tab value="profileDetails" className="text-[#559CDA]">
                         Profile Details

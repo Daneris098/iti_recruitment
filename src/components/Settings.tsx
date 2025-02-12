@@ -6,7 +6,9 @@ import {
   IconAddressBook,
 } from "@tabler/icons-react";
 import "@shared/layout/base/styles/navbar.css";
+import { useNavigate } from "react-router-dom";
 export const Settings = () => {
+  const navigate = useNavigate();
   return (
     <Menu
       shadow="md"
@@ -42,6 +44,7 @@ export const Settings = () => {
               style={{ width: rem(20), height: rem(20) }}
             />
           }
+          onClick={() => { navigate("/organizationSettings"); }}
         >
           <p className="ml-4">Organization Settings</p>
         </Menu.Item>
