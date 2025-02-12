@@ -56,6 +56,7 @@ export const Settings = () => {
           leftSection={
             <IconPhoneCall style={{ width: rem(20), height: rem(20) }} />
           }
+          onClick={() => { navigate("/HiringSettings"); }}
         >
           <p className="ml-4" >Hiring Settings</p>
         </Menu.Item>

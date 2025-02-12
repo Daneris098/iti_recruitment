@@ -20,6 +20,7 @@ import JobOffers from "@src/modules/JobOffers";
 import Reports from "@src/modules/Reports";
 import ProfileSettings from "@src/modules/ProfileSettings";
 import OrganizationSettings from "@src/modules/OrganizationSettings"
+import HiringSettings from "@src/modules/HiringSettings"
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -140,6 +141,10 @@ const router = createBrowserRouter([
           {
             path: "organizationSettings",
             element: <OrganizationSettings />,
+          },
+          {
+            path: "HiringSettings",
+            element: <HiringSettings />,
           },
         ],
       },
