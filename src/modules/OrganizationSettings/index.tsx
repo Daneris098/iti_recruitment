@@ -5,9 +5,15 @@ import Modals from "@src/modules/OrganizationSettings/components/modal"
 import DataTableComp from "@modules/OrganizationSettings/components/DataTable";
 import { panel } from "@modules/OrganizationSettings/types/index"
 import bg2 from '@assets/bg2.png';
+import { useEffect } from "react";
 
 export const OrganizationSettings = () => {
-    const { setAlert, setActivePanel } = OrganizationSettingsStore()
+    const { setAlert, setActivePanel, activePanel } = OrganizationSettingsStore()
+    
+    useEffect(() => {
+        setActivePanel(panel.companyList)
+    },[])
+
     return (
         <div className="bg-white h-full">
             <Modals />
@@ -26,32 +32,32 @@ export const OrganizationSettings = () => {
             <Tabs defaultValue={ panel.companyList} variant="default" className="h-[85%]  p-2" onChange={(val) => { setActivePanel(`${val}`) }}>
                 <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto">
                     <Tabs.Tab value={panel.companyList}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.companyList ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         Company List
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.branch}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.branch ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         Branch
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.section}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.section ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         Section
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.division}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.division ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         Division
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.positionLevel}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.positionLevel ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         Position Level
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.departments}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.departments ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         Departments
                     </Tabs.Tab>

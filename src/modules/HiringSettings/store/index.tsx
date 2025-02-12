@@ -3,7 +3,7 @@ import { HiringSettingsState, panel } from "@modules/HiringSettings/types";
 
 export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
   alert: '',
-  activePanel: panel.applicationSettings,
+  activePanel: panel.customFeedback,
 
   setActivePanel: (activePanel: string) => set({ activePanel: activePanel }),
   setAlert: (alert: string) => set({ alert: alert }),

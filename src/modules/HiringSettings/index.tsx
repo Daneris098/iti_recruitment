@@ -2,16 +2,21 @@ import { Button, Tabs } from "@mantine/core";
 import { HiringSettingsStore } from "@modules/HiringSettings/store"
 import Modals from "@src/modules/OrganizationSettings/components/modal"
 import { panel, AlertType, description } from "@modules/HiringSettings/types/index"
-import  CustomFeedback  from "@modules/HiringSettings/components/panel/CustomFeedback"
-import OfferResponsePeriod  from "@modules/HiringSettings/components/panel/OfferResponsePeriod"
-import ApplicationSettings  from "@modules/HiringSettings/components/panel/ApplicationSettings"
-import InterviewStages  from "@modules/HiringSettings/components/panel/InterviewStages"
-import Interviewers  from "@modules/HiringSettings/components/panel/Interviewers"
-import JobOfferTemplate  from "@modules/HiringSettings/components/panel/JobOfferTemplate"
+import CustomFeedback from "@modules/HiringSettings/components/panel/CustomFeedback"
+import OfferResponsePeriod from "@modules/HiringSettings/components/panel/OfferResponsePeriod"
+import ApplicationSettings from "@modules/HiringSettings/components/panel/ApplicationSettings"
+import InterviewStages from "@modules/HiringSettings/components/panel/InterviewStages"
+import Interviewers from "@modules/HiringSettings/components/panel/Interviewers"
+import JobOfferTemplate from "@modules/HiringSettings/components/panel/JobOfferTemplate"
 import bg2 from '@assets/bg2.png';
+import { useEffect } from "react";
 
 export default function index() {
-    const { setAlert, setActivePanel } = HiringSettingsStore()
+    const { setAlert, setActivePanel, activePanel } = HiringSettingsStore()
+    useEffect(() => {
+        setActivePanel(panel.customFeedback)
+    }, [])
+
     return (
         <div className="bg-white h-full">
             <Modals />
@@ -30,39 +35,39 @@ export default function index() {
             <Tabs defaultValue={panel.customFeedback} variant="default" className="h-[85%]  p-2" onChange={(val) => { setActivePanel(`${val}`) }}>
                 <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto">
                     <Tabs.Tab value={panel.customFeedback}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.customFeedback ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.customFeedback}
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.offerResponsePeriod}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.offerResponsePeriod ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.offerResponsePeriod}
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.applicationSettings}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.applicationSettings ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.applicationSettings}
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.interviewStages}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.interviewStages ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.interviewStages}
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.interviewers}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.interviewers ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.interviewers}
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.jobOfferTemplate}
-                        className="text-gray-500 data-[state=active]:text-[#559CDA]"
+                        className={` ${activePanel === panel.jobOfferTemplate ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.jobOfferTemplate}
                     </Tabs.Tab>
                 </Tabs.List>
 
                 <div className="border-[2px] border-blue-300  rounded-md  px-4 sm:m-4 h-[85%] sm:h-[90%] p-4 sm:p-8">
-                    <Tabs.Panel value={panel.customFeedback}><CustomFeedback/></Tabs.Panel>
+                    <Tabs.Panel value={panel.customFeedback}><CustomFeedback /></Tabs.Panel>
                     <Tabs.Panel value={panel.offerResponsePeriod}><OfferResponsePeriod /></Tabs.Panel>
                     <Tabs.Panel value={panel.applicationSettings}><ApplicationSettings /></Tabs.Panel>
                     <Tabs.Panel value={panel.interviewStages}><InterviewStages /></Tabs.Panel>
