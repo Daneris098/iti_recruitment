@@ -6,11 +6,11 @@ import { title, description, Company, columns } from '@modules/OrganizationSetti
 
 const PAGE_SIZE = 15;
 const data: Company[] = [
-    { name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'active' },
-    { name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'active' },
-    { name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'active' },
-    { name: 'Eve', code: 'insys004', location: 'Mandaluyong City', area: 'North 3', description: 'SM Downtown', status: 'active' },
-    { name: 'Charlie', code: 'insys005', location: 'Navotas City', area: 'North 3', description: 'SM Downtown', status: 'active' }
+    { name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { name: 'Eve', code: 'insys004', location: 'Mandaluyong City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { name: 'Charlie', code: 'insys005', location: 'Navotas City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' }
 ];
 
 

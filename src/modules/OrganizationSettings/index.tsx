@@ -4,12 +4,14 @@ import { AlertType } from "./types";
 import Modals from "@src/modules/OrganizationSettings/components/modal"
 import DataTableComp from "@modules/OrganizationSettings/components/DataTable";
 import { panel } from "@modules/OrganizationSettings/types/index"
+import bg2 from '@assets/bg2.png';
+
 export const OrganizationSettings = () => {
     const { setAlert, setActivePanel } = OrganizationSettingsStore()
     return (
         <div className="bg-white h-full">
             <Modals />
-            <div className="h-[15%] br-gradient rounded-t-md flex flex-col items-center">
+            <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
                 <div className=" flex items-center justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
                         <p className="text-xs sm:text-3xl text-white ">Organization Settings</p>
