@@ -1,5 +1,5 @@
 import { Button, Tabs } from "@mantine/core";
-import { OrganizationSettingsStore } from "@modules/AdministratorSettings/store"
+import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store"
 import { AlertType } from "./types";
 import Modals from "@src/modules/AdministratorSettings/components/modal"
 import DataTableComp from "@modules/AdministratorSettings/components/DataTable";
@@ -8,7 +8,7 @@ import bg2 from '@assets/bg2.png';
 import { useEffect } from "react";
 
 export default function index() {
-    const { setAlert, setActivePanel, activePanel } = OrganizationSettingsStore()
+    const { setAlert, setActivePanel, activePanel } = AdministratorSettingsStore()
 
     useEffect(() => {
         setActivePanel(panel.userAccounts)
@@ -20,7 +20,7 @@ export default function index() {
             <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
                 <div className=" flex items-center justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
-                        <p className="text-xs sm:text-3xl text-white ">Users</p>
+                        <p className="text-xs sm:text-3xl text-white font-bold">Users</p>
                         <p className="text-xs sm:text-xl text-white ">User Information</p>
                     </div>
                     <div className="flex gap-3 sm:w-[15%]">

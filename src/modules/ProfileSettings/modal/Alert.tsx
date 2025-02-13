@@ -92,8 +92,8 @@ export default function AlertModals() {
                         Are you sure you want to cancel the changes?
                     </Text>
                     <div className="flex gap-2 w-[80%]">
-                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>Yes</Button>
-                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>No</Button>
+                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>YES</Button>
+                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>NO</Button>
                     </div>
                 </div>
             </Modal>

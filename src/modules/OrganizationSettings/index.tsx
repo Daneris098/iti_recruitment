@@ -20,7 +20,7 @@ export const OrganizationSettings = () => {
             <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
                 <div className=" flex items-center justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
-                        <p className="text-xs sm:text-3xl text-white ">Organization Settings</p>
+                        <p className="text-xs sm:text-3xl text-white font-bold">Organization Settings</p>
                         <p className="text-xs sm:text-xl text-white ">Customize Organization Settings</p>
                     </div>
                     <div className="flex gap-3 sm:w-[15%]">

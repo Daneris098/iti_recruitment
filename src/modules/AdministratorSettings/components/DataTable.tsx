@@ -1,7 +1,7 @@
 import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus } from "@tabler/icons-react";
 import { useEffect, useState } from 'react';
-import { OrganizationSettingsStore } from '@modules/AdministratorSettings/store';
+import { AdministratorSettingsStore, DialogStore } from '@modules/AdministratorSettings/store';
 import { title, description, Company, columns } from '@modules/AdministratorSettings/types';
 
 const PAGE_SIZE = 15;
@@ -16,7 +16,8 @@ const data = [
 
 
 export default function index() {
-    const { activePanel } = OrganizationSettingsStore()
+    const { activePanel } = AdministratorSettingsStore()
+    const { setAction } = DialogStore()
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Company[]>(data.slice(0, PAGE_SIZE));
     const [searchTerm] = useState('');
@@ -29,7 +30,7 @@ export default function index() {
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         const filteredData = data.filter(item =>
-            item.username.toLowerCase().includes(searchTerm.toLowerCase()) 
+            item.username.toLowerCase().includes(searchTerm.toLowerCase())
         );
 
         const sortedData = [...filteredData].sort((a, b) => {
@@ -49,7 +50,7 @@ export default function index() {
         <div className="flex flex-col h-full ">
             <div className='flex flex-col mb-4'>
                 <div className="text-[#559CDA] font-bold flex gap-2 items-center">
-                    {title[activePanel as keyof typeof title]}<IconCirclePlus color="green" />
+                    {title[activePanel as keyof typeof title]}<IconCirclePlus className='cursor-pointer' color="green" onClick={() => { setAction('New') }} />
                 </div>
                 <p className='text-[#6D6D6D]'>{description[activePanel as keyof typeof description]}</p>
             </div>

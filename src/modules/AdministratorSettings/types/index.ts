@@ -1,5 +1,5 @@
 
-export interface OrganizationSettingsState {
+export interface AdministratorSettingsState {
   alert: string;
   activePanel: string;
 
@@ -41,3 +41,11 @@ export type Company = {
   firstname: string;
   email: string;
 };
+
+export interface DialogState {
+  action: string,
+  loading: boolean,
+
+  setAction: (action: string) => void;
+  setLoading: (loading: boolean) => void;
+}

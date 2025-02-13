@@ -11,7 +11,7 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const {  setAlert, alert } = VacancyStore();
+    const { setAlert, alert } = VacancyStore();
     const { setAction } = DialogStore();
     useEffect(() => {
         console.log(alert)
@@ -32,7 +32,7 @@ export default function AlertModals() {
         <>
             <Modal
                 opened={alert === AlertType.vacancyAddedSuccesfull}
-                withCloseButton={true}
+                withCloseButton={false}
                 onClose={() => setAlert("")}
                 styles={{
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
@@ -44,14 +44,14 @@ export default function AlertModals() {
             >
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={70} />
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold">
                         Job Vacancy successfully added!
                     </Text>
                     <Button className="rounded-lg br-gradient border-none" onClick={() => {
                         setAction('New')
                         setAlert("")
-                    }}>Add Again</Button>
+                    }}>ADD AGAIN</Button>
                 </div>
             </Modal>
         </>

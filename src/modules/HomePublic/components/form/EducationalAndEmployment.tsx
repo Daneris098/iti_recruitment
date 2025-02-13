@@ -136,7 +136,7 @@ export default function index() {
 
                 {applicationForm.educationAndEmployment.employmentRecord.map((_, index) => (
                     <div key={index} className="flex flex-col">
-                        {/* <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} /> */}
+                        <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} />
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
                                 {...form.getInputProps(`employmentRecord.${index}.employerCompany`)}

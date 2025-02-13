@@ -2,7 +2,6 @@ import { Modal, Divider, Button, Select, TextInput, Textarea } from '@mantine/co
 import { useForm } from '@mantine/form';
 import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useRef } from "react";
-import { DateRange } from '../DateRange';
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import { VacancyStore, DialogStore } from "@modules/Vacancies/store";
 import { AlertType } from '../../types';
@@ -24,7 +23,7 @@ export default function index() {
     const onSubmit = async () => {
     };
 
-    const { value, setValue } = useDateRangeStore();
+    // const { value, setValue } = useDateRangeStore();
 
 
     return (
@@ -72,7 +71,7 @@ export default function index() {
                             radius={8}
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm "
+                            className="border-none w-full text-sm  w-full"
                             classNames={{ label: "p-1" }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
@@ -214,21 +213,7 @@ export default function index() {
                         />
                     </div>
 
-                    <div className='flex gap-4 '>
-                        <div className='w-1/2'>
-                            <DateRange
-                                gapValue={12}
-                                size="lg"
-                                value={value}
-                                setValue={setValue}
-                                fLabel="Vacancy Duration"
-                                lLabel=" "
-                                fPlaceholder="Start Date"
-                                lPlaceholder="End Date"
-                            />
-                        </div>
-                        <TextInput className='w-1/2 text-[#6D6D6D]' {...form.getInputProps("desiredSalary")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
-                    </div>
+           
 
                     <Textarea
                         size="lg"
@@ -247,8 +232,8 @@ export default function index() {
                         className="br-gradient border-none text-white w-[10%] self-end"
                         radius={10}
                         onClick={() => {
-                            setAlert(AlertType.vacancyAddedSuccesfull)
-                            setAction('')
+                            // setAlert(AlertType.vacancyAddedSuccesfull)
+                            // setAction('')
                         }}
                     >ADD</Button>
 

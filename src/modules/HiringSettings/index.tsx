@@ -1,6 +1,6 @@
 import { Button, Tabs } from "@mantine/core";
 import { HiringSettingsStore } from "@modules/HiringSettings/store"
-import Modals from "@src/modules/OrganizationSettings/components/modal"
+import Modals from "@src/modules/HiringSettings/components/modal"
 import { panel, AlertType, description } from "@modules/HiringSettings/types/index"
 import CustomFeedback from "@modules/HiringSettings/components/panel/CustomFeedback"
 import OfferResponsePeriod from "@modules/HiringSettings/components/panel/OfferResponsePeriod"
@@ -23,7 +23,7 @@ export default function index() {
             <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
                 <div className=" flex items-center justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
-                        <p className="text-xs sm:text-3xl text-white ">Hiring Settings</p>
+                        <p className="text-xs sm:text-3xl text-white font-bold">Hiring Settings</p>
                         <p className="text-xs sm:text-xl text-white ">Customize Organization Settings</p>
                     </div>
                     <div className="flex gap-3 sm:w-[15%]">
