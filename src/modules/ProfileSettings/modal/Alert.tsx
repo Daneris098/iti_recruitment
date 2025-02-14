@@ -1,13 +1,14 @@
-import { OrganizationSettingsStore } from "@modules/OrganizationSettings/store";
+import { ProfileSettingsStore } from "@modules/ProfileSettings/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType } from "@modules/ProfileSettings/types";
+import { IconX } from "@tabler/icons-react";
 
 
 export default function AlertModals() {
-    const { setAlert, alert } = OrganizationSettingsStore();
+    const { setAlert, alert } = ProfileSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
         [AlertType.cancellled]: true,
@@ -33,19 +34,26 @@ export default function AlertModals() {
         <>
             <Modal
                 opened={alert === AlertType.saved}
-                withCloseButton={true}
+                withCloseButton={false}
                 onClose={() => setAlert("")}
                 styles={{
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }}
-                title="Save Changes"
                 centered
                 size={modalSize}
                 padding={30}
             >
-                <Divider size="xs" color="#6D6D6D" />
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Save Changes
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => { setAlert(""); }} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={70} />
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold">
                         All Changes have been successfully saved!
                     </Text>
@@ -54,19 +62,26 @@ export default function AlertModals() {
 
             <Modal
                 opened={alert === AlertType.cancellled}
-                withCloseButton={true}
+                withCloseButton={false}
                 onClose={() => setAlert("")}
                 styles={{
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }}
-                title="Cancel Changes"
                 centered
                 size={modalSize}
                 padding={30}
             >
-                <Divider size="xs" color="#6D6D6D" />
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Cancel Changes
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")}  />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={70} />
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold">
                         Changes have not been saved.
                     </Text>
@@ -75,19 +90,26 @@ export default function AlertModals() {
 
             <Modal
                 opened={alert === AlertType.cancel}
-                withCloseButton={true}
+                withCloseButton={false}
                 onClose={() => setAlert("")}
                 styles={{
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }}
-                title="Save Changes"
                 centered
                 size={modalSize}
                 padding={30}
             >
-                <Divider size="xs" color="#6D6D6D" />
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Cancel Changes
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={70} />
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold text-center">
                         Are you sure you want to cancel the changes?
                     </Text>
