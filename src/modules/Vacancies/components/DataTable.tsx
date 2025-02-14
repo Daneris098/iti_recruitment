@@ -60,21 +60,13 @@ export default function index() {
             records={paginatedRecords}
             columns={[
                 { accessor: 'position', title: 'Vacancy', textAlign: "left", sortable: true },
-                {
-                    accessor: 'datePublish',
-                    title: 'Publish Date',
-                    textAlign: "left",
-                    sortable: true,
+                { accessor: 'datePublish', title: 'Publish Date', textAlign: "left", sortable: true,
                     render: ({ datePublish }) => formatDate(datePublish)
                 },
                 { accessor: 'interviewer', title: 'Interviewer', textAlign: "left", sortable: true },
                 { accessor: 'department', title: 'Department', textAlign: "left", sortable: true },
                 { accessor: 'quantity', title: 'Quantity', textAlign: "center", sortable: true },
-                {
-                    accessor: 'status',
-                    title: 'Status',
-                    textAlign: "center",
-                    sortable: true,
+                { accessor: 'status', title: 'Status', textAlign: "center", sortable: true,
                     render: ({ status }) => (
                         <div className='rounded-xl text-white text-center p-1' style={{ background: StatusColor[status as keyof typeof StatusColor] || 'gray' }}>
                             {status}

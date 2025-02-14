@@ -1,10 +1,10 @@
 import Alert from '@modules/OrganizationSettings/components/modal/Alert'
 import CreateAccount from "@modules/OrganizationSettings/components/modal/CreateAccount"
-export default function index() {
-    return (
+export default function Index({ dataTableRef }: { dataTableRef: React.RefObject<{ saveAll: () => void; cancelAll: () => void }> }) {
+   return (
         <>
             <CreateAccount/>
-            <Alert />
+            <Alert dataTableRef={dataTableRef} />
         </>
     )
 }

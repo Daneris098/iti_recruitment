@@ -8,7 +8,7 @@ import { IconX } from "@tabler/icons-react";
 
 
 
-export default function AlertModals() {
+export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefObject<{ saveAll: () => void; cancelAll: () => void }> }) {
     const { setAlert, alert } = OrganizationSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
@@ -17,7 +17,6 @@ export default function AlertModals() {
     };
 
     useEffect(() => {
-        console.log('alert: ', alert)
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setAlert("");
@@ -46,7 +45,7 @@ export default function AlertModals() {
                         <p className="text-2xl text-[#559CDA] font-semibold">
                             Save Changes
                         </p>
-                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => { setAlert(""); }} />
                     </div>
                     <Divider size="xs" color="#6D6D6D" />
                 </div>
@@ -112,7 +111,7 @@ export default function AlertModals() {
                         Are you sure you want to cancel the changes?
                     </Text>
                     <div className="flex gap-2 w-[80%]">
-                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>YES</Button>
+                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled); dataTableRef.current?.cancelAll(); }}>YES</Button>
                         <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>NO</Button>
                     </div>
                 </div>

@@ -1,3 +1,5 @@
+import { TextInput } from "@mantine/core";
+import { IconPencil } from "@tabler/icons-react";
 
 export interface OrganizationSettingsState {
   alert: string;
@@ -43,8 +45,8 @@ export enum panel {
 
 export const columns = {
   companyList: [
-    { accessor: 'name', title: 'Name', sortable: true },
     { accessor: 'code', title: 'Code', sortable: true },
+    { accessor: 'name', title: 'Name', sortable: true },
   ],
   branch: [
     { accessor: 'code', title: 'Code', sortable: true },
@@ -94,4 +96,5 @@ export type Company = {
   division: string;
   department: string;
   departmentHead: string;
+  isNewField?: boolean;
 };
