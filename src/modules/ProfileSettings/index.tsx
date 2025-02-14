@@ -5,9 +5,38 @@ import Modals from "@modules/ProfileSettings/modal"
 import { ProfileSettingsStore } from "@modules/ProfileSettings/store"
 import { AlertType } from "./types";
 import bg2 from '@assets/bg2.png';
+import { useState, useRef, useEffect } from "react";
 
 export const ProfileSettings = () => {
-    const { setAlert } = ProfileSettingsStore()
+    const { setAlert, activePanel, setActivePanel } = ProfileSettingsStore()
+    // Create refs for both tabs
+    const profileDetailsTabRef = useRef(null);
+    const changePasswordTabRef = useRef(null);
+
+    // Function to switch to Profile Details tab
+    const switchToProfileDetails = () => {
+        if (profileDetailsTabRef.current) {
+            (profileDetailsTabRef.current as any).click(); // Simulates a click
+        }
+    };
+
+    // Function to switch to Change Password tab
+    const switchToChangePassword = () => {
+        if (changePasswordTabRef.current) {
+            (changePasswordTabRef.current as any).click(); // Simulates a click
+        }  
+    };
+
+
+    useEffect(() => {
+        if (activePanel === 'profileDetails') { 
+            switchToProfileDetails()
+        }
+        else if (activePanel === 'changePassword') {
+            switchToChangePassword()
+        }
+    }, [activePanel])
+
     return (
         <div className="bg-white h-full  rounded-md">
             <Modals />
@@ -23,12 +52,13 @@ export const ProfileSettings = () => {
                     </div>
                 </div>
             </div>
-            <Tabs defaultValue="profileDetails" variant="default" className=" h-[75%] p-2">
+            <Tabs defaultValue="profileDetails" variant="default" className=" h-[75%] p-2" onChange={(val) => { setActivePanel(`${val}`) }}>
                 <Tabs.List className="px-4">
-                    <Tabs.Tab value="profileDetails" className="text-[#559CDA]">
+                    <Tabs.Tab value="profileDetails" className={` ${activePanel === 'profileDetails' ? 'text-[#559CDA]' : 'text-gray-500'}`} ref={profileDetailsTabRef}
+                    >
                         Profile Details
                     </Tabs.Tab>
-                    <Tabs.Tab value="changePassword" className="text-[#559CDA]">
+                    <Tabs.Tab value="changePassword" className={` ${activePanel === 'changePassword' ? 'text-[#559CDA]' : 'text-gray-500'}`} ref={changePasswordTabRef}>  
                         Change Password
                     </Tabs.Tab>
                 </Tabs.List>

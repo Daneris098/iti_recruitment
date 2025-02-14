@@ -85,13 +85,6 @@ export const columns = {
 };
 
 export type Company = {
-  name: string;
+  feedback: string;
   code: string;
-  location: string;
-  area: string;
-  description: string;
-  status: string;
-  division: string;
-  department: string;
-  departmentHead: string;
 };

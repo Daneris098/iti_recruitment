@@ -7,7 +7,7 @@ import { AlertType } from "@modules/HiringSettings/types";
 import { IconX } from "@tabler/icons-react";
 
 
-export default function AlertModals() {
+export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefObject<{ saveAll: () => void; cancelAll: () => void }> }) {
     const { setAlert, alert } = HiringSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
@@ -114,8 +114,8 @@ export default function AlertModals() {
                         Are you sure you want to cancel the changes?
                     </Text>
                     <div className="flex gap-2 w-[80%]">
-                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>YES</Button>
-                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>NO</Button>
+                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled); dataTableRef.current?.cancelAll(); }}>YES</Button>
+                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('');  }}>NO</Button>
                     </div>
                 </div>
             </Modal>

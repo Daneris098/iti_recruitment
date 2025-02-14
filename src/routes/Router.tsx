@@ -144,7 +144,7 @@ const router = createBrowserRouter([
             element: <OrganizationSettings />,
           },
           {
-            path: "HiringSettings",
+            path: "hiringSettings",
             element: <HiringSettings />,
           },
           {

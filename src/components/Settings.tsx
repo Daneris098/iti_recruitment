@@ -7,8 +7,12 @@ import {
 } from "@tabler/icons-react";
 import "@shared/layout/base/styles/navbar.css";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 export const Settings = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    console.log("Current Route:", location.pathname);
+  }, [location.pathname]); // Runs every time the route changes
   return (
     <Menu
       shadow="md"
@@ -35,7 +39,7 @@ export const Settings = () => {
         <p className="text-xs text-gray-600 poppins text-center pb-2">Configure your settings here.</p>
 
         <Menu.Item
-          className="poppins"
+          className={` poppins ${location.pathname == '/organizationSettings' ? 'text-white br-gradient' : 'text-gray-500'}`}
           color="#6d6d6d"
           fw={500}
           leftSection={
@@ -50,19 +54,19 @@ export const Settings = () => {
         </Menu.Item>
 
         <Menu.Item
-          className="poppins"
+          className={` poppins ${location.pathname == '/hiringSettings' ? 'text-white br-gradient' : 'text-gray-500'}`}
           color="#6d6d6d"
           fw={500}
           leftSection={
             <IconPhoneCall style={{ width: rem(20), height: rem(20) }} />
           }
-          onClick={() => { navigate("/HiringSettings"); }}
+          onClick={() => { navigate("/hiringSettings"); }}
         >
           <p className="ml-4" >Hiring Settings</p>
         </Menu.Item>
         <Menu.Item
           fw={500}
-          className="poppins"
+          className={` poppins ${location.pathname == '/administratorSettings' ? 'text-white br-gradient' : 'text-gray-500'}`}
           color="#6d6d6d"
           leftSection={
             <IconAddressBook style={{ width: rem(20), height: rem(20) }} />

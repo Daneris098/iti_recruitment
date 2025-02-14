@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { HiringSettingsState, panel } from "@modules/HiringSettings/types";
+import { HiringSettingsState, panel, } from "@modules/HiringSettings/types";
 
 export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
   alert: '',
