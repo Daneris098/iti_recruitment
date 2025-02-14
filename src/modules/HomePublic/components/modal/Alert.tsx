@@ -1,7 +1,7 @@
 import { ApplicationStore, HomeStore } from "@modules/HomePublic/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { CircleCheckBig } from "lucide-react";
+import { CircleAlert, CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "../../types";
 import { cn } from "@src/lib/utils";
@@ -47,7 +47,7 @@ export default function AlertModals() {
             >
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={80} />
+                    <CircleCheckBig color="#559cda" size={80}  strokeWidth={1}/>
                     <Text className="text-xl font-bold">
                         Congratulations, your application has been sent!
                     </Text>
@@ -70,7 +70,7 @@ export default function AlertModals() {
             >
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={80} />
+                    <CircleAlert color="#559cda" size={80} strokeWidth={1} />
                     <Text className="text-xl font-bold">
                         You have cancelled your application.
                     </Text>
@@ -92,7 +92,7 @@ export default function AlertModals() {
             >
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={80} />
+                    <CircleAlert color="#559cda" size={80} strokeWidth={1} />
                     <Text className="text-xl font-bold text-center">
                         Are you sure you want to cancel your application?
                     </Text>

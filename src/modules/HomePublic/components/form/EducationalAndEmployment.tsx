@@ -74,12 +74,12 @@ export default function index() {
                 <p className="font-bold">Educational Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput   {...form.getInputProps("educationBackground.nameOfSchool")} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
-                    <TextInput   {...form.getInputProps("educationBackground.educationalLevel")} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
+                    <TextInput classNames={{ input: 'poppins' }}   {...form.getInputProps("educationBackground.nameOfSchool")} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
+                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.educationalLevel")} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
                 </div>
 
                 <div className="flex flex-col items-end sm:flex-row gap-4">
-                    <TextInput  {...form.getInputProps("educationBackground.course")} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("educationBackground.course")} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
                     <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
 
 
@@ -125,8 +125,8 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput   {...form.getInputProps("educationBackground.professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
-                    <TextInput   {...form.getInputProps("educationBackground.certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
+                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
+                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
                 </div>
 
                 <div>
@@ -136,9 +136,10 @@ export default function index() {
 
                 {applicationForm.educationAndEmployment.employmentRecord.map((_, index) => (
                     <div key={index} className="flex flex-col">
-                        <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} />
+                        {/* <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} /> */}
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentRecord.${index}.employerCompany`)}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
@@ -146,6 +147,7 @@ export default function index() {
                                 placeholder="Employer/Company"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentRecord.${index}.location`)}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
@@ -156,6 +158,7 @@ export default function index() {
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentRecord.${index}.positionHeld`)}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
@@ -228,6 +231,7 @@ export default function index() {
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
                                 label="Salary"
@@ -235,6 +239,7 @@ export default function index() {
                                 {...form.getInputProps(`employmentRecord.${index}.salary`)}
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
                                 label="Reason for Leaving"

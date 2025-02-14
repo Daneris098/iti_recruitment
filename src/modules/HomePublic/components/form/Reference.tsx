@@ -96,6 +96,7 @@ export default function index() {
                     {applicationForm.reference.characterReference.map((_, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`characterReference.${index}.fullname`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -103,18 +104,21 @@ export default function index() {
                                 placeholder="Full Name"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`characterReference.${index}.company`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Company"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`characterReference.${index}.positionHeld`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`characterReference.${index}.ContactNo`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -137,6 +141,7 @@ export default function index() {
                     {applicationForm.reference.employmentReference.map((_, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentReference.${index}.fullname`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -144,18 +149,21 @@ export default function index() {
                                 placeholder="Full Name"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentReference.${index}.company`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Company"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentReference.${index}.positionHeld`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
                             <TextInput
+                                classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}

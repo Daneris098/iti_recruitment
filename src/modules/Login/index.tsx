@@ -34,28 +34,29 @@ export default function Login() {
   });
 
   const onSubmit = async (params: FormData) => {
-    const payload = {
-      username: params.username,
-      password: params.password,
-    };
-    await axiosInstance
-      .post("login", payload)
-      .then((response) => {
-        if (response.status === 200) {
-          const { refreshToken, accessToken } = response.data;
-          sessionStorage.setItem("accessTokenFlash", accessToken);
-          document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
-          navigate("/dashboard");
-        }
-      })
-      .catch((error) => {
-        const message = error.response.data.message;
-        Swal.fire({
-          icon: "error",
-          title: "Login failed",
-          text: message,
-        });
-      });
+    navigate("/home");
+    // const payload = {
+    //   username: params.username,
+    //   password: params.password,
+    // };
+    // await axiosInstance
+    //   .post("login", payload)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       const { refreshToken, accessToken } = response.data;
+    //       sessionStorage.setItem("accessTokenFlash", accessToken);
+    //       document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
+    //       navigate("/dashboard");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     const message = error.response.data.message;
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Login failed",
+    //       text: message,
+    //     });
+    //   });
   };
 
   return (
