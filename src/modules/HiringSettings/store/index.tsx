@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { feedback, HiringSettingsState, panel, FeedbackStoreState } from "@modules/HiringSettings/types";
-import { initialData, PAGE_SIZE } from "../values";
+import { applicantInitialData, hiringInitialData, PAGE_SIZE } from "../values";
 
 export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
   alert: '',
@@ -12,7 +12,9 @@ export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
 
 
 export const FeedbackStore = create<FeedbackStoreState>((set) => ({
-  applicantFeedback : initialData.slice(0, PAGE_SIZE),
+  applicantFeedback: applicantInitialData.slice(0, PAGE_SIZE),
+  hiringFeedback: hiringInitialData.slice(0, PAGE_SIZE),
   setApplicantFeedback: (applicantFeedback: feedback[]) => set({ applicantFeedback: applicantFeedback }),
+  setHiringFeedback: (hiringFeedback: feedback[]) => set({ hiringFeedback: hiringFeedback }),
 }));
 

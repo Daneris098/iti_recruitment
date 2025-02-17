@@ -1,75 +1,143 @@
-import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconArrowsSort } from "@tabler/icons-react";
 import { TextInput } from '@mantine/core';
-import { HiringSettingsStore, FeedbackStore } from '@modules/HiringSettings/store';
+import { FeedbackStore } from '@modules/HiringSettings/store';
 import { feedback } from '@modules/HiringSettings/types';
 
 const CustomFeedback = forwardRef((_, ref) => {
-    const { applicantFeedback, setApplicantFeedback } = FeedbackStore();
-    const [editMode, setEditMode] = useState<{ [key: number]: boolean }>({});
-    const [editableData, setEditableData] = useState<{ [key: number]: Partial<feedback> }>({});
-    const [newRows, setNewRows] = useState<feedback[]>([]);
+    const { applicantFeedback, setApplicantFeedback, hiringFeedback, setHiringFeedback } = FeedbackStore();
+
+    const [applicantEditMode, setApplicantEditMode] = useState<{ [key: number]: boolean }>({});
+    const [applicantEditableData, setApplicantEditableData] = useState<{ [key: number]: Partial<feedback> }>({});
+    const [applicantNewRows, setApplicantNewRows] = useState<feedback[]>([]);
+
+    const [hiringEditMode, setHiringEditMode] = useState<{ [key: number]: boolean }>({});
+    const [hiringEditableData, setHiringEditableData] = useState<{ [key: number]: Partial<feedback> }>({});
+    const [hiringNewRows, setHiringNewRows] = useState<feedback[]>([]);
 
 
-    const toggleEditMode = (id: number) => {
-        // Toggle the edit mode for the specific id
-        setEditMode(prevEditMode => ({
-            ...prevEditMode,
-            [id]: !prevEditMode[id],
-        }));
+    const toggleEditMode = (id: number, mode: string) => {
+        if (mode === 'applicantFeedback') {
+            // Toggle the edit mode for the specific id
+            setApplicantEditMode(prevEditMode => ({
+                ...prevEditMode,
+                [id]: !prevEditMode[id],
+            }));
 
-        // If switching to edit mode, initialize editable data for the selected row
-        if (!editMode[id]) {
-            const rowData =
-                applicantFeedback.find((item) => item.id === id) ||
-                newRows.find(item => item.id === id);
+            // If switching to edit mode, initialize editable data for the selected row
+            if (!applicantEditMode[id]) {
+                const rowData =
+                    applicantFeedback.find((item) => item.id === id) ||
+                    applicantNewRows.find(item => item.id === id);
 
-            if (rowData) {
-                setEditableData(prevEditableData => ({
-                    ...prevEditableData,
-                    [id]: { ...rowData },
-                }));
+                if (rowData) {
+                    setApplicantEditableData(prevEditableData => ({
+                        ...prevEditableData,
+                        [id]: { ...rowData },
+                    }));
+                }
+            }
+        }
+        else if (mode === 'hiringFeedback') {
+            // Toggle the edit mode for the specific id
+            setHiringEditMode(prevEditMode => ({
+                ...prevEditMode,
+                [id]: !prevEditMode[id],
+            }));
+
+            // If switching to edit mode, initialize editable data for the selected row
+            if (!hiringEditMode[id]) {
+                const rowData =
+                    hiringFeedback.find((item) => item.id === id) ||
+                    hiringNewRows.find(item => item.id === id);
+
+                if (rowData) {
+                    setHiringEditableData(prevEditableData => ({
+                        ...prevEditableData,
+                        [id]: { ...rowData },
+                    }));
+                }
             }
         }
     };
 
-    const handleEditChange = (id: number, field: keyof feedback, value: string) => {
-        setEditableData(prev => ({
-            ...prev,
-            [id]: {
-                ...prev[id],
-                [field]: value,
-            },
-        }));
+    const handleEditChange = (
+        id: number,
+        field: keyof feedback,
+        value: string,
+        mode: string) => {
+        if (mode === 'applicantFeedback') {
+            setApplicantEditableData(prev => ({
+                ...prev,
+                [id]: {
+                    ...prev[id],
+                    [field]: value,
+                },
+            }));
+        } else if (mode === 'hiringFeedback') {
+            setHiringEditableData(prev => ({
+                ...prev,
+                [id]: {
+                    ...prev[id],
+                    [field]: value,
+                },
+            }));
+        }
     };
 
-    const addNewRow = () => {
-        if (Object.keys(editMode).length === 0) {
+    const addNewRow = (mode: string) => {
+        if (mode === 'applicantFeedback' && Object.keys(applicantEditMode).length === 0) {
             const newRow: feedback = {
                 id: Math.max(...applicantFeedback.map(r => r.id), 0) + 1, // Automatically generate a new id
                 feedback: '',
             };
-            setNewRows(prev => [...prev, newRow]);
-            setEditMode(prev => ({ ...prev, [newRow.id]: true }));
-            setEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+            setApplicantNewRows(prev => [...prev, newRow]);
+            setApplicantEditMode(prev => ({ ...prev, [newRow.id]: true }));
+            setApplicantEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        }
+        else if (mode === 'hiringFeedback' && Object.keys(hiringEditMode).length === 0) {
+            const newRow: feedback = {
+                id: Math.max(...hiringFeedback.map(r => r.id), 0) + 1, // Automatically generate a new id
+                feedback: '',
+            };
+            setHiringNewRows(prev => [...prev, newRow]);
+            setHiringEditMode(prev => ({ ...prev, [newRow.id]: true }));
+            setHiringEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
         }
     };
 
     const saveAll = () => {
-        const result = [...applicantFeedback, ...newRows].map((record) =>
-            editableData[record.id] ? { ...record, ...editableData[record.id] } : record
+        const result = [...applicantFeedback, ...applicantNewRows].map((record) =>
+            applicantEditableData[record.id] ? { ...record, ...applicantEditableData[record.id] } : record
         );
         setApplicantFeedback(result);
-        setNewRows([]);
-        setEditMode({});
-        setEditableData({});
+
+
+        const result2 = [...hiringFeedback, ...hiringNewRows].map((record) =>
+            hiringEditableData[record.id] ? { ...record, ...hiringEditableData[record.id] } : record
+        );
+        console.log('hiringEditableData: ', hiringEditableData)
+        setHiringFeedback(result2);
+
+
+        setApplicantNewRows([]);
+        setApplicantEditMode({});
+        setApplicantEditableData({});
+
+        setHiringNewRows([]);
+        setHiringEditMode({});
+        setHiringEditableData({});
     };
 
     const cancelAll = () => {
-        setEditMode({});
-        setEditableData({});
-        setNewRows([]);
+        setApplicantNewRows([]);
+        setApplicantEditMode({});
+        setApplicantEditableData({});
+
+        setHiringNewRows([]);
+        setHiringEditMode({});
+        setHiringEditableData({});
     };
 
     useImperativeHandle(ref, () => ({
@@ -82,39 +150,52 @@ const CustomFeedback = forwardRef((_, ref) => {
     }));
 
     const columns: any = {
-        customFeedback: [
+        applicantFeedback: [
             {
                 accessor: 'feedback', title: (
                     <div className='flex justify-between'>
                         <p>Applicant Feedback</p>
                         <div className='flex'>
                             <IconArrowsSort size={24} className="cursor-pointer text-gray-500" />
-                            <IconCirclePlus size={28} color="green" onClick={addNewRow} className='cursor-pointer' />
+                            <IconCirclePlus size={28} color="green" onClick={() => { addNewRow('applicantFeedback') }} className='cursor-pointer' />
                         </div>
                     </div>
                 ), sortable: false,
-                render: (data: any) => editMode[data.id] ? (
+                render: (data: any) => applicantEditMode[data.id] ? (
                     <TextInput
-                        value={editableData[data.id]?.feedback || data.feedback}
-                        onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value)}
+                        value={applicantEditableData[data.id]?.feedback || data.feedback}
+                        onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'applicantFeedback')}
                     />
                 ) : <div className='flex justify-between'>
                     <p>{data.feedback}</p>
-                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
-                        {editMode[data.id] ? '' : <IconPencil />}
+                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.id, 'applicantFeedback')}>
+                        {applicantEditMode[data.id] ? '' : <IconPencil />}
                     </div>
                 </div>,
             },
         ],
-        hiringTeamFeedback: [
+        hiringFeedback: [
             {
-                accessor: 'id', title: 'Applicant Feedback', sortable: true,
-                render: (data: any) => editMode[data.id] ? (
+                accessor: 'feedback', title: (
+                    <div className='flex justify-between'>
+                        <p>Hiring Feedback</p>
+                        <div className='flex'>
+                            <IconArrowsSort size={24} className="cursor-pointer text-gray-500" />
+                            <IconCirclePlus size={28} color="green" onClick={() => { addNewRow('hiringFeedback') }} className='cursor-pointer' />
+                        </div>
+                    </div>
+                ), sortable: false,
+                render: (data: any) => hiringEditMode[data.id] ? (
                     <TextInput
-                        value={editableData[data.id]?.id || data.id}
-                        onChange={(e: any) => handleEditChange(data.id, 'id', e.target.value)}
+                        value={hiringEditableData[data.id]?.feedback || data.feedback}
+                        onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'hiringFeedback')}
                     />
-                ) : data.id,
+                ) : <div className='flex justify-between'>
+                    <p>{data.feedback}</p>
+                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.id, 'hiringFeedback')}>
+                        {hiringEditMode[data.id] ? '' : <IconPencil />}
+                    </div>
+                </div>,
             },
         ],
     };
@@ -125,21 +206,39 @@ const CustomFeedback = forwardRef((_, ref) => {
                 <p className="text-[#559CDA] font-bold">Feedback</p>
                 <p className="text-[#6D6D6D]">This section allows you to add custom feedback from both the hiring team (after every interview) and the applicant (upon receiving a job offer). If no feedback is provided by the applicant, select "No Response."</p>
             </div>
-            <div className='w-[30%] h-full'>
-                <DataTable
-                    styles={{
-                        header: {
-                            color: "rgba(109, 109, 109, 0.6)",
-                            fontWeight: 500,
-                        },
-                        root: {
-                            color: "rgba(0, 0, 0, 0.6)",
-                        },
-                    }}
-                    withTableBorder
-                    records={[...applicantFeedback, ...newRows]}
-                    columns={(columns as any)['customFeedback']}
-                />
+            <div className='flex justify-start gap-[15%]'>
+                <div className='w-[30%] h-full'>
+                    <DataTable
+                        styles={{
+                            header: {
+                                color: "rgba(109, 109, 109, 0.6)",
+                                fontWeight: 500,
+                            },
+                            root: {
+                                color: "rgba(0, 0, 0, 0.6)",
+                            },
+                        }}
+                        withTableBorder
+                        records={[...applicantFeedback, ...applicantNewRows]}
+                        columns={(columns as any)['applicantFeedback']}
+                    />
+                </div>
+                <div className='w-[30%] h-full'>
+                    <DataTable
+                        styles={{
+                            header: {
+                                color: "rgba(109, 109, 109, 0.6)",
+                                fontWeight: 500,
+                            },
+                            root: {
+                                color: "rgba(0, 0, 0, 0.6)",
+                            },
+                        }}
+                        withTableBorder
+                        records={[...hiringFeedback, ...hiringNewRows]}
+                        columns={(columns as any)['hiringFeedback']}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -9,7 +9,9 @@ export interface HiringSettingsState {
 
 export interface FeedbackStoreState {
   applicantFeedback: feedback[];
+  hiringFeedback: feedback[];
   setApplicantFeedback: (applicantFeedback: feedback[]) => void;
+  setHiringFeedback: (hiringFeedback: feedback[]) => void;
 }
 
 
