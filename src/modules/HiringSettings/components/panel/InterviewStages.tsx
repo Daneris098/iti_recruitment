@@ -15,7 +15,7 @@ const InterviewStage = forwardRef((_, ref) => {
     const columns: any =
         [
             {
-                accessor: 'feedback', title: ('Stage Name'), sortable: false,
+                accessor: 'feedback', title: ('Stage Name'), sortable: true,
                 render: (data: any) => interviewStagesEditMode[data.id] ? (
                     <TextInput
                         value={interviewStagesEditableData[data.id]?.stageName || data.feedback}
@@ -44,7 +44,7 @@ const InterviewStage = forwardRef((_, ref) => {
                 ,
             },
             {
-                accessor: 'lastModified', title: ('Last Modified'), sortable: false,
+                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
                 render: (data: any) => (
                     <div className='flex justify-between'>
                         <p>{data.lastModified}</p>
@@ -57,15 +57,17 @@ const InterviewStage = forwardRef((_, ref) => {
         ];
 
     const addNewRow = () => {
-        const newRow: interviewStage = {
-            id: Math.max(...interviewStage.map(r => r.id), 0) + 1, // Automatically generate a new id
-            stageName: '',
-            status: '',
-            lastModified: '',
-        };
-        setInterviewStagesNewRows(prev => [...prev, newRow]);
-        setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
-        setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        if (Object.keys(interviewStagesEditMode).length === 0) {
+            const newRow: interviewStage = {
+                id: Math.max(...interviewStage.map(r => r.id), 0) + 1, // Automatically generate a new id
+                stageName: '',
+                status: '',
+                lastModified: '',
+            };
+            setInterviewStagesNewRows(prev => [...prev, newRow]);
+            setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
+            setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        }
     };
 
 
