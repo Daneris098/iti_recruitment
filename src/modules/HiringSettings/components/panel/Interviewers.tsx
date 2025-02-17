@@ -4,7 +4,7 @@ export default function index() {
     return (
         <div className="flex flex-col">
             <div className="flex gap-2">
-                <p className="text-[#559CDA] font-bold">Interviewers</p>
+                <p className="text-[#559CDA] font-bold">Custom Interviewer Stages</p>
                 <div>
                     <IconCirclePlus
                         style={{ height: "100%" }}
@@ -13,7 +13,7 @@ export default function index() {
                     />
                 </div>
             </div>
-            <p className="text-[#6D6D6D]">List individuals authorized to conduct interviews for applicants.</p>
+            <p className="text-[#6D6D6D]">Customize your interview to align with your orgazination's recruitment process.</p>
         </div>
     )
 }

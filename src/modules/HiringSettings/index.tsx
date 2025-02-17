@@ -72,7 +72,7 @@ export default function index() {
                     <Tabs.Panel value={panel.customFeedback} className="h-full"><CustomFeedback ref={dataTableRef} /></Tabs.Panel>
                     <Tabs.Panel value={panel.offerResponsePeriod} className="h-full"><OfferResponsePeriod /></Tabs.Panel>
                     <Tabs.Panel value={panel.applicationSettings} className="h-full"><ApplicationSettings /></Tabs.Panel>
-                    <Tabs.Panel value={panel.interviewStages} className="h-full"><InterviewStages /></Tabs.Panel>
+                    <Tabs.Panel value={panel.interviewStages} className="h-full"><InterviewStages ref={dataTableRef} /></Tabs.Panel>
                     <Tabs.Panel value={panel.interviewers} className="h-full"><Interviewers /></Tabs.Panel>
                     <Tabs.Panel value={panel.jobOfferTemplate} className="h-full"><JobOfferTemplate /></Tabs.Panel>
                 </div>

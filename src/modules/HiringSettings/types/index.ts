@@ -7,6 +7,10 @@ export interface HiringSettingsState {
   setAlert: (alert: string) => void;
 }
 
+export type feedback = {
+  id: number;
+  feedback: string;
+};
 export interface FeedbackStoreState {
   applicantFeedback: feedback[];
   hiringFeedback: feedback[];
@@ -14,6 +18,16 @@ export interface FeedbackStoreState {
   setHiringFeedback: (hiringFeedback: feedback[]) => void;
 }
 
+export type interviewStage = {
+  id: number;
+  stageName: string;
+  status: string;
+  lastModified: string;
+};
+export interface InterviewStageseState {
+  interviewStage: interviewStage[];
+  setInterviewStage: (interviewStage: interviewStage[]) => void;
+}
 
 export enum AlertType {
   saved = 'saved',
@@ -89,9 +103,4 @@ export const columns = {
     { accessor: 'description', title: 'Description', sortable: true },
     { accessor: 'status', title: 'Status', sortable: true },
   ],
-};
-
-export type feedback = {
-  feedback: string;
-  id: number;
 };

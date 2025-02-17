@@ -19,12 +19,6 @@ const DataTableComp = forwardRef((_, ref) => {
     const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
     const [editableData, setEditableData] = useState<{ [key: string]: Partial<Company> }>({});
     const [newRows, setNewRows] = useState<Company[]>([]);
-
-
-    useEffect(() => {
-        console.log('editMode: ', editMode)
-    }, [editMode])
-
     const toggleEditMode = (code: string) => {
         // Toggle the edit mode for the specific code
         setEditMode(prevEditMode => ({
