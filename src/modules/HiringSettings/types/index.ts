@@ -7,6 +7,11 @@ export interface HiringSettingsState {
   setAlert: (alert: string) => void;
 }
 
+export interface FeedbackStoreState {
+  applicantFeedback: feedback[];
+  setApplicantFeedback: (applicantFeedback: feedback[]) => void;
+}
+
 
 export enum AlertType {
   saved = 'saved',
@@ -84,7 +89,7 @@ export const columns = {
   ],
 };
 
-export type Company = {
+export type feedback = {
   feedback: string;
-  code: string;
+  id: number;
 };

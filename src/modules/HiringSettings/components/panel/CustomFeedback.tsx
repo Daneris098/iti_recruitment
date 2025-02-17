@@ -1,57 +1,44 @@
-import { useState, forwardRef, useImperativeHandle, useEffect, } from 'react';
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconArrowsSort } from "@tabler/icons-react";
 import { TextInput } from '@mantine/core';
-import { HiringSettingsStore } from '@modules/HiringSettings/store';
-import { Company } from '@modules/HiringSettings/types';
-
-const PAGE_SIZE = 15;
-const initialData: Company[] = [
-    { feedback: 'Great', code: 'insys001' },
-    { feedback: 'Good', code: 'insys002' },
-    { feedback: 'Bad', code: 'insys003' },
-];
+import { HiringSettingsStore, FeedbackStore } from '@modules/HiringSettings/store';
+import { feedback } from '@modules/HiringSettings/types';
 
 const CustomFeedback = forwardRef((_, ref) => {
-    const { activePanel } = HiringSettingsStore();
-    const [page, setPage] = useState(1);
-    const [records, setRecords] = useState<Company[]>(initialData.slice(0, PAGE_SIZE));
-    const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
-    const [editableData, setEditableData] = useState<{ [key: string]: Partial<Company> }>({});
-    const [newRows, setNewRows] = useState<Company[]>([]);
+    const { applicantFeedback, setApplicantFeedback } = FeedbackStore();
+    const [editMode, setEditMode] = useState<{ [key: number]: boolean }>({});
+    const [editableData, setEditableData] = useState<{ [key: number]: Partial<feedback> }>({});
+    const [newRows, setNewRows] = useState<feedback[]>([]);
 
 
-    useEffect(() => {
-        console.log('editMode: ', editMode)
-    }, [editMode])
-
-    const toggleEditMode = (code: string) => {
-        // Toggle the edit mode for the specific code
+    const toggleEditMode = (id: number) => {
+        // Toggle the edit mode for the specific id
         setEditMode(prevEditMode => ({
             ...prevEditMode,
-            [code]: !prevEditMode[code],
+            [id]: !prevEditMode[id],
         }));
 
         // If switching to edit mode, initialize editable data for the selected row
-        if (!editMode[code]) {
+        if (!editMode[id]) {
             const rowData =
-                records.find(item => item.code === code) ||
-                newRows.find(item => item.code === code);
+                applicantFeedback.find((item) => item.id === id) ||
+                newRows.find(item => item.id === id);
 
             if (rowData) {
                 setEditableData(prevEditableData => ({
                     ...prevEditableData,
-                    [code]: { ...rowData },
+                    [id]: { ...rowData },
                 }));
             }
         }
     };
 
-    const handleEditChange = (code: string, field: keyof Company, value: string) => {
+    const handleEditChange = (id: number, field: keyof feedback, value: string) => {
         setEditableData(prev => ({
             ...prev,
-            [code]: {
-                ...prev[code],
+            [id]: {
+                ...prev[id],
                 [field]: value,
             },
         }));
@@ -59,20 +46,21 @@ const CustomFeedback = forwardRef((_, ref) => {
 
     const addNewRow = () => {
         if (Object.keys(editMode).length === 0) {
-            const newRow: Company = {
-                code: ``,
+            const newRow: feedback = {
+                id: Math.max(...applicantFeedback.map(r => r.id), 0) + 1, // Automatically generate a new id
                 feedback: '',
             };
             setNewRows(prev => [...prev, newRow]);
-            setEditMode(prev => ({ ...prev, [newRow.code]: true }));
-            setEditableData(prev => ({ ...prev, [newRow.code]: newRow }));
+            setEditMode(prev => ({ ...prev, [newRow.id]: true }));
+            setEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
         }
     };
 
     const saveAll = () => {
-      
-
-        setRecords(prevRecords => [...prevRecords, ...newRows].map(record => editableData[record.code] ? { ...record, ...editableData[record.code] } : record));
+        const result = [...applicantFeedback, ...newRows].map((record) =>
+            editableData[record.id] ? { ...record, ...editableData[record.id] } : record
+        );
+        setApplicantFeedback(result);
         setNewRows([]);
         setEditMode({});
         setEditableData({});
@@ -86,17 +74,16 @@ const CustomFeedback = forwardRef((_, ref) => {
 
     useImperativeHandle(ref, () => ({
         saveAll: () => {
-            saveAll()
+            saveAll();
         },
         cancelAll: () => {
-            cancelAll()
+            cancelAll();
         }
     }));
 
     const columns: any = {
         customFeedback: [
             {
-
                 accessor: 'feedback', title: (
                     <div className='flex justify-between'>
                         <p>Applicant Feedback</p>
@@ -106,32 +93,31 @@ const CustomFeedback = forwardRef((_, ref) => {
                         </div>
                     </div>
                 ), sortable: false,
-                render: (data: any) => editMode[data.code] ? (
+                render: (data: any) => editMode[data.id] ? (
                     <TextInput
-                        value={editableData[data.code]?.feedback || data.feedback}
-                        onChange={(e: any) => handleEditChange(data.feedback, 'feedback', e.target.value)}
+                        value={editableData[data.id]?.feedback || data.feedback}
+                        onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value)}
                     />
                 ) : <div className='flex justify-between'>
                     <p>{data.feedback}</p>
-                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.code)}>
-                        {editMode[data.code] ? '' : <IconPencil />}
+                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
+                        {editMode[data.id] ? '' : <IconPencil />}
                     </div>
                 </div>,
             },
         ],
         hiringTeamFeedback: [
             {
-                accessor: 'code', title: 'Applicant Feedback', sortable: true,
-                render: (data: any) => editMode[data.code] ? (
+                accessor: 'id', title: 'Applicant Feedback', sortable: true,
+                render: (data: any) => editMode[data.id] ? (
                     <TextInput
-                        value={editableData[data.code]?.code || data.code}
-                        onChange={(e: any) => handleEditChange(data.code, 'code', e.target.value)}
+                        value={editableData[data.id]?.id || data.id}
+                        onChange={(e: any) => handleEditChange(data.id, 'id', e.target.value)}
                     />
-                ) : data.code,
+                ) : data.id,
             },
         ],
     };
-
 
     return (
         <div className="flex flex-col h-[100%]">
@@ -151,12 +137,8 @@ const CustomFeedback = forwardRef((_, ref) => {
                         },
                     }}
                     withTableBorder
-                    records={[...records, ...newRows]}
+                    records={[...applicantFeedback, ...newRows]}
                     columns={(columns as any)['customFeedback']}
-                    // totalRecords={initialData.length}
-                    // recordsPerPage={PAGE_SIZE}
-                    // page={page}
-                    // onPageChange={setPage}
                 />
             </div>
         </div>
