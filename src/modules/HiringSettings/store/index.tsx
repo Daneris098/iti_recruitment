@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { feedback, HiringSettingsState, panel, FeedbackStoreState, InterviewStageseState, interviewStage } from "@modules/HiringSettings/types";
-import { applicantInitialData, hiringInitialData, PAGE_SIZE, interviewStagesInitialData } from "../values";
+import { feedback, HiringSettingsState, panel, FeedbackStoreState, InterviewStageseState, interviewStage, InterviewerState, interviewer } from "@modules/HiringSettings/types";
+import { applicantInitialData, hiringInitialData, PAGE_SIZE, interviewStagesInitialData, interviewerInitialData } from "../values";
 
 export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
   alert: '',
@@ -21,4 +21,9 @@ export const FeedbackStore = create<FeedbackStoreState>((set) => ({
 export const InteviewStagesStore = create<InterviewStageseState>((set) => ({
   interviewStage: interviewStagesInitialData,
   setInterviewStage: (interviewStage: interviewStage[]) => set({ interviewStage: interviewStage }),
+}));
+
+export const InteviewerStore = create<InterviewerState>((set) => ({
+  interviewers: interviewerInitialData,
+  setInterviewers: (interviewers: interviewer[]) => set({ interviewers: interviewers }),
 }));

@@ -134,18 +134,20 @@ const InterviewStage = forwardRef((_, ref) => {
 
 
     return (
-        <div className="flex flex-col">
-            <div className="flex gap-2">
-                <p className="text-[#559CDA] font-bold">Custom Interview Stages</p>
-                <div>
-                    <IconCirclePlus
-                        style={{ height: "100%" }}
-                        color="#5A9D27"
-                        onClick={addNewRow}
-                    />
+        <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                    <p className="text-[#559CDA] font-bold">Custom Interview Stages</p>
+                    <div>
+                        <IconCirclePlus
+                            style={{ height: "100%" }}
+                            color="#5A9D27"
+                            onClick={addNewRow}
+                        />
+                    </div>
                 </div>
+                <p className="text-[#6D6D6D]">Customize your interview stages to align with your organization's specific recruitment process.</p>
             </div>
-            <p className="text-[#6D6D6D]">Customize your interview stages to align with your organization's specific recruitment process.</p>
             <DataTable
                 styles={{
                     header: {

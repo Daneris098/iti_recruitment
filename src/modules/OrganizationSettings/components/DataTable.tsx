@@ -358,12 +358,12 @@ const DataTableComp = forwardRef((_, ref) => {
 
 
     return (
-        <div className="flex flex-col h-full">
-            <div className='flex flex-col mb-4'>
-                <div className="text-[#559CDA] font-bold flex gap-2 items-center">
+        <div className="flex flex-col h-full gap-8">
+            <div className='flex flex-col'>
+                <div className="text-[#559CDA] font-bold flex gap-2 items-center text-lg">
                     {title[activePanel as keyof typeof title]} <IconCirclePlus color="green" onClick={addNewRow} className="cursor-pointer" />
                 </div>
-                <p className='text-[#6D6D6D]'>{description[activePanel as keyof typeof description]}</p>
+                <p className='text-[#6D6D6D] text-sm'>{description[activePanel as keyof typeof description]}</p>
             </div>
             <DataTable
                 styles={{

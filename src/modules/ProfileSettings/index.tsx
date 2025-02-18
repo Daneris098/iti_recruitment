@@ -43,7 +43,7 @@ export const ProfileSettings = () => {
             <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%] br-gradient rounded-t-md flex flex-col items-center">
                 <div className=" flex items-center gap-4 sm:gap-0 sm:justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
-                        <p className="sm:text-3xl text-white ">Profile Settings</p>
+                        <p className="sm:text-3xl text-white font-bold">Profile Settings</p>
                         <p className="sm:text-xl text-white ">Customize your profile.</p>
                     </div>
                     <div className="flex gap-2   sm:w-[15%] ">

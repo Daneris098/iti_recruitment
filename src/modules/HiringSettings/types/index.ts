@@ -29,6 +29,17 @@ export interface InterviewStageseState {
   setInterviewStage: (interviewStage: interviewStage[]) => void;
 }
 
+export type interviewer = {
+  id: number;
+  name: string;
+  status: string;
+  lastModified: string;
+};
+export interface InterviewerState {
+  interviewers: interviewer[];
+  setInterviewers: (interviewers: interviewer[]) => void;
+}
+
 export enum AlertType {
   saved = 'saved',
   cancel = 'Cancel',

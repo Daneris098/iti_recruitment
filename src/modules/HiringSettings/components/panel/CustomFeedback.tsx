@@ -117,7 +117,6 @@ const CustomFeedback = forwardRef((_, ref) => {
         const result2 = [...hiringFeedback, ...hiringNewRows].map((record) =>
             hiringEditableData[record.id] ? { ...record, ...hiringEditableData[record.id] } : record
         );
-        console.log('hiringEditableData: ', hiringEditableData)
         setHiringFeedback(result2);
 
 
@@ -155,7 +154,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                 accessor: 'feedback', title: (
                     <div className='flex justify-between'>
                         <p>Applicant Feedback</p>
-                        <div className='flex'>
+                        <div className='flex gap-2'>
                             <IconArrowsSort size={24} className="cursor-pointer text-gray-500" />
                             <IconCirclePlus size={28} color="green" onClick={() => { addNewRow('applicantFeedback') }} className='cursor-pointer' />
                         </div>
@@ -179,7 +178,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                 accessor: 'feedback', title: (
                     <div className='flex justify-between'>
                         <p>Hiring Feedback</p>
-                        <div className='flex'>
+                        <div className='flex gap-2'>
                             <IconArrowsSort size={24} className="cursor-pointer text-gray-500" />
                             <IconCirclePlus size={28} color="green" onClick={() => { addNewRow('hiringFeedback') }} className='cursor-pointer' />
                         </div>
@@ -201,8 +200,8 @@ const CustomFeedback = forwardRef((_, ref) => {
     };
 
     return (
-        <div className="flex flex-col h-[100%]">
-            <div className='flex flex-col mb-4'>
+        <div className="flex flex-col h-[100%] gap-8">
+            <div className='flex flex-col mb-4 gap-2'>
                 <p className="text-[#559CDA] font-bold">Feedback</p>
                 <p className="text-[#6D6D6D]">This section allows you to add custom feedback from both the hiring team (after every interview) and the applicant (upon receiving a job offer). If no feedback is provided by the applicant, select "No Response."</p>
             </div>
