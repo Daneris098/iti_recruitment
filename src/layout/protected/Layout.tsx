@@ -36,9 +36,9 @@ function Layout() {
       layout="alt"
       header={{ height: 60 }}
       navbar={{
-        width: 250,
+        width: desktopOpened ? 250 : 70,
         breakpoint: 'sm',
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+        collapsed: { mobile: !mobileOpened },
       }}
       padding="md"
     >
@@ -48,7 +48,7 @@ function Layout() {
           toggleMobile={toggleMobile}
           toggleDesktop={toggleDesktop}
         />
-        <Navbar toggleMobile={toggleMobile} toggleDesktop={toggleDesktop} />
+        <Navbar toggleMobile={toggleMobile} toggleDesktop={toggleDesktop} desktopOpened={desktopOpened} />
         <Main />
       </div>
     </AppShell>

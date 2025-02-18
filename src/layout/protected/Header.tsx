@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ toggleMobile, toggleDesktop }) => {
               className="w-28 2xl:w-40 cursor-pointer"
               alt="bg"
             />
-          </p>) : (!isDrawerOpened) ? (
+          </p>) : (!isDrawerOpened && isMobile) ? (
             <p onClick={toggleDesktop} >
               <img
                 src="logo.png "

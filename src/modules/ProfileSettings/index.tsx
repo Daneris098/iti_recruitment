@@ -24,12 +24,12 @@ export const ProfileSettings = () => {
     const switchToChangePassword = () => {
         if (changePasswordTabRef.current) {
             (changePasswordTabRef.current as any).click(); // Simulates a click
-        }  
+        }
     };
 
 
     useEffect(() => {
-        if (activePanel === 'profileDetails') { 
+        if (activePanel === 'profileDetails') {
             switchToProfileDetails()
         }
         else if (activePanel === 'changePassword') {
@@ -58,14 +58,18 @@ export const ProfileSettings = () => {
                     >
                         Profile Details
                     </Tabs.Tab>
-                    <Tabs.Tab value="changePassword" className={` ${activePanel === 'changePassword' ? 'text-[#559CDA]' : 'text-gray-500'}`} ref={changePasswordTabRef}>  
+                    <Tabs.Tab value="changePassword" className={` ${activePanel === 'changePassword' ? 'text-[#559CDA]' : 'text-gray-500'}`} ref={changePasswordTabRef}>
                         Change Password
                     </Tabs.Tab>
                 </Tabs.List>
 
-                <Tabs.Panel value="profileDetails" className="border-[2px] border-blue-300 rounded-md px-4 m-4 h-full p-4 sm:p-8 overflow-auto">
-                    <div className=" text-[#559CDA] font-bold">Profile Details</div>
-                    <p className="text-md text-[#6D6D6D]">Modify your name, username, and email to keep your details up to date. All fields must not be empty.</p>
+                <Tabs.Panel value="profileDetails" className="border-[2px] border-blue-300 rounded-md px-4 m-4 h-full p-4 sm:p-8 overflow-auto flex flex-col gap-8">
+
+                    <div>
+                        <div className=" text-[#559CDA] font-bold">Profile Details</div>
+                        <p className="text-md text-[#6D6D6D]">Modify your name, username, and email to keep your details up to date. All fields must not be empty.</p>
+                    </div>
+
                     <div className="place-self-center bg-gray-300 w-40 h-40 rounded-full overflow-hidden flex items-center justify-center">
                         <img
                             src={avatar}
@@ -74,21 +78,27 @@ export const ProfileSettings = () => {
                         />
                     </div>
 
-                    <div className="flex gap-2 flex-col sm:flex-row">
-                        <TextInput className="sm:w-[25%]" radius='md' label="Last Name" value="Cooper" />
-                        <TextInput className="sm:w-[25%]" radius='md' label="First Name" value="Jane" />
-                        <TextInput className="sm:w-[25%]" radius='md' label="Middle Name" value="Andrade" />
-                        <TextInput className="sm:w-[25%]" radius='md' label="Name Extension" />
+                    <div className="flex flex-col gap-4">
+                        <div className="flex gap-2 flex-col sm:flex-row">
+                            <TextInput className="sm:w-[25%]" radius='md' label="Last Name" value="Cooper" />
+                            <TextInput className="sm:w-[25%]" radius='md' label="First Name" value="Jane" />
+                            <TextInput className="sm:w-[25%]" radius='md' label="Middle Name" value="Andrade" />
+                            <TextInput className="sm:w-[25%]" radius='md' label="Name Extension" />
+                        </div>
+                        <div className="flex gap-2 flex-col sm:flex-row">
+                            <TextInput className="sm:w-[50%]" radius='md' label="Email" value="janecooper@gmail.com" />
+                            <TextInput className="sm:w-[50%]" radius='md' label="Username" value="janecooper32" />
+                        </div>
                     </div>
-                    <div className="flex gap-2 flex-col sm:flex-row">
-                        <TextInput className="sm:w-[50%]" radius='md' label="Email" value="janecooper@gmail.com" />
-                        <TextInput className="sm:w-[50%]" radius='md' label="Username" value="janecooper32" />
-                    </div>
+
                 </Tabs.Panel>
 
-                <Tabs.Panel value="changePassword" className="border-[2px] border-blue-300 rounded-md px-4 m-4  p-4 sm:p-8 h-full">
-                    <div className=" text-[#559CDA] font-bold">Change Password</div>
-                    <p className="text-md text-[#6D6D6D]">Passwords should contain at least one capital letter, a number, and a special character.</p>
+                <Tabs.Panel value="changePassword" className="border-[2px] border-blue-300 rounded-md px-4 m-4  p-4 sm:p-8 h-full flex flex-col gap-8">
+                    <div>
+                        <div className=" text-[#559CDA] font-bold">Change Password</div>
+                        <p className="text-md text-[#6D6D6D]">Passwords should contain at least one capital letter, a number, and a special character.</p>
+                    </div>
+                    
                     <div className="flex gap-2 items-end">
                         <PasswordInput label="Current Password" className="w-[33%]" radius='md' value="password" />
                         <PasswordInput label="New Password" className="w-[33%]" radius='md' value="password" />
