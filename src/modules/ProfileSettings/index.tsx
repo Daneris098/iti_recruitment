@@ -81,9 +81,8 @@ export const ProfileSettings = () => {
                         <TextInput className="sm:w-[25%]" radius='md' label="Name Extension" />
                     </div>
                     <div className="flex gap-2 flex-col sm:flex-row">
-                        <TextInput className="sm:w-[33%]" radius='md' label="Email" value="janecooper@gmail.com" />
-                        <TextInput className="sm:w-[33%]" radius='md' label="Username" value="janecooper32" />
-                        <PasswordInput className="sm:w-[33%]" radius='md' label="Password" value="password" />
+                        <TextInput className="sm:w-[50%]" radius='md' label="Email" value="janecooper@gmail.com" />
+                        <TextInput className="sm:w-[50%]" radius='md' label="Username" value="janecooper32" />
                     </div>
                 </Tabs.Panel>
 

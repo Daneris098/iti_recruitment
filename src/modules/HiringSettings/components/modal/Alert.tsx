@@ -53,7 +53,7 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefO
                     <Divider size="xs" color="#6D6D6D" />
                 </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={70} />
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold">
                         All Changes have been successfully saved!
                     </Text>
