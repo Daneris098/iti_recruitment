@@ -2,26 +2,26 @@ import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus } from "@tabler/icons-react";
 import { useEffect, useState } from 'react';
 import { AdministratorSettingsStore, DialogStore } from '@modules/AdministratorSettings/store';
-import { title, description, Company, columns } from '@modules/AdministratorSettings/types';
+import { title, description, user, columns } from '@modules/AdministratorSettings/types';
 
 const PAGE_SIZE = 15;
 const data = [
-    { username: 'insys001', lastname: 'Doe', firstname: 'John', email: 'john.doe@example.com' },
-    { username: 'insys002', lastname: 'Smith', firstname: 'Alice', email: 'alice.smith@example.com' },
-    { username: 'insys003', lastname: 'Johnson', firstname: 'Bob', email: 'bob.johnson@example.com' },
-    { username: 'insys004', lastname: 'Brown', firstname: 'Eve', email: 'eve.brown@example.com' },
-    { username: 'insys005', lastname: 'Williams', firstname: 'Charlie', email: 'charlie.williams@example.com' }
+    { username: 'insys001', lastname: 'Doe', firstname: 'John', email: 'john.doe@example.com', status: 'Active' },
+    { username: 'insys002', lastname: 'Smith', firstname: 'Alice', email: 'alice.smith@example.com', status: 'Active' },
+    { username: 'insys003', lastname: 'Johnson', firstname: 'Bob', email: 'bob.johnson@example.com', status: 'Active' },
+    { username: 'insys004', lastname: 'Brown', firstname: 'Eve', email: 'eve.brown@example.com', status: 'Active' },
+    { username: 'insys005', lastname: 'Williams', firstname: 'Charlie', email: 'charlie.williams@example.com', status: 'Active' }
 ];
 
 
 
 export default function index() {
-    const { activePanel } = AdministratorSettingsStore()
+    const { activePanel, setSelectedUser } = AdministratorSettingsStore()
     const { setAction } = DialogStore()
     const [page, setPage] = useState(1);
-    const [records, setRecords] = useState<Company[]>(data.slice(0, PAGE_SIZE));
+    const [records, setRecords] = useState<user[]>(data.slice(0, PAGE_SIZE));
     const [searchTerm] = useState('');
-    const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof Company; direction: 'asc' | 'desc' }>({
+    const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof user; direction: 'asc' | 'desc' }>({
         columnAccessor: 'username',
         direction: 'asc',
     });
@@ -74,11 +74,16 @@ export default function index() {
                 totalRecords={data.filter(item =>
                     item.username.toLowerCase().includes(searchTerm.toLowerCase())
                 ).length}
+                onRowClick={({ record, event }) => {
+                    console.log('record: ', record);
+                    setSelectedUser(record)
+                }
+                }
                 recordsPerPage={PAGE_SIZE}
                 page={page}
                 onPageChange={setPage}
                 sortStatus={sortStatus}
-                onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof Company; direction: 'asc' | 'desc' })}
+                onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof user; direction: 'asc' | 'desc' })}
             />
         </div>
     );

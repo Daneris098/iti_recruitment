@@ -51,31 +51,33 @@ export default function index() {
                         <TextInput className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("")} radius='md' size="lg" label="Enter Password" placeholder="Enter password" />
                         <TextInput className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("")} radius='md' size="lg" label="Confirm Password" placeholder="Confirm password" />
                     </div>
-                    <div className='flex gap-4 '>
-                        <Checkbox
-                            className="w-[50%]"
-                            defaultChecked
-                            label="Generate Password"
-                        />
-                        <Checkbox
-                            className="w-[50%] "
-                            defaultChecked
-                            label="Must change password upon login"
-                        />
-                    </div>
-                    <div className='flex justify-between'>
-                        <Button
-                            variant="outline"
-                            className=" w-[25%] self-end"
-                            radius={10}
-                            onClick={() => { }}
-                        >CANCEL</Button>
-                        <Button
-                            variant="transparent"
-                            className="br-gradient border-none text-white w-[30%] self-end"
-                            radius={10}
-                            onClick={() => { }}
-                        >GENERATE ACCOUNT</Button>
+                    <div className='flex flex-col gap-8 mt-4'>
+                        <div className='flex gap-4'>
+                            <Checkbox
+                                className="w-[50%]"
+                                defaultChecked
+                                label="Generate Password"
+                            />
+                            <Checkbox
+                                className="w-[50%] "
+                                defaultChecked
+                                label="Must change password upon login"
+                            />
+                        </div>
+                        <div className='flex justify-between'>
+                            <Button
+                                variant="outline"
+                                className=" w-[25%] self-end"
+                                radius={10}
+                                onClick={() => { }}
+                            >CANCEL</Button>
+                            <Button
+                                variant="transparent"
+                                className="br-gradient border-none text-white w-[30%] self-end"
+                                radius={10}
+                                onClick={() => { }}
+                            >GENERATE ACCOUNT</Button>
+                        </div>
                     </div>
                 </form>
             </div>

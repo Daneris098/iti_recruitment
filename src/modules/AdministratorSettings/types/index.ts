@@ -2,7 +2,9 @@
 export interface AdministratorSettingsState {
   alert: string;
   activePanel: string;
+  selectedUser: user;
 
+  setSelectedUser: (selectedUser: user) => void;
   setActivePanel: (activePanel: string) => void;
   setAlert: (alert: string) => void;
 }
@@ -15,11 +17,11 @@ export enum AlertType {
 }
 
 export enum title {
-  userAccounts = 'Company List',
+  userAccounts = 'User Account',
 }
 
 export enum description {
-  userAccounts = 'List all your companies below',
+  userAccounts = 'Manage system users',
 }
 
 export enum panel {
@@ -35,11 +37,12 @@ export const columns = {
   ],
 };
 
-export type Company = {
+export type user = {
   username: string;
   lastname: string;
   firstname: string;
   email: string;
+  status: string;
 };
 
 export interface DialogState {
