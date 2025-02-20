@@ -1,5 +1,5 @@
 import { Divider, Modal } from "@mantine/core";
-import { VacancyStore } from "../../store";
+import { VacancyStore, ApplicantStore } from "../../store";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
 import { VacancyType } from "../../types";
@@ -9,7 +9,7 @@ import "@modules/Vacancies/style.css"
 
 
 export default function index() {
-    const { selectedData, setSelectedData } = VacancyStore();
+    const { selectedData, setSelectedData } = ApplicantStore();
     const [vacancyRecords, setVacancyRecords] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({

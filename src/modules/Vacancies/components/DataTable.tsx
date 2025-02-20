@@ -3,7 +3,7 @@ import { DataTable } from 'mantine-datatable';
 import Vacancies from '@src/modules/Vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
-import { VacancyStore } from '../store';
+import { VacancyStore, ApplicantStore } from '../store';
 
 enum StatusColor {
     Published = '#5A9D27',
@@ -12,7 +12,8 @@ enum StatusColor {
 }
 
 export default function index() {
-    const { setSelectedData } = VacancyStore();
+    const { setSelectedData } = ApplicantStore();
+    const { setSelectedVacancy } = VacancyStore();
     const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
@@ -60,13 +61,15 @@ export default function index() {
             records={paginatedRecords}
             columns={[
                 { accessor: 'position', title: 'Vacancy', textAlign: "left", sortable: true },
-                { accessor: 'datePublish', title: 'Publish Date', textAlign: "left", sortable: true,
+                {
+                    accessor: 'datePublish', title: 'Publish Date', textAlign: "left", sortable: true,
                     render: ({ datePublish }) => formatDate(datePublish)
                 },
                 { accessor: 'interviewer', title: 'Interviewer', textAlign: "left", sortable: true },
                 { accessor: 'department', title: 'Department', textAlign: "left", sortable: true },
                 { accessor: 'quantity', title: 'Quantity', textAlign: "center", sortable: true },
-                { accessor: 'status', title: 'Status', textAlign: "center", sortable: true,
+                {
+                    accessor: 'status', title: 'Status', textAlign: "center", sortable: true,
                     render: ({ status }) => (
                         <div className='rounded-xl text-white text-center p-1' style={{ background: StatusColor[status as keyof typeof StatusColor] || 'gray' }}>
                             {status}
@@ -78,7 +81,7 @@ export default function index() {
                     title: 'Action',
                     textAlign: "center",
                     render: (data) => (
-                        <div className='rounded-xl p-1 text-center border border-black cursor-pointer' onClick={() => { setSelectedData(data) }}>
+                        <div className='rounded-xl p-1 text-center border border-black cursor-pointer' onClick={(e) => { e.stopPropagation(); setSelectedData(data); }}>
                             View Applicant
                         </div>
                     ),
@@ -90,7 +93,9 @@ export default function index() {
             onPageChange={setPage}
             sortStatus={sortStatus}
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
-
+            onRowClick={(val) => {
+                setSelectedVacancy(val.record)
+            }}
         />
     );
 }

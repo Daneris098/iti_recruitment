@@ -4,11 +4,11 @@ import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useRef } from "react";
 import { DateRange } from '../DateRange';
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
-import { VacancyStore, DialogStore } from "@modules/Vacancies/store";
+import { VacancyStore } from "@modules/Vacancies/store";
 import { AlertType } from '../../types';
 
 export default function index() {
-    const { action, setAction } = DialogStore()
+    const { action, setAction } = VacancyStore()
     const { setAlert } = VacancyStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const form = useForm({

@@ -1,4 +1,4 @@
-import { VacancyStore, DialogStore } from "@modules/Vacancies/store";
+import { VacancyStore } from "@modules/Vacancies/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleCheckBig } from "lucide-react";
@@ -11,8 +11,8 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const { setAlert, alert } = VacancyStore();
-    const { setAction } = DialogStore();
+    const { setAlert, alert, setAction } = VacancyStore();
+    
     useEffect(() => {
         console.log(alert)
         if (alert && (AlertAutoClose as any)[alert]) {

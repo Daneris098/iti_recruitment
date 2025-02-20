@@ -1,35 +1,35 @@
 import { create } from "zustand";
-import { DialogState, DataTableState, VacancyType, VacancyState, FilterType } from "@modules/Vacancies/types";
+import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType } from "@modules/Vacancies/types";
 import { filterVal, selectedDataVal } from "@src/modules/Vacancies/values";
 
 
 export const VacancyStore = create<VacancyState>((set) => ({
-  selectedData: selectedDataVal,
+  selectedVacancy: selectedDataVal,
   filterDrawer: false,
   filter: filterVal,
   clearFilter: false,
   isFiltered: false,
   applicationFormModal: false,
   alert: '',
-
+  action: '',
+  
+  setAction: (action: string) => set({ action: action }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),
-  setSelectedData: (selectedData: VacancyType) => set({ selectedData: selectedData }),
+  setSelectedVacancy: (selectedData: VacancyType) => set({ selectedVacancy: selectedData }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
 }));
 
 
-export const DialogStore = create<DialogState>((set) => ({
-  action: '',
+export const ApplicantStore = create<ApplicantState>((set) => ({
   selectedData: selectedDataVal,
   loading: false,
 
   setLoading: (loading:boolean) => set({ loading: loading }),
   setSelectedData: (selected_data: VacancyType) => set({ selectedData: selected_data }),
-  setAction: (action: string) => set({ action: action }),
 }));
 
 export const DataTableStore = create<DataTableState>((set) => ({

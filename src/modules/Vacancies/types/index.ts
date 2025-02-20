@@ -1,17 +1,19 @@
 export interface VacancyState {
-  selectedData: VacancyType;
+  selectedVacancy: VacancyType;
   filterDrawer: boolean;
   filter: FilterType;
   clearFilter: boolean;
   isFiltered: boolean;
   applicationFormModal: boolean;
   alert: string;
+  action: string,
 
+  setAction: (action: string) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
   setFilter: (filter: FilterType) => void;
-  setSelectedData: (selectedData: VacancyType) => void;
+  setSelectedVacancy: (selectedData: VacancyType) => void;
   setFilterDrawer: (filterDrawer: boolean) => void;
   setIsFiltered: (isFiltered: boolean) => void;
 }
@@ -33,6 +35,13 @@ export interface VacancyType {
   position: string;
   workplace: string;
   department: string;
+  company: string;
+  branch: string;
+  positionLevel: string;
+  vacancyType: string;
+  division: string;
+  section: string;
+  hiringManager: string;
   experienceLevel: string;
   employmentType: string;
   jobDescription: string;
@@ -47,6 +56,7 @@ export interface VacancyType {
   status: string;
   vacancyDuration: {
     start: string;
+    end: string;
     from: string;
   }
   mustHaveSkills: string;
@@ -71,13 +81,11 @@ export interface FetchExpensesParams {
 }
 
 
-export interface DialogState {
-  action: string,
+export interface ApplicantState {
   selectedData: VacancyType,
   loading: boolean,
 
   setSelectedData: (action: VacancyType) => void;
-  setAction: (action: string) => void;
   setLoading: (loading: boolean) => void;
 }
 

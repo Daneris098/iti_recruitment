@@ -2,11 +2,11 @@ import { Button } from "@mantine/core";
 import Filter from "@src/modules/Vacancies/components/Filter";
 import DataTable from "@src/modules/Vacancies/components/DataTable";
 import { IconUserPlus } from "@tabler/icons-react";
-import { DialogStore } from '@src/modules/Vacancies/store'
+import {  VacancyStore } from '@src/modules/Vacancies/store'
 import Modals from '@modules/Vacancies/components/modal/index'
 
 export default function index() {
-  const { setAction } = DialogStore()
+    const { setAction } = VacancyStore()
     return (
         <div className="rounded-md h-full flex flex-col gap-5 p-6 bg-white relative">
             <Modals />

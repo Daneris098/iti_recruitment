@@ -4,6 +4,8 @@
     "position": "Software Engineer",
     "workplace": "Remote",
     "department": "Engineering",
+    "division": "Technology",
+    "section": "Development",
     "experienceLevel": "Mid-level",
     "employmentType": "Full-time",
     "jobDescription": "Develop and maintain web applications.",
@@ -21,16 +23,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-01-20",
+      "end": "2023-07-20",
       "from": "6 months"
     },
     "mustHaveSkills": "JavaScript, React",
-    "qualification": "Bachelor's degree in a related field"
+    "qualification": "Bachelor's degree in a related field",
+    "company": "Tech Innovations Inc.",
+    "branch": "Main Office",
+    "positionLevel": "Engineer",
+    "vacancyType": "External",
+    "hiringManager": "Sarah Connor"
   },
   {
     "id": 2,
     "position": "Product Manager",
     "workplace": "On-site",
     "department": "Product",
+    "division": "Business",
+    "section": "Product Development",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Lead product development and strategy.",
@@ -56,16 +66,24 @@
     "status": "Closed",
     "vacancyDuration": {
       "start": "2023-02-05",
+      "end": "2024-02-05",
       "from": "12 months"
     },
     "mustHaveSkills": "Agile methodologies, Market research",
-    "qualification": "Master's degree in Business Administration"
+    "qualification": "Master's degree in Business Administration",
+    "company": "Innovate Solutions Ltd.",
+    "branch": "New York",
+    "positionLevel": "Manager",
+    "vacancyType": "Internal",
+    "hiringManager": "Michael Scott"
   },
   {
     "id": 3,
     "position": "Data Analyst",
     "workplace": "Hybrid",
     "department": "Data Science",
+    "division": "Analytics",
+    "section": "Data Analysis",
     "experienceLevel": "Entry-level",
     "employmentType": "Full-time",
     "jobDescription": "Analyze data to provide insights for business decisions.",
@@ -83,16 +101,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-03-15",
+      "end": "2023-09-15",
       "from": "6 months"
     },
     "mustHaveSkills": "SQL, Python",
-    "qualification": "Bachelor's degree in a related field"
+    "qualification": "Bachelor's degree in a related field",
+    "company": "Data Insights Corp.",
+    "branch": "San Francisco",
+    "positionLevel": "Analyst",
+    "vacancyType": "External",
+    "hiringManager": "Tom Hanks"
   },
   {
     "id": 4,
     "position": "Marketing Specialist",
     "workplace": "Remote",
     "department": "Marketing",
+    "division": "Marketing",
+    "section": "Campaign Management",
     "experienceLevel": "Mid-level",
     "employmentType": "Part-time",
     "jobDescription": "Develop and execute marketing campaigns.",
@@ -113,16 +139,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-04-05",
+      "end": "2023-07-05",
       "from": "3 months"
     },
     "mustHaveSkills": "SEO, Content creation",
-    "qualification": "Bachelor's degree in Marketing or related field"
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "Creative Marketing Agency",
+    "branch": "Remote Team",
+    "positionLevel": "Specialist",
+    "vacancyType": "External",
+    "hiringManager": "Lisa White"
   },
   {
     "id": 5,
     "position": "UX/UI Designer",
     "workplace": "On-site",
     "department": "Design",
+    "division": "Creative",
+    "section": "User  Experience",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Design user-friendly interfaces and experiences.",
@@ -140,16 +174,24 @@
     "status": "Overdue",
     "vacancyDuration": {
       "start": "2023-05-15",
+      "end": "2024-05-15",
       "from": "12 months"
     },
     "mustHaveSkills": "Figma, Adobe XD",
-    "qualification": "Bachelor's degree in Design or related field"
+    "qualification": "Bachelor's degree in Design or related field",
+    "company": "Design Studio Co.",
+    "branch": "Los Angeles",
+    "positionLevel": "Designer",
+    "vacancyType": "External",
+    "hiringManager": "Emma Stone"
   },
   {
     "id": 6,
     "position": "DevOps Engineer",
     "workplace": "Remote",
     "department": "Engineering",
+    "division": "Technology",
+    "section": "Infrastructure",
     "experienceLevel": "Mid-level",
     "employmentType": "Full-time",
     "jobDescription": "Manage and optimize cloud infrastructure.",
@@ -170,16 +212,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-06-05",
+      "end": "2023-12-05",
       "from": "6 months"
     },
     "mustHaveSkills": "AWS, Docker",
-    "qualification": "Bachelor's degree in Computer Science or related field"
+    "qualification": "Bachelor's degree in Computer Science or related field",
+    "company": "Cloud Solutions Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Engineer",
+    "vacancyType": "External",
+    "hiringManager": "Oliver Twist"
   },
   {
     "id": 7,
     "position": "Sales Executive",
     "workplace": "On-site",
     "department": "Sales",
+    "division": "Sales",
+    "section": "Client Relations",
     "experienceLevel": "Entry-level",
     "employmentType": "Full-time",
     "jobDescription": "Drive sales and build client relationships.",
@@ -201,16 +251,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-07-15",
+      "end": "2024-07-15",
       "from": "12 months"
     },
     "mustHaveSkills": "CRM software, Cold calling",
-    "qualification": "Bachelor's degree in Business or related field"
+    "qualification": "Bachelor's degree in Business or related field",
+    "company": "Sales Dynamics Ltd.",
+    "branch": "Chicago",
+    "positionLevel": "Executive",
+    "vacancyType": "External",
+    "hiringManager": "Jack Sparrow"
   },
   {
     "id": 8,
     "position": "Content Writer",
     "workplace": "Remote",
     "department": "Content",
+    "division": "Creative",
+    "section": "Content Creation",
     "experienceLevel": "Mid-level",
     "employmentType": "Part-time",
     "jobDescription": "Create engaging content for various platforms.",
@@ -228,16 +286,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-08-05",
+      "end": "2024-02-05",
       "from": "6 months"
     },
     "mustHaveSkills": "SEO, Copywriting",
-    "qualification": "Bachelor's degree in English or related field"
+    "qualification": "Bachelor's degree in English or related field",
+    "company": "Content Creators Hub",
+    "branch": "Remote Team",
+    "positionLevel": "Writer",
+    "vacancyType": "External",
+    "hiringManager": "Samantha Green"
   },
   {
     "id": 9,
     "position": "Network Administrator",
     "workplace": "On-site",
     "department": "IT",
+    "division": "Technology",
+    "section": "Network Management",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Manage and maintain network infrastructure.",
@@ -258,16 +324,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-09-15",
+      "end": "2024-09-15",
       "from": "12 months"
     },
     "mustHaveSkills": "Network security, Troubleshooting",
-    "qualification": "Bachelor's degree in Information Technology or related field"
+    "qualification": "Bachelor's degree in Information Technology or related field",
+    "company": "Network Solutions Group",
+    "branch": "Dallas",
+    "positionLevel": "Administrator",
+    "vacancyType": "External",
+    "hiringManager": "Peter Parker"
   },
   {
     "id": 10,
     "position": "HR Manager",
     "workplace": "Hybrid",
     "department": "Human Resources",
+    "division": "HR",
+    "section": "Employee Relations",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Oversee HR functions and employee relations.",
@@ -275,7 +349,7 @@
       "5+ years of experience in HR",
       "Strong leadership skills"
     ],
-    "skills": ["Recruitment", "Performance management", " Employee engagement"],
+    "skills": ["Recruitment", "Performance management", "Employee engagement"],
     "benefits": [
       "Health insurance",
       "Paid time off",
@@ -289,16 +363,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-10-05",
+      "end": "2024-10-05",
       "from": "12 months"
     },
     "mustHaveSkills": "Recruitment, Performance management",
-    "qualification": "Bachelor's degree in Human Resources or related field"
+    "qualification": "Bachelor's degree in Human Resources or related field",
+    "company": "People First Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Manager",
+    "vacancyType": "External",
+    "hiringManager": "Angela White"
   },
   {
     "id": 11,
     "position": "Business Analyst",
     "workplace": "Remote",
     "department": "Business",
+    "division": "Analytics",
+    "section": "Business Analysis",
     "experienceLevel": "Mid-level",
     "employmentType": "Full-time",
     "jobDescription": "Analyze business processes and provide solutions.",
@@ -323,16 +405,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-10-15",
+      "end": "2024-10-15",
       "from": "12 months"
     },
     "mustHaveSkills": "Business process modeling, Data analysis",
-    "qualification": "Bachelor's degree in Business Administration or related field"
+    "qualification": "Bachelor's degree in Business Administration or related field",
+    "company": "Business Solutions Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Analyst",
+    "vacancyType": "External",
+    "hiringManager": "David Copperfield"
   },
   {
     "id": 12,
     "position": "Graphic Designer",
     "workplace": "On-site",
     "department": "Design",
+    "division": "Creative",
+    "section": "Visual Design",
     "experienceLevel": "Entry-level",
     "employmentType": "Full-time",
     "jobDescription": "Create visual content for marketing and branding.",
@@ -353,16 +443,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-10-25",
+      "end": "2024-04-25",
       "from": "6 months"
     },
     "mustHaveSkills": "Adobe Creative Suite, Typography",
-    "qualification": "Bachelor's degree in Graphic Design or related field"
+    "qualification": "Bachelor's degree in Graphic Design or related field",
+    "company": "Visual Arts Co.",
+    "branch": "Miami",
+    "positionLevel": "Designer",
+    "vacancyType": "External",
+    "hiringManager": "Nina Simone"
   },
   {
     "id": 13,
     "position": "Cybersecurity Analyst",
     "workplace": "Remote",
     "department": "IT",
+    "division": "Security",
+    "section": "Cybersecurity",
     "experienceLevel": "Mid-level",
     "employmentType": "Full-time",
     "jobDescription": "Monitor and protect the organization's IT infrastructure.",
@@ -391,16 +489,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-11-05",
+      "end": "2024-11-05",
       "from": "12 months"
     },
     "mustHaveSkills": "Network security, Incident response",
-    "qualification": "Bachelor's degree in Cybersecurity or related field"
+    "qualification": "Bachelor's degree in Cybersecurity or related field",
+    "company": "SecureTech Solutions",
+    "branch": "Remote Team",
+    "positionLevel": "Analyst",
+    "vacancyType": "External",
+    "hiringManager": "Bruce Wayne"
   },
   {
     "id": 14,
     "position": "SEO Specialist",
     "workplace": "Remote",
     "department": "Marketing",
+    "division": "Marketing",
+    "section": "SEO",
     "experienceLevel": "Mid-level",
     "employmentType": "Full-time",
     "jobDescription": "Optimize website content for search engines.",
@@ -418,16 +524,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-11-15",
+      "end": "2024-11-15",
       "from": "12 months"
     },
     "mustHaveSkills": "Keyword research, On-page optimization",
-    "qualification": "Bachelor's degree in Marketing or related field"
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "SEO Masters Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Specialist",
+    "vacancyType": "External",
+    "hiringManager": "Clark Kent"
   },
   {
     "id": 15,
     "position": "Software Tester",
     "workplace": "Hybrid",
     "department": "Quality Assurance",
+    "division": "Quality",
+    "section": "Testing",
     "experienceLevel": "Entry-level",
     "employmentType": "Full-time",
     "jobDescription": "Test software applications for bugs and issues.",
@@ -448,16 +562,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-11-25",
+      "end": "2024-05-25",
       "from": "6 months"
     },
     "mustHaveSkills": "Manual testing, Bug tracking",
-    "qualification": "Bachelor's degree in Computer Science or related field"
+    "qualification": "Bachelor's degree in Computer Science or related field",
+    "company": "Quality Assurance Group",
+    "branch": "Remote Team",
+    "positionLevel": "Tester",
+    "vacancyType": "External",
+    "hiringManager": "Diana Prince"
   },
   {
     "id": 16,
     "position": "Social Media Manager",
     "workplace": "Remote",
     "department": "Marketing",
+    "division": "Marketing",
+    "section": "Social Media",
     "experienceLevel": "Mid-level",
     "employmentType": "Full-time",
     "jobDescription": "Manage social media accounts and campaigns.",
@@ -478,16 +600,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-12-05",
+      "end": "2024-12-05",
       "from": "12 months"
     },
     "mustHaveSkills": "Content creation, Analytics",
-    "qualification": "Bachelor's degree in Marketing or related field"
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "Social Media Experts",
+    "branch": "Remote Team",
+    "positionLevel": "Manager",
+    "vacancyType": "External",
+    "hiringManager": "Jessica Jones"
   },
   {
     "id": 17,
     "position": "Database Administrator",
     "workplace": "On-site",
     "department": "IT",
+    "division": "Technology",
+    "section": "Database Management",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Manage and maintain database systems.",
@@ -505,16 +635,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-12-15",
+      "end": "2024-12-15",
       "from": "12 months"
     },
     "mustHaveSkills": "Database design, Performance tuning",
-    "qualification": "Bachelor's degree in Information Technology or related field"
+    "qualification": "Bachelor's degree in Information Technology or related field",
+    "company": "Database Solutions Inc.",
+    "branch": "Seattle",
+    "positionLevel": "Administrator",
+    "vacancyType": "External",
+    "hiringManager": "Tony Stark"
   },
   {
     "id": 18,
     "position": "Content Strategist",
     "workplace": "Remote",
     "department": "Content",
+    "division": "Creative",
+    "section": "Content Strategy",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Develop and implement content strategies.",
@@ -539,16 +677,24 @@
     "status": "Published",
     "vacancyDuration": {
       "start": "2023-12-25",
+      "end": "2024-12-25",
       "from": "12 months"
     },
     "mustHaveSkills": "Content marketing, SEO",
-    "qualification": "Bachelor's degree in Marketing or related field"
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "Content Strategy Group",
+    "branch": "Remote Team",
+    "positionLevel": "Strategist",
+    "vacancyType": "External",
+    "hiringManager": "Wanda Maximoff"
   },
   {
     "id": 19,
     "position": "Cloud Solutions Architect",
     "workplace": "Hybrid",
     "department": "Engineering",
+    "division": "Technology",
+    "section": "Cloud Solutions",
     "experienceLevel": "Senior",
     "employmentType": "Full-time",
     "jobDescription": "Design and implement cloud solutions.",
@@ -569,16 +715,24 @@
     "status": "Overdue",
     "vacancyDuration": {
       "start": "2024-01-05",
+      "end": "2025-01-05",
       "from": "12 months"
     },
     "mustHaveSkills": "AWS, Azure",
-    "qualification": "Bachelor's degree in Computer Science or related field"
+    "qualification": "Bachelor's degree in Computer Science or related field",
+    "company": "Cloud Innovations Ltd.",
+    "branch": "Remote Team",
+    "positionLevel": "Architect",
+    "vacancyType": "External",
+    "hiringManager": "Natasha Romanoff"
   },
   {
     "id": 20,
     "position": "Customer Support Specialist",
     "workplace": "Remote",
     "department": "Customer Service",
+    "division": "Support",
+    "section": "Customer Relations",
     "experienceLevel": "Entry-level",
     "employmentType": "Full-time",
     "jobDescription": "Provide support to customers and resolve issues.",
@@ -599,9 +753,15 @@
     "status": "Closed",
     "vacancyDuration": {
       "start": "2024-01-15",
+      "end": "2024-07-15",
       "from": "6 months"
     },
     "mustHaveSkills": "CRM software, Problem-solving",
-    "qualification": "Bachelor's degree in Business or related field"
+    "qualification": "Bachelor's degree in Business or related field",
+    "company": "Customer Care Solutions",
+    "branch": "Remote Team",
+    "positionLevel": "Specialist",
+    "vacancyType": "External",
+    "hiringManager": "Steve Rogers"
   }
 ]

@@ -5,6 +5,13 @@ export const selectedDataVal: VacancyType = {
   position: "",
   workplace: "",
   department: "",
+  company:"",
+  branch: "",
+  positionLevel: "",
+  hiringManager: "",
+  vacancyType: "",
+  division: "",
+  section: "",
   experienceLevel: "",
   employmentType: "",
   jobDescription: "",
@@ -19,6 +26,7 @@ export const selectedDataVal: VacancyType = {
   status: "",
   vacancyDuration: {
     start: "",
+    end:"",
     from: ""
   },
   mustHaveSkills: "",
