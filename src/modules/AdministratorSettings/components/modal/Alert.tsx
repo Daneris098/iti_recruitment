@@ -1,10 +1,10 @@
 import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store";
-import { Button, Divider, Modal, Text } from "@mantine/core";
+import { Alert, Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleAlert, CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType } from "@modules/AdministratorSettings/types";
-import { IconX } from "@tabler/icons-react";
+import { IconX, IconHelpCircle } from "@tabler/icons-react";
 
 
 export default function AlertModals() {
@@ -13,10 +13,12 @@ export default function AlertModals() {
         [AlertType.cancel]: false,
         [AlertType.cancellled]: true,
         [AlertType.saved]: true,
+        [AlertType.editSuccess]: true,
+        [AlertType.resetSuccess]: false,
+        [AlertType.resetConfirmation]: false,
     };
 
     useEffect(() => {
-        console.log('alert: ', alert)
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setAlert("");
@@ -57,6 +59,66 @@ export default function AlertModals() {
                     <Text className="text-xl font-bold">
                         All Changes have been successfully saved!
                     </Text>
+                </div>
+            </Modal>
+
+            <Modal
+                opened={alert === AlertType.editSuccess}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Edit Success
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
+                    <Text className="text-xl font-bold text-center">
+                        You've successfully edited the account status.
+                    </Text>
+                </div>
+            </Modal>
+
+            <Modal
+                opened={alert === AlertType.resetSuccess}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Reset Success
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
+                    <Text className="text-xl font-bold text-center">
+                        You've successfully reset the user credentials.
+                    </Text>
+                    <div className="flex gap-4 w-[80%]">
+                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert('') }}>COPY CREDENTIALS</Button>
+                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>DOWNLOAD</Button>
+                    </div>
                 </div>
             </Modal>
 
@@ -117,6 +179,38 @@ export default function AlertModals() {
                     <div className="flex gap-2 w-[80%]">
                         <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>YES</Button>
                         <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>NO</Button>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal
+                opened={alert === AlertType.resetConfirmation}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Reset Confirmation
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <IconHelpCircle color="#559cda" size={70} strokeWidth={1} />
+                    <Text className="text-xl font-bold text-center">
+                        Are you sure you want to reset the account credentials?
+                    </Text>
+                    <div className="flex gap-2 w-[80%]">
+                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>NO</Button>
+                        <Button className="w-[50%] rounded-md  border-none br-gradient"  onClick={() => { setAlert(AlertType.resetSuccess) }}>YES</Button>
                     </div>
                 </div>
             </Modal>

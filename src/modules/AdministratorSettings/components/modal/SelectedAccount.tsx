@@ -1,21 +1,51 @@
-import { Button, Modal, Select } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useEffect, useRef, useState } from "react";
+import { Button, Checkbox, Modal, Select, TextInput } from '@mantine/core';
+import { useEffect, useState } from "react";
 import { AdministratorSettingsStore, DialogStore } from "@modules/AdministratorSettings/store";
 import { selectedDataInitialVal } from '@modules/AdministratorSettings/value';
 import avatar from "@assets/avatar.png";
 import { IconCaretDownFilled } from '@tabler/icons-react';
-import { AlertType, user } from '../../types';
+import { AlertType } from '../../types';
 
 export default function index() {
     const { setAlert, selectedUser, setSelectedUser } = AdministratorSettingsStore();
     const [isEdit, setIsEdit] = useState<boolean>(false)
+    const [isResetCredential, setIsResetCredential] = useState<boolean>(false)
+    const [title, setTitle] = useState('View User Account')
 
-    const onSubmit = async () => {
-    };
+    const handleClose = () => {
+        setSelectedUser(selectedDataInitialVal);
+        setIsEdit(false);
+        setIsResetCredential(false);
+        setTitle('View User Account');
+    }
+
+    const handleSave = () => {
+        if (isEdit) {
+            setAlert(AlertType.editSuccess);
+        }
+        else if (isResetCredential) {
+            setAlert(AlertType.resetConfirmation);
+        }
+        else {
+            setAlert(AlertType.saved);
+        }
+        handleClose();
+    }
+
+    const handleReset = () => {
+        setIsResetCredential(true);
+        setTitle('Reset Credentials')
+    }
+
+    const handleEdit = () => {
+        setIsEdit(true);
+        setTitle('Edit Account Status')
+    }
+
 
     return (
-        <Modal size={'40%'} opened={selectedUser != selectedDataInitialVal} centered onClose={() => { setSelectedUser(selectedDataInitialVal); setIsEdit(false); }} title={'View User Account'}
+        <Modal size={'60%'} opened={selectedUser != selectedDataInitialVal} centered onClose={() => { handleClose() }} title={title}
+            radius={'md'}
             className='' styles={{
                 header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                 title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
@@ -51,25 +81,52 @@ export default function index() {
                             />) : (
                             <div className='bg-[#5A9D27] text-center text-white rounded-lg p-1.5 poppins'>{selectedUser.status}</div>
                         )}
+
                     </div>
-                    <div className='flex flex-col pl-4 grow justify-between h-80'>
-                        <div className='flex flex-col gap-4 '>
-                            <div className='flex flex-col'>
-                                <p className='text-sm text-[#6D6D6D]'>Email: </p>
-                                <p className='font-bold text-sm text-[#6D6D6D]'>{selectedUser.email}</p>
+                    <div className='flex flex-col pl-4 grow justify-between h-[28rem]'>
+                        {!isResetCredential ?
+                            (<div className='flex flex-col gap-4 '>
+                                <div className='flex flex-col'>
+                                    <p className='text-sm text-[#6D6D6D]'>Email: </p>
+                                    <p className='font-bold text-sm text-[#6D6D6D]'>{selectedUser.email}</p>
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p className='text-sm text-[#6D6D6D]'>Username: </p>
+                                    <p className='font-bold text-sm text-[#6D6D6D]'>{selectedUser.username}</p>
+                                </div>
                             </div>
-                            <div className='flex flex-col'>
-                                <p className='text-sm text-[#6D6D6D]'>Username: </p>
-                                <p className='font-bold text-sm text-[#6D6D6D]'>{selectedUser.username}</p>
-                            </div>
-                        </div>
-                        {!isEdit ? (
-                            <div className='flex gap-4 '>
-                                <Button className='rounded-md w-[50%] poppins' variant='outline'>RESET CREDENTIALS</Button>
-                                <Button className='rounded-md w-[50%] br-gradient border-none poppins' onClick={() => { setIsEdit(true) }}>EDIT STATUS</Button>
-                            </div>
+                            ) :
+                            (
+                                <div className='flex flex-col gap-5'>
+                                    <div className='flex gap-4 items-end'>
+                                        <TextInput label="Username" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                        <TextInput label="Email" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                    </div>
+                                    <div className='flex gap-4 items-end'>
+                                        <TextInput label="Enter Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                        <TextInput label="Confirm Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                    </div>
+                                    <div className='flex gap-4 items-end'>
+                                        <Checkbox
+                                            classNames={{ label:"text-[#6D6D6D] "}}
+                                            className='w-[50%]'
+                                            label="Generate Password"
+                                        />
+                                        <Checkbox
+                                            classNames={{ label: "text-[#6D6D6D] " }}
+                                            className='w-[50%]'
+                                            label="Must Change Password upon login"
+                                        />
+                                    </div>
+                                </div>)
+                        }
+                        {isEdit || isResetCredential ? (
+                            <Button className='rounded-md w-[50%] br-gradient border-none poppins self-end ' radius={'md'} onClick={() => { handleSave() }}>SAVE CHANGES</Button>
                         ) : (
-                                <Button className='rounded-md w-[50%] br-gradient border-none poppins self-end' onClick={() => { setAlert(AlertType.saved); setSelectedUser(selectedDataInitialVal); }}>SAVE CHANGES</Button>
+                            <div className='flex gap-4 '>
+                                <Button className='rounded-md w-[50%] poppins' variant='outline' onClick={() => { handleReset() }}>RESET CREDENTIALS</Button>
+                                <Button className='rounded-md w-[50%] br-gradient border-none poppins' onClick={() => { handleEdit() }}>EDIT STATUS</Button>
+                            </div>
                         )}
                     </div>
                 </div>
