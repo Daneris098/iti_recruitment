@@ -1,4 +1,4 @@
-import { AppShell, TextInput } from "@mantine/core";
+import { AppShell, Divider, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconUsers, IconHome, IconCalendarWeek, IconFileDescription, IconArchive, IconTransfer, IconUserPlus, IconBriefcase, IconMessageCircleUser, IconUser } from '@tabler/icons-react';
 import { Search, Files, FileUp, FileUser } from "lucide-react";
@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
                 )}
             </p>
             {
-                isCollapsed ? (<Search color="#6D6D6D" className="self-center m-2"/>) : (
+                isCollapsed ? (<Search color="#6D6D6D" className="self-center m-2" />) : (
                     <TextInput
                         leftSection={<Search color="#6D6D6D" />}
                         placeholder=""
@@ -56,7 +56,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
             <NavLink to="vacancies" className={({ isActive }) => isActive ? isCollapsed ? "active2" : "active" : isCollapsed ? "inactive2" : "inactive"} onClick={() => toggleMobile()}><div className=" flex gap-4"><IconUsers />{isCollapsed ? '' : 'VACANCIES'}</div></NavLink>
             <NavLink to="jobOffers" className={({ isActive }) => isActive ? isCollapsed ? "active2" : "active" : isCollapsed ? "inactive2" : "inactive"} onClick={() => toggleMobile()}><div className=" flex gap-4"><Files />{isCollapsed ? '' : 'JOB OFFERS'}</div></NavLink>
             <NavLink to="reports" className={({ isActive }) => isActive ? isCollapsed ? "active2" : "active" : isCollapsed ? "inactive2" : "inactive"} onClick={() => toggleMobile()}><div className=" flex gap-4"><IconFileDescription />{isCollapsed ? '' : 'REPORTS'}</div></NavLink>
-            <p className="text-xs py-2">APPLICANTS</p>
+            {!isCollapsed ? (<p className="text-xs py-2">APPLICANTS</p>) : (<Divider my="md" />)}
             <NavLink to="" className={({ isActive }) => isActive ? isCollapsed ? "active2" : "active" : isCollapsed ? "inactive2" : "inactive"} onClick={() => toggleMobile()}><div className=" flex gap-4"><IconUser />{isCollapsed ? '' : 'ALL APPLICANTS'}</div></NavLink>
             <NavLink to="" className={({ isActive }) => isActive ? isCollapsed ? "active2" : "active" : isCollapsed ? "inactive2" : "inactive"} onClick={() => toggleMobile()}><div className=" flex gap-4"><FileUser />{isCollapsed ? '' : 'APPLIED'}</div></NavLink>
             <NavLink to="" className={({ isActive }) => isActive ? isCollapsed ? "active2" : "active" : isCollapsed ? "inactive2" : "inactive"} onClick={() => toggleMobile()}><div className=" flex gap-4"><IconMessageCircleUser />{isCollapsed ? '' : 'FOR INTERVIEW'}</div></NavLink>
