@@ -6,7 +6,7 @@ export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
   alert: '',
   activePanel: panel.customFeedback,
 
-  setActivePanel: (activePanel: string) => set({ activePanel: activePanel }),
+  setActivePanel: (activePanel: panel) => set({ activePanel: activePanel }),
   setAlert: (alert: string) => set({ alert: alert }),
 }));
 

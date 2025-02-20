@@ -1,9 +1,23 @@
 
+export interface DataTableRef {
+  saveAll: () => void;
+  cancelAll: () => void;
+}
+export interface DataTableRefs {
+  customFeedback: React.RefObject<DataTableRef>;
+  interviewers: React.RefObject<DataTableRef>;
+  interviewStages: React.RefObject<DataTableRef>;
+
+  offerResponsePeriod?: React.RefObject<DataTableRef>;
+  applicationSettings?: React.RefObject<DataTableRef>;
+  jobOfferTemplate?: React.RefObject<DataTableRef>;
+}
+
 export interface HiringSettingsState {
   alert: string;
-  activePanel: string;
+  activePanel: panel;
 
-  setActivePanel: (activePanel: string) => void;
+  setActivePanel: (activePanel: panel) => void;
   setAlert: (alert: string) => void;
 }
 

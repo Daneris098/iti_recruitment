@@ -1,6 +1,7 @@
 import Alert from '@modules/HiringSettings/components/modal/Alert'
+import { DataTableRefs } from '../../types'
 
-export default function index({ dataTableRef }: { dataTableRef: React.RefObject<{ saveAll: () => void; cancelAll: () => void }> }) {
+export default function Index({ dataTableRef }: { dataTableRef: DataTableRefs }) {
     return (
         <>
             <Alert dataTableRef={dataTableRef} />
