@@ -1,9 +1,5 @@
 export interface VacancyState {
   selectedVacancy: VacancyType;
-  filterDrawer: boolean;
-  filter: FilterType;
-  clearFilter: boolean;
-  isFiltered: boolean;
   applicationFormModal: boolean;
   alert: string;
   action: string,
@@ -11,19 +7,30 @@ export interface VacancyState {
   setAction: (action: string) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
-  setClearFilter: (clearFilter: boolean) => void;
-  setFilter: (filter: FilterType) => void;
   setSelectedVacancy: (selectedData: VacancyType) => void;
-  setFilterDrawer: (filterDrawer: boolean) => void;
+}
+
+export type FilterState = {
+  filter: FilterType;
+  isFiltered: boolean;
+  filterDrawer: boolean;
+  clearFilter: boolean;
+
+  setFilter: (filter: FilterType) => void;
   setIsFiltered: (isFiltered: boolean) => void;
+  setFilterDrawer: (filterDrawer: boolean) => void;
+  setClearFilter: (clearFilter: boolean) => void;
 }
 
 export interface FilterType {
   dateFrom?: string;
   dateTo?: string;
   postedDate: string | null;
-  jobTitle: string;
+  vacancy: string[];
+  interviewer: string[];
   department: string[];
+  status: string[];
+  jobTitle: string;
   employmentType: string[];
   workplaceType: string[];
   experienceLevel: string[];

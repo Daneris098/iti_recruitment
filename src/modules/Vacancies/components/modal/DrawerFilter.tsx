@@ -1,15 +1,15 @@
-import { Button, Divider, Drawer, Flex,  MultiSelect, Select, Text, TextInput, useMatches, } from "@mantine/core";
+import { Button, Divider, Drawer, Flex,  MultiSelect, Select, Text, useMatches, } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 // import { useMediaQuery } from "@mantine/hooks";
-import { VacancyStore } from "@src/modules/Vacancies/store";
+import { FilterStore } from "@modules/Vacancies/store";
+import { filterVal } from "@modules/Vacancies/values";
 import { useEffect } from "react";
-import { filterVal } from "../values";
 
 export default function DrawerFilter() {
   // const [value, setValue] = useState<Date | null>(null);
   // const { value, setValue } = useDateRangeStore();
   // const isMobile = useMediaQuery("(max-width: 425px)");
-  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = VacancyStore();
+  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
 
   // useEffect(() => {
   //   // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
@@ -86,39 +86,41 @@ export default function DrawerFilter() {
           </Flex>
 
           <Divider size={0.5} color="#edeeed" className="w-full" />
-          <TextInput
-            radius={8}
+          <MultiSelect
+            value={filter.vacancy}
             size={inputSize}
-            className="border-none w-full text-sm"
-            label="Job Title"
-            styles={{ label: { color: "#6d6d6d" } }}
-            placeholder="Search Job Title"
-            value={filter.jobTitle}
-            onChange={(event) => { setFilter({ ...filter, jobTitle: `${event.currentTarget.value}` }) }}
-          />
-          <Divider size={0.5} color="#edeeed" className="w-full" />
-
-          <Select
-            value={filter.postedDate}
-            size={inputSize}
-            label="Date Posted"
-            placeholder={filter.postedDate != null ? '' : "Select Date Posted"}
+            label="Vacancy"
+            placeholder={filter.vacancy.length > 0 ? '' : "Vacancy"}
             radius={8}
-            data={["Last 24 hours", "Last Week", "Last Month", "Anytime"]}
+            data={["Web Dev", "DevOps", "Mobile Dev"]}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
-            onChange={(value) => { setFilter({ ...filter, postedDate: `${value}` }) }}
+            onChange={(value) => setFilter({ ...filter, vacancy: value })}
+          />
+  
+          <Divider size={0.5} color="#edeeed" className="w-full" />
+          <MultiSelect
+            value={filter.interviewer}
+            size={inputSize}
+            label="Interviewer"
+            placeholder={filter.interviewer.length > 0 ? '' : "Interviewer"}
+            radius={8}
+            data={["John", "Jane", "Paul"]}
+            rightSection={<IconCaretDownFilled size='18' />}
+            className="border-none w-full text-sm"
+            styles={{ label: { color: "#6d6d6d" } }}
+            onChange={(value) => setFilter({ ...filter, interviewer: value })}
           />
 
           <Divider size={0.5} color="#edeeed" className="w-full" />
           <MultiSelect
             value={filter.department}
             size={inputSize}
+            placeholder={filter.department.length > 0 ? "" : "Department"}
             label="Department"
-            placeholder={filter.department.length > 0 ? '' : "Department"}
             radius={8}
-            data={["Engineering", "Human Resources", "Customer Support"]}
+            data={["IT", "Accounting"]}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
@@ -127,45 +129,18 @@ export default function DrawerFilter() {
 
           <Divider size={0.5} color="#edeeed" className="w-full" />
           <MultiSelect
-            value={filter.employmentType}
+            value={filter.status}
             size={inputSize}
-            placeholder={filter.employmentType.length > 0 ? "" : "Employment Type"}
-            label="Employment type"
+            placeholder={filter.status.length > 0 ? "" : "Select Status"}
+            label="Status"
             radius={8}
-            data={["Full-Time", "Part-Time"]}
-            rightSection={<IconCaretDownFilled size='18' />}
-            className="border-none w-full text-sm"
-            styles={{ label: { color: "#6d6d6d" } }}
-            onChange={(value) => setFilter({ ...filter, employmentType: value })}
-          />
-
-          <Divider size={0.5} color="#edeeed" className="w-full" />
-          <MultiSelect
-            value={filter.workplaceType}
-            size={inputSize}
-            placeholder={filter.workplaceType.length > 0 ? "" : "Select Workplace Type"}
-            label="Workplace Type"
-            radius={8}
-            data={["On-site", "Remote"]}
+            data={["Publish", "Close", "Overdue"]}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full"
             styles={{ label: { color: "#6d6d6d" } }}
-            onChange={(value) => setFilter({ ...filter, workplaceType: value })}
+            onChange={(value) => setFilter({ ...filter, status: value })}
           />
 
-          <Divider size={0.5} color="#edeeed" className="w-full" />
-          <MultiSelect
-            value={filter.experienceLevel}
-            size={inputSize}
-            label="Experience Level"
-            placeholder={filter.experienceLevel.length > 0 ? "" : "Select Experience Level"}
-            radius={8}
-            data={["Entry-level", "Senior"]}
-            rightSection={<IconCaretDownFilled size='18' />}
-            className="border-none w-full"
-            styles={{ label: { color: "#6d6d6d" } }}
-            onChange={(value) => setFilter({ ...filter, experienceLevel: value })}
-          />
         </div>
 
 

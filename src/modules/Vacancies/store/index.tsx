@@ -1,14 +1,10 @@
 import { create } from "zustand";
-import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType } from "@modules/Vacancies/types";
+import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState } from "@modules/Vacancies/types";
 import { filterVal, selectedDataVal } from "@src/modules/Vacancies/values";
 
 
 export const VacancyStore = create<VacancyState>((set) => ({
   selectedVacancy: selectedDataVal,
-  filterDrawer: false,
-  filter: filterVal,
-  clearFilter: false,
-  isFiltered: false,
   applicationFormModal: false,
   alert: '',
   action: '',
@@ -16,13 +12,20 @@ export const VacancyStore = create<VacancyState>((set) => ({
   setAction: (action: string) => set({ action: action }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
+  setSelectedVacancy: (selectedData: VacancyType) => set({ selectedVacancy: selectedData }),
+}));
+
+export const FilterStore = create<FilterState>((set) => ({
+  clearFilter: false,
+  filter: filterVal,
+  filterDrawer: false,
+  isFiltered: false,
+
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),
-  setSelectedVacancy: (selectedData: VacancyType) => set({ selectedVacancy: selectedData }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
 }));
-
 
 export const ApplicantStore = create<ApplicantState>((set) => ({
   selectedData: selectedDataVal,

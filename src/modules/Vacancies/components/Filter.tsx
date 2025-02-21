@@ -1,12 +1,12 @@
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
-import { HomeStore } from "@src/modules/HomePublic/store";
+import { FilterStore } from "@src/modules/Vacancies/store";
 import { useEffect } from "react";
-import { filterVal } from "@src/modules/HomePublic/values";
+import { filterVal } from "@src/modules/Vacancies/values";
 
 export default function Filter() {
-  const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = HomeStore();
+  const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
 
   useEffect(() => {
     if (filter === filterVal) {
