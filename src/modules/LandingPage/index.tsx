@@ -34,7 +34,7 @@ export default function LandingPage() {
           <Button
             className=" w-full sm:w-1/3 h-10 2xl:h-14 rounded-md br-gradient border-none"
             onClick={() => {
-              navigate("/home");
+              navigate("/vacancyList");
               setIsFullscreen(false);
             }}
           >

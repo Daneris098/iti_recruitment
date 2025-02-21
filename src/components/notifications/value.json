@@ -1,0 +1,39 @@
+[
+    {
+        "title": "Job Offer Accepted",
+        "description": "Jane Cooper accepted and signed the Job Offer with ID ",
+        "document_no": "#DOC123001528",
+        "date_posted": "Today, 48 minutes ago",
+        "notif_status": 0,
+        "filing_status": "actions"
+    },
+    {
+        "title": "Job Offer Declined",
+        "description": "Jane Cooper declined listing Web Developer ",
+        "document_no": "#DOC123001528",
+        "date_posted": "Today, 48 minutes ago",
+        "notif_status": 1,
+        "filing_status": "actions"
+    },
+    {
+        "title": "Jane Cooper",
+        "description": "Has submitted an application for the Web Developer position.",
+        "date_posted": "Today, 48 minutes ago",
+        "notif_status": 1,
+        "filing_status": "application"
+    },
+    {
+        "title": "David Collins",
+        "description": "Has upcoming  initial interview for Web Developer position with Trisha Sanchez",
+        "date_posted": "Today, 48 minutes ago",
+        "notif_status": 0,
+        "filing_status": "events"
+    },
+    {
+        "title": "Jane Cooper",
+        "description": "Jane Cooper approved your Leave filing with ID ",
+        "date_posted": "Today, 48 minutes ago",
+        "notif_status": 1,
+        "filing_status": "application"
+    }
+]

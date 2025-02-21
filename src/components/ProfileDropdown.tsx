@@ -9,9 +9,11 @@ import {
 import avatar from "@assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { GlobalStore, userDetailsValue } from "@src/utils/GlobalStore";
+import { ProfileSettingsStore } from "@modules/ProfileSettings/store"
 
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
+  const { setActivePanel, activePanel } = ProfileSettingsStore()
   const { userDetails, isMobile, setUserDetails } = GlobalStore()
   return (
     <Menu
@@ -43,12 +45,13 @@ export const ProfileDropdown = () => {
           direction="column"
           wrap="wrap"
         >
-          <p className="font-semibold text-xl">
-            {userDetails.name}
+          <p className="border-none br-gradient bg-clip-text text-transparent  font-semibold text-xl">
+            Welcome, Raisah!
           </p>
+          <p className="text-xs text-gray-600 poppins">Customize your account here</p>
         </Flex>
         <Menu.Item
-          className="poppins"
+          className={` poppins ${location.pathname == '/profileSettings' && activePanel === 'profileDetails' ? 'text-white br-gradient' : 'text-gray-500'}`}
           color="#6d6d6d"
           fw={500}
           leftSection={
@@ -57,17 +60,19 @@ export const ProfileDropdown = () => {
               style={{ width: rem(20), height: rem(20) }}
             />
           }
+          onClick={() => { navigate("/profileSettings"); setActivePanel('profileDetails'); }}
         >
           Profile
         </Menu.Item>
 
         <Menu.Item
           fw={500}
-          className="poppins"
+          className={` poppins ${location.pathname == '/profileSettings' && activePanel === 'changePassword' ? 'text-white br-gradient' : 'text-gray-500'}`}
           color="#6d6d6d"
           leftSection={
             <IconShieldLock style={{ width: rem(20), height: rem(20) }} />
           }
+          onClick={() => { navigate("/profileSettings"); setActivePanel('changePassword'); }}
         >
           Change Password
         </Menu.Item>

@@ -1,0 +1,767 @@
+[
+  {
+    "id": 1,
+    "position": "Software Engineer",
+    "workplace": "Remote",
+    "department": "Engineering",
+    "division": "Technology",
+    "section": "Development",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Develop and maintain web applications.",
+    "requirements": [
+      "Bachelor's degree in Computer Science",
+      "3+ years of experience in software development"
+    ],
+    "skills": ["JavaScript", "React", "Node.js"],
+    "benefits": ["Health insurance", "401(k) plan", "Paid time off"],
+    "desirable": ["Experience with TypeScript", "Familiarity with Docker"],
+    "dateCreated": "2023-01-15",
+    "datePublish": "2023-01-20",
+    "interviewer": "John Doe",
+    "quantity": 2,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-01-20",
+      "end": "2023-07-20",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "JavaScript, React",
+    "qualification": "Bachelor's degree in a related field",
+    "company": "Tech Innovations Inc.",
+    "branch": "Main Office",
+    "positionLevel": "Engineer",
+    "vacancyType": "External",
+    "hiringManager": "Sarah Connor"
+  },
+  {
+    "id": 2,
+    "position": "Product Manager",
+    "workplace": "On-site",
+    "department": "Product",
+    "division": "Business",
+    "section": "Product Development",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Lead product development and strategy.",
+    "requirements": [
+      "5+ years of experience in product management",
+      "Strong analytical skills"
+    ],
+    "skills": [
+      "Agile methodologies",
+      "Market research",
+      "Stakeholder management"
+    ],
+    "benefits": [
+      "Stock options",
+      "Flexible working hours",
+      "Professional development"
+    ],
+    "desirable": ["Experience in SaaS products", "Familiarity with UX design"],
+    "dateCreated": "2023-02-01",
+    "datePublish": "2023-02-05",
+    "interviewer": "Jane Smith",
+    "quantity": 1,
+    "status": "Closed",
+    "vacancyDuration": {
+      "start": "2023-02-05",
+      "end": "2024-02-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Agile methodologies, Market research",
+    "qualification": "Master's degree in Business Administration",
+    "company": "Innovate Solutions Ltd.",
+    "branch": "New York",
+    "positionLevel": "Manager",
+    "vacancyType": "Internal",
+    "hiringManager": "Michael Scott"
+  },
+  {
+    "id": 3,
+    "position": "Data Analyst",
+    "workplace": "Hybrid",
+    "department": "Data Science",
+    "division": "Analytics",
+    "section": "Data Analysis",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Analyze data to provide insights for business decisions.",
+    "requirements": [
+      "Bachelor's degree in Data Science or related field",
+      "Proficiency in Excel"
+    ],
+    "skills": ["SQL", "Python", "Data visualization"],
+    "benefits": ["Health insurance", "Gym membership", "Remote work options"],
+    "desirable": ["Experience with Tableau", "Knowledge of machine learning"],
+    "dateCreated": "2023-03-10",
+    "datePublish": "2023-03-15",
+    "interviewer": "Alice Johnson",
+    "quantity": 3,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-03-15",
+      "end": "2023-09-15",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "SQL, Python",
+    "qualification": "Bachelor's degree in a related field",
+    "company": "Data Insights Corp.",
+    "branch": "San Francisco",
+    "positionLevel": "Analyst",
+    "vacancyType": "External",
+    "hiringManager": "Tom Hanks"
+  },
+  {
+    "id": 4,
+    "position": "Marketing Specialist",
+    "workplace": "Remote",
+    "department": "Marketing",
+    "division": "Marketing",
+    "section": "Campaign Management",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Part-time",
+    "jobDescription": "Develop and execute marketing campaigns.",
+    "requirements": [
+      "2+ years of experience in marketing",
+      "Strong communication skills"
+    ],
+    "skills": ["SEO", "Content creation", "Social media management"],
+    "benefits": ["Flexible hours", "Work from home", "Training opportunities"],
+    "desirable": [
+      "Experience with Google Analytics",
+      "Familiarity with email marketing"
+    ],
+    "dateCreated": "2023-04-01",
+    "datePublish": "2023-04-05",
+    "interviewer": "Bob Brown",
+    "quantity": 2,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-04-05",
+      "end": "2023-07-05",
+      "from": "3 months"
+    },
+    "mustHaveSkills": "SEO, Content creation",
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "Creative Marketing Agency",
+    "branch": "Remote Team",
+    "positionLevel": "Specialist",
+    "vacancyType": "External",
+    "hiringManager": "Lisa White"
+  },
+  {
+    "id": 5,
+    "position": "UX/UI Designer",
+    "workplace": "On-site",
+    "department": "Design",
+    "division": "Creative",
+    "section": "User  Experience",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Design user-friendly interfaces and experiences.",
+    "requirements": [
+      "3+ years of experience in UX/UI design",
+      "Strong portfolio"
+    ],
+    "skills": ["Figma", "Adobe XD", "User  research"],
+    "benefits": ["Health insurance", "Paid vacation", "Creative environment"],
+    "desirable": ["Experience with responsive design", "Knowledge of HTML/CSS"],
+    "dateCreated": "2023-05-10",
+    "datePublish": "2023-05-15",
+    "interviewer": "Charlie Green",
+    "quantity": 1,
+    "status": "Overdue",
+    "vacancyDuration": {
+      "start": "2023-05-15",
+      "end": "2024-05-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Figma, Adobe XD",
+    "qualification": "Bachelor's degree in Design or related field",
+    "company": "Design Studio Co.",
+    "branch": "Los Angeles",
+    "positionLevel": "Designer",
+    "vacancyType": "External",
+    "hiringManager": "Emma Stone"
+  },
+  {
+    "id": 6,
+    "position": "DevOps Engineer",
+    "workplace": "Remote",
+    "department": "Engineering",
+    "division": "Technology",
+    "section": "Infrastructure",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Manage and optimize cloud infrastructure.",
+    "requirements": [
+      "3+ years of experience in DevOps",
+      "Familiarity with CI/CD tools"
+    ],
+    "skills": ["AWS", "Docker", "Kubernetes"],
+    "benefits": ["Remote work", "Health benefits", "Annual bonus"],
+    "desirable": [
+      "Experience with Terraform",
+      "Knowledge of scripting languages"
+    ],
+    "dateCreated": "2023-06-01",
+    "datePublish": "2023-06-05",
+    "interviewer": "David White",
+    "quantity": 2,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-06-05",
+      "end": "2023-12-05",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "AWS, Docker",
+    "qualification": "Bachelor's degree in Computer Science or related field",
+    "company": "Cloud Solutions Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Engineer",
+    "vacancyType": "External",
+    "hiringManager": "Oliver Twist"
+  },
+  {
+    "id": 7,
+    "position": "Sales Executive",
+    "workplace": "On-site",
+    "department": "Sales",
+    "division": "Sales",
+    "section": "Client Relations",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Drive sales and build client relationships.",
+    "requirements": [
+      "1+ years of experience in sales",
+      "Strong negotiation skills"
+    ],
+    "skills": ["CRM software", "Cold calling", "Lead generation"],
+    "benefits": [
+      "Commission-based pay",
+      "Health insurance",
+      "Training programs"
+    ],
+    "desirable": ["Experience in B2B sales", "Familiarity with Salesforce"],
+    "dateCreated": "2023-07-10",
+    "datePublish": "2023-07-15",
+    "interviewer": "Eve Black",
+    "quantity": 4,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-07-15",
+      "end": "2024-07-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "CRM software, Cold calling",
+    "qualification": "Bachelor's degree in Business or related field",
+    "company": "Sales Dynamics Ltd.",
+    "branch": "Chicago",
+    "positionLevel": "Executive",
+    "vacancyType": "External",
+    "hiringManager": "Jack Sparrow"
+  },
+  {
+    "id": 8,
+    "position": "Content Writer",
+    "workplace": "Remote",
+    "department": "Content",
+    "division": "Creative",
+    "section": "Content Creation",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Part-time",
+    "jobDescription": "Create engaging content for various platforms.",
+    "requirements": [
+      "2+ years of experience in content writing",
+      "Strong writing skills"
+    ],
+    "skills": ["SEO", "Copywriting", "Research"],
+    "benefits": ["Flexible hours", "Work from home", "Creative freedom"],
+    "desirable": ["Experience with WordPress", "Familiarity with social media"],
+    "dateCreated": "2023-08-01",
+    "datePublish": "2023-08-05",
+    "interviewer": "Frank Blue",
+    "quantity": 3,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-08-05",
+      "end": "2024-02-05",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "SEO, Copywriting",
+    "qualification": "Bachelor's degree in English or related field",
+    "company": "Content Creators Hub",
+    "branch": "Remote Team",
+    "positionLevel": "Writer",
+    "vacancyType": "External",
+    "hiringManager": "Samantha Green"
+  },
+  {
+    "id": 9,
+    "position": "Network Administrator",
+    "workplace": "On-site",
+    "department": "IT",
+    "division": "Technology",
+    "section": "Network Management",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Manage and maintain network infrastructure.",
+    "requirements": [
+      "5+ years of experience in network administration",
+      "CCNA certification"
+    ],
+    "skills": ["Network security", "Troubleshooting", "Firewall management"],
+    "benefits": ["Health insurance", "Retirement plan", "Paid training"],
+    "desirable": [
+      "Experience with cloud networking",
+      "Knowledge of VoIP systems"
+    ],
+    "dateCreated": "2023-09-10",
+    "datePublish": "2023-09-15",
+    "interviewer": "Grace Yellow",
+    "quantity": 1,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-09-15",
+      "end": "2024-09-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Network security, Troubleshooting",
+    "qualification": "Bachelor's degree in Information Technology or related field",
+    "company": "Network Solutions Group",
+    "branch": "Dallas",
+    "positionLevel": "Administrator",
+    "vacancyType": "External",
+    "hiringManager": "Peter Parker"
+  },
+  {
+    "id": 10,
+    "position": "HR Manager",
+    "workplace": "Hybrid",
+    "department": "Human Resources",
+    "division": "HR",
+    "section": "Employee Relations",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Oversee HR functions and employee relations.",
+    "requirements": [
+      "5+ years of experience in HR",
+      "Strong leadership skills"
+    ],
+    "skills": ["Recruitment", "Performance management", "Employee engagement"],
+    "benefits": [
+      "Health insurance",
+      "Paid time off",
+      "Professional development"
+    ],
+    "desirable": ["Experience with HR software", "Knowledge of labor laws"],
+    "dateCreated": "2023-10-01",
+    "datePublish": "2023-10-05",
+    "interviewer": "Henry Silver",
+    "quantity": 1,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-10-05",
+      "end": "2024-10-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Recruitment, Performance management",
+    "qualification": "Bachelor's degree in Human Resources or related field",
+    "company": "People First Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Manager",
+    "vacancyType": "External",
+    "hiringManager": "Angela White"
+  },
+  {
+    "id": 11,
+    "position": "Business Analyst",
+    "workplace": "Remote",
+    "department": "Business",
+    "division": "Analytics",
+    "section": "Business Analysis",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Analyze business processes and provide solutions.",
+    "requirements": [
+      "3+ years of experience in business analysis",
+      "Strong problem-solving skills"
+    ],
+    "skills": [
+      "Business process modeling",
+      "Data analysis",
+      "Stakeholder communication"
+    ],
+    "benefits": ["Health insurance", "Remote work options", "Flexible hours"],
+    "desirable": [
+      "Experience with Agile methodologies",
+      "Familiarity with SQL"
+    ],
+    "dateCreated": "2023-10-10",
+    "datePublish": "2023-10-15",
+    "interviewer": "Laura Blue",
+    "quantity": 2,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-10-15",
+      "end": "2024-10-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Business process modeling, Data analysis",
+    "qualification": "Bachelor's degree in Business Administration or related field",
+    "company": "Business Solutions Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Analyst",
+    "vacancyType": "External",
+    "hiringManager": "David Copperfield"
+  },
+  {
+    "id": 12,
+    "position": "Graphic Designer",
+    "workplace": "On-site",
+    "department": "Design",
+    "division": "Creative",
+    "section": "Visual Design",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Create visual content for marketing and branding.",
+    "requirements": [
+      "1+ years of experience in graphic design",
+      "Strong portfolio"
+    ],
+    "skills": ["Adobe Creative Suite", "Typography", "Branding"],
+    "benefits": ["Health insurance", "Paid time off", "Creative environment"],
+    "desirable": [
+      "Experience with motion graphics",
+      "Familiarity with web design"
+    ],
+    "dateCreated": "2023-10-20",
+    "datePublish": "2023-10-25",
+    "interviewer": "Mark Red",
+    "quantity": 1,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-10-25",
+      "end": "2024-04-25",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "Adobe Creative Suite, Typography",
+    "qualification": "Bachelor's degree in Graphic Design or related field",
+    "company": "Visual Arts Co.",
+    "branch": "Miami",
+    "positionLevel": "Designer",
+    "vacancyType": "External",
+    "hiringManager": "Nina Simone"
+  },
+  {
+    "id": 13,
+    "position": "Cybersecurity Analyst",
+    "workplace": "Remote",
+    "department": "IT",
+    "division": "Security",
+    "section": "Cybersecurity",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Monitor and protect the organization's IT infrastructure.",
+    "requirements": [
+      "3+ years of experience in cybersecurity",
+      "Knowledge of security protocols"
+    ],
+    "skills": [
+      "Network security",
+      "Incident response",
+      "Vulnerability assessment"
+    ],
+    "benefits": [
+      "Health insurance",
+      "Remote work options",
+      "Training opportunities"
+    ],
+    "desirable": [
+      "Experience with penetration testing",
+      "Certifications like CISSP"
+    ],
+    "dateCreated": "2023-11-01",
+    "datePublish": "2023-11-05",
+    "interviewer": "Nina Black",
+    "quantity": 2,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-11-05",
+      "end": "2024-11-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Network security, Incident response",
+    "qualification": "Bachelor's degree in Cybersecurity or related field",
+    "company": "SecureTech Solutions",
+    "branch": "Remote Team",
+    "positionLevel": "Analyst",
+    "vacancyType": "External",
+    "hiringManager": "Bruce Wayne"
+  },
+  {
+    "id": 14,
+    "position": "SEO Specialist",
+    "workplace": "Remote",
+    "department": "Marketing",
+    "division": "Marketing",
+    "section": "SEO",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Optimize website content for search engines.",
+    "requirements": [
+      "3+ years of experience in SEO",
+      "Strong analytical skills"
+    ],
+    "skills": ["Keyword research", "On-page optimization", "Link building"],
+    "benefits": ["Health insurance", "Flexible hours", "Work from home"],
+    "desirable": ["Experience with Google Analytics", "Familiarity with HTML"],
+    "dateCreated": "2023-11-10",
+    "datePublish": "2023-11-15",
+    "interviewer": "Oscar Green",
+    "quantity": 1,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-11-15",
+      "end": "2024-11-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Keyword research, On-page optimization",
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "SEO Masters Inc.",
+    "branch": "Remote Team",
+    "positionLevel": "Specialist",
+    "vacancyType": "External",
+    "hiringManager": "Clark Kent"
+  },
+  {
+    "id": 15,
+    "position": "Software Tester",
+    "workplace": "Hybrid",
+    "department": "Quality Assurance",
+    "division": "Quality",
+    "section": "Testing",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Test software applications for bugs and issues.",
+    "requirements": [
+      "1+ years of experience in software testing",
+      "Attention to detail"
+    ],
+    "skills": ["Manual testing", "Automated testing", "Bug tracking"],
+    "benefits": ["Health insurance", "Paid time off", "Training opportunities"],
+    "desirable": [
+      "Experience with Selenium",
+      "Familiarity with Agile methodologies"
+    ],
+    "dateCreated": "2023-11-20",
+    "datePublish": "2023-11-25",
+    "interviewer": "Paul White",
+    "quantity": 3,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-11-25",
+      "end": "2024-05-25",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "Manual testing, Bug tracking",
+    "qualification": "Bachelor's degree in Computer Science or related field",
+    "company": "Quality Assurance Group",
+    "branch": "Remote Team",
+    "positionLevel": "Tester",
+    "vacancyType": "External",
+    "hiringManager": "Diana Prince"
+  },
+  {
+    "id": 16,
+    "position": "Social Media Manager",
+    "workplace": "Remote",
+    "department": "Marketing",
+    "division": "Marketing",
+    "section": "Social Media",
+    "experienceLevel": "Mid-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Manage social media accounts and campaigns.",
+    "requirements": [
+      "3+ years of experience in social media management",
+      "Strong communication skills"
+    ],
+    "skills": ["Content creation", "Analytics", "Community engagement"],
+    "benefits": ["Health insurance", "Flexible hours", "Work from home"],
+    "desirable": [
+      "Experience with social media advertising",
+      "Familiarity with graphic design tools"
+    ],
+    "dateCreated": "2023-12-01",
+    "datePublish": "2023-12-05",
+    "interviewer": "Rachel Blue",
+    "quantity": 2,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-12-05",
+      "end": "2024-12-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Content creation, Analytics",
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "Social Media Experts",
+    "branch": "Remote Team",
+    "positionLevel": "Manager",
+    "vacancyType": "External",
+    "hiringManager": "Jessica Jones"
+  },
+  {
+    "id": 17,
+    "position": "Database Administrator",
+    "workplace": "On-site",
+    "department": "IT",
+    "division": "Technology",
+    "section": "Database Management",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Manage and maintain database systems.",
+    "requirements": [
+      "5+ years of experience in database administration",
+      "Strong knowledge of SQL"
+    ],
+    "skills": ["Database design", "Performance tuning", "Backup and recovery"],
+    "benefits": ["Health insurance", "Retirement plan", "Paid training"],
+    "desirable": ["Experience with cloud databases", "Knowledge of NoSQL"],
+    "dateCreated": "2023-12-10",
+    "datePublish": "2023-12-15",
+    "interviewer": "Steve Yellow",
+    "quantity": 1,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-12-15",
+      "end": "2024-12-15",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Database design, Performance tuning",
+    "qualification": "Bachelor's degree in Information Technology or related field",
+    "company": "Database Solutions Inc.",
+    "branch": "Seattle",
+    "positionLevel": "Administrator",
+    "vacancyType": "External",
+    "hiringManager": "Tony Stark"
+  },
+  {
+    "id": 18,
+    "position": "Content Strategist",
+    "workplace": "Remote",
+    "department": "Content",
+    "division": "Creative",
+    "section": "Content Strategy",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Develop and implement content strategies.",
+    "requirements": [
+      "5+ years of experience in content strategy",
+      "Strong leadership skills"
+    ],
+    "skills": ["Content marketing", "SEO", "Analytics"],
+    "benefits": [
+      "Health insurance",
+      "Paid time off",
+      "Professional development"
+    ],
+    "desirable": [
+      "Experience with content management systems",
+      "Familiarity with UX principles"
+    ],
+    "dateCreated": "2023-12-20",
+    "datePublish": "2023-12-25",
+    "interviewer": "Tina Green",
+    "quantity": 1,
+    "status": "Published",
+    "vacancyDuration": {
+      "start": "2023-12-25",
+      "end": "2024-12-25",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "Content marketing, SEO",
+    "qualification": "Bachelor's degree in Marketing or related field",
+    "company": "Content Strategy Group",
+    "branch": "Remote Team",
+    "positionLevel": "Strategist",
+    "vacancyType": "External",
+    "hiringManager": "Wanda Maximoff"
+  },
+  {
+    "id": 19,
+    "position": "Cloud Solutions Architect",
+    "workplace": "Hybrid",
+    "department": "Engineering",
+    "division": "Technology",
+    "section": "Cloud Solutions",
+    "experienceLevel": "Senior",
+    "employmentType": "Full-time",
+    "jobDescription": "Design and implement cloud solutions.",
+    "requirements": [
+      "5+ years of experience in cloud architecture",
+      "Strong knowledge of cloud platforms"
+    ],
+    "skills": ["AWS", "Azure", "Cloud security"],
+    "benefits": ["Health insurance", "Flexible hours", "Remote work options"],
+    "desirable": [
+      "Experience with microservices",
+      "Knowledge of DevOps practices"
+    ],
+    "dateCreated": "2023-12-30",
+    "datePublish": "2024-01-05",
+    "interviewer": "Victor Black",
+    "quantity": 1,
+    "status": "Overdue",
+    "vacancyDuration": {
+      "start": "2024-01-05",
+      "end": "2025-01-05",
+      "from": "12 months"
+    },
+    "mustHaveSkills": "AWS, Azure",
+    "qualification": "Bachelor's degree in Computer Science or related field",
+    "company": "Cloud Innovations Ltd.",
+    "branch": "Remote Team",
+    "positionLevel": "Architect",
+    "vacancyType": "External",
+    "hiringManager": "Natasha Romanoff"
+  },
+  {
+    "id": 20,
+    "position": "Customer Support Specialist",
+    "workplace": "Remote",
+    "department": "Customer Service",
+    "division": "Support",
+    "section": "Customer Relations",
+    "experienceLevel": "Entry-level",
+    "employmentType": "Full-time",
+    "jobDescription": "Provide support to customers and resolve issues.",
+    "requirements": [
+      "1+ years of experience in customer support",
+      "Strong communication skills"
+    ],
+    "skills": ["CRM software", "Problem-solving", "Customer engagement"],
+    "benefits": ["Health insurance", "Flexible hours", "Work from home"],
+    "desirable": [
+      "Experience with ticketing systems",
+      "Familiarity with product knowledge"
+    ],
+    "dateCreated": "2024-01-10",
+    "datePublish": "2024-01-15",
+    "interviewer": "Wendy White",
+    "quantity": 3,
+    "status": "Closed",
+    "vacancyDuration": {
+      "start": "2024-01-15",
+      "end": "2024-07-15",
+      "from": "6 months"
+    },
+    "mustHaveSkills": "CRM software, Problem-solving",
+    "qualification": "Bachelor's degree in Business or related field",
+    "company": "Customer Care Solutions",
+    "branch": "Remote Team",
+    "positionLevel": "Specialist",
+    "vacancyType": "External",
+    "hiringManager": "Steve Rogers"
+  }
+]

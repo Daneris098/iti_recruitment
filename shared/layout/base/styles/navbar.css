@@ -18,8 +18,8 @@
   );
 }
 
-button.mantine-Tabs-tab[tabindex="0"] {
-  @apply custom-gradient font-bold rounded-md border-2 border-b-2 border-blue-700;
+/* button.mantine-Tabs-tab[tabindex="0"] {
+  @apply custom-gradient font-bold rounded-t-md border-2 border-b-2 border-blue-700;
 }
 button.mantine-Menu-item[role="menuitem"]:hover {
   @apply custom-gradient text-white font-bold;
@@ -29,4 +29,4 @@ button.mantine-Menu-item[role="menuitem"]:hover {
 }
 .module-active {
   @apply custom-gradient text-white font-bold;
-}
+} */

@@ -27,7 +27,6 @@ axiosInstance.interceptors.response.use(
       try {
         const refreshToken = getRefreshTokenFromCookie();
         if (refreshToken) {
-          console.log('refreshToken222: ', refreshToken)
           sessionStorage.setItem("accessTokenFlash", refreshToken);
           originalRequest.headers["Authorization"] = refreshToken;
           return axiosInstance(originalRequest);
