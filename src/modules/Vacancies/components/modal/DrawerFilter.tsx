@@ -1,16 +1,18 @@
-import { Button, Divider, Drawer, Flex,  MultiSelect, Select, Text, useMatches, } from "@mantine/core";
+import { Button, Divider, Drawer, Flex, MultiSelect, Text, useMatches, } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 // import { useMediaQuery } from "@mantine/hooks";
 import { FilterStore } from "@modules/Vacancies/store";
 import { filterVal } from "@modules/Vacancies/values";
 import { useEffect } from "react";
+import { DateRange } from "../DateRange";
+import { useDateRangeStore } from "@shared/hooks/useDateRange";
 
 export default function DrawerFilter() {
   // const [value, setValue] = useState<Date | null>(null);
   // const { value, setValue } = useDateRangeStore();
   // const isMobile = useMediaQuery("(max-width: 425px)");
   const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
-
+  const { value, setValue } = useDateRangeStore();
   // useEffect(() => {
   //   // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
   // }, [value])
@@ -67,7 +69,7 @@ export default function DrawerFilter() {
       overlayProps={{ backgroundOpacity: 0, blur: 0 }}
       styles={{ body: { height: '100%' } }}
     >
-      <div className="w-full h-full flex flex-col justify-between">
+      <div className="w-full h-full flex flex-col justify-between text-[#6D6D6D]">
         <div className="flex flex-col gap-2 2xl:gap-4">
 
           <Flex className="w-full" direction="column" gap={10}>
@@ -78,14 +80,13 @@ export default function DrawerFilter() {
               <IconX
                 className="cursor-pointer"
                 onClick={() => setFilterDrawer(false)}
-                size={30}
+                size={25}
                 color="gray"
               />
             </Flex>
-            {/* <Divider size={2} color="#c9cac9" className="w-full" /> */}
+            <Divider size={2} color="#c9cac9" className="w-full" />
           </Flex>
 
-          <Divider size={0.5} color="#edeeed" className="w-full" />
           <MultiSelect
             value={filter.vacancy}
             size={inputSize}
@@ -98,7 +99,19 @@ export default function DrawerFilter() {
             styles={{ label: { color: "#6d6d6d" } }}
             onChange={(value) => setFilter({ ...filter, vacancy: value })}
           />
-  
+          <Divider size={0.5} color="#edeeed" className="w-full" />
+          <p>Published Date Range</p>
+          <DateRange
+            gapValue={12}
+            size="md"
+            value={value}
+            setValue={setValue}
+            fLabel="From"
+            lLabel="To"
+            fPlaceholder="Start Date"
+            lPlaceholder="End Date"
+            isColumn
+          />
           <Divider size={0.5} color="#edeeed" className="w-full" />
           <MultiSelect
             value={filter.interviewer}
@@ -154,7 +167,7 @@ export default function DrawerFilter() {
             children={<Text fw={500} className="text-sm">CLEAR</Text>}
           />
           <Button
-            onClick={() => { setIsFiltered(true);  setFilterDrawer(false)}}
+            onClick={() => { setIsFiltered(true); setFilterDrawer(false) }}
             variant="transparent"
             className="br-gradient border-none"
             size={buttonSize}

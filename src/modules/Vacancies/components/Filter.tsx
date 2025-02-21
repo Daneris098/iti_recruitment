@@ -19,7 +19,7 @@ export default function Filter() {
     return (
       <div className="flex flex-row items-center  gap-2" >
         <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
-        <div className="flex  h-full items-center">
+        <div className="flex  h-full items-center gap-2">
           {items.map((item: string, index: number) => (
             <div className="">
               <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold" >{item}</Pill>
@@ -78,9 +78,6 @@ export default function Filter() {
       (updatedFilter as any)[camelCaseLabel] = '';  // Reset the string value
     }
     
-    // Log updated filter state for debugging
-    console.log('Updated Filter:', updatedFilter);
-    
     setFilter(updatedFilter);
   };
 
@@ -106,15 +103,14 @@ export default function Filter() {
 
       {isFiltered && (<div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4 gap-2 sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
 
-        {filter.jobTitle && renderSinglePill(
-          'Job Title',
-          filter.jobTitle
+        {filter.vacancy && filter.vacancy.length > 0 && renderPills(
+          'Vacancy',
+          filter.vacancy
         )}
 
-
-        {filter.postedDate && renderSinglePill(
-          'Posted Date',
-          filter.postedDate
+        {filter.interviewer && filter.interviewer.length > 0 && renderPills(
+          'Interviewer',
+          filter.interviewer
         )}
 
         {filter.department && filter.department.length > 0 && renderPills(
@@ -122,20 +118,12 @@ export default function Filter() {
           filter.department
         )}
 
-        {filter.workplaceType && filter.workplaceType.length > 0 && renderPills(
-          'Workplace Type',
-          filter.workplaceType
+        {filter.status && filter.status.length > 0 && renderPills(
+          'Status',
+          filter.status
         )}
 
-        {filter.employmentType && filter.employmentType.length > 0 && renderPills(
-          'Employment Type',
-          filter.employmentType
-        )}
-
-        {filter.experienceLevel && filter.experienceLevel.length > 0 && renderPills(
-          'Experience Level',
-          filter.experienceLevel
-        )}
+    
       </div>
       )}
 

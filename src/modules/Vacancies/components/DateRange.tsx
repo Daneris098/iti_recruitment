@@ -37,7 +37,7 @@ export const DateRange = ({
       direction={`${isColumn ? "column" : "row"}`}
       justify="space-between"
       gap={(gapValue ?? 0)}
-      className="w-full"
+      className="w-full items-end"
     >
       <Popover
         position="bottom"
