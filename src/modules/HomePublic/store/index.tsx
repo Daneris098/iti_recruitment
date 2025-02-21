@@ -1,21 +1,27 @@
 import { create } from "zustand";
-import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm } from "@modules/HomePublic/types";
+import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm, FilterState } from "@modules/HomePublic/types";
 import { ApplicationFormVal, filterVal, selectedDataVal } from "@src/modules/HomePublic/values";
 
 export const HomeStore = create<HomeState>((set) => ({
   selectedData: selectedDataVal,
-  filterDrawer: false,
-  filter: filterVal,
-  clearFilter: false,
-  isFiltered: false,
   applicationFormModal: false,
   alert: '',
-
+  
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
+  setSelectedData: (selectedData: VacancyType) => set({ selectedData: selectedData }),
+}));
+
+
+
+export const FilterStore = create<FilterState>((set) => ({
+  clearFilter: false,
+  filter: filterVal,
+  filterDrawer: false,
+  isFiltered: false,
+
   setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
   setFilter: (filter: FilterType) => set({ filter: filter }),
-  setSelectedData: (selectedData: VacancyType) => set({ selectedData: selectedData }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
 }));

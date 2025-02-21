@@ -13,22 +13,26 @@ export type VacancyType = {
   dateCreated: string;
 };
 
+export type FilterState = {
+  filter: FilterType;
+  isFiltered: boolean;
+  filterDrawer: boolean;
+  clearFilter: boolean;
+
+  setFilter: (filter: FilterType) => void;
+  setIsFiltered: (isFiltered: boolean) => void;
+  setFilterDrawer: (filterDrawer: boolean) => void;
+  setClearFilter: (clearFilter: boolean) => void;
+}
+
 export interface HomeState {
   selectedData: VacancyType;
-  filterDrawer: boolean;
-  filter: FilterType;
-  clearFilter: boolean;
-  isFiltered: boolean;
   applicationFormModal: boolean;
   alert: string;
-
+  
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
-  setClearFilter: (clearFilter: boolean) => void;
-  setFilter: (filter: FilterType) => void;
   setSelectedData: (selectedData: VacancyType) => void;
-  setFilterDrawer: (filterDrawer: boolean) => void;
-  setIsFiltered: (isFiltered: boolean) => void;
 }
 
 

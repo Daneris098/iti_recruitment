@@ -3,7 +3,7 @@ import List from "@src/modules/HomePublic/components/list";
 import Details from "@src/modules/HomePublic/components/details";
 import Modals from "@src/modules/HomePublic/components/modal";
 import jobsJson from "@src/modules/HomePublic/values/response/jobs.json";
-import { HomeStore } from "@src/modules/HomePublic/store";
+import { HomeStore, FilterStore } from "@src/modules/HomePublic/store";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { selectedDataVal } from "./values";
 import { VacancyType } from "@src/modules/HomePublic/types";
@@ -13,7 +13,10 @@ import bg2 from '@assets/bg2.png';
 import Alert from "@src/modules/HomePublic/components/modal/Alert";
 
 export default function Home() {
-  const { selectedData, setFilterDrawer, setApplicationFormModal, filter, isFiltered } = HomeStore();
+  
+  const { selectedData, setApplicationFormModal } = HomeStore();
+  const { setFilterDrawer, filter, isFiltered } = FilterStore();
+
   const { isMobile } = GlobalStore();
   const jobs: VacancyType[] = jobsJson;
 
@@ -29,7 +32,7 @@ export default function Home() {
   return (
     <div className=" h-full overflow-hidden">
       <Modals />
-      <Alert/>
+      <Alert />
       <div style={{ backgroundImage: `url(${bg2})` }} className=" bg-cover bg-center h-[19%] 2xl:p-4 ">
         <div className="h-full w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center">
           <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-4 items-center ">
@@ -48,7 +51,7 @@ export default function Home() {
           </div>
           <div>
           </div>
-          <div className="h-[35%] 2xl:h-[45%] hidden lg:block text-sm 2xl:text-md">
+          <div className="h-[35%] 2xl:h-[49%] hidden lg:block text-sm 2xl:text-md">
             <Filter />
           </div>
         </div>

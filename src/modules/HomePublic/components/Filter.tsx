@@ -1,12 +1,12 @@
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
-import { HomeStore } from "@src/modules/HomePublic/store";
+import {  FilterStore } from "@src/modules/HomePublic/store";
 import { useEffect } from "react";
 import { filterVal } from "../values";
 
 export default function Filter() {
-  const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = HomeStore();
+  const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
 
   useEffect(() => {
     if (filter === filterVal) {
@@ -104,7 +104,7 @@ export default function Filter() {
         </Text>
       </div>
 
-      {isFiltered && (<div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4 gap-2 sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
+      {isFiltered && (<div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4  sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
 
         {filter.jobTitle && renderSinglePill(
           'Job Title',
