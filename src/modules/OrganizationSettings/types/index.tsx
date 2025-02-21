@@ -1,5 +1,3 @@
-import { TextInput } from "@mantine/core";
-import { IconPencil } from "@tabler/icons-react";
 
 export interface OrganizationSettingsState {
   alert: string;

@@ -1,4 +1,4 @@
-import { NumberInput, NumberFormatter } from "@mantine/core";
+import { NumberInput } from "@mantine/core";
 export default function index() {
     return (
         <div className="flex flex-col gap-8">

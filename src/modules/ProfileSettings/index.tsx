@@ -5,7 +5,7 @@ import Modals from "@modules/ProfileSettings/modal"
 import { ProfileSettingsStore } from "@modules/ProfileSettings/store"
 import { AlertType } from "./types";
 import bg2 from '@assets/bg2.png';
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 export const ProfileSettings = () => {
     const { setAlert, activePanel, setActivePanel } = ProfileSettingsStore()

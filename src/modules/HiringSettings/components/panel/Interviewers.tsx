@@ -1,4 +1,4 @@
-import { IconArrowsSort, IconCaretDownFilled, IconCirclePlus, IconPencil } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCirclePlus, IconPencil } from "@tabler/icons-react";
 import { InteviewerStore } from "@modules/HiringSettings/store"
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { interviewer } from "@modules/HiringSettings/types"

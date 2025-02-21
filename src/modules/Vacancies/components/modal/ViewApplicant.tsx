@@ -1,5 +1,5 @@
 import { Divider, Modal } from "@mantine/core";
-import { VacancyStore, ApplicantStore } from "../../store";
+import { ApplicantStore } from "../../store";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
 import { VacancyType } from "../../types";

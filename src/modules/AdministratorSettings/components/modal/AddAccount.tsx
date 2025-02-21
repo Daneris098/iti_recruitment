@@ -1,14 +1,10 @@
-import { Modal, Divider, Button, Select, TextInput, Textarea, Checkbox } from '@mantine/core';
+import { Modal, Divider, Button, TextInput, Checkbox } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useRef } from "react";
-import { useDateRangeStore } from "@shared/hooks/useDateRange";
-import { AdministratorSettingsStore, DialogStore } from "@modules/AdministratorSettings/store";
-import { AlertType } from '../../types';
+import { DialogStore } from "@modules/AdministratorSettings/store";
 
 export default function index() {
     const { action, setAction } = DialogStore()
-    const { setAlert } = AdministratorSettingsStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const form = useForm({
         mode: 'uncontrolled',

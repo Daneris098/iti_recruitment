@@ -1,5 +1,5 @@
 import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store";
-import { Alert, Button, Divider, Modal, Text } from "@mantine/core";
+import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleAlert, CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";

@@ -74,8 +74,7 @@ export default function index() {
                 totalRecords={data.filter(item =>
                     item.username.toLowerCase().includes(searchTerm.toLowerCase())
                 ).length}
-                onRowClick={({ record, event }) => {
-                    console.log('record: ', record);
+                onRowClick={({ record }) => {
                     setSelectedUser(record)
                 }
                 }

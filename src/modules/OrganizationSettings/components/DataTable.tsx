@@ -1,6 +1,6 @@
-import { useState, forwardRef, useImperativeHandle, useEffect, } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrash } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconCaretDownFilled } from "@tabler/icons-react";
 import { TextInput, Select } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
 import { title, description, Company } from '@modules/OrganizationSettings/types';

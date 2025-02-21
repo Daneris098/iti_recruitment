@@ -1,6 +1,6 @@
 import { Button, Checkbox, Modal, Select, TextInput } from '@mantine/core';
-import { useEffect, useState } from "react";
-import { AdministratorSettingsStore, DialogStore } from "@modules/AdministratorSettings/store";
+import {  useState } from "react";
+import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store";
 import { selectedDataInitialVal } from '@modules/AdministratorSettings/value';
 import avatar from "@assets/avatar.png";
 import { IconCaretDownFilled } from '@tabler/icons-react';
