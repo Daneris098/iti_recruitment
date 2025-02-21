@@ -1,0 +1,121 @@
+/* Added Button on Today Btn */
+.fc--button.fc-button.fc-button-primary {
+  display: none;
+}
+
+/* Today Button */
+.fc-toolbar-chunk button.fc-today-button.fc-button.fc-button-primary {
+  border-radius: 10px;
+}
+/* Prev Button */
+.fc-toolbar-chunk .fc-button-group button.fc-prev-button.fc-button {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+/* Next Button */
+.fc-toolbar-chunk .fc-button-group button.fc-next-button.fc-button {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+/* Today, Prev and Next Button */
+.fc-toolbar-chunk button.fc-today-button.fc-button.fc-button-primary,
+.fc-toolbar-chunk .fc-button-group button.fc-next-button.fc-button,
+.fc-toolbar-chunk .fc-button-group button.fc-prev-button.fc-button {
+  color: #3495e9;
+  background-color: #cddcf1;
+  border: none;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Month, Week, Day, List*/
+.fc-toolbar-chunk .fc-button-group button.fc-dayGridMonth-button.fc-button {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.fc-toolbar-chunk .fc-button-group button.fc-listWeek-button.fc-button {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.fc-toolbar-chunk .fc-selectMonth-button.fc-button.fc-button-primary {
+  border-radius: 10px;
+  font-weight: 500;
+  color: #0c63af;
+  background-color: #dfecfe;
+  border: none;
+  text-transform: capitalize;
+}
+.fc-toolbar-chunk .fc-button-group button.fc-dayGridMonth-button.fc-button,
+.fc-toolbar-chunk .fc-button-group button.fc-timeGridWeek-button.fc-button,
+.fc-toolbar-chunk .fc-button-group button.fc-timeGridDay-button.fc-button,
+.fc-toolbar-chunk .fc-button-group button.fc-listWeek-button.fc-button {
+  color: #559cda;
+  background-color: #dfecfe;
+  border: none;
+  text-transform: capitalize;
+}
+button.fc-dayGridMonth-button.fc-button.fc-button-primary.fc-button-active,
+button.fc-timeGridWeek-button.fc-button.fc-button-primary.fc-button-active,
+button.fc-timeGridDay-button.fc-button.fc-button-primary.fc-button-active,
+button.fc-listWeek-button.fc-button.fc-button-primary.fc-button-active {
+  color: #0c63af;
+  background-color: #cddcf1;
+  font-weight: 500;
+  border: none;
+}
+
+/* Custom Styles for Calendar View */
+.custom-all-day {
+  background-color: #eef7ff;
+  color: #0066cc;
+  font-weight: bold;
+}
+.custom-event {
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+}
+
+/* Calendar Mobile View */
+.fc {
+  height: 90vh !important;
+  padding: 20px 30px 20px 30px;
+}
+/* Calendar Web View */
+@media (min-width: 1400px) {
+  .fc {
+    height: 80vh !important;
+  }
+}
+
+/* Calendar Header Mobile View Design */
+.fc .fc-header-toolbar {
+  @apply flex-col lg:flex-row;
+}
+.fc .fc-header-toolbar .fc-toolbar-chunk {
+  @apply flex flex-row justify-between w-full md:w-auto;
+}
+.fc .fc-header-toolbar .fc-toolbar-chunk .fc-toolbar-title {
+  @apply w-full text-center font-semibold;
+  color: #181818;
+}
+.fc .fc-header-toolbar .fc-toolbar-chunk .fc-button-group {
+  @apply w-full flex flex-row justify-between;
+}
+
+/* Calendar Days Table */
+.fc .fc-view-harness .fc-view table[role="grid"] {
+  border-spacing: 20px;
+  border: none;
+}
+.fc .fc-view-harness .fc-view table[role="grid"] thead[role="rowgroup"] tr th {
+  padding: 5px 0px 5px 0px;
+  font-weight: 600;
+  color: #6d6d6d;
+  border: none;
+}
+.fc .fc-view-harness .fc-view table[role="grid"] tbody[role="rowgroup"] td {
+  border: 1px solid #559cda !important;
+}
