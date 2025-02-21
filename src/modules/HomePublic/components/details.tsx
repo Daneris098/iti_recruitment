@@ -1,5 +1,4 @@
 import { HomeStore } from "@src/modules/HomePublic/store";
-import { useEffect } from "react";
 import { Button, MantineSize, Pill } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useMatches } from '@mantine/core';
@@ -16,10 +15,6 @@ export default function Details() {
     lg: "xs",
     xl: "md"
   });
-
-  useEffect(() => {
-    console.log("desirable", selectedData.desirable);
-  }, [selectedData]);
 
   return (
     <div className="h-full w-full flex flex-col gap-4 2xl:gap-6 ">

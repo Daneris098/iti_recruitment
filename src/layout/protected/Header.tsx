@@ -13,10 +13,6 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ toggleMobile, toggleDesktop }) => {
   const { isMobile, isDrawerOpened } = GlobalStore()
 
-  useEffect(() => {
-    console.log('isDrawerOpened: ', isDrawerOpened)
-  }, [isDrawerOpened])
-
   return (
     <AppShell.Header>
       <div className="flex justify-between w-full">

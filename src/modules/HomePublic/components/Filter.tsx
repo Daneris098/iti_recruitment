@@ -64,7 +64,6 @@ export default function Filter() {
 
   const removeFilter = (label: string, item: any) => {
     let updatedFilter = { ...filter };
-    console.log(updatedFilter)
     const camelCaseLabel = toCamelCase(label);
     
     const filterValue = (updatedFilter as any)[camelCaseLabel];
@@ -77,9 +76,6 @@ export default function Filter() {
     else if (typeof filterValue === 'string' && filterValue === item) {
       (updatedFilter as any)[camelCaseLabel] = '';  // Reset the string value
     }
-    
-    // Log updated filter state for debugging
-    console.log('Updated Filter:', updatedFilter);
     
     setFilter(updatedFilter);
   };

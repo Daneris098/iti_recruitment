@@ -16,7 +16,6 @@ export default function AlertModals() {
     };
 
     useEffect(() => {
-        console.log('alert: ', alert)
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setAlert("");

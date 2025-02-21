@@ -32,7 +32,6 @@ export default function index() {
         }
     });
     const onSubmit = async (form: FamilyBackground) => {
-        console.log(form)
         setApplicationForm({ ...applicationForm, familyBackground: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -58,9 +57,7 @@ export default function index() {
     };
 
     const removeField = (index: number) => {
-        console.log(index)
         const updatedSiblings = [...form.getValues().siblings]; // Clone the array
-        console.log(updatedSiblings)
         updatedSiblings.splice(index, 1); // Remove the item at the given index
 
         setApplicationForm({

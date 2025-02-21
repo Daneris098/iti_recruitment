@@ -76,9 +76,6 @@ const DataTableComp = forwardRef((_, ref) => {
             const trimmedName = data.name?.trim();
             const trimmedCode = data.code?.trim();
 
-            console.log('name:', trimmedName);
-            console.log('code:', trimmedCode);
-
             // Validation check: Ensure name and code are not empty after trimming
             if (!trimmedName || !trimmedCode) {
                 console.error('Validation failed: Name or Code is empty after trimming.');

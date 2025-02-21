@@ -33,7 +33,6 @@ export default function index() {
 
 
     const onSubmit = async (form: Reference) => {
-        console.log(form)
         setApplicationForm({ ...applicationForm, reference: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };

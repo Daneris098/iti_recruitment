@@ -15,7 +15,6 @@ export const List = () => {
             filteredNotifications = items.filter(item => item.filing_status === filter);
         }
         setNotifications(filteredNotifications);
-        console.log('notifications: ', filteredNotifications);
     }, [filter, items]);
 
     return (

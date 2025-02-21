@@ -30,7 +30,6 @@ export default function index() {
     });
 
     const onSubmit = async (form: EducationalAndEmployment) => {
-        console.log(form)
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -94,7 +93,6 @@ export default function index() {
                                     `educationBackground.yearsAttended.from`,
                                     value
                                 );
-                                console.log(form.getValues())
                             }}
                         />
 
@@ -113,7 +111,6 @@ export default function index() {
                                     `educationBackground.yearsAttended.to`,
                                     value
                                 );
-                                console.log(form.getValues())
                             }}
                         />
 
@@ -187,7 +184,6 @@ export default function index() {
                                                     `employmentRecord.${index}.inclusiveDate.from`,
                                                     value ? dayjs(value).format("YYYY-MM-DD") : ''
                                                 );
-                                                console.log(form.getValues())
                                             }}
                                         />
                                     </Popover.Dropdown>

@@ -44,7 +44,6 @@ export default function Register() {
   });
 
   const onSubmit = async (params: FormData) => {
-    console.log(params)
     const payload = {
       username: params.username,
       email: params.email,
@@ -55,11 +54,8 @@ export default function Register() {
     await axiosInstance
       .post("createUser", payload)
       .then((response) => {
-        console.log('status: ', response.status)
         if (response.status === 201) {
-          console.log("Before reset: ", form.values);
           form.reset();
-          console.log("After reset: ", form.values);
           setTimeout(() => {
             Swal.fire({
               icon: "success",
@@ -70,7 +66,6 @@ export default function Register() {
         }
       })
       .catch((error) => {
-        console.log('err: ', error.response.status)
         if (error.response.status === 401 || error.response.status === 404) {
           const message = error.response.data.message;
           console.error(message);

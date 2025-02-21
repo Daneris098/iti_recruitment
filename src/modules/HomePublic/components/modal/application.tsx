@@ -42,10 +42,6 @@ export default function index() {
         currentStepComponent = <div>Else Page</div>;
     }
 
-    useEffect(() => {
-        console.log('activeStepper: ', activeStepper)
-    }, [activeStepper])
-
     const [opened, setOpened] = useState(false);
 
     const togglePopover = () => {

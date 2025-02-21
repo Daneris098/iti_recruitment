@@ -46,7 +46,6 @@ export default function Index() {
             canvas.height = videoRef.current.videoHeight;
             context.drawImage(videoRef.current, 0, 0);
             const imageData = canvas.toDataURL("image/png");
-            console.log('imageData: ', imageData)
             setCapturedImage(imageData);
             stopCamera(); // Stop the camera after capturing
             setIsPhotoCaptured(true)

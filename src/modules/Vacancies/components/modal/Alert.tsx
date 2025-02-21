@@ -14,7 +14,6 @@ export default function AlertModals() {
     const { setAlert, alert, setAction } = VacancyStore();
     
     useEffect(() => {
-        console.log(alert)
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setAlert("");

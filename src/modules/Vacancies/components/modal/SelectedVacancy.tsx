@@ -7,10 +7,6 @@ import "@modules/Vacancies/style.css"
 export default function index() {
     const { selectedVacancy, setSelectedVacancy } = VacancyStore();
 
-    useEffect(() => {
-        console.log('selectedVacancy: ', selectedVacancy)
-    }, [selectedVacancy]);
-
     return (
         <>
             <Modal size={'80%'} opened={selectedVacancy != selectedDataVal} centered onClose={() => setSelectedVacancy(selectedDataVal)} title={'Vacancy Details'}
