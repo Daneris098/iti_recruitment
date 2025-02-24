@@ -17,7 +17,7 @@
     "@fullcalendar/multimonth": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
-    "@mantine/core": "^7.15.1",
+    "@mantine/core": "^7.17.0",
     "@mantine/dates": "^7.16.1",
     "@mantine/dropzone": "^7.16.1",
     "@mantine/form": "^7.15.1",
