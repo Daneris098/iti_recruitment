@@ -1,0 +1,3 @@
+.mantine-Tabs-list::before{
+    border-style: none !important;
+}

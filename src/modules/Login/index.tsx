@@ -2,15 +2,15 @@ import { useForm } from "@mantine/form";
 import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "@src/api";
-import Swal from "sweetalert2";
+// import axiosInstance from "@src/api";
+// import Swal from "sweetalert2";
 
 export default function Login() {
   const navigate = useNavigate();
-  interface FormData {
-    username: string;
-    password: string;
-  }
+  // interface FormData {
+  //   username: string;
+  //   password: string;
+  // }
 
   const form = useForm({
     mode: "uncontrolled",
@@ -33,29 +33,30 @@ export default function Login() {
     },
   });
 
-  const onSubmit = async (params: FormData) => {
-    const payload = {
-      username: params.username,
-      password: params.password,
-    };
-    await axiosInstance
-      .post("login", payload)
-      .then((response) => {
-        if (response.status === 200) {
-          const { refreshToken, accessToken } = response.data;
-          sessionStorage.setItem("accessTokenFlash", accessToken);
-          document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
-          navigate("/dashboard");
-        }
-      })
-      .catch((error) => {
-        const message = error.response.data.message;
-        Swal.fire({
-          icon: "error",
-          title: "Login failed",
-          text: message,
-        });
-      });
+  const onSubmit = async () => {
+    navigate("/home");
+    // const payload = {
+    //   username: params.username,
+    //   password: params.password,
+    // };
+    // await axiosInstance
+    //   .post("login", payload)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       const { refreshToken, accessToken } = response.data;
+    //       sessionStorage.setItem("accessTokenFlash", accessToken);
+    //       document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
+    //       navigate("/dashboard");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     const message = error.response.data.message;
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Login failed",
+    //       text: message,
+    //     });
+    //   });
   };
 
   return (

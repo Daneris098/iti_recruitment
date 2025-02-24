@@ -13,7 +13,9 @@ export interface GlobalState {
   userDetails: user_details_type;
   isMobile: boolean;
   isFullscreen: boolean;
+  isDrawerOpened: boolean;
 
+  setIsDrawerOpened: (isDrawerOpened: any) => void;
   setUserDetails: (userDetails: any) => void;
   setIsMobile: (isMobile: boolean) => void;
   setIsFullscreen: (isFullscreen: boolean) => void;
@@ -31,7 +33,9 @@ export const GlobalStore = create<GlobalState>((set) => ({
   userDetails: userDetailsValue,
   isMobile: false,
   isFullscreen: false,
+  isDrawerOpened: true,
 
+  setIsDrawerOpened: (isDrawerOpened) => set({ isDrawerOpened: isDrawerOpened }),
   setUserDetails: (userDetails) => set({ userDetails: userDetails }),
   setIsMobile: (isMobile) => set({ isMobile: isMobile }),
   setIsFullscreen: (isFullscreen) => set({ isFullscreen: isFullscreen }),

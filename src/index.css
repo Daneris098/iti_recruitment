@@ -149,39 +149,19 @@ body {
 }
 
 .active{
-  @apply pl-5  bg-black p-1 rounded-lg text-white cursor-pointer;
+  @apply pl-5 border-none br-gradient p-1 rounded-lg text-white cursor-pointer;
 }
 .inactive{
-  @apply pl-5 p-1 rounded-lg text-black bg-slate-200 cursor-pointer;
+  @apply pl-5 p-1 rounded-lg text-[#6D6D6D] cursor-pointer;
 }
 
-
-/* For Chrome, Edge, and Safari */
-.scrollbar::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
-  height: 12px; /* Height of the scrollbar */
+.active2{
+  @apply  border-none br-gradient rounded-lg text-white cursor-pointer self-center p-2;
+}
+.inactive2{
+  @apply  rounded-lg text-[#6D6D6D] cursor-pointer self-center p-2;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #888; /* Scrollbar thumb color */
-  border-radius: 6px; /* Rounded corners */
-  border: 3px solid transparent; /* Creates a padding effect */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Scrollbar thumb hover color */
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Scrollbar track color */
-  border-radius: 6px; /* Rounded corners */
-}
-
-/* For Firefox */
-* {
-  scrollbar-width: thin; /* Makes the scrollbar thin */
-  scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
-}
 
 /* Styling for Edge (uses WebKit styles) */
 html {
@@ -204,4 +184,13 @@ html {
 
 .protected {
   @apply bg-[#DEECFF] ;
+}
+
+.mantine-Table-td {
+  padding: 0.8rem;
+}
+
+.mantine-datatable-table tbody .mantine-Table-tr {
+  padding: 0.6rem;
+  @apply cursor-pointer hover:bg-gray-50;
 }

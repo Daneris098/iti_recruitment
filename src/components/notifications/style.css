@@ -1,0 +1,16 @@
+.custom-gradient {
+  background-image: linear-gradient(
+    to right,
+    #559cda,
+    #7badff,
+    #ffb58d,
+    #ed8028
+  );
+}
+
+button.mantine-Tabs-tab.custom-tab[tabindex="0"] {
+  @apply custom-gradient font-bold rounded-t-md border-2 border-b-2 border-blue-700;
+}
+button.mantine-Menu-item.custom-tab[role="menuitem"]:hover {
+  @apply custom-gradient text-white font-bold;
+}
