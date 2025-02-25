@@ -1,0 +1,21 @@
+.mantine-Stepper-stepIcon[data-progress] {
+  background: #228be6 !important;
+  color: white ;
+}
+.mantine-Stepper-stepIcon[data-completed] {
+  background: #228be6 !important;
+  color: white ;
+}
+
+.mantine-Stepper-stepIcon[data-completed] svg {
+  width: 40% !important;
+  height: 50% !important;
+}
+
+.mantine-Stepper-stepDescription{
+  color: black !important;
+}
+
+body {
+  background-color: white !important; 
+}
