@@ -7,6 +7,9 @@ export enum Step {
 export interface AccountSetupState {
   activeStepper: number;
   form: form;
+  alert: string;
+
+  setAlert: (alert: string) => void;
   setForm: (form: form) => void;
   setActiveStepper: (activeStepper: number) => void;
 }
@@ -41,6 +44,12 @@ export interface interviewStage {
 export interface interviewer {
   id: number
   name: string
+}
+
+export enum AlertType {
+  save = 'save',
+  saved = 'saved',
+  nextStep = 'nextStep',
 }
 
 /* Stepper Parents */
