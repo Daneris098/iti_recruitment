@@ -2,7 +2,7 @@ import { Divider, TextInput } from "@mantine/core";
 
 export default function index() {
     return (
-        <div className="h-full w-[75%] mx-auto flex flex-col gap-2 sm:gap-8">
+        <div className="h-full w-[75%] mx-auto flex flex-col gap-2 sm:gap-8 text-[#6D6D6D] font-semibold">
             <div className="flex flex-col gap-2">
                 <p className="text-center">PROFILE DETAILS</p>
                 <Divider size={3} color="#ebe5e5" />

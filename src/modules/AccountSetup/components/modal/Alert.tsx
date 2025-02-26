@@ -85,7 +85,6 @@ export default function AlertModals() {
                         <p className="text-2xl text-[#559CDA] font-semibold">
                             Account Set-up Successful
                         </p>
-                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => { setAlert(""); }} />
                     </div>
                     <Divider size="xs" color="#6D6D6D" />
                 </div>
@@ -110,7 +109,6 @@ export default function AlertModals() {
                         <p className="text-2xl text-[#559CDA] font-semibold">
                             Next Step
                         </p>
-                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => { setAlert(""); }} />
                     </div>
                     <Divider size="xs" color="#6D6D6D" />
                 </div>

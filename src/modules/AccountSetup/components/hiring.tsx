@@ -34,14 +34,14 @@ export default function index() {
     return (
         <div className="w-[75%] mx-auto flex flex-col gap-2 sm:gap-8  text-[#6D6D6D] ">
             <div className="flex flex-col gap-2">
-                <p className="text-center font-bold">OFFER RESPONSE PERIOD</p>
+                <p className="text-center font-semibold">OFFER RESPONSE PERIOD</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
             <p>Establish the maximum number days for applicants to sign the job offer issued. Once this limit is reached, the job offer automatically marked as declined, and the applicant's status will be updated to Archived.</p>
             <NumberInput radius={"md"} size="md" label="Number of Days" placeholder="Input Number of Days" className="w-full" suffix=" Days" min={1} />
 
             <div className="flex flex-col gap-2">
-                <p className="text-center font-bold">APPLICATION SETTINGS</p>
+                <p className="text-center font-semibold">APPLICATION SETTINGS</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
             <p>Establish the maximum number days for applicants to sign the job offer issued. Once this limit is reached, the job offer automatically marked as declined, and the applicant's status will be updated to Archived.</p>
@@ -52,7 +52,7 @@ export default function index() {
 
 
             <div className="flex flex-col gap-2">
-                <p className="text-center font-bold">INTERVIEW STAGES</p>
+                <p className="text-center font-semibold">INTERVIEW STAGES</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
 
@@ -68,7 +68,7 @@ export default function index() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <p className="text-center font-bold">INTERVIEWER</p>
+                <p className="text-center font-semibold">INTERVIEWER</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
             <div className="">

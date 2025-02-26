@@ -35,10 +35,10 @@ export default function index() {
     };
 
     return (
-        <div className="h-full w-[75%] mx-auto flex flex-col gap-2 sm:gap-8">
+        <div className="h-full w-[75%] mx-auto flex flex-col gap-2 sm:gap-8 text-[#6D6D6D]">
 
             <div className="flex flex-col gap-2">
-                <p className="text-center">COMPANY LIST</p>
+                <p className="text-center font-semibold">COMPANY LIST</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
             <div className="flex flex-col">
@@ -53,7 +53,7 @@ export default function index() {
             </div>
 
             <div className="flex flex-col gap-2">
-                <p className="text-center">BRANCH LIST</p>
+                <p className="text-center font-semibold">BRANCH LIST</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
             {form.organization.branchList.map((branch, index) => (
@@ -79,7 +79,7 @@ export default function index() {
             ))}
 
             <div className="flex flex-col gap-2">
-                <p className="text-center">DIVISION LIST</p>
+                <p className="text-center font-semibold">DIVISION LIST</p>
                 <Divider size={3} color="#ebe5e5" />
             </div>
             {form.organization.divisionList.map((division, index) => (
