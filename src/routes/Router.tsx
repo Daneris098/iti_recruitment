@@ -171,7 +171,7 @@ const router = createBrowserRouter([
     element: <RequireAuth />,
     children: [
       {
-        element: <PublicLayout isFullscreen={false} isShowIconLogout={false} />,
+        element: <PublicLayout isFullscreen={false} isShowIconLogout={false} isScreenAuto />,
         children: [
           {
             path: "accountSetup",

@@ -73,8 +73,8 @@ export default function index() {
     return (
         <div className='h-full flex flex-col gap-36 bg-white'>
             <Modals />
-            <div style={{ backgroundImage: `url(${bg2})` }} className=" bg-cover bg-center h-[16%]  flex flex-col ">
-                <div className="w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center text-white text-center pb-6 pt-4 sm:pb-12 md:pb-8">
+            <div style={{ backgroundImage: `url(${bg2})` }} className=" bg-cover bg-center h-[16%]  flex flex-col relative">
+                <div className="w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center text-white text-center pt-4 pb-8">
                     <p className='text-3xl md:text-5xl'>Welcome, Aboard!</p>
                     <p className='text-md md:text-lg'>To get started with HRDotNet Recruitment, let’s fist set-up your account.</p>
                 </div>

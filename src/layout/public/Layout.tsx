@@ -1,14 +1,14 @@
 import { AppShell, useMatches } from "@mantine/core";
 import Header from "./Header";
 import Main from "./Main";
-import { TailwindIndicator } from "@src/components/tailwind-indicator"
 
 interface PublicLayoutProps {
   isFullscreen: boolean;
   isShowIconLogout: boolean;
+  isScreenAuto?: boolean;
 }
 
-function Layout({ isFullscreen, isShowIconLogout } : PublicLayoutProps) {
+function Layout({ isFullscreen, isShowIconLogout, isScreenAuto = false }: PublicLayoutProps) {
 
   const HeaderHeightSize = useMatches({
     base: "50",
@@ -22,9 +22,8 @@ function Layout({ isFullscreen, isShowIconLogout } : PublicLayoutProps) {
   return (
     <AppShell {...appShellProps}>
       {!isFullscreen && <Header isShowIconLogout={isShowIconLogout} />}
-      <div className="h-screen">
+      <div className={`${isScreenAuto ? 'h-auto' : 'h-screen'}`}>
         <Main />
-        <TailwindIndicator />
       </div>
     </AppShell>
   );

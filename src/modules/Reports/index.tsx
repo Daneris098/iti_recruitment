@@ -1,10 +1,22 @@
-export const Reports = () => {
+import React from 'react'
+import Modals from "@modules/Reports/components/modal/index"
+import { reports } from "@modules/Reports/values"
+import { ReportStore } from "@modules/Reports/store"
+import "@modules/Reports/styles/index.css"
 
+export const Reports = () => {
+    const { setSelectedReport } = ReportStore()
     return (
-        <div>
-            <h1>Reports</h1>
+        <div className="bg-white rounded-md grid grid-cols-1 md:grid-cols-2 gap-12 p-4 relative">
+            <Modals />
+            {reports.map((report) =>
+                <div className="shadow-md shadow-[#559CDA]  rounded-md  h-[10rem] flex flex-col items-center text-center justify-center text-[#559CDA] p-4 cursor-pointer" onClick={() => { setSelectedReport(report) }}>
+                    {React.cloneElement(report.icon, { size: 48, color: '#559CDA', })}
+                    <p className="font-bold">{report.name}</p>
+                    <p>{report.description}</p>
+                </div>
+            )}
         </div>
     );
 };
-
 export default Reports;

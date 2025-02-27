@@ -36,7 +36,7 @@ export default function index() {
     }
 
     return (
-        <StyledStepper active={activeStepper} onStepClick={(data: number) => { data < activeStepper && setActiveStepper(data) }} className='w-full self-center px-8 sm:px-16 md:px-28 lg:px-48 xl:px-64 2xl:px-72'>
+        <StyledStepper active={activeStepper} onStepClick={(data: number) => { data < activeStepper && setActiveStepper(data) }} className='w-full self-center px-8 sm:px-16 md:px-28 lg:px-48 xl:px-64 2xl:px-72 absolute bottom-[-20%]'>
             <Stepper.Step label="" description="Set-up your Profile" className='' />
             <Stepper.Step label="" description="Set-up your Organization Profile" />
             <Stepper.Step label="" description="Set-up your Hiring Process" />
