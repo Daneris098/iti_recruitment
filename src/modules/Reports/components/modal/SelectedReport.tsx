@@ -1,23 +1,53 @@
 import { Button, Divider, Modal } from "@mantine/core";
 import { ReportStore } from "@modules/Reports/store";
 import { AlertType, Reports } from "@modules/Reports/types"
-import { SourceEfficiencyReport } from "@modules/Reports/components/reports"
-import { SourceEfficiencyReportPreview } from "@modules/Reports/components/reports/preview/index"
+import { SourceEfficiency, LocationSummary, TimeToFill, PositionReport, ApplicantStatus, RecruitmentActivityReport, TimeToHire, OfferAcceptanceReport, OfferRejectionSummary} from "@modules/Reports/components/reports"
+import { SourceEfficiencyPreview, LocationSummaryPreview, TimeToFillPreview, PositionReportPreview, ApplicantStatusPreview, RecruitmentActivityReportPreview, TimeToHirePreview, OfferAcceptanceReportPreview, OfferRejectionSummaryPreview } from "@modules/Reports/components/reports/preview/index"
 import "@modules/Vacancies/style.css"
 import { IconX } from "@tabler/icons-react";
-import { useState } from "react";
 
 export default function index() {
 
-    const { selectedReport, setSelectedReport, setAlert } = ReportStore();
-    const [isPreview, setIsPreview] = useState(false);
+    const { selectedReport, setSelectedReport, setAlert, isPreview, setIsPreview } = ReportStore();
 
     let currentReportComponent;
     let currentReportPreviewComponent;
 
     if (selectedReport?.type === Reports.sourceEfficiencyReport) {
-        currentReportComponent = <SourceEfficiencyReport />;
-        currentReportPreviewComponent = <SourceEfficiencyReportPreview />;
+        currentReportComponent = <SourceEfficiency />;
+        currentReportPreviewComponent = <SourceEfficiencyPreview />;
+    }
+    else if (selectedReport?.type === Reports.locationSummary) {
+        currentReportComponent = <LocationSummary />;
+        currentReportPreviewComponent = <LocationSummaryPreview />;
+    }
+    else if (selectedReport?.type === Reports.positionReport) {
+        currentReportComponent = <PositionReport />;
+        currentReportPreviewComponent = <PositionReportPreview />;
+    }
+    else if (selectedReport?.type === Reports.timeToFill) {
+        currentReportComponent = <TimeToFill />;
+        currentReportPreviewComponent = <TimeToFillPreview />;
+    }
+    else if (selectedReport?.type === Reports.applicantStatusReport) {
+        currentReportComponent = <ApplicantStatus />;
+        currentReportPreviewComponent = <ApplicantStatusPreview />;
+    }
+    else if (selectedReport?.type === Reports.recruitmentActivityReport) {
+        currentReportComponent = <RecruitmentActivityReport />;
+        currentReportPreviewComponent = <RecruitmentActivityReportPreview />;
+    }
+    else if (selectedReport?.type === Reports.timeToHire) {
+        currentReportComponent = <TimeToHire />;
+        currentReportPreviewComponent = <TimeToHirePreview />;
+    }
+    else if (selectedReport?.type === Reports.offerAcceptanceReport) {
+        currentReportComponent = <OfferAcceptanceReport />;
+        currentReportPreviewComponent = <OfferAcceptanceReportPreview />;
+    }
+    else if (selectedReport?.type === Reports.offerRejectionSummary) {
+        currentReportComponent = <OfferRejectionSummary />;
+        currentReportPreviewComponent = <OfferRejectionSummaryPreview />;
     }
     else {
         currentReportComponent = <div>Else Page</div>;
@@ -38,7 +68,7 @@ export default function index() {
                     <div className="flex flex-col gap-3">
                         <div className="flex justify-between">
                             <p className="text-2xl text-[#559CDA] font-semibold">
-                                { isPreview ? '':'Generate' } {selectedReport?.name}
+                                {isPreview ? selectedReport?.name : selectedReport?.title}
                             </p>
                             <IconX size={30} className="text-[#6D6D6D]" onClick={() => { setSelectedReport(null); setIsPreview(false); }} />
                         </div>

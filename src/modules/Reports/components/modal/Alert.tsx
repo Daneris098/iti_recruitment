@@ -1,7 +1,6 @@
 import { ReportStore } from "@modules/Reports/store";
-import { Button, Divider, Modal, Text } from "@mantine/core";
+import { Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType } from "@modules/Reports/types/index";
 import { IconFileDownload } from "@tabler/icons-react";
@@ -12,15 +11,16 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const { setAlert, alert, setSelectedReport } = ReportStore();
-    
+    const { setAlert, alert, setSelectedReport, setIsPreview } = ReportStore();
+
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
+                setIsPreview(false)
                 if (AlertType.downloadReportSuccess) {
                     setSelectedReport(null);
-                    setAlert(null);
                 }
+                setAlert(null);
             }, 1600);
             return () => clearTimeout(timer);
         }

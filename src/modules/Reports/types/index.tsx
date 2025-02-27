@@ -1,7 +1,9 @@
 export interface ReportState {
     selectedReport: Report | null;
     alert: AlertType | null
+    isPreview: boolean
 
+    setIsPreview: (isPreview: boolean) => void;
     setAlert: (alert: AlertType | null) => void;
     setSelectedReport: (selectedReport: Report | null) => void;
 }
@@ -23,6 +25,7 @@ export enum Reports {
 }
 
 export interface Report {
+    title: String,
     icon: React.ReactNode,
     name: string,
     description: string,

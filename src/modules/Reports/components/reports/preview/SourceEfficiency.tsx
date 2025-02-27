@@ -43,10 +43,10 @@ export default function index() {
             <Stack className="h-48 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={sourceEfficiencyData} width={730} height={250} layout="vertical">
-                        <YAxis type="category" dataKey="month" width={150} height={50} className="text-[12px] font-semibold" />
+                        <YAxis type="category" dataKey="month" width={150} height={50} className="text-[12px] font-semibold" tick={{ textAnchor: 'center', dx: -130 }} />
                         <XAxis type="number" />
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.05)" }} />
-                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA"  radius={[10, 0, 0, 10]} className="cursor-pointer" barSize={15} />
+                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 0, 0, 10]} className="cursor-pointer" barSize={15} />
                         <Bar dataKey="Hired" stackId="stack" fill="#ED8028" radius={[0, 10, 10, 0]} className="cursor-pointer" />
                     </BarChart>
                 </ResponsiveContainer>
