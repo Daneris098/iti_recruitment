@@ -13,7 +13,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 //--- Assets
 import { OfferAcceptanceProps } from "../assets/Types";
 import OfferAcceptanceTooltip from "../components/tooltip/CustomTooltip";
-import { monthData } from "../assets/Array";
+import { monthData } from "../assets/sample-data";
 
 export const OfferAcceptance: React.FC<OfferAcceptanceProps> = ({ data }) => {
   return (

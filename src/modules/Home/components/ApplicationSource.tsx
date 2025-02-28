@@ -11,7 +11,7 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recha
 import { ApplicationSourceProps } from "../assets/Types";
 
 import ApplicationSourceTooltip from "../components/tooltip/CustomTooltip";
-import { monthData } from "../assets/Array";
+import { monthData } from "../assets/sample-data";
 
 export const ApplicationSource: React.FC<ApplicationSourceProps> = ({ data }) => {
   return (

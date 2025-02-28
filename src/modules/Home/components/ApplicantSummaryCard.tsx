@@ -8,7 +8,7 @@ import { Container, Flex, Text } from "@mantine/core";
 import * as MantineHooks from "@mantine/hooks";
 
 //--- Home Assets
-import { Applicant, IconColors, iconMap } from "../assets/Array";
+import { Applicant, IconColors, iconMap } from "../assets/sample-data";
 
 export const ApplicantSummaryCard = ({ data }: { data: Applicant[] }) => {
   // Mobile View Sizing
