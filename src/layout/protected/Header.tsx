@@ -3,7 +3,6 @@ import { Notifications } from "@src/components/Notifications";
 import { ProfileDropdown } from "@src/components/ProfileDropdown";
 import { Settings } from "@src/components/Settings";
 import { GlobalStore } from '@src/utils/GlobalStore';
-import { useEffect } from "react";
 interface HeaderProps {
   toggleMobile: () => void;
   toggleDesktop: () => void;

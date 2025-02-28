@@ -22,6 +22,7 @@ import ProfileSettings from "@src/modules/ProfileSettings";
 import OrganizationSettings from "@src/modules/OrganizationSettings"
 import HiringSettings from "@src/modules/HiringSettings"
 import AdministratorSettings from "@src/modules/AdministratorSettings"
+import AccountSetup from "@src/modules/AccountSetup"
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -86,23 +87,33 @@ const router = createBrowserRouter([
     element: <RedirectIfAuthenticated />,
     children: [
       {
-        element: <PublicLayout />,
+        element: <PublicLayout isFullscreen={true} isShowIconLogout={false} />,
         children: [
           {
             path: "",
             element: <LandingPage />,
           },
           {
+            path: "test",
+            element: <Test />,
+          },
+          {
             path: "login",
             element: <Login />,
           },
+        ],
+      },
+    ],
+  },
+  {
+    element: <RedirectIfAuthenticated />,
+    children: [
+      {
+        element: <PublicLayout isFullscreen={false} isShowIconLogout={true} />,
+        children: [
           {
             path: "vacancyList",
             element: <HomePublic />,
-          },
-          {
-            path: "test",
-            element: <Test />,
           },
         ],
       },
@@ -150,6 +161,21 @@ const router = createBrowserRouter([
           {
             path: "administratorSettings",
             element: <AdministratorSettings />,
+          },
+        ],
+      },
+    ],
+  },
+  // Account Setup
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        element: <PublicLayout isFullscreen={false} isShowIconLogout={false} isScreenAuto />,
+        children: [
+          {
+            path: "accountSetup",
+            element: < AccountSetup />,
           },
         ],
       },

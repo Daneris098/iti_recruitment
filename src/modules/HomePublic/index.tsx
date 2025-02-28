@@ -13,10 +13,9 @@ import bg2 from '@assets/bg2.png';
 import Alert from "@src/modules/HomePublic/components/modal/Alert";
 
 export default function Home() {
-  
+
   const { selectedData, setApplicationFormModal } = HomeStore();
   const { setFilterDrawer, filter, isFiltered } = FilterStore();
-
   const { isMobile } = GlobalStore();
   const jobs: VacancyType[] = jobsJson;
 

@@ -10,7 +10,7 @@ import Preview from "@modules/HomePublic/components/form/Preview";
 import Oath from "@modules/HomePublic/components/Oath"
 import { cn } from "@src/lib/utils";
 import { Step } from '@modules/HomePublic/types';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { IconCaretDownFilled } from '@tabler/icons-react';
 import "@modules/HomePublic/styles/index.css"
 

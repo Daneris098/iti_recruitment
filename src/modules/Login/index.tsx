@@ -4,6 +4,7 @@ import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 // import axiosInstance from "@src/api";
 // import Swal from "sweetalert2";
+import loginBg from '@assets/loginBg.png';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function Login() {
   });
 
   const onSubmit = async () => {
-    navigate("/home");
+    navigate("/accountSetup");
     // const payload = {
     //   username: params.username,
     //   password: params.password,
@@ -60,30 +61,34 @@ export default function Login() {
   };
 
   return (
-    <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
-        <title>Login</title>
-        <div className="w-10/12 sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 2xl:w-3/12  absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="flex flex-col gap-4  bg-white p-12 sm:p-16 rounded-lg shadow-md shadow-blue-300 ">
-            <p className=" text-center font-semibold poppins text-2xl">LOGO</p>
-            <Text
-              size="md"
-              className="text-center font-bold poppins mt-6"
-              style={{ color: "#559CDA" }}
-            >
-              Log-in to your account.
-            </Text>
+    <div className=" h-full flex">
+      <div className="bg-cover  w-1/2 hidden sm:block">
+        <div style={{ backgroundImage: `url(${loginBg})` }} className="bg-cover h-full w-full flex flex-col">
+          <img src="loginLogo.png " className="cursor-pointer w-36 2xl:w-48 pl-10 py-10" alt="bg" onClick={() => { navigate("/"); }}/>
+          <div className="flex flex-col gap-10 sm:h-[45%] sm:w-[80%] m-auto p-4 sm:p-0">
+            <p className="text-white text-7xl font-bold text-center">Welcome Aboard!</p>
+            <p className="text-white text-center text-xl w-[80%] self-center">To access the HRDotNet Recruitment and Onboarding Platform, please log-in with your credentials.</p>
+            <Button variant="outline" color="white" radius={'md'} className="w-1/2 self-center" size="lg">Login Now</Button>
+          </div>
+        </div>
+      </div>
+      <div className=" w-full sm:w-1/2">
+        <div className="h-full w-full flex flex-col ">
+          <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[55%] m-auto p-4 sm:p-0">
+            <p className=" text-center font-semibold poppins text-5xl sm:text-6xl text-[#559CDA]">Admin Log-in</p>
+            <p className=" text-center poppins text-md text-[#6D6D6D]">Forget Password? <span className="text-[#559CDA] underline cursor-pointer">Contact System Administrator</span></p>
             <div className="w-full text-start text-slate-700 mt-6">
               <Text size="md" className="poppins ">
                 Username
               </Text>
               <TextInput
-                variant="filled"
+                variant="default"
                 size="md"
                 radius="md"
+                classNames={{ input: "poppins" }}
                 placeholder="Enter your username"
                 rightSection={
-                  <div className="bg-green-400 p-2 rounded-lg text-white">
+                  <div className="bg-[#559CDA] p-2 rounded-lg text-white">
                     <IconMail />
                   </div>
                 }
@@ -95,28 +100,30 @@ export default function Login() {
                 Password
               </Text>
               <PasswordInput
-                variant="filled"
+                classNames={{ input: "poppins" }}
+
+                variant="default"
                 size="md"
                 radius="md"
                 placeholder="Enter your password"
                 rightSection={
-                  <div className="bg-red-400 p-2 rounded-lg text-white">
+                  <div className="bg-[#ED8028] p-2 rounded-lg text-white">
                     <IconShieldLock />
                   </div>
                 }
                 {...form.getInputProps("password")}
               />
             </div>
-            <Button type="submit" className="border-none bg-blue-300 mt-7">
+            <Button type="submit" size="lg" className="br-gradient border-none bg-blue-300 mt-7">
               <Text
                 className="poppins text-white "
               >
                 Login Now
               </Text>
             </Button>
-          </div>
+          </form>
         </div>
-      </form>
-    </>
+      </div>
+    </div>
   );
 }
