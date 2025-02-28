@@ -1,6 +1,5 @@
 import { AppShell } from "@mantine/core";
 import { IconLogout } from "@tabler/icons-react";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -9,10 +8,6 @@ interface Props {
 
 export default function Header({isShowIconLogout}: Props) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log('isShowIconLogout: ', isShowIconLogout)
-  }, [])
 
   return (
     <AppShell.Header>

@@ -1,15 +1,11 @@
 import { Divider, NumberInput, Select, TextInput } from "@mantine/core";
 import { IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
 import { AccountSetupStore } from "@modules/AccountSetup/store"
-import { useEffect } from "react";
 import Dropzone from "@shared/template/Dropzone";
 export default function index() {
 
     const { form, setForm } = AccountSetupStore()
 
-    useEffect(() => {
-        console.log(form.hiring.interviewStages)
-    }, [])
 
     const addFieldStage = () => {
         const updatedinterviewStages = [...form.hiring.interviewStages, { id: Date.now(), name: "" }];
