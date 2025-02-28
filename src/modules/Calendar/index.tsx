@@ -29,16 +29,11 @@ import Reschedule from "./components/modals/ModalReschedule";
 
 //--- Dummy Data
 import { INITIAL_EVENTS, createEventId } from "./assets/Events";
+import SuccessAlert from "./components/alerts/SuccessAlert";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
-  const {
-    setOnViewEvent,
-    setOnViewResched,
-    setEventInfo,
-    eventInfo,
-    checkedItems,
-  } = useCalendarStore();
+  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems } = useCalendarStore();
 
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
@@ -74,14 +69,10 @@ export default function index() {
 
     // Closing Reschedule Modal
     setOnViewResched(false);
+    setOnViewEvent(false);
   };
 
-  const filteredEvents: EventInput[] =
-    checkedItems.length === 0
-      ? INITIAL_EVENTS
-      : INITIAL_EVENTS.filter((event) =>
-          checkedItems.includes(event.extendedProps?.department)
-        );
+  const filteredEvents: EventInput[] = checkedItems.length === 0 ? INITIAL_EVENTS : INITIAL_EVENTS.filter((event) => checkedItems.includes(event.extendedProps?.department));
 
   return (
     <Stack bg="white" w="100%" h="100%" justify="between">
@@ -114,6 +105,9 @@ export default function index() {
 
       {/* Modal View Applicant */}
       <ViewApplicant downloadBtn={undefined} />
+
+      {/* Modal Succes Update */}
+      <SuccessAlert />
     </Stack>
   );
 }

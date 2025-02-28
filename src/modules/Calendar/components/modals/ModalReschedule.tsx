@@ -4,7 +4,7 @@
  */
 
 //--- Mantine Components
-import { Button, Flex, TextInput } from "@mantine/core";
+import { Button, Flex, Select } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 //--- Shared Template
 import Modal from "@shared/template/container/Modal";
@@ -13,23 +13,28 @@ import { useCalendarStore, useRescheduleStore } from "../../store";
 
 export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
   const { date, interviewer, setDate, setInterviewer } = useRescheduleStore();
-  const { onViewResched, setOnViewResched, setOnViewEvent } =
-    useCalendarStore();
+  const { onViewResched, setOnViewResched, setOnViewEvent, setOnViewUpdate } = useCalendarStore();
 
   const handleCloseSched = () => {
     setOnViewResched(false);
     setOnViewEvent(true);
     setInterviewer("");
+    setDate(null!);
+  };
+
+  const submit = () => {
+    setOnViewUpdate(true);
+    if (!date && !interviewer) {
+      updateBtn();
+    } else {
+      updateBtn();
+    }
+    setInterviewer("");
+    setDate(null!);
   };
 
   return (
-    <Modal
-      centered
-      opened={onViewResched}
-      onClose={() => setOnViewResched(false)}
-      buttonClose={() => setOnViewResched(false)}
-      title="Reschedule"
-      size="lg">
+    <Modal centered opened={onViewResched} onClose={() => setOnViewResched(false)} buttonClose={() => setOnViewResched(false)} title="Reschedule" size="lg">
       <Flex gap={20} direction="column">
         <DateTimePicker
           required
@@ -44,12 +49,17 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
           onChange={(value) => setDate(value!)}
           valueFormat="MMMM DD, YYYY HH:mm:ss"
         />
-        <TextInput
+        <Select
           label="Interviewer"
           value={interviewer}
-          onChange={(event) => setInterviewer(event?.target.value)}
-          placeholder="Select Interviewer "
+          placeholder="Select Interviewer"
+          onChange={(value) => setInterviewer(value!)}
           required
+          data={[
+            { value: "john_doe", label: "John Doe" },
+            { value: "jane_smith", label: "Jane Smith" },
+            { value: "michael_jones", label: "Michael Jones" },
+          ]}
           classNames={{
             input: "h-12 border-[#6d6d6d] border-1",
             root: "text-gray-800",
@@ -58,17 +68,14 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
         />
       </Flex>
       <Flex direction="row" mt={150} justify="space-between">
-        <Button
-          variant="outline"
-          radius={10}
-          px={20}
-          onClick={handleCloseSched}
-          w="auto">
+        <Button variant="outline" radius={10} px={20} onClick={handleCloseSched} w="auto">
           CANCEL
         </Button>
         <Button
           variant="transparent"
-          onClick={updateBtn}
+          onClick={() => {
+            submit();
+          }}
           w="auto"
           px={20}
           className="custom-gradient border-none hover:text-white text-white"
