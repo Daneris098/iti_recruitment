@@ -8,7 +8,7 @@ import { Flex, Stack } from "@mantine/core";
 
 import "./assets/index.css";
 
-import { sourceEfficiencyData, applicantsData, offerAcceptanceData, recruitmentFunnelData } from "./assets/Array";
+import { sourceEfficiencyData, applicantsData, offerAcceptanceData, recruitmentFunnelData } from "./assets/sample-data";
 
 //--- Home Dashboard Components
 import { ApplicantSummaryCard } from "./components/ApplicantSummaryCard";
