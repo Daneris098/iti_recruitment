@@ -5,29 +5,24 @@
 
 import { create } from "zustand";
 //--- Calendar Types
-import {
-  CalendarStoreType,
-  RescheduleStoreType,
-  EventInfo,
-} from "../assets/Types";
+import { CalendarStoreType, RescheduleStoreType, EventInfo } from "../assets/Types";
 
 export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewEvent: false,
   onViewResched: false,
   onViewApplicant: false,
+  onViewUpdate: false,
 
   setOnViewEvent: (event: boolean) => set({ onViewEvent: event }),
   setOnViewResched: (resched: boolean) => set({ onViewResched: resched }),
-  setOnViewApplicant: (applicant: boolean) =>
-    set({ onViewApplicant: applicant }),
+  setOnViewApplicant: (applicant: boolean) => set({ onViewApplicant: applicant }),
+  setOnViewUpdate: (update: boolean) => set({ onViewUpdate: update }),
 
   checkedItems: [] as string[],
 
   toggleCheckedItem: (name: string) =>
     set((state) => ({
-      checkedItems: state.checkedItems.includes(name)
-        ? state.checkedItems.filter((item) => item !== name)
-        : [...state.checkedItems, name],
+      checkedItems: state.checkedItems.includes(name) ? state.checkedItems.filter((item) => item !== name) : [...state.checkedItems, name],
     })),
 
   eventInfo: {

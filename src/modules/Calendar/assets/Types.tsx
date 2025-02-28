@@ -15,10 +15,12 @@ export interface CalendarStoreType {
   onViewEvent: boolean;
   onViewResched: boolean;
   onViewApplicant: boolean;
+  onViewUpdate: boolean;
 
   setOnViewEvent(event: boolean): void;
   setOnViewResched(sched: boolean): void;
   setOnViewApplicant(app: boolean): void;
+  setOnViewUpdate(update: boolean): void;
 
   checkedItems: string[];
   toggleCheckedItem: (name: string) => void;
