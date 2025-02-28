@@ -1,8 +1,26 @@
-import { YAxis, XAxis, Tooltip,  CartesianGrid, LineChart, Line, ResponsiveContainer } from "recharts"
-import { offerAcceptanceData } from "@modules/Reports/values"
-import { Container, Flex, Stack, Text } from "@mantine/core";
+import { Stack } from "@mantine/core";
+import { ResponsiveContainer, BarChart, YAxis, XAxis, Tooltip, Bar, TooltipProps, CartesianGrid } from "recharts"
 
 export default function index() {
+
+    const CustomTooltip: React.FC<TooltipProps<number, string>> = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-white p-2 border border-gray-300 rounded-md shadow-md text-xs w-[100px]">
+                    <p className="font-bold">{label}</p>
+                    <p className="text-blue-500">Days: {payload[0].value}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
+    const positions = [
+        { days: "Position 1", Applied: 18 },
+        { days: "Position 2", Applied: 11 },
+        { days: "Position 3", Applied: 6 },
+        { days: "Position 4", Applied: 2 },
+    ];
 
     return (
         <div className="flex flex-col gap-8 text-[#6D6D6D]">
@@ -17,43 +35,17 @@ export default function index() {
                 <p>Position: Web Developer</p>
             </div>
 
-            <Stack className="h-48 w-full  flex flex-row">
-                <ResponsiveContainer width="90%" height="100%" className="relative">
-                    <LineChart width={730} height={250} data={offerAcceptanceData}
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="IT" stroke="#559CDA" strokeWidth={1} dot={false} />
-                        <Line type="monotone" dataKey="Accounting" stroke="#ED8028" strokeWidth={2} dot={false} />
-                        <Line type="monotone" dataKey="Sales" stroke="#5A9D27" strokeWidth={2} dot={false} />
-                        <Line type="monotone" dataKey="HR" stroke="#FEC001" strokeWidth={2} dot={false} />
-                        <Line type="monotone" dataKey="Admin" stroke="#FF554A" strokeWidth={2} dot={false} />
-                    </LineChart>
+
+            <Stack className="h-48 w-full ">
+                <ResponsiveContainer width="100%" height="100%" className="relative">
+                    <BarChart data={positions} width={730} height={250} layout="vertical" className="absolute left-[-6%]" >
+                        <YAxis type="category" axisLine={false} dataKey="days" width={150} height={50} className="text-[12px] font-semibold" />
+                        <XAxis type="number" axisLine={false} />
+                        <CartesianGrid stroke="#6d6d6d" horizontal={false} strokeDasharray="4" />
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.05)" }} />
+                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 10, 10, 10]} className="cursor-pointer" barSize={15} />
+                    </BarChart>
                 </ResponsiveContainer>
-                <Container className="w-[10%] p-0 justify-center md:justify-start flex flex-row md:flex-col gap-2">
-                    <Flex className="items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#559CDA] rounded-[3px] hidden lg:block" />
-                        <Text className="font-normal text-md text-[rgb(85,156,218)]">IT</Text>
-                    </Flex>
-                    <Flex className="items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#ED8028] rounded-[3px] hidden lg:block" />
-                        <Text className="font-normal text-md text-[#ED8028]">Accounting </Text>
-                    </Flex>
-                    <Flex className="items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#5A9D27] rounded-[3px] hidden lg:block" />
-                        <Text className="font-normal text-md text-[#5A9D27]">Sales</Text>
-                    </Flex>
-                    <Flex className="items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#FEC001] rounded-[3px] hidden lg:block" />
-                        <Text className="font-normal text-md text-[#FEC001]">HR</Text>
-                    </Flex>
-                    <Flex className="items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#FF554A] rounded-[3px] hidden lg:block" />
-                        <Text className="font-normal text-md text-[#FF554A]">Admin</Text>
-                    </Flex>
-                </Container>
             </Stack>
         </div>
     )
