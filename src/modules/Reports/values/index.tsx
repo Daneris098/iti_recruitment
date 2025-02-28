@@ -75,3 +75,18 @@ export const source = [
     'Head Hunter',
     'Others',
 ]
+
+export const offerAcceptanceData = [
+    { month: "Jan", IT: 50, Accounting: 75, Sales: 16.67, HR: 8.33, Admin: 4.17 },
+    { month: "Feb", IT: 50, Accounting: 63.16, Sales: 21.05, HR: 15.79, Admin: 5.26 },
+    { month: "Mar", IT: 40, Accounting: 80.57, Sales: 20, HR: 15, Admin: 8 },
+    { month: "Apr", IT: 25, Accounting: 20, Sales: 80, HR: 40, Admin: 12 },
+    { month: "May", IT: 57.14, Accounting: 40, Sales: 85.71, HR: 35.71, Admin: 14.29 },
+    { month: "Jun", IT: 75, Accounting: 60, Sales: 80, HR: 45, Admin: 18 },
+    { month: "Jul", IT: 25, Accounting: 84.62, Sales: 38.46, HR: 46.15, Admin: 19.23 },
+    { month: "Aug", IT: 45, Accounting: 52.94, Sales: 41.18, HR: 47.06, Admin: 17.65 },
+    { month: "Sep", IT: 69.23, Accounting: 70, Sales: 30.77, HR: 53.85, Admin: 20.77 },
+    { month: "Oct", IT: 32, Accounting: 85.71, Sales: 42.86, HR: 46.43, Admin: 22.86 },
+    { month: "Nov", IT: 76, Accounting: 62.5, Sales: 56.25, HR: 46.88, Admin: 21.88 },
+    { month: "Dec", IT: 78, Accounting: 72.73, Sales: 27.27, HR: 45.45, Admin: 36.36 },
+];

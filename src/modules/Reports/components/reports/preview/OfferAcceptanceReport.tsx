@@ -43,8 +43,7 @@ export default function index() {
                         <XAxis type="number" axisLine={false} />
                         <CartesianGrid stroke="#6d6d6d" horizontal={false} strokeDasharray="4" />
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.05)" }} />
-                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 0, 0, 10]} className="cursor-pointer" barSize={15} />
-                        <Bar dataKey="Hired" stackId="stack" fill="#ED8028" radius={[0, 10, 10, 0]} className="cursor-pointer" />
+                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 10, 10, 10]} className="cursor-pointer" barSize={15} />
                     </BarChart>
                 </ResponsiveContainer>
             </Stack>

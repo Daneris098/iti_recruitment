@@ -31,3 +31,16 @@ export interface Report {
     description: string,
     type: Reports
 }
+
+type OfferAcceptance = {
+    month: string;
+    IT: number;
+    Accounting: number;
+    Sales: number;
+    HR: number;
+    Admin: number;
+};
+
+export interface OfferAcceptanceProps {
+    data: OfferAcceptance[];
+}

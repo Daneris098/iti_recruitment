@@ -8,18 +8,18 @@ export default function index() {
             return (
                 <div className="bg-white p-2 border border-gray-300 rounded-md shadow-md text-xs w-[100px]">
                     <p className="font-bold">{label}</p>
-                    <p className="text-blue-500">Days: {payload[0].value}</p>
+                    <p className="text-blue-500">Feedback: {payload[0].value}</p>
                 </div>
             );
         }
         return null;
     };
 
-    const positions = [
-        { days: "Position 1", Applied: 18 },
-        { days: "Position 2", Applied: 11 },
-        { days: "Position 3", Applied: 6 },
-        { days: "Position 4", Applied: 2 },
+    const feedbacks = [
+        { data: "Feedback 1", Applied: 18 },
+        { data: "Feedback 2", Applied: 11 },
+        { data: "Feedback 3", Applied: 6 },
+        { data: "Feedback 4", Applied: 2 },
     ];
 
     return (
@@ -38,13 +38,12 @@ export default function index() {
 
             <Stack className="h-48 w-full ">
                 <ResponsiveContainer width="100%" height="100%" className="relative">
-                    <BarChart data={positions} width={730} height={250} layout="vertical" className="absolute left-[-6%]" >
-                        <YAxis type="category" axisLine={false} dataKey="days" width={150} height={50} className="text-[12px] font-semibold" />
+                    <BarChart data={feedbacks} width={730} height={250} layout="vertical" className="absolute left-[-6%]" >
+                        <YAxis type="category" axisLine={false} dataKey="data" width={150} height={50} className="text-[12px] font-semibold" />
                         <XAxis type="number" axisLine={false} />
                         <CartesianGrid stroke="#6d6d6d" horizontal={false} strokeDasharray="4" />
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.05)" }} />
-                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 0, 0, 10]} className="cursor-pointer" barSize={15} />
-                        <Bar dataKey="Hired" stackId="stack" fill="#ED8028" radius={[0, 10, 10, 0]} className="cursor-pointer" />
+                        <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 10, 10, 10]} className="cursor-pointer" barSize={15} />
                     </BarChart>
                 </ResponsiveContainer>
             </Stack>

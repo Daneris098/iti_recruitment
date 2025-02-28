@@ -90,7 +90,7 @@ export default function AlertModals() {
                 </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
                     <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
-                    <Text className="text-xl font-semibold">
+                    <Text className="text-xl font-semibold text-center">
                         Congratulations! Initial account setup complete!
                     </Text>
                 </div>

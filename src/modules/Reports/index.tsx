@@ -7,13 +7,13 @@ import "@modules/Reports/styles/index.css"
 export const Reports = () => {
     const { setSelectedReport } = ReportStore()
     return (
-        <div className="bg-white rounded-md grid grid-cols-1 md:grid-cols-2 gap-12 p-4 relative">
+        <div className="bg-white rounded-md grid grid-cols-1 md:grid-cols-2 gap-12 p-12 relative">
             <Modals />
             {reports.map((report) =>
-                <div className="shadow-md shadow-[#559CDA]  rounded-md  h-[10rem] flex flex-col items-center text-center justify-center text-[#559CDA] p-4 cursor-pointer" onClick={() => { setSelectedReport(report) }}>
+                <div className="shadow-sm shadow-[#559CDA]  rounded-md  h-[10rem] flex flex-col items-center text-center justify-center gap-2  p-4 cursor-pointer" onClick={() => { setSelectedReport(report) }}>
                     {React.cloneElement(report.icon, { size: 48, color: '#559CDA', })}
-                    <p className="font-bold">{report.name}</p>
-                    <p>{report.description}</p>
+                    <p className="font-semibold text-[#559CDA] text-xl">{report.name}</p>
+                    <p className='text-[#6D6D6D] text-md'>{report.description}</p>
                 </div>
             )}
         </div>
