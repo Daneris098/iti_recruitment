@@ -63,6 +63,7 @@ export interface FilterType {
 }
 
 export interface EmploymentRecord {
+  id: number;
   employerCompany: string;
   location: string;
   positionHeld: string;

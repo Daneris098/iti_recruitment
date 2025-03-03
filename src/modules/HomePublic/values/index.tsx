@@ -93,6 +93,7 @@ export const educationBackgroundVal: EducationBackground = {
 };
 
 export const employmentRecordVal: EmploymentRecord[] = [{
+  id: 1,
   employerCompany: 'Microsoft',
   location: 'Quezon City',
   positionHeld: 'Senior Consultant',

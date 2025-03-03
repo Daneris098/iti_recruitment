@@ -1,9 +1,9 @@
 import { Divider, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCalendarMonth, IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { EducationalAndEmployment, Step } from "../../types";
+import { EducationalAndEmployment, Step, EmploymentRecord } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
@@ -34,6 +34,16 @@ export default function index() {
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 
+    const removeEmploymentRecord = (id: number) => {
+        const employmentRecord = applicationForm.educationAndEmployment.employmentRecord
+        const updatedEmploymentRecords = employmentRecord.filter((item: EmploymentRecord) => item.id != id)
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, employmentRecord: updatedEmploymentRecords
+            }
+        })
+    }
+
     useEffect(() => {
         if (submit === true && activeStepper === Step.EducationalAndEmployment && formRef.current) {
             formRef.current.requestSubmit(); // Programmatically trigger form submission
@@ -42,9 +52,14 @@ export default function index() {
     }, [submit])
 
     const addFieldCharacter = () => {
+        const employmentRecord = applicationForm.educationAndEmployment.employmentRecord
+        const employmentRecordLength = employmentRecord.length
+        const uniqueId = employmentRecord[employmentRecordLength - 1].id + (Math.floor(Math.random() * 101 + 1))
+
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
                 ...applicationForm.educationAndEmployment, employmentRecord: [...form.getValues().employmentRecord, {
+                    id: uniqueId,
                     employerCompany: '',
                     location: '',
                     positionHeld: '',
@@ -125,12 +140,12 @@ export default function index() {
                 <div>
                     <p className="font-bold">Employment Record</p>
                 </div>
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
 
-                {applicationForm.educationAndEmployment.employmentRecord.map((_, index) => (
-                    <div key={index} className="flex flex-col">
-                        {/* <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} /> */}
-                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                {applicationForm.educationAndEmployment.employmentRecord.map((item: EmploymentRecord, index) => (
+                    <div key={item.id} className="flex flex-col gap-4 relative ">
+
+                        <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full pb-4" />
+                        <div className="flex flex-col sm:flex-row gap-4 items-end relative">
                             <TextInput
                                 classNames={{ input: 'poppins' }}
                                 {...form.getInputProps(`employmentRecord.${index}.employerCompany`)}
@@ -147,6 +162,7 @@ export default function index() {
                                 label="Location"
                                 placeholder="Office Location"
                             />
+                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEmploymentRecord(item.id) }} />)}
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
@@ -242,7 +258,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-[13%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Experience</p>
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Experience</p>
 
 
             </div>
