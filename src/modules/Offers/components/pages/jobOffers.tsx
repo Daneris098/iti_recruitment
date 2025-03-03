@@ -97,7 +97,7 @@ export default function index() {
             <div className="flex flex-col h-full bg-white rounded-md shadow-md p-6 overflow-hidden">
                 <Tabs
                        value={activeTab}
-                       onChange={setActiveTab} // ✅ Update Zustand store directly
+                       onChange={setActiveTab}
                        defaultValue="All_offers"
                        className="flex flex-col max-h-[900px] min-h-[400px]"
                  >

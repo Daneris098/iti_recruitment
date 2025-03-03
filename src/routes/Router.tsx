@@ -16,13 +16,21 @@ import Vacancies from "@src/modules/Vacancies";
 import HomePublic from "@src/modules/HomePublic";
 import Test from "@src/modules/HomePublic/components/ValidateArray";
 import Calendar from "@src/modules/Calendar";
-import JobOffers from "@src/modules/JobOffers";
+import Offers from "@src/modules/Offers";
 import Reports from "@src/modules/Reports";
 import ProfileSettings from "@src/modules/ProfileSettings";
 import OrganizationSettings from "@src/modules/OrganizationSettings"
 import HiringSettings from "@src/modules/HiringSettings"
 import AdministratorSettings from "@src/modules/AdministratorSettings"
 import AccountSetup from "@src/modules/AccountSetup"
+import Applicants from "@src/modules/Applicants"
+import Applied from "@src/modules/Applicants/components/pages/applied"
+import ForInterview from "@src/modules/Applicants/components/pages/forInterview"
+import ForOffered from "@src/modules/Applicants/components/pages/offered"
+import Hired from "@src/modules/Applicants/components/pages/hired"
+import ForTransferee from "@src/modules/Applicants/components/pages/forTransfer"
+import Transferred from "@src/modules/Applicants/components/pages/transferred"
+import Archived from "@src/modules/Applicants/components/pages/archived"
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore()
@@ -101,6 +109,7 @@ const router = createBrowserRouter([
             path: "login",
             element: <Login />,
           },
+
         ],
       },
     ],
@@ -140,7 +149,7 @@ const router = createBrowserRouter([
           },
           {
             path: "jobOffers",
-            element: <JobOffers />,
+            element: <Offers />,
           },
           {
             path: "reports",
@@ -161,6 +170,38 @@ const router = createBrowserRouter([
           {
             path: "administratorSettings",
             element: <AdministratorSettings />,
+          },
+          {
+            path: "applicants",
+            element: <Applicants />,
+          },
+          {
+            path: "applied",
+            element: <Applied />,
+          },
+          {
+            path: "interview",
+            element: <ForInterview />,
+          },
+          {
+            path: "offered",
+            element: <ForOffered />,
+          },
+          {
+            path: "hired",
+            element: <Hired />,
+          },
+          {
+            path: "transferee",
+            element: <ForTransferee />,
+          },
+          {
+            path: "transferred",
+            element: <Transferred />,
+          },
+          {
+            path: "archive",
+            element: <Archived />,
           },
         ],
       },

@@ -1,9 +1,9 @@
-import { AllJobOffersFilterType, OfferType } from '@modules/JobOffers/types';
-
+import { AllJobOffersFilterType, OfferType } from '@modules/Offers/components/types';
+import JobOffers from "@modules/Offers/components/pages/jobOffers"
 export const filterVal: AllJobOffersFilterType = {
-    Interviewer: "",
-    Department: "",
-    Vacancy: "",
+    interviewer: "",
+    department: "",
+    vacancy: "",
     id: "",
     applicantName: "",
     dateFrom: "",
@@ -11,7 +11,7 @@ export const filterVal: AllJobOffersFilterType = {
     dateLastUpdatedFrom: "",
     dateLastUpdatedTo: "",
     remarks: "",
-    Status: ""
+    status: ""
 }
 
 export const selectedDataVal: OfferType = {
@@ -20,3 +20,11 @@ export const selectedDataVal: OfferType = {
     Accepted: "",
     Archived: ""
 };
+
+export default function index() {
+    return (
+        <>
+            <JobOffers />
+        </>
+    )
+}

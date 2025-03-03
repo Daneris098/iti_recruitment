@@ -46,7 +46,7 @@ export default function index() {
     else if (location.pathname === "/offered") {
       filteredRecords = records.filter((applicant) => applicant.Status === "Offered")
     }
-    else if (location.pathname === "/for-interview") {
+    else if (location.pathname === "/interview") {
       filteredRecords = records.filter((applicant) => ["Assessment", "Initial Interview", "Final Interview"].includes(applicant.Status))
     }
     else if (location.pathname === "/applicants") {
@@ -56,13 +56,13 @@ export default function index() {
     else if (location.pathname === "/hired") {
       filteredRecords = records.filter((applicant) => applicant.Status === "Hired");
     }
-    else if (location.pathname === "/for-transfer") {
+    else if (location.pathname === "/transferee") {
       filteredRecords = records.filter((applicant) => applicant.Status === "For Transfer");
     }
     else if (location.pathname === "/transferred") {
       filteredRecords = records.filter((applicant) => applicant.Status === "Transferred");
     }
-    else if (location.pathname === "/log") {
+    else if (location.pathname === "/archive") {
       filteredRecords = records.filter((applicant) => applicant.Status === "Archived");
     }
 
