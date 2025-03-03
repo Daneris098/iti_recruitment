@@ -80,7 +80,8 @@ export const GeneralInformationVal: GeneralInformation = {
   }
 };
 
-export const educationBackgroundVal: EducationBackground = {
+export const educationBackgroundVal: EducationBackground[] = [{
+  id: 1,
   nameOfSchool: 'UP',
   educationalLevel: 'Bachelor Degree',
   course: 'Computer Science',
@@ -90,7 +91,7 @@ export const educationBackgroundVal: EducationBackground = {
   },
   professionalLiscenses: 'AWS Practitioner',
   certfications: '',
-};
+}];
 
 export const employmentRecordVal: EmploymentRecord[] = [{
   id: 1,

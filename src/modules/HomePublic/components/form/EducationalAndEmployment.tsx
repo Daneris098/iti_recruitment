@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
-import { EducationalAndEmployment, Step, EmploymentRecord } from "../../types";
+import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
@@ -44,6 +44,16 @@ export default function index() {
         })
     }
 
+    const removeEducationBackground = (id: number) => {
+        const educationBackground = applicationForm.educationAndEmployment.educationBackground
+        const updatedEmploymentRecords = educationBackground.filter((item: EducationBackground) => item.id != id)
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, educationBackground: updatedEmploymentRecords
+            }
+        })
+    }
+
     useEffect(() => {
         if (submit === true && activeStepper === Step.EducationalAndEmployment && formRef.current) {
             formRef.current.requestSubmit(); // Programmatically trigger form submission
@@ -51,10 +61,11 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
-    const addFieldCharacter = () => {
+    const addEmploymentRecord = () => {
         const employmentRecord = applicationForm.educationAndEmployment.employmentRecord
         const employmentRecordLength = employmentRecord.length
         const uniqueId = employmentRecord[employmentRecordLength - 1].id + (Math.floor(Math.random() * 101 + 1))
+
 
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
@@ -74,73 +85,107 @@ export default function index() {
         })
     };
 
+    const addEducationBackground = () => {
+        const educationBackground = applicationForm.educationAndEmployment.educationBackground
+        const educationBackgroundLength = educationBackground.length
+        const uniqueId = educationBackground[educationBackgroundLength - 1].id + (Math.floor(Math.random() * 101 + 1))
+
+        
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, educationBackground: [...form.getValues().educationBackground, {
+                    id: uniqueId,
+                    nameOfSchool: '',
+                    educationalLevel: '',
+                    course: '',
+                    yearsAttended: {
+                        from: '',
+                        to: '',
+                    },
+                    professionalLiscenses: '',
+                    certfications: '',
+                }]
+            }
+        })
+    };
+
     useEffect(() => {
-        form.setValues({ employmentRecord: applicationForm.educationAndEmployment.employmentRecord });
+        form.setValues({
+            employmentRecord: applicationForm.educationAndEmployment.employmentRecord,
+            educationBackground: applicationForm.educationAndEmployment.educationBackground
+        });
     }, [applicationForm])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4">
+
                 <p className="font-bold">Educational Background</p>
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }}   {...form.getInputProps("educationBackground.nameOfSchool")} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.educationalLevel")} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
-                </div>
+                {applicationForm.educationAndEmployment.educationBackground.map((item: EducationBackground, index) => (
+                    <div key={item.id} className="flex flex-col gap-4 relative ">
 
-                <div className="flex flex-col items-end sm:flex-row gap-4">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("educationBackground.course")} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
-                    <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
+                        <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
+                        <div className="flex flex-col sm:flex-row gap-4 items-end relative">
+                            <TextInput classNames={{ input: 'poppins' }}   {...form.getInputProps(`educationBackground.${index}.nameOfSchool`)} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
+                            <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps(`educationBackground.${index}.educationalLevel`)} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
+                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEducationBackground(item.id) }} />)}
+                        </div>
+
+                        <div className="flex flex-col items-end sm:flex-row gap-4">
+                            <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps(`educationBackground.${index}.course`)} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
+                            <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
 
 
-                        <YearPickerInput
-                            {...form.getInputProps("educationBackground.yearsAttended.from")}
-                            w={isMobile ? '100%' : '100%'}
-                            label="Years Attended"
-                            placeholder={"From"}
-                            radius={8}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(value: Date | null) => {
-                                form.setFieldValue(
-                                    `educationBackground.yearsAttended.from`,
-                                    value
-                                );
-                            }}
-                        />
+                                <YearPickerInput
+                                    {...form.getInputProps(`educationBackground.${index}.yearsAttended.from`)}
+                                    w={isMobile ? '100%' : '100%'}
+                                    label="Years Attended"
+                                    placeholder={"From"}
+                                    radius={8}
+                                    rightSection={<IconCaretDownFilled size='18' />}
+                                    className="border-none w-full text-sm"
+                                    classNames={{ label: "p-1" }}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                    onChange={(value: Date | null) => {
+                                        form.setFieldValue(
+                                            `educationBackground.${index}.yearsAttended.from`,
+                                            value
+                                        );
+                                    }}
+                                />
 
-                        <YearPickerInput
-                            {...form.getInputProps("educationBackground.yearsAttended.to")}
-                            w={isMobile ? '100%' : '100%'}
-                            label=""
-                            placeholder={"To"}
-                            radius={8}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(value: Date | null) => {
-                                form.setFieldValue(
-                                    `educationBackground.yearsAttended.to`,
-                                    value
-                                );
-                            }}
-                        />
+                                <YearPickerInput
+                                    {...form.getInputProps(`educationBackground.${index}.yearsAttended.to`)}
+                                    w={isMobile ? '100%' : '100%'}
+                                    label=""
+                                    placeholder={"To"}
+                                    radius={8}
+                                    rightSection={<IconCaretDownFilled size='18' />}
+                                    className="border-none w-full text-sm"
+                                    classNames={{ label: "p-1" }}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                    onChange={(value: Date | null) => {
+                                        form.setFieldValue(
+                                            `educationBackground.${index}.yearsAttended.to`,
+                                            value
+                                        );
+                                    }}
+                                />
+
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                            <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps(`educationBackground.${index}.professionalLiscenses`)} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
+                            <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps(`educationBackground.${index}.certfications`)} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
+                        </div>
 
                     </div>
-                </div>
+                ))}
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEducationBackground}><IconCirclePlus size={20} />Add Education</p>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
-                </div>
 
-                <div>
-                    <p className="font-bold">Employment Record</p>
-                </div>
-
+                <p className="font-bold">Employment Record</p>
                 {applicationForm.educationAndEmployment.employmentRecord.map((item: EmploymentRecord, index) => (
                     <div key={item.id} className="flex flex-col gap-4 relative ">
 
@@ -258,7 +303,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Experience</p>
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEmploymentRecord}><IconCirclePlus size={20} />Add Experience</p>
 
 
             </div>

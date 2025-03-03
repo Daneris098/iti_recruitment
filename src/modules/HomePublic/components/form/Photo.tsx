@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { ApplicationStore } from "../../store";
 import { Step } from "../../types";
 
-export default function Index() {
+const Photo = forwardRef((_, ref) => {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -13,6 +13,17 @@ export default function Index() {
         startCamera();
         return () => stopCamera(); // Stop camera when unmounting
     }, []);
+
+    useImperativeHandle(ref, () => ({
+        retakePhoto: () => {
+            retakePhoto()
+        },
+        skip: () => {
+            skip()
+        },
+    }));
+
+
 
     const startCamera = async () => {
         try {
@@ -52,30 +63,36 @@ export default function Index() {
         }
     };
 
-    // const retakePhoto = () => {
-    //     setCapturedImage(null);
-    //     startCamera();
-    // };
-    
+    const retakePhoto = () => {
+        setCapturedImage(null);
+        startCamera();
+        setIsPhotoCaptured(false)
+    };
+
+    const skip = () => {
+        setCapturedImage(null);
+        setIsPhotoCaptured(true)
+    }
+
     useEffect(() => {
-        if (submit === true && activeStepper === Step.Photo ) {
+        if (submit === true && activeStepper === Step.Photo) {
             setApplicationForm({ ...applicationForm, photo: capturedImage })
             setActiveStepper(activeStepper + 1)
         }
         return (setSubmit(false))
     }, [submit])
-    
-    
+
+
     useEffect(() => {
-        if (isPhotoCapture === true && activeStepper === Step.Photo ) {
-            capturePhoto(); 
+        if (isPhotoCapture === true && activeStepper === Step.Photo) {
+            capturePhoto();
         }
         return (setIsPhotoCapture(false))
     }, [isPhotoCapture])
-    
+
     useEffect(() => {
         setIsPhotoCaptured(false)
-    },[])
+    }, [])
 
 
     return (
@@ -122,4 +139,6 @@ export default function Index() {
             )} */}
         </div>
     );
-}
+});
+
+export default Photo;

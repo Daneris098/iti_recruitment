@@ -35,6 +35,10 @@ export interface HomeState {
   setSelectedData: (selectedData: VacancyType) => void;
 }
 
+export interface PhotoRef {
+  retakePhoto: () => void;
+  skip: () => void;
+}
 
 export interface ApplicationState {
   activeStepper: number;
@@ -131,6 +135,7 @@ export interface GeneralInformation {
 }
 
 export interface EducationBackground {
+  id: number;
   nameOfSchool: string;
   educationalLevel: string;
   course: string;
@@ -215,7 +220,7 @@ export interface Reference {
 }
 
 export interface EducationalAndEmployment {
-  educationBackground: EducationBackground;
+  educationBackground: EducationBackground[];
   employmentRecord: EmploymentRecord[];
 }
 

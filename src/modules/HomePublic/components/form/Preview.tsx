@@ -193,40 +193,42 @@ export default function index() {
                         </div>
 
 
-                        <div className="flex h-full w-full">
-                            <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Education</p>
-                                <div>
-                                    <p className="text-[#6D6D6D]">School Name</p>
-                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.nameOfSchool}</p>
-                                </div>
-                                <div>
-                                    <p className="text-[#6D6D6D]">Educational Level</p>
-                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.educationalLevel}</p>
-                                </div>
-
-                                <div>
-                                    <p className="text-[#6D6D6D]">Course</p>
-                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.course}</p>
-                                </div>
-
-                                <div className="flex sm:gap-48">
-                                    <div className="w-28">
-                                        <p className="text-[#6D6D6D]">Start Date</p>
-                                        <p className="font-bold">{DateTimeUtils.dateToYearOnly(applicationForm.educationAndEmployment.educationBackground.yearsAttended.from?.toString())}</p>
+                        <div className="flex h-full w-full flex-wrap">
+                            {applicationForm.educationAndEmployment.educationBackground.map((education, index) => (
+                                <div className="flex flex-col p-2 gap-5 w-1/2">
+                                    <p className="text-[#0078EB] text-xl font-bold">Education</p>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">School Name</p>
+                                        <p className="font-bold">{education.nameOfSchool}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Educational Level</p>
+                                        <p className="font-bold">{education.educationalLevel}</p>
                                     </div>
 
-                                    <div className="w-28">
-                                        <p className="text-[#6D6D6D]">End Date</p>
-                                        <p className="font-bold">{DateTimeUtils.dateToYearOnly(applicationForm.educationAndEmployment.educationBackground.yearsAttended.to?.toString())}</p>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Course</p>
+                                        <p className="font-bold">{education.course}</p>
+                                    </div>
+
+                                    <div className="flex sm:gap-48">
+                                        <div className="w-28">
+                                            <p className="text-[#6D6D6D]">Start Date</p>
+                                            <p className="font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.from?.toString())}</p>
+                                        </div>
+
+                                        <div className="w-28">
+                                            <p className="text-[#6D6D6D]">End Date</p>
+                                            <p className="font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.to?.toString())}</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Professional Liscences</p>
+                                        <p className="font-bold">{education.professionalLiscenses}</p>
                                     </div>
                                 </div>
-
-                                <div>
-                                    <p className="text-[#6D6D6D]">Professional Liscences</p>
-                                    <p className="font-bold">{applicationForm.educationAndEmployment.educationBackground.professionalLiscenses}</p>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
 

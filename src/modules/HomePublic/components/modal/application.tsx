@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover } from '@mantine/core';
+import { Modal, Divider, Button, Popover, Tooltip } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
@@ -9,15 +9,15 @@ import Photo from "@modules/HomePublic/components/form/Photo";
 import Preview from "@modules/HomePublic/components/form/Preview";
 import Oath from "@modules/HomePublic/components/Oath"
 import { cn } from "@src/lib/utils";
-import { Step } from '@modules/HomePublic/types';
-import {  useState } from 'react';
+import { PhotoRef, Step } from '@modules/HomePublic/types';
+import { useRef, useState } from 'react';
 import { IconCaretDownFilled } from '@tabler/icons-react';
 import "@modules/HomePublic/styles/index.css"
-
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture } = ApplicationStore();
+    const photo = useRef<PhotoRef | null>(null);
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
@@ -30,7 +30,7 @@ export default function index() {
         currentStepComponent = <Reference />;
     }
     else if (activeStepper === Step.Photo) {
-        currentStepComponent = <Photo />;
+        currentStepComponent = <Photo ref={photo} />;
     }
     else if (activeStepper === Step.Preview) {
         currentStepComponent = <Preview />;
@@ -50,13 +50,14 @@ export default function index() {
 
     return (
         <>
-            <Modal radius="lg" size={activeStepper === Step.Oath ? '80%' : '80%'} opened={applicationFormModal} centered onClose={() => setApplicationFormModal(false)} title={(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}
-                className='text-[#559CDA] scrollbar' classNames={{content:'scrollbar '}} styles={{
-                    // content: { overflow: 'hidden' },
+            <Modal radius="lg" size='80%' opened={applicationFormModal} centered onClose={() => setApplicationFormModal(false)}
+                title={(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}
+                className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
+                styles={{
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }} >
-                <div className='m-auto w-[95%] flex flex-col gap-3 overflow-y-auto '>
+                <div className='h-full m-auto w-[95%] flex flex-col gap-3 overflow-y-auto '>
                     {activeStepper != Step.Oath && (<Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />)}
 
                     {activeStepper != Step.Preview && activeStepper != Step.Oath && (<div className='w-[80%] m-auto pb-12 hidden sm:block'>
@@ -70,10 +71,9 @@ export default function index() {
                             <Button variant='outline' className={cn("self-end w-[50%] rounded-md ", (activeStepper === Step.Oath) && 'sm:w-[15%]')} onClick={() => {
                                 setActiveStepper(activeStepper - 1)
                             }}>
-                                {activeStepper === Step.Preview ? 'Edit' : 'Back'}
+                                {activeStepper === Step.Preview ? 'EDIT' : 'BACK'}
                             </Button>
                         )}
-
 
                         <Popover
                             position="bottom"
@@ -83,7 +83,7 @@ export default function index() {
                             onChange={setOpened}
                         >
                             <Popover.Target>
-                                <div className={cn("br-gradient border-none w-[50%] rounded-md text-white flex  justify-center  items-center cursor-pointer", activeStepper === Step.GeneralInformation && 'w-full h-full p-[0.60rem] sm:p-[0.40rem]', activeStepper == Step.Photo && "justify-end", (activeStepper === Step.Oath) && 'sm:w-[15%]')} onClick={() => {
+                                <div className={cn("relative br-gradient border-none w-[50%] rounded-md text-white flex  justify-center  items-center cursor-pointer", activeStepper === Step.GeneralInformation && 'w-full h-full p-[0.60rem] sm:p-[0.40rem]', (activeStepper === Step.Oath) && 'sm:w-[15%]')} onClick={() => {
                                     if (activeStepper === Step.Photo && !isPhotoCaptured) {
                                         setIsPhotoCapture(true)
                                     } else {
@@ -91,27 +91,31 @@ export default function index() {
                                     }
                                     setOpened(false)
                                 }}>
-                                    <p className={cn('text-xs sm:text-sm', isPhotoCaptured && 'mr-6')}>
-                                        {activeStepper === Step.Photo && !isPhotoCaptured ? 'TAKE PHOTO' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'Submit' : 'Next'}
-                                    </p>
+                                    <div className='flex'>
 
-                                    {activeStepper == Step.Photo && (<Button variant='transparent'>
+                                        <p className='w-24 text-center'>{activeStepper === Step.Photo && !isPhotoCaptured ? 'TAKE PHOTO' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'SUBMIT' : 'NEXT'}</p>
+
                                         {activeStepper === Step.Photo && (
-                                            < IconCaretDownFilled className="text-white" onClick={(e) => {
+                                            <div className='right-[0%] absolute py-[6px] bottom-[0%] text-white' onClick={(e) => {
+                                                setOpened(true)
                                                 e.stopPropagation()
-                                                togglePopover()
-                                            }} />
+                                            }}>
+                                                < IconCaretDownFilled className='mr-1' />
+                                            </div>
                                         )}
-                                    </Button>)}
+                                    </div>
                                 </div>
                             </Popover.Target>
-                            <Popover.Dropdown className="p-0 rounded-lg">
-                                <Button variant="transparent" onClick={() => { setSubmit(true); setOpened(false) }}>SKIP THIS STEP</Button>
+                            <Popover.Dropdown className="p-0 rounded-lg flex flex-col">
+                                <Button variant="transparent" onClick={() => { photo?.current?.retakePhoto() }}>RETAKE</Button>
+                                <Button variant="transparent" onClick={() => { photo?.current?.skip(); setSubmit(true); setOpened(false); }}>SKIP THIS STEP</Button>
                             </Popover.Dropdown>
                         </Popover>
+
+
                     </div>
                 </div>
-            </Modal>
+            </Modal >
         </>
     );
 }
