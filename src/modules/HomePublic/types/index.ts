@@ -145,7 +145,7 @@ export interface EducationBackground {
     from: Date | string | null;
     to: Date | string | null;
   }
-  professionalLiscenses: string;
+  professionalLicenses: string;
   certfications: string;
 }
 

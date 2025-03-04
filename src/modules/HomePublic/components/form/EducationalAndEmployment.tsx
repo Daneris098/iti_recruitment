@@ -1,8 +1,8 @@
-import { Divider, Popover, TextInput } from "@mantine/core";
+import { Divider, MultiSelect, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
@@ -13,23 +13,73 @@ export default function index() {
 
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
+
+
+    const [profesionalLicense, setProfesionalLicense] = useState<string[][]>([[]]);
+
+    useEffect(() => {
+        applicationForm.educationAndEmployment.educationBackground.forEach((item, index) => {
+            const arr = item.professionalLicenses.split(',')
+            if (index == 0) {
+                setProfesionalLicense([arr]);
+            } else {
+                setProfesionalLicense((prevValues) => [...prevValues, arr]);
+            }
+        })
+    }, [])
+
+    const increaseSelectedValues = () => {
+        setProfesionalLicense((prevValues) => [...prevValues, []]);
+    };
+
+    const decreaseSelectedValues = () => {
+        setProfesionalLicense((prevValues) => prevValues.length > 0 ? prevValues.slice(0, -1) : prevValues);
+    };
+
+    const handleChange = (index: number, value: string[]) => {
+        const newSelectedValues = [...profesionalLicense];
+        newSelectedValues[index] = value;
+        setProfesionalLicense(newSelectedValues);
+    };
+
+    const handleKeyDown = (index: number, event: any) => {
+        if (event.key === 'Enter' && event.target.value) {
+            const newValue = event.target.value.trim();
+            const newSelectedValues = [...profesionalLicense];
+
+            // Avoid adding the same value more than once
+            if (!newSelectedValues[index].includes(newValue)) {
+                newSelectedValues[index] = [...newSelectedValues[index], newValue];
+                setProfesionalLicense(newSelectedValues);
+            }
+            event.preventDefault();
+        }
+    };
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: applicationForm.educationAndEmployment,
         validate: {
-            // nameOfSchool: (value: string) => value.length === 0 ? "Name Of School is required" : null,
-            // educationalLevel: (value: string) => value.length === 0 ? "Educational Level is required" : null,
-            // course: (value: string) => value.length === 0 ? "Course is required" : null,
-            // professionalLiscenses: (value: string) => value.length === 0 ? "Professional Liscenses is required" : null,
-            // certfications: (value: string) => value.length === 0 ? "Certfications is required" : null,
-            // yearsAttended: {
-            //     from: (value: string) => value.length === 0 ? "Years Attended From is required" : null,
-            //     to: (value: string) => value.length === 0 ? "Years Attended To is required" : null,
+            // educationBackground: {
+            //     nameOfSchool: (value: string) => value.length === 0 ? "Name of School is required" : null,
             // },
         }
     });
 
     const onSubmit = async (form: EducationalAndEmployment) => {
+        // just map the form here
+        let educationBackground = form.educationBackground
+        console.log('form: ', form)
+        console.log('educationBackground: ', form.educationBackground)
+        console.log('profesionalLicense: ', profesionalLicense)
+
+        for (let i = 0; i < educationBackground.length; i++) {
+            educationBackground[i].professionalLicenses = profesionalLicense[i].toString()
+        }
+
+        console.log('updated educationBackground: ', educationBackground)
+        form.educationBackground = educationBackground
+        console.log('updated form: ', form)
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -45,6 +95,7 @@ export default function index() {
     }
 
     const removeEducationBackground = (id: number) => {
+        decreaseSelectedValues()
         const educationBackground = applicationForm.educationAndEmployment.educationBackground
         const updatedEmploymentRecords = educationBackground.filter((item: EducationBackground) => item.id != id)
         setApplicationForm({
@@ -86,11 +137,12 @@ export default function index() {
     };
 
     const addEducationBackground = () => {
+        increaseSelectedValues()
         const educationBackground = applicationForm.educationAndEmployment.educationBackground
         const educationBackgroundLength = educationBackground.length
         const uniqueId = educationBackground[educationBackgroundLength - 1].id + (Math.floor(Math.random() * 101 + 1))
 
-        
+
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
                 ...applicationForm.educationAndEmployment, educationBackground: [...form.getValues().educationBackground, {
@@ -102,7 +154,7 @@ export default function index() {
                         from: '',
                         to: '',
                     },
-                    professionalLiscenses: '',
+                    professionalLicenses: '',
                     certfications: '',
                 }]
             }
@@ -144,7 +196,7 @@ export default function index() {
                                     radius={8}
                                     rightSection={<IconCaretDownFilled size='18' />}
                                     className="border-none w-full text-sm"
-                                    classNames={{ label: "p-1", input:'poppins' }}
+                                    classNames={{ label: "p-1", input: 'poppins' }}
                                     styles={{ label: { color: "#6d6d6d" } }}
                                     onChange={(value: Date | null) => {
                                         form.setFieldValue(
@@ -176,7 +228,20 @@ export default function index() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
-                            <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps(`educationBackground.${index}.professionalLiscenses`)} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
+                            <MultiSelect
+                                classNames={{ input: 'poppins' }}
+                                label="Professional Licenses "
+                                placeholder="Professional Licenses "
+                                data={[]}
+                                w={isMobile ? '50%' : '100%'}
+                                radius='md'
+                                searchable
+                                value={profesionalLicense[index]}
+                                onChange={(value) => handleChange(index, value)}
+                                onKeyDown={(event) => handleKeyDown(index, event)}
+                                rightSection
+                            />
+                            {/* <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps(`educationBackground.${index}.professionalLiscenses`)} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " /> */}
                             <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps(`educationBackground.${index}.certfications`)} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
                         </div>
 

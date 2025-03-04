@@ -91,7 +91,7 @@ export const educationBackgroundVal: EducationBackground[] = [{
     from: new Date('Wed Jan 01 2020 00:00:00 GMT+0800 (Philippine Standard Time)'),
     to: new Date('Wed Jan 01 2024 00:00:00 GMT+0800 (Philippine Standard Time)'),
   },
-  professionalLiscenses: 'AWS Practitioner',
+  professionalLicenses: 'AWS Practitioner',
   certfications: '',
 }];
 

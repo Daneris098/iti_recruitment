@@ -14,7 +14,8 @@ import Home from "@src/modules/Home";
 import LandingPage from "@src/modules/LandingPage";
 import Vacancies from "@src/modules/Vacancies";
 import HomePublic from "@src/modules/HomePublic";
-import Test from "@src/modules/TestModule/DynamicFieldWithRemove";
+import Test from "@src/modules/TestModule/OnChipEnter";
+import Test2 from "@src/modules/TestModule/OnChipEnterMultiple";
 import Calendar from "@src/modules/Calendar";
 import JobOffers from "@src/modules/JobOffers";
 import Reports from "@src/modules/Reports";
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
           {
             path: "test",
             element: <Test />,
+          },
+          {
+            path: "test2",
+            element: <Test2 />,
           },
           {
             path: "login",

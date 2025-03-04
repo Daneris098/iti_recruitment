@@ -26,7 +26,6 @@ export default function Index() {
     return (
         <div className='w-48'>
             <MultiSelect
-                key={selectedValues.length}
                 ref={myRef}
                 classNames={{ dropdown: 'hidden' }}
                 className='w-full'
