@@ -124,8 +124,8 @@ export default function index() {
                                     </div>
 
                                     <div>
-                                        <p className="text-[#6D6D6D]">Sex</p>
-                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.sex}</p>
+                                        <p className="text-[#6D6D6D]">Gender</p>
+                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.gender}</p>
                                     </div>
                                 </div>
 

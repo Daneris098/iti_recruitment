@@ -1,4 +1,4 @@
-import { Divider, TextInput } from "@mantine/core";
+import { Divider, TextInput, Button } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
@@ -12,12 +12,12 @@ export default function Index() {
     // Ensure applicationForm.reference is always an array
     const [characterReferences, setCharacterReferences] = useState<any[]>(
         Array.isArray(applicationForm.reference) ? applicationForm.reference :
-            [{ fullname: "", company: "", positionHeld: "", contactNo: "" }]
+            [{ id: Date.now(), fullname: "", company: "", positionHeld: "", contactNo: "" }]
     );
 
     useEffect(() => {
         if (!Array.isArray(applicationForm.reference)) {
-            setCharacterReferences([{ fullname: "", company: "", positionHeld: "", contactNo: "" }]);
+            setCharacterReferences([{ id: Date.now(), fullname: "", company: "", positionHeld: "", contactNo: "" }]);
         } else {
             setCharacterReferences(applicationForm.reference);
         }
@@ -43,9 +43,15 @@ export default function Index() {
     };
 
     const addFieldCharacter = () => {
-        const updatedReferences = [...characterReferences, { fullname: "", company: "", positionHeld: "", contactNo: "" }];
+        const updatedReferences = [...characterReferences, { id: Date.now(), fullname: "", company: "", positionHeld: "", contactNo: "" }];
         setCharacterReferences(updatedReferences);
-        form.setValues({ characterReference: updatedReferences });
+        form.setFieldValue('characterReference', updatedReferences); // Update form values
+    };
+
+    const removeFieldCharacter = (id: number) => {
+        const updatedReferences = characterReferences.filter(reference => reference.id !== id);
+        setCharacterReferences(updatedReferences);
+        form.setFieldValue('characterReference', updatedReferences); // Update form values
     };
 
     return (
@@ -62,33 +68,41 @@ export default function Index() {
                 </div>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full" />
                 <div className="flex flex-col gap-4">
-                    {characterReferences.map((_, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
+                    {characterReferences.map((reference) => (
+                        <div key={reference.id} className="flex flex-col sm:flex-row gap-4 items-end">
+                            <p>{ reference.id}</p>
                             <TextInput
-                                {...form.getInputProps(`characterReference.${index}.fullname`)}
+                                {...form.getInputProps(`characterReference.${reference.id}.fullname`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
-                                label={`Character Reference ${index + 1}`}
+                                label={`Character Reference`}
                                 placeholder="Full Name"
                             />
                             <TextInput
-                                {...form.getInputProps(`characterReference.${index}.company`)}
+                                {...form.getInputProps(`characterReference.${reference.id}.company`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Company"
                             />
                             <TextInput
-                                {...form.getInputProps(`characterReference.${index}.positionHeld`)}
+                                {...form.getInputProps(`characterReference.${reference.id}.positionHeld`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
                             <TextInput
-                                {...form.getInputProps(`characterReference.${index}.contactNo`)}
+                                {...form.getInputProps(`characterReference.${reference.id}.contactNo`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Contact Number"
                             />
+                            <Button
+                                variant="outline"
+                                color="red"
+                                onClick={() => removeFieldCharacter(reference.id)}
+                            >
+                                Remove
+                            </Button>
                         </div>
                     ))}
                 </div>
