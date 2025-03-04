@@ -160,12 +160,12 @@ export default function index() {
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Philhealth No.</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philheathNo}</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Driver License</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philheathNo}</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
                                 </div>
 
                             </div>

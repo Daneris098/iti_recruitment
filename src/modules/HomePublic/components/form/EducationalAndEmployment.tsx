@@ -144,7 +144,7 @@ export default function index() {
                                     radius={8}
                                     rightSection={<IconCaretDownFilled size='18' />}
                                     className="border-none w-full text-sm"
-                                    classNames={{ label: "p-1" }}
+                                    classNames={{ label: "p-1", input:'poppins' }}
                                     styles={{ label: { color: "#6d6d6d" } }}
                                     onChange={(value: Date | null) => {
                                         form.setFieldValue(
@@ -162,7 +162,7 @@ export default function index() {
                                     radius={8}
                                     rightSection={<IconCaretDownFilled size='18' />}
                                     className="border-none w-full text-sm"
-                                    classNames={{ label: "p-1" }}
+                                    classNames={{ label: "p-1", input: 'poppins' }}
                                     styles={{ label: { color: "#6d6d6d" } }}
                                     onChange={(value: Date | null) => {
                                         form.setFieldValue(
@@ -182,7 +182,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEducationBackground}><IconCirclePlus size={20} />Add Education</p>
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEducationBackground}><IconCirclePlus size={20} />ADD EDUCATION</p>
 
 
                 <p className="font-bold">Employment Record</p>
@@ -232,6 +232,7 @@ export default function index() {
                                             label="Inclusive Date"
                                             placeholder="From"
                                             className="w-full cursor-default"
+                                            classNames={{ label: "p-1", input: 'poppins' }}
                                             rightSection={<IconCalendarMonth />}
                                             styles={{ label: { color: "#6d6d6d" } }}
                                         />
@@ -262,6 +263,7 @@ export default function index() {
                                             label=""
                                             placeholder="To"
                                             className="w-full cursor-default"
+                                            classNames={{ label: "p-1", input: 'poppins' }}
                                             rightSection={<IconCalendarMonth />}
                                             styles={{ label: { color: "#6d6d6d" } }}
                                         />
@@ -303,7 +305,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEmploymentRecord}><IconCirclePlus size={20} />Add Experience</p>
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEmploymentRecord}><IconCirclePlus size={20} />ADD EXPERIENCE</p>
 
 
             </div>

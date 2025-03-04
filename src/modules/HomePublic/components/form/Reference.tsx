@@ -128,7 +128,7 @@ export default function index() {
                             </div>)}
                         </div>
                     ))}
-                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Character Reference</p>
+                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD CHARACTER REFERENCE</p>
 
                 </div>
 
@@ -173,7 +173,7 @@ export default function index() {
                             </div>)}
                         </div>
                     ))}
-                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldEmployment}><IconCirclePlus size={20} />Add Employment Reference</p>
+                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldEmployment}><IconCirclePlus size={20} />ADD EMPLOYMENT REFERENCE</p>
 
                 </div>
                 <p className="font-bold">Application Source</p>

@@ -1,4 +1,4 @@
-import { Divider, Select, TextInput } from "@mantine/core";
+import { Divider, NumberInput, Select, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCaretDownFilled, IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";
@@ -81,21 +81,21 @@ export default function index() {
                 <p className="font-bold">Family Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label="Father" placeholder="Full Name" />
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
+                    <NumberInput classNames={{ input: 'poppins' }} hideControls min={1} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("father.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label="Mother" placeholder="Full Name" />
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
+                    <NumberInput classNames={{ input: 'poppins' }} hideControls  min={1}  {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 {applicationForm.familyBackground.siblings.map((_, index) => (
                     <div className="flex flex-col sm:flex-row gap-4 items-end" >
                         <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
-                        <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                        <NumberInput classNames={{ input: 'poppins' }} min={1} hideControls   {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                         <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                         <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                         {index === applicationForm.familyBackground.siblings.length - 1 && index != 0 && (<div>
@@ -103,7 +103,7 @@ export default function index() {
                         </div>)}
                     </div>
                 ))}
-                <p className=" w-[12%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Siblings</p>
+                <p className=" w-[12%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD SIBLINGS</p>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput classNames={{ input: 'poppins' }} radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
@@ -116,13 +116,13 @@ export default function index() {
 
                     <Select
                         w={isMobile ? '100%' : '100%'}
-                        label="Children if (Any)"
+                        label="Children (if any)"
                         placeholder={"Number of Children"}
                         radius={8}
                         data={["1", "2", "3"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     // onChange={(value) => { setFilter({ ...filter, postedDate: `${value}` }) }}
                     />
@@ -133,7 +133,7 @@ export default function index() {
                         data={["1-12", "13-18", "Age > 19"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     // onChange={(value) => { setFilter({ ...filter, postedDate: `${value}` }) }}
                     />

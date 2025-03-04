@@ -54,7 +54,7 @@ export default function index() {
                 placeOfBirth: (value: string) => value.length === 0 ? "Places of birth is required" : null,
                 religion: (value: string) => value.length === 0 ? "Religion is required" : null,
                 age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
-                sex: (value: string) => value.length === 0 ? "Sex is required" : null,
+                gender: (value: string) => value.length === 0 ? "Gender is required" : null,
                 height: (value: string) => value.length === 0 ? "Height is required" : null,
                 weight: (value: string) => value.length === 0 ? "Weight is required" : null,
                 civilStatus: (value: string) => value.length === 0 ? "Civil Status is required" : null,
@@ -92,7 +92,7 @@ export default function index() {
                         data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
 
@@ -105,13 +105,13 @@ export default function index() {
                         data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <TextInput {...form.getInputProps("desiredSalary")} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
+                    <TextInput {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
                     <Popover
                         position="bottom"
                         shadow="md"
@@ -127,6 +127,7 @@ export default function index() {
                                 label='Availability to Start'
                                 placeholder='Select Date'
                                 className="w-full cursor-default"
+                                classNames={{ input: 'poppins' }}
                                 rightSection={<IconCalendarMonth />}
                                 styles={{ label: { color: "#6d6d6d" } }}
                             />
@@ -140,14 +141,14 @@ export default function index() {
                 <p className="font-bold">Personal Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' w={isMobile ? '25%' : '100%'} label="Full Name" placeholder="Last Name" />
+                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Full Name <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Last Name" />
                     <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="First Name" />
                     <TextInput classNames={{ input: 'poppins' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Middle Name" />
                     <TextInput classNames={{ input: 'poppins' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Suffix(Jr. Sr. etc.)" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Present Address" placeholder="Unit no." />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Present Address <span className="text-[#A8A8A8] absolute">(Write N/A if not applicable)</span></p>} placeholder="Unit no." />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.presentAddress.street")} key={form.key('personalInformation.presentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.presentAddress.subdivision")} key={form.key('personalInformation.presentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
@@ -162,7 +163,7 @@ export default function index() {
                         data={["1", "2", "3", "4"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
@@ -173,7 +174,7 @@ export default function index() {
                         data={["Caloocan City", "Quezon City", "Manila City"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
@@ -184,7 +185,7 @@ export default function index() {
                         data={["1400", "1500", "1600"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
@@ -195,7 +196,7 @@ export default function index() {
                         data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     {/* <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" /> */}
@@ -204,9 +205,10 @@ export default function index() {
                     <div className={cn("w-[100%]", isMobile && "w-[25%]")}>
                         <Checkbox
                             label="Same as Present Address"
+                            classNames={{ label: 'poppins' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
-                            onChange={(value)=>{
-                                if(value.target.checked){
+                            onChange={(value) => {
+                                if (value.target.checked) {
                                     form.setValues({
                                         ...form.getValues(),
                                         personalInformation: {
@@ -233,7 +235,7 @@ export default function index() {
                         data={["1", "2", "3", "4"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
@@ -245,7 +247,7 @@ export default function index() {
                         data={["Caloocan City", "Quezon City", "Manila City"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
@@ -257,7 +259,7 @@ export default function index() {
                         data={["1400", "1500", "1600"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
@@ -269,7 +271,7 @@ export default function index() {
                         data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                 </div>
@@ -301,11 +303,26 @@ export default function index() {
 
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.placeOfBirth")} radius='md' w={isMobile ? '25%' : '100%'} label="Place of birth" placeholder="Place of birth" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.age")} radius='md' w={isMobile ? '25%' : '100%'} label="Age" placeholder="Age" />
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.sex")} radius='md' w={isMobile ? '25%' : '100%'} label="Sex" placeholder="Sex" />
+                    {/* <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.gender")} radius='md' w={isMobile ? '25%' : '100%'} label="Gender" placeholder="Gender" /> */}
+
+                    <Select
+                        key={form.key('personalInformation.gender')}
+                        {...form.getInputProps("personalInformation.gender")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder="Gender"
+                        label="Gender"
+                        radius={8}
+                        data={["Male", "Female"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1", input: 'poppins' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
+                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
@@ -320,16 +337,19 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("personalInformation.governmentIdOrNumber.sssNo")} radius='md' w={isMobile ? '33%' : '100%'} label="Government ID/Numbers" placeholder="SSs No." />
+                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("personalInformation.governmentIdOrNumber.sssNo")} radius='md' w={isMobile ? '33%' : '100%'} label="Government ID Number(s)" placeholder="SSS No." />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.gsisNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="GSIS No." />
                     <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.pagibigNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Pagibig-No." />
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.philheathNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Philhealth No." />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.tinNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="TIN ID" />
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.driversLiscence")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Drivers License" />
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.passport")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Passport" />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.philhealthNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="PhilHealth No." />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.driversLiscence")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Drivers License No." />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.passport")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Passport No." />
                 </div>
-
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.tinNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="TIN No." />
+                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.rdoCode")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="RDO Code" />
+                </div>
 
             </div>
 

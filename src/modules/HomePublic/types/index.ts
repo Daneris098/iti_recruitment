@@ -29,7 +29,7 @@ export interface HomeState {
   selectedData: VacancyType;
   applicationFormModal: boolean;
   alert: string;
-  
+
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedData: (selectedData: VacancyType) => void;
@@ -114,16 +114,18 @@ export interface GeneralInformation {
     }
     governmentIdOrNumber: {
       sssNo: string;
+      gsisNo: string;
       pagibigNo: string;
-      philheathNo: string;
+      philhealthNo: string;
       tinNo: string;
+      rdoCode: string;
       driversLiscence: string;
       passport: string;
     }
     dateOfBirth: string;
     placeOfBirth: string;
     age: number;
-    sex: string;
+    gender: string;
     height: string;
     weight: string;
     civilStatus: string;
