@@ -16,7 +16,11 @@ export interface CalendarStoreType {
   onViewResched: boolean;
   onViewApplicant: boolean;
   onViewUpdate: boolean;
+  onViewFilter: boolean;
+  onMonthYear: boolean;
 
+  setOnMonthYear(my: boolean): void;
+  setOnViewFilter(filter: boolean): void;
   setOnViewEvent(event: boolean): void;
   setOnViewResched(sched: boolean): void;
   setOnViewApplicant(app: boolean): void;
@@ -47,4 +51,14 @@ export interface RescheduleStoreType {
   setDate(date: Date): void;
   setTime(time: Date): void;
   setInterviewer(int: string): void;
+}
+
+export interface MonthYearStoreType {
+  month: number;
+  year: number;
+  day: Date;
+
+  setMonth(month: number): void;
+  setYear(year: number): void;
+  setDay(day: Date): void;
 }

@@ -5,14 +5,18 @@
 
 import { create } from "zustand";
 //--- Calendar Types
-import { CalendarStoreType, RescheduleStoreType, EventInfo } from "../assets/Types";
+import { CalendarStoreType, RescheduleStoreType, EventInfo, MonthYearStoreType } from "../assets/Types";
 
 export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewEvent: false,
   onViewResched: false,
   onViewApplicant: false,
   onViewUpdate: false,
+  onViewFilter: false,
+  onMonthYear: false,
 
+  setOnMonthYear: (my: boolean) => set({ onMonthYear: my }),
+  setOnViewFilter: (filter: boolean) => set({ onViewFilter: filter }),
   setOnViewEvent: (event: boolean) => set({ onViewEvent: event }),
   setOnViewResched: (resched: boolean) => set({ onViewResched: resched }),
   setOnViewApplicant: (applicant: boolean) => set({ onViewApplicant: applicant }),
@@ -43,4 +47,14 @@ export const useRescheduleStore = create<RescheduleStoreType>((set) => ({
   setDate: (date: Date) => set({ date: date }),
   setTime: (time: Date) => set({ time: time }),
   setInterviewer: (interviewer: string) => set({ interviewer: interviewer }),
+}));
+
+export const useMonthYearStore = create<MonthYearStoreType>((set) => ({
+  month: new Date().getMonth() + 1,
+  year: new Date().getFullYear(),
+  day: new Date(),
+
+  setMonth: (month: number) => set({ month: month }),
+  setYear: (year: number) => set({ year: year }),
+  setDay: (day: Date) => set({ day: day }),
 }));
