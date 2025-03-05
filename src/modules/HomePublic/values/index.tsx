@@ -104,7 +104,7 @@ export const employmentRecordVal: EmploymentRecord[] = [{
     from: '2016-01-02',
     to: '2020-01-02'
   },
-  salary: '50000',
+  salary: 50000,
   reasonForLeaving: 'Better Opportunity',
 }];
 
@@ -145,7 +145,7 @@ export const familyBackgroundVal: FamilyBackground = {
     ageRange: '',
   },
   otherInformation: {
-    specialTechnicalSkills: 'No',
+    specialTechnicalSkills: '',
     isConvictedCrimeDetails: 'No',
     isBeenHospitalizedDetails: 'No',
     medicalConditionDetails: 'No',

@@ -66,11 +66,11 @@ export default function index() {
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Desired Salary</p>
-                                    <p className="font-bold">PHP {applicationForm.generalInformation.desiredSalary}</p>
+                                    <p className="text-[#6D6D6D] font-bold">PHP {applicationForm.generalInformation.desiredSalary}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Present Address</p>
-                                    <p className="font-bold">
+                                    <p className="text-[#6D6D6D] font-bold">
                                         {
                                             applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
@@ -82,15 +82,15 @@ export default function index() {
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Date of Birth</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.dateOfBirth}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.dateOfBirth}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Place of Birth</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.placeOfBirth}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.placeOfBirth}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Civil Status</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.civilStatus}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.civilStatus}</p>
                                 </div>
                             </div>
 
@@ -98,15 +98,15 @@ export default function index() {
                             <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-14">
                                 <div>
                                     <p className="text-[#6D6D6D]">Applying for (Second Choice)</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.secondChoice}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.secondChoice}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Availability to start</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.startDateAvailability}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.startDateAvailability}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Permanent Address</p>
-                                    <p className="font-bold">
+                                    <p className="text-[#6D6D6D] font-bold">
                                         {
                                             applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
@@ -120,12 +120,12 @@ export default function index() {
                                 <div className="flex sm:gap-48">
                                     <div className=" w-12">
                                         <p className="text-[#6D6D6D]">Age</p>
-                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.age}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.age}</p>
                                     </div>
 
                                     <div>
                                         <p className="text-[#6D6D6D]">Gender</p>
-                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.gender}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.gender}</p>
                                     </div>
                                 </div>
 
@@ -133,17 +133,17 @@ export default function index() {
                                 <div className="flex sm:gap-48">
                                     <div className="w-12">
                                         <p className="text-[#6D6D6D]">Height</p>
-                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.height}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.height}</p>
                                     </div>
 
                                     <div>
                                         <p className="text-[#6D6D6D]">Weight</p>
-                                        <p className="font-bold">{applicationForm.generalInformation.personalInformation.weight}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.weight}</p>
                                     </div>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Religion</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.religion}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.religion}</p>
                                 </div>
                             </div>
 
@@ -156,17 +156,23 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold">Government ID/Number</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">SSS</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Philhealth No.</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Driver License</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
                                 </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">GSIS No.</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.gsisNo}</p>
+                                </div>
+
 
                             </div>
 
@@ -175,16 +181,21 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Pag-ibig No.</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">TIN ID.</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Passport</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">RDO Code</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.rdoCode}</p>
                                 </div>
 
                             </div>
@@ -194,39 +205,39 @@ export default function index() {
 
 
                         <div className="flex h-full w-full flex-wrap">
-                            {applicationForm.educationAndEmployment.educationBackground.map((education, index) => (
+                            {applicationForm.educationAndEmployment.educationBackground.map((education) => (
                                 <div className="flex flex-col p-2 gap-5 w-1/2">
                                     <p className="text-[#0078EB] text-xl font-bold">Education</p>
                                     <div>
                                         <p className="text-[#6D6D6D]">School Name</p>
-                                        <p className="font-bold">{education.nameOfSchool}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{education.nameOfSchool}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Educational Level</p>
-                                        <p className="font-bold">{education.educationalLevel}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{education.educationalLevel}</p>
                                     </div>
 
                                     <div>
                                         <p className="text-[#6D6D6D]">Course</p>
-                                        <p className="font-bold">{education.course}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{education.course}</p>
                                     </div>
 
                                     <div className="flex sm:gap-48">
                                         <div className="w-28">
                                             <p className="text-[#6D6D6D]">Start Date</p>
-                                            <p className="font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.from?.toString())}</p>
+                                            <p className="text-[#6D6D6D] font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.from?.toString())}</p>
                                         </div>
 
                                         <div className="w-28">
                                             <p className="text-[#6D6D6D]">End Date</p>
-                                            <p className="font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.to?.toString())}</p>
+                                            <p className="text-[#6D6D6D] font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.to?.toString())}</p>
                                         </div>
                                     </div>
 
                                     <div>
                                         <p className="text-[#6D6D6D]">Professional Liscences</p>
-                                        <p className="font-bold">{education.professionalLiscenses}</p>
-                                    </div>
+                                        <p className="text-[#6D6D6D] font-bold">{education.professionalLicenses}</p>
+                                     </div>
                                 </div>
                             ))}
                         </div>
@@ -238,29 +249,33 @@ export default function index() {
                                     <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Record</p>
                                     <div>
                                         <p className="text-[#6D6D6D]">Employer Name</p>
-                                        <p className="font-bold">{employment.employerCompany}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{employment.employerCompany}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Location</p>
-                                        <p className="font-bold">{employment.location}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{employment.location}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Position Held</p>
-                                        <p className="font-bold">{employment.positionHeld}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{employment.positionHeld}</p>
                                     </div>
                                     <div className="flex sm:gap-48">
                                         <div className="w-28">
                                             <p className="text-[#6D6D6D]">Start Date</p>
-                                            <p className="font-bold">{employment.inclusiveDate.from}</p>
+                                            <p className="text-[#6D6D6D] font-bold">{employment.inclusiveDate.from}</p>
                                         </div>
                                         <div className="w-28">
                                             <p className="text-[#6D6D6D]">End Date</p>
-                                            <p className="font-bold">{employment.inclusiveDate.to}</p>
+                                            <p className="text-[#6D6D6D] font-bold">{employment.inclusiveDate.to}</p>
                                         </div>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Salary</p>
-                                        <p className="font-bold">PHP {employment.salary}</p>
+                                        <p className="text-[#6D6D6D] font-bold">PHP {employment.salary}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Reason for Leaving</p>
+                                        <p className="text-[#6D6D6D] font-bold">{employment.reasonForLeaving}</p>
                                     </div>
                                 </div>
                             ))}
@@ -271,42 +286,42 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold">Family Background</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Father's Name</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.father.fullname}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.fullname}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Age</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.father.age}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.age}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Occupation</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.father.occupation}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.occupation}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Contact Number</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.father.contactNumber}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.contactNumber}</p>
                                 </div>
                             </div>
                             <div className="flex flex-col p-2 gap-5 w-1/2 ">
                                 <p className="text-[#0078EB] text-xl font-bold mt-2">Mother's Name</p>
                                 <div>
-                                    <p className="text-[#6D6D6D]">Father's Name</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.mother.fullname}</p>
+                                    <p className="text-[#6D6D6D]">Mother's Name</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.mother.fullname}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Age</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.mother.age}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.mother.age}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Occupation</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.mother.occupation}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.mother.occupation}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Contact Number</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.mother.contactNumber}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.mother.contactNumber}</p>
                                 </div>
                             </div>
                         </div>
@@ -316,19 +331,19 @@ export default function index() {
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>
                                         <p className="text-[#6D6D6D]">Sibling's Name </p>
-                                        <p className="font-bold">{sibling.fullname}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{sibling.fullname}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Age</p>
-                                        <p className="font-bold">{sibling.age}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{sibling.age}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Occupation</p>
-                                        <p className="font-bold">{sibling.occupation}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{sibling.occupation}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Contact Number</p>
-                                        <p className="font-bold">{sibling.contactNumber}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{sibling.contactNumber}</p>
                                     </div>
                                 </div>
                             ))}
@@ -339,22 +354,22 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold">Other Information</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Convicted Crime</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Medical Condition</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.medicalConditionDetails}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.medicalConditionDetails}</p>
                                 </div>
                             </div>
                             <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
                                 <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Hospitalized</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.isBeenHospitalizedDetails}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.isBeenHospitalizedDetails}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Family Employed within the Company</p>
-                                    <p className="font-bold">{applicationForm.familyBackground.otherInformation.relativeWorkingWithUsDetails}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.relativeWorkingWithUsDetails}</p>
                                 </div>
 
                             </div>
@@ -366,19 +381,19 @@ export default function index() {
                                     <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Character Reference</p>
                                     <div>
                                         <p className="text-[#6D6D6D]">Full Name</p>
-                                        <p className="font-bold">{ref.fullname}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.fullname}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Company</p>
-                                        <p className="font-bold">{ref.company}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.company}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Position Held</p>
-                                        <p className="font-bold">{ref.positionHeld}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.positionHeld}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Contact Number</p>
-                                        <p className="font-bold">{ref.ContactNo}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.ContactNo}</p>
                                     </div>
                                 </div>
                             ))}
@@ -390,19 +405,19 @@ export default function index() {
                                     <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Reference</p>
                                     <div>
                                         <p className="text-[#6D6D6D]">Full Name</p>
-                                        <p className="font-bold">{ref.fullname}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.fullname}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Company</p>
-                                        <p className="font-bold">{ref.company}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.company}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Position Held</p>
-                                        <p className="font-bold">{ref.positionHeld}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.positionHeld}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Contact Number</p>
-                                        <p className="font-bold">{ref.ContactNo}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{ref.ContactNo}</p>
                                     </div>
                                 </div>
                             ))}

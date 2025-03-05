@@ -50,16 +50,16 @@ export default function index() {
         )
     }
 
-    const scrollableComponent = () => {
-        return (
-            <div className='flex flex-col  md:h-[65%] gap-6 '>
-                <div className='h-[90%] md:overflow-y-auto mb-2 md:mb-2'>
-                    {currentStepComponent}
-                </div>
-                {buttons()}
-            </div>
-        )
-    }
+    // const scrollableComponent = () => {
+    //     return (
+    //         <div className='flex flex-col  md:h-[65%] gap-6 '>
+    //             <div className='h-[90%] md:overflow-y-auto mb-2 md:mb-2'>
+    //                 {currentStepComponent}
+    //             </div>
+    //             {buttons()}
+    //         </div>
+    //     )
+    // }
 
     const fixHeightComponent = () => {
         return (

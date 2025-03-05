@@ -95,7 +95,7 @@ export default function index() {
                     {applicationForm.reference.characterReference.map((_, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.fullname`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -103,21 +103,21 @@ export default function index() {
                                 placeholder="Full Name"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.company`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Company"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.positionHeld`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.ContactNo`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -140,7 +140,7 @@ export default function index() {
                     {applicationForm.reference.employmentReference.map((_, index) => (
                         <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentReference.${index}.fullname`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -148,21 +148,21 @@ export default function index() {
                                 placeholder="Full Name"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentReference.${index}.company`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Company"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentReference.${index}.positionHeld`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
@@ -182,34 +182,28 @@ export default function index() {
                 <div className="flex gap-2 sm:gap-0">
                     <Checkbox
                         className="w-[33%]"
-                        defaultChecked
                         label="Employee Refereal"
                     />
                     <Checkbox
                         className="w-[33%] "
-                        defaultChecked
                         label="Jobstreet"
                     />
                     <Checkbox
                         className="w-[33%] truncate"
-                        defaultChecked
                         label="Headhunter"
                     />
                 </div>
                 <div className="flex  gap-2 sm:gap-0">
                     <Checkbox
                         className="w-[33%]"
-                        defaultChecked
                         label="Word of Mouth"
                     />
                     <Checkbox
                         className="w-[33%]"
-                        defaultChecked
                         label="Walk-in"
                     />
                     <Checkbox
                         className="w-[33%]"
-                        defaultChecked
                         label="Others"
                     />
                 </div>

@@ -75,7 +75,7 @@ export interface EmploymentRecord {
     from: string;
     to: string;
   };
-  salary: string;
+  salary: number;
   reasonForLeaving: string;
 }
 

@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover, Tooltip } from '@mantine/core';
+import { Modal, Divider, Button, Popover } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
@@ -44,9 +44,9 @@ export default function index() {
 
     const [opened, setOpened] = useState(false);
 
-    const togglePopover = () => {
-        setOpened((prev) => !prev);
-    };
+    // const togglePopover = () => {
+    //     setOpened((prev) => !prev);
+    // };
 
     return (
         <>

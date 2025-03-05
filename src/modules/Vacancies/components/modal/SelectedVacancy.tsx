@@ -1,7 +1,6 @@
 import { Button, Divider, Modal } from "@mantine/core";
 import { VacancyStore } from "../../store";
 import { selectedDataVal } from "../../values";
-import { useEffect } from "react";
 import "@modules/Vacancies/style.css"
 
 export default function index() {

@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Select, TextInput, Textarea } from '@mantine/core';
+import { Modal, Divider, Button, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconCaretDownFilled } from '@tabler/icons-react';
 import { useRef } from "react";
@@ -14,7 +14,6 @@ import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
-import { IconColorPicker } from '@tabler/icons-react';
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 import '@mantine/tiptap/styles.css';
