@@ -37,6 +37,7 @@ export interface HomeState {
 
 export interface PhotoRef {
   retakePhoto: () => void;
+  upload: () => void;
   skip: () => void;
 }
 

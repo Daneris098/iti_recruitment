@@ -108,6 +108,7 @@ export default function index() {
                             </Popover.Target>
                             <Popover.Dropdown className="p-0 rounded-lg flex flex-col">
                                 <Button variant="transparent" onClick={() => { photo?.current?.retakePhoto() }}>RETAKE</Button>
+                                <Button variant="transparent" onClick={() => { photo?.current?.upload();  }}>UPLOAD</Button>
                                 <Button variant="transparent" onClick={() => { photo?.current?.skip(); setSubmit(true); setOpened(false); }}>SKIP THIS STEP</Button>
                             </Popover.Dropdown>
                         </Popover>
