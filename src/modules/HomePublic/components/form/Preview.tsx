@@ -5,6 +5,7 @@ import { ApplicationFormVal } from "../../values";
 import { Step } from "../../types";
 import { cn } from "@src/lib/utils";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils"
+import { Chip, Pill } from "@mantine/core";
 
 export default function index() {
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -49,6 +50,16 @@ export default function index() {
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
                             <p className="text-[#6D6D6D]">Landline Number</p>
                             <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.landlineNumber}</p>
+                        </div>
+                        <div className="flex gap-1 sm:flex-col sm:gap-2">
+                            <p className="text-[#6D6D6D]">Skills</p>
+                            <Pill.Group>
+                                {applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(',').map((item, index) => (
+                                    <Pill key={index}>
+                                        {item}
+                                    </Pill>
+                                ))}
+                            </Pill.Group>
                         </div>
                     </div>
 
@@ -237,7 +248,7 @@ export default function index() {
                                     <div>
                                         <p className="text-[#6D6D6D]">Professional Liscences</p>
                                         <p className="text-[#6D6D6D] font-bold">{education.professionalLicenses}</p>
-                                     </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -327,7 +338,7 @@ export default function index() {
                         </div>
 
                         <div className="flex h-full w-full flex-wrap">
-                            {applicationForm.familyBackground.siblings.length > 0 && applicationForm.familyBackground.siblings != ApplicationFormVal.familyBackground.siblings &&  applicationForm.familyBackground.siblings.map((sibling, index) => (
+                            {applicationForm.familyBackground.siblings.length > 0 && applicationForm.familyBackground.siblings != ApplicationFormVal.familyBackground.siblings && applicationForm.familyBackground.siblings.map((sibling, index) => (
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>
                                         <p className="text-[#6D6D6D]">Sibling's Name </p>
