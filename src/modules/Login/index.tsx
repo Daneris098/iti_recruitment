@@ -68,7 +68,6 @@ export default function Login() {
           <div className="flex flex-col gap-10 sm:h-[45%] sm:w-[80%] m-auto p-4 sm:p-0">
             <p className="text-white text-7xl font-bold text-center">Welcome Aboard!</p>
             <p className="text-white text-center text-xl w-[80%] self-center">To access the HRDotNet Recruitment and Onboarding Platform, please log-in with your credentials.</p>
-            <Button variant="outline" color="white" radius={'md'} className="w-1/2 self-center" size="lg">Login Now</Button>
           </div>
         </div>
       </div>
