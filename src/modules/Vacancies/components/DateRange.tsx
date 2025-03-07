@@ -58,6 +58,7 @@ export const DateRange = ({
             label={fLabel}
             placeholder={fPlaceholder}
             className="w-full cursor-default"
+            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] '}} 
             rightSection={<IconCalendarMonth />}
             styles={{ label: { color: "#6d6d6d" } }}
           />
@@ -87,6 +88,7 @@ export const DateRange = ({
             placeholder={lPlaceholder}
             rightSection={<IconCalendarMonth />}
             className="w-full"
+            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }} 
             styles={{ label: { color: "#6d6d6d" } }}
           />
         </Popover.Target>

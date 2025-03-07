@@ -1,7 +1,7 @@
-import { Modal, Divider, Button, Select, TextInput } from '@mantine/core';
+import { Modal, Divider, Button, Select, TextInput, MultiSelect } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconCaretDownFilled } from '@tabler/icons-react';
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DateRange } from '../DateRange';
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import { VacancyStore } from "@modules/Vacancies/store";
@@ -31,6 +31,23 @@ export default function index() {
             // startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
         }
     });
+
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const myRef = useRef(null);
+    const handleChange = (value: any) => {
+        setSelectedValues(value);
+    };
+    const handleKeyDown = (event: any) => {
+        if (event.key === 'Enter' && event.target.value) {
+            const newValue = event.target.value.trim();
+            if (!selectedValues.includes(newValue)) {
+                setSelectedValues((prev) => [...prev, newValue]);
+                (myRef as any).current.value = "";
+            }
+            event.preventDefault();
+        }
+    };
+
 
 
 
@@ -74,12 +91,13 @@ export default function index() {
                 header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                 title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
             }} >
-            <div className='m-auto w-[95%] '>
+            <div className='m-auto w-[95%] poppins text-[#6D6D6D] '>
 
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                 <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5'>
                     <div className="flex flex-col sm:flex-row gap-4 items-end w-full">
                         <Select
+
                             {...form.getInputProps("firstChoice")}
                             label="Company"
                             placeholder={"Select Company"}
@@ -87,7 +105,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -102,7 +120,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -114,7 +132,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm "
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -129,7 +147,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -141,7 +159,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -156,7 +174,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -168,7 +186,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -183,7 +201,7 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
@@ -195,13 +213,13 @@ export default function index() {
                             data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             size='lg'
                         />
                     </div>
 
-                    <div className='flex gap-4 '>
+                    <div className='flex gap-4 items-end'>
                         <div className='w-1/2'>
                             <DateRange
                                 gapValue={12}
@@ -216,8 +234,7 @@ export default function index() {
                         </div>
                         <TextInput className='w-1/2 text-[#6D6D6D]' {...form.getInputProps("desiredSalary")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
                     </div>
-
-                    <p className='text-[#6D6D6D] text-lg'>Job Description</p>
+                    <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
                     <RichTextEditor editor={editor}>
                         <RichTextEditor.Toolbar sticky stickyOffset={60}>
                             <RichTextEditor.ControlsGroup>
@@ -228,27 +245,6 @@ export default function index() {
                                 <RichTextEditor.ClearFormatting />
                                 <RichTextEditor.Highlight />
                                 <RichTextEditor.Code />
-                            </RichTextEditor.ControlsGroup>
-
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.ColorPicker
-                                    colors={[
-                                        '#25262b',
-                                        '#868e96',
-                                        '#fa5252',
-                                        '#e64980',
-                                        '#be4bdb',
-                                        '#7950f2',
-                                        '#4c6ef5',
-                                        '#228be6',
-                                        '#15aabf',
-                                        '#12b886',
-                                        '#40c057',
-                                        '#82c91e',
-                                        '#fab005',
-                                        '#fd7e14',
-                                    ]}
-                                />
                             </RichTextEditor.ControlsGroup>
 
                             <RichTextEditor.ControlsGroup>
@@ -288,7 +284,17 @@ export default function index() {
                         <RichTextEditor.Content />
                     </RichTextEditor>
 
-                    <TextInput className='text-[#6D6D6D]' {...form.getInputProps("desiredSalary")} radius='md' size="lg" label="Must have Skills" placeholder="Type keyword to set required skills." />
+                    <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
+                        classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D] ' }}
+                        className='w-full'
+                        placeholder="Type keyword to set required skills."
+                        data={[]}
+                        searchable
+                        value={selectedValues}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                    />
+                    
                     <p className='text-[#6D6D6D] text-lg'>Qualification</p>
                     <RichTextEditor editor={editor2}>
                         <RichTextEditor.Toolbar sticky stickyOffset={60}>
@@ -300,27 +306,6 @@ export default function index() {
                                 <RichTextEditor.ClearFormatting />
                                 <RichTextEditor.Highlight />
                                 <RichTextEditor.Code />
-                            </RichTextEditor.ControlsGroup>
-
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.ColorPicker
-                                    colors={[
-                                        '#25262b',
-                                        '#868e96',
-                                        '#fa5252',
-                                        '#e64980',
-                                        '#be4bdb',
-                                        '#7950f2',
-                                        '#4c6ef5',
-                                        '#228be6',
-                                        '#15aabf',
-                                        '#12b886',
-                                        '#40c057',
-                                        '#82c91e',
-                                        '#fab005',
-                                        '#fd7e14',
-                                    ]}
-                                />
                             </RichTextEditor.ControlsGroup>
 
                             <RichTextEditor.ControlsGroup>
