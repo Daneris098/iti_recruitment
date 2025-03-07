@@ -84,7 +84,7 @@ export default function Login() {
                 variant="default"
                 size="md"
                 radius="md"
-                classNames={{ input: "poppins" }}
+                classNames={{ input: "poppins text-[#6D6D6D] " }}
                 placeholder="Enter your username"
                 rightSection={
                   <div className="bg-[#559CDA] p-2 rounded-lg text-white">
@@ -99,7 +99,7 @@ export default function Login() {
                 Password
               </Text>
               <PasswordInput
-                classNames={{ input: "poppins" }}
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
 
                 variant="default"
                 size="md"

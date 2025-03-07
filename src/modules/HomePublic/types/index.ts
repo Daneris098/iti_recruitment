@@ -73,10 +73,10 @@ export interface EmploymentRecord {
   location: string;
   positionHeld: string;
   inclusiveDate: {
-    from: string;
-    to: string;
+    from: string | null;
+    to: string | null;
   };
-  salary: number;
+  salary: number | null;
   reasonForLeaving: string;
 }
 

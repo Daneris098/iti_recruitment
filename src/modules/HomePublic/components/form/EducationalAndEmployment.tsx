@@ -146,7 +146,58 @@ export default function index() {
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.EducationalAndEmployment && formRef.current) {
-            formRef.current.requestSubmit(); // Programmatically trigger form submission
+            let invalid = false
+            form.getValues().employmentRecord.forEach((item, index) => {
+                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != '' || item.inclusiveDate.to != '' || item.salary != null || item.reasonForLeaving != '') {
+                    if (item.employerCompany === '') {
+                        form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
+                        invalid = true
+                    }
+
+                    if (item.location === '') {
+                        form.setFieldError(`employmentRecord.${index}.location`, 'Location is required');
+                        invalid = true
+                    }
+
+                    if (item.positionHeld === '') {
+                        form.setFieldError(`employmentRecord.${index}.positionHeld`, 'Position Held is required');
+                        invalid = true
+                    }
+
+                    if (item.inclusiveDate.from === '') {
+                        form.setFieldError(`employmentRecord.${index}.inclusiveDate.from`, 'Inclusive date from is required');
+                        invalid = true
+                    }
+
+                    if (item.inclusiveDate.to === '') {
+                        form.setFieldError(`employmentRecord.${index}.inclusiveDate.to`, 'Inclusive date to is required');
+                        invalid = true
+                    }
+
+                    if (item.salary === null) {
+                        form.setFieldError(`employmentRecord.${index}.salary`, 'Salary is required');
+                        invalid = true
+                    }
+
+                    if (item.reasonForLeaving === '') {
+                        form.setFieldError(`employmentRecord.${index}.reasonForLeaving`, 'Reason for leaving is required');
+                        invalid = true
+                    }
+                }
+                else {
+                    form.clearFieldError(`employmentRecord.${index}.employerCompany`)
+                    form.clearFieldError(`employmentRecord.${index}.location`)
+                    form.clearFieldError(`employmentRecord.${index}.positionHeld`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.from`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.to`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.salary`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.reasonForLeaving`)
+                }
+            });
+
+            if (!invalid) {
+                formRef.current.requestSubmit();
+            }
         }
         return (setSubmit(false))
     }, [submit])
@@ -168,7 +219,7 @@ export default function index() {
                         from: '',
                         to: ''
                     },
-                    salary: 0,
+                    salary: null,
                     reasonForLeaving: '',
                 }]
             }
