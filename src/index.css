@@ -192,5 +192,5 @@ html {
 
 .mantine-datatable-table tbody .mantine-Table-tr {
   padding: 0.6rem;
-  @apply cursor-pointer hover:bg-gray-50;
+  /* @apply cursor-pointer hover:bg-gray-50; */
 }

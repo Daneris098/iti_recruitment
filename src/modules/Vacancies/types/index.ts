@@ -114,4 +114,6 @@ export interface DataTableState {
 
 export enum AlertType {
   vacancyAddedSuccesfull = 'vacancyAddedSuccesfull',
+  closeVacancy = 'closeVacancy',
+  closeSuccessfully = 'closeSuccessfully'
 }

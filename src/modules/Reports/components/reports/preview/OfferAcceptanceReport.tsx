@@ -14,8 +14,8 @@ export default function index() {
                 <p>Position: Web Developer</p>
             </div>
 
-            <Stack className="h-48 w-full  flex flex-row">
-                <ResponsiveContainer width="90%" height="100%" className="relative">
+            <Stack className="h-48 w-full  flex flex-col">
+                <ResponsiveContainer width="100%" height="100%" className="relative">
                     <LineChart width={730} height={250} data={offerAcceptanceData}
                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" />
@@ -29,7 +29,7 @@ export default function index() {
                         <Line type="monotone" dataKey="Admin" stroke="#FF554A" strokeWidth={2} dot={false} />
                     </LineChart>
                 </ResponsiveContainer>
-                <Container className="w-[10%] p-0 justify-center md:justify-start flex flex-row md:flex-col gap-2">
+                <Container className="w-[10%] p-0 justify-center md:justify-start flex flex-row gap-4">
                     <Flex className="items-center gap-2">
                         <div className="w-1.5 h-1.5 bg-[#559CDA] rounded-[3px] hidden lg:block" />
                         <Text className="font-normal text-md text-[rgb(85,156,218)]">IT</Text>

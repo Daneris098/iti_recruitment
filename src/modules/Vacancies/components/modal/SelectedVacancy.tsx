@@ -1,10 +1,11 @@
 import { Button, Divider, Modal } from "@mantine/core";
-import { VacancyStore } from "../../store";
-import { selectedDataVal } from "../../values";
+import { VacancyStore } from "@modules/Vacancies/store";
+import { selectedDataVal } from "@modules/Vacancies/values";
+import { AlertType} from "@modules/Vacancies/types";
 import "@modules/Vacancies/style.css"
 
 export default function index() {
-    const { selectedVacancy, setSelectedVacancy } = VacancyStore();
+    const { selectedVacancy, setSelectedVacancy, setAlert } = VacancyStore();
 
     return (
         <>
@@ -82,7 +83,7 @@ export default function index() {
                             </div>
                         </div>
 
-                        <Button className="w-1/6 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal) }}>CLOSE VACANCY</Button>                
+                        <Button className="w-1/6 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>                
                     </div>
                 </div>
             </Modal>

@@ -81,12 +81,15 @@ export default function index() {
                     title: 'Action',
                     textAlign: "center",
                     render: (data) => (
-                        <div className='rounded-xl p-1 text-center border border-black cursor-pointer' onClick={(e) => { e.stopPropagation(); setSelectedData(data); }}>
+                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => { e.stopPropagation(); setSelectedData(data); }}>
                             View Applicant
                         </div>
                     ),
                 },
             ]}
+            paginationText={({ from, to, totalRecords }) =>
+                `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`
+            }
             totalRecords={vacancyRecords.length}
             recordsPerPage={pageSize}
             page={page}

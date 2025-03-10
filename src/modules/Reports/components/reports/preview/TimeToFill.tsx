@@ -37,8 +37,8 @@ export default function index() {
                 <ResponsiveContainer width="100%" height="100%" className="relative">
                     <BarChart data={positions} width={730} height={250} layout="vertical" className="absolute left-[-6%]" >
                         <YAxis type="category" axisLine={false} dataKey="days" width={150} height={50} className="text-[12px] font-semibold" />
-                        <XAxis type="number" axisLine={false} />
-                        <CartesianGrid stroke="#6d6d6d" horizontal={false} strokeDasharray="4"/>
+                        <XAxis type="number" axisLine={false} tickFormatter={(value) => (`${value > 1 && value != 0 ? value + ' Days' : value > 0 ? value + 'Day' : ''}`)} />
+                        <CartesianGrid stroke="#6d6d6d" horizontal={false} strokeDasharray="4" />
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.05)" }} />
                         <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 10, 10, 10]} className="cursor-pointer" barSize={15} />
                     </BarChart>

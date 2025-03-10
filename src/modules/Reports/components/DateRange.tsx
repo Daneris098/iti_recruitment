@@ -6,6 +6,7 @@ import { DatePicker } from "@mantine/dates";
 import { IconCalendarMonth } from "@tabler/icons-react";
 //--- Shared Utils
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { useEffect, useState } from "react";
 interface DateRangeProps {
   value: [Date | null, Date | null];
   setValue: (newValue: [Date | null, Date | null]) => void;
@@ -32,6 +33,14 @@ export const DateRange = ({
   size
 }: DateRangeProps) => {
 
+  const [opened, setOpened] = useState(false);
+  useEffect(() => {
+    if (value[0] != null && value[1] != null) {
+      setOpened(false)
+    }
+  }, [value])
+
+
   return (
     <Flex
       direction={`${isColumn ? "column" : "row"}`}
@@ -40,6 +49,7 @@ export const DateRange = ({
       className="w-full items-end"
     >
       <Popover
+        opened={opened}
         position="bottom"
         shadow="md"
         trapFocus={true}
@@ -58,8 +68,10 @@ export const DateRange = ({
             label={fLabel}
             placeholder={fPlaceholder}
             className="w-full cursor-default"
+            classNames={{ input: 'poppins text-[#6D6D6D]' }} 
             rightSection={<IconCalendarMonth />}
             styles={{ label: { color: "#6d6d6d" } }}
+            onClick={() => setOpened((o) => !o)}
           />
         </Popover.Target>
         <Popover.Dropdown className="w-full">
@@ -87,7 +99,10 @@ export const DateRange = ({
             placeholder={lPlaceholder}
             rightSection={<IconCalendarMonth />}
             className="w-full"
+            classNames={{ input: 'poppins text-[#6D6D6D]' }} 
             styles={{ label: { color: "#6d6d6d" } }}
+            onClick={() => setOpened((o) => !o)}
+
           />
         </Popover.Target>
         <Popover.Dropdown>
