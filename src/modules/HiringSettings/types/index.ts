@@ -7,6 +7,7 @@ export interface DataTableRefs {
   customFeedback: React.RefObject<DataTableRef>;
   interviewers: React.RefObject<DataTableRef>;
   interviewStages: React.RefObject<DataTableRef>;
+  applicationSource: React.RefObject<DataTableRef>;
 
   offerResponsePeriod?: React.RefObject<DataTableRef>;
   applicationSettings?: React.RefObject<DataTableRef>;
@@ -38,10 +39,13 @@ export type interviewStage = {
   status: string;
   lastModified: string;
 };
-export interface InterviewStageseState {
-  interviewStage: interviewStage[];
-  setInterviewStage: (interviewStage: interviewStage[]) => void;
-}
+
+export type applicationSource = {
+  id: number;
+  sourceName: string;
+  status: string;
+  lastModified: string;
+};
 
 export type interviewer = {
   id: number;
@@ -49,9 +53,18 @@ export type interviewer = {
   status: string;
   lastModified: string;
 };
+
+export interface InterviewStageseState {
+  interviewStage: interviewStage[];
+  setInterviewStage: (interviewStage: interviewStage[]) => void;
+}
 export interface InterviewerState {
   interviewers: interviewer[];
   setInterviewers: (interviewers: interviewer[]) => void;
+}
+export interface ApplicationSourceState {
+  applicationSources: applicationSource[];
+  setApplicationSources: (applicationSources: applicationSource[]) => void;
 }
 
 export enum AlertType {
@@ -75,6 +88,7 @@ export enum description {
   applicationSettings = 'Application Settings',
   interviewStages = 'Interview Stages',
   interviewers = 'Interviewers',
+  applicationSource = 'Application Source',
   jobOfferTemplate = 'Job Offer Template',
 }
 
@@ -84,6 +98,7 @@ export enum panel {
   applicationSettings = 'applicationSettings',
   interviewStages = 'interviewStages',
   interviewers = 'interviewers',
+  applicationSource = 'applicationSource',
   jobOfferTemplate = 'jobOfferTemplate',
 }
 
