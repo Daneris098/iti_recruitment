@@ -13,6 +13,7 @@ import MessageGradient from "@shared/assets/icons/MessageGradient";
 import { List } from "@components/notifications/List"
 import { NotificationStore } from "@components/notifications/store"
 import "@components/notifications/style.css"
+import { IconBell } from "@tabler/icons-react";
 export const Notifications = () => {
 
   const { setFilter } = NotificationStore()
@@ -25,10 +26,10 @@ export const Notifications = () => {
       radius={10}
     >
       <Popover.Target>
-        <ActionIcon variant="transparent" size="md" aria-label="Settings">
-          <BellDot
-            style={{ width: "100%", height: "100%" }}
-            // stroke={1.5}
+        <ActionIcon variant="transparent" size="lg" aria-label="Settings">
+          <IconBell
+            style={{ width: "100%", height: "100%"}}
+            stroke={1}
             color="gray"
           />
         </ActionIcon>
@@ -41,7 +42,7 @@ export const Notifications = () => {
           </Text>
           <MessageGradient size={22} tooltip="Mark All as Read" />
         </Flex>
-        <Tabs color="orange" variant="pills"  radius="xs" defaultValue="all">
+        <Tabs color="orange" variant="pills" radius="xs" defaultValue="all">
           <Tabs.List grow justify="center" px={10} pb={10}>
             <Tabs.Tab className="custom-tab" value="all" onClick={() => { setFilter('all') }}>All</Tabs.Tab>
             <Tabs.Tab className="custom-tab" value="application" onClick={() => { setFilter('application') }}>Application</Tabs.Tab>

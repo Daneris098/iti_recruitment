@@ -84,7 +84,7 @@ export const DateRange = ({
           />
         </Popover.Dropdown>
       </Popover>
-      <Popover position="bottom" shadow="md">
+      <Popover position="bottom" shadow="md" >
         <Popover.Target>
           <TextInput
             value={

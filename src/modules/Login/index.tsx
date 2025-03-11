@@ -77,7 +77,7 @@ export default function Login() {
             <p className=" text-center font-semibold poppins text-5xl sm:text-6xl text-[#559CDA]">Admin Log-in</p>
             <p className=" text-center poppins text-md text-[#6D6D6D]">Forget Password? <span className="text-[#559CDA] underline cursor-pointer">Contact System Administrator</span></p>
             <div className="w-full text-start text-slate-700 mt-6">
-              <Text size="md" className="poppins ">
+              <Text size="md" className="poppins text-[#6D6D6D]">
                 Username
               </Text>
               <TextInput
@@ -95,7 +95,7 @@ export default function Login() {
               />
             </div>
             <div className="text-start text-slate-700">
-              <Text size="md" className="poppins">
+              <Text size="md" className="poppins text-[#6D6D6D]">
                 Password
               </Text>
               <PasswordInput

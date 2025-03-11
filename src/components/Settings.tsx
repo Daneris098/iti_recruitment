@@ -25,7 +25,7 @@ export const Settings = () => {
       <Menu.Target>
         <ActionIcon variant="transparent" size="lg" aria-label="Settings">
           <IconSettings
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%" }}  
             stroke={1}
             color="gray"
           />
