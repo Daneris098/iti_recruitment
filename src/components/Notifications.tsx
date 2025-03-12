@@ -7,7 +7,6 @@
 //--- Mantine Modules
 import { ActionIcon, Flex, Popover, Tabs, Text } from "@mantine/core";
 //--- Tabler Icons
-import { BellDot } from "lucide-react";
 import "@shared/layout/base/styles/navbar.css";
 import MessageGradient from "@shared/assets/icons/MessageGradient";
 import { List } from "@components/notifications/List"

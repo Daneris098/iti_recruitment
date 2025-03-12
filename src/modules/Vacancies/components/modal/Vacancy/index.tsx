@@ -116,10 +116,16 @@ export default function index() {
             setMustHaveSkills(selectedVacancy.skills);
             editor2?.commands.setContent(selectedVacancy.qualification)
         }
+        else {
+            form.setValues(vacancyFormInitialData);
+            editor?.commands.setContent("<p>Write Job Description Here</p>")
+            setMustHaveSkills(selectedVacancy.skills);
+            editor2?.commands.setContent("<p>Write Qualification here</p>")
+        }
     }, [action, selectedVacancy])
 
     const onSubmit = async () => {
-        
+
     };
 
 
