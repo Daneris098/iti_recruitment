@@ -123,5 +123,6 @@ export enum ActionButtonTitle {
 export enum AlertType {
   vacancyAddedSuccesfull = 'vacancyAddedSuccesfull',
   closeVacancy = 'closeVacancy',
-  closeSuccessfully = 'closeSuccessfully'
+  closeSuccessfully = 'closeSuccessfully',
+  updateSuccessfully = 'updateSuccessfully',
 }

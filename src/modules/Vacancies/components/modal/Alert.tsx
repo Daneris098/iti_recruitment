@@ -11,6 +11,7 @@ const AlertAutoClose: Record<AlertType, boolean> = {
     [AlertType.vacancyAddedSuccesfull]: false,
     [AlertType.closeVacancy]: false,
     [AlertType.closeSuccessfully]: true,
+    [AlertType.updateSuccessfully]: true,
 };
 
 export default function AlertModals() {
@@ -129,6 +130,37 @@ export default function AlertModals() {
                     </Text>
                 </div>
             </Modal>
+            
+
+            <Modal
+                opened={alert === AlertType.updateSuccessfully}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                title=""
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Vacancy Updated
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
+                <div className="flex flex-col mt-6 items-center gap-6 text-[#6D6D6D]">
+                    <CircleCheck color="#559cda" size={70} strokeWidth={1} />
+                    <Text className="text-xl font-bold text-center">
+                        Job Vacancy successfully updated!
+                    </Text>
+                </div>
+            </Modal>
+
         </>
     );
 }

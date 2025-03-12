@@ -45,27 +45,6 @@ export default function index() {
     });
 
     useEffect(() => {
-        console.log('action: ', action)
-        if (action == 'Edit') {
-            console.log('selectedVacancy: ', selectedVacancy)
-            form.setFieldValue('positionTitle', selectedVacancy.position)
-            form.setFieldValue('company', selectedVacancy.company)
-            form.setFieldValue('branch', selectedVacancy.branch)
-            form.setFieldValue('division', selectedVacancy.division)
-            form.setFieldValue('department', selectedVacancy.department)
-            form.setFieldValue('section', selectedVacancy.section)
-            form.setFieldValue('employmentType', selectedVacancy.employmentType)
-            form.setFieldValue('workplace', selectedVacancy.workplace)
-            form.setFieldValue('vacancyType', selectedVacancy.vacancyType)
-            form.setFieldValue('experienceLevel', selectedVacancy.experienceLevel)
-            form.setFieldValue('duration.start', selectedVacancy.vacancyDuration.start)
-            form.setFieldValue('duration.end', selectedVacancy.vacancyDuration.end)
-            form.setFieldValue('noOfOpenPosition', selectedVacancy.quantity)
-            // form.setFieldValue('mustHaveSkills', selectedVacancy.skills.toString())
-        }
-    }, [action, selectedVacancy])
-
-    useEffect(() => {
         console.log('form: ', form.getValues())
     }, [form])
 
@@ -95,7 +74,7 @@ export default function index() {
             Highlight,
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
-        content: `<p>Write Job Description Here</p>`,
+        content: action == 'Edit' ? selectedVacancy.jobDescription : `<p>Write Job Description Here</p>`,
     });
 
     const editor2 = useEditor({
@@ -109,10 +88,38 @@ export default function index() {
             Highlight,
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
-        content: `<p>Write Qualification here</p>`,
+        content: action == 'Edit' ? selectedVacancy.qualification : `<p>Write Qualification here</p>`,
     });
 
+    useEffect(() => {
+        console.log('action: ', action)
+
+        if (action == 'Edit') {
+            form.setFieldValue('positionTitle', selectedVacancy.position)
+            form.setFieldValue('company', selectedVacancy.company)
+            form.setFieldValue('branch', selectedVacancy.branch)
+            form.setFieldValue('division', selectedVacancy.division)
+            form.setFieldValue('department', selectedVacancy.department)
+            form.setFieldValue('section', selectedVacancy.section)
+            form.setFieldValue('employmentType', selectedVacancy.employmentType)
+            form.setFieldValue('workplace', selectedVacancy.workplace)
+            form.setFieldValue('vacancyType', selectedVacancy.vacancyType)
+            form.setFieldValue('experienceLevel', selectedVacancy.experienceLevel)
+            form.setFieldValue('duration.start', selectedVacancy.vacancyDuration.start)
+            form.setFieldValue('duration.end', selectedVacancy.vacancyDuration.end)
+            form.setFieldValue('noOfOpenPosition', selectedVacancy.quantity)
+
+            form.setFieldValue('jobDescription', selectedVacancy.jobDescription)
+            form.setFieldValue('qualification', selectedVacancy.qualification)
+
+            editor?.commands.setContent(selectedVacancy.jobDescription)
+            setMustHaveSkills(selectedVacancy.skills);
+            editor2?.commands.setContent(selectedVacancy.qualification)
+        }
+    }, [action, selectedVacancy])
+
     const onSubmit = async () => {
+        
     };
 
 
@@ -330,6 +337,7 @@ export default function index() {
                         </div>
                         <TextInput className='w-1/2 text-[#6D6D6D]' key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
                     </div>
+
                     <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
                     <RichTextEditor editor={editor}>
                         <RichTextEditor.Toolbar sticky stickyOffset={60}>
@@ -381,8 +389,7 @@ export default function index() {
                     </RichTextEditor>
 
                     <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
-                        classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D] ' }}
-                        // key={form.key('mustHaveSkills')} {...form.getInputProps("mustHaveSkills")}
+                        classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]', pill: 'poppins text-[#6D6D6D]' }}
                         className='w-full'
                         placeholder="Type keyword to set required skills."
                         data={[]}
@@ -443,11 +450,11 @@ export default function index() {
                     </RichTextEditor>
 
                     <Button
-                        variant="transparent"
                         className="br-gradient border-none text-white w-[10%] self-end"
+                        variant="transparent"
                         radius={10}
                         onClick={() => {
-                            setAlert(AlertType.vacancyAddedSuccesfull)
+                            setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
                             setAction('')
                             setSelectedVacancy(selectedDataVal);
                         }}
