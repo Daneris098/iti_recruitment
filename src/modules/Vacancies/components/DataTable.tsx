@@ -87,18 +87,14 @@ export default function index() {
                     ),
                 },
             ]}
-            paginationText={({ from, to, totalRecords }) =>
-                `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`
-            }
+            paginationText={({ from, to, totalRecords }) =>`Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
             totalRecords={vacancyRecords.length}
             recordsPerPage={pageSize}
             page={page}
             onPageChange={setPage}
             sortStatus={sortStatus}
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
-            onRowClick={(val) => {
-                setSelectedVacancy(val.record)
-            }}
+            onRowClick={(val) => {setSelectedVacancy(val.record)}}
         />
     );
 }

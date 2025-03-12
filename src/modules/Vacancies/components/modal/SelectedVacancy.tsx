@@ -1,15 +1,15 @@
 import { Button, Divider, Modal } from "@mantine/core";
 import { VacancyStore } from "@modules/Vacancies/store";
 import { selectedDataVal } from "@modules/Vacancies/values";
-import { AlertType} from "@modules/Vacancies/types";
+import { AlertType } from "@modules/Vacancies/types";
 import "@modules/Vacancies/style.css"
 
 export default function index() {
-    const { selectedVacancy, setSelectedVacancy, setAlert } = VacancyStore();
+    const { selectedVacancy, action, setSelectedVacancy, setAlert, setAction } = VacancyStore();
 
     return (
         <>
-            <Modal size={'80%'} opened={selectedVacancy != selectedDataVal} centered onClose={() => setSelectedVacancy(selectedDataVal)} title={'Vacancy Details'}
+            <Modal size={'80%'} opened={selectedVacancy != selectedDataVal && action == ''} centered onClose={() => setSelectedVacancy(selectedDataVal)} title={'Vacancy Details'}
                 styles={{
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
@@ -82,8 +82,10 @@ export default function index() {
                                 <p className="font-bold">{`${selectedVacancy.vacancyDuration.start} - ${selectedVacancy.vacancyDuration.end}`}</p>
                             </div>
                         </div>
-
-                        <Button className="w-1/6 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>                
+                        <div className="flex self-end w-2/6 gap-2">
+                            <Button className="w-1/2 self-end br-gradient border-none rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>
+                            <Button className="w-1/2 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>
+                        </div>
                     </div>
                 </div>
             </Modal>

@@ -14,24 +14,10 @@ export interface DataTableRefs {
   jobOfferTemplate?: React.RefObject<DataTableRef>;
 }
 
-export interface HiringSettingsState {
-  alert: string;
-  activePanel: panel;
-
-  setActivePanel: (activePanel: panel) => void;
-  setAlert: (alert: string) => void;
-}
-
 export type feedback = {
   id: number;
   feedback: string;
 };
-export interface FeedbackStoreState {
-  applicantFeedback: feedback[];
-  hiringFeedback: feedback[];
-  setApplicantFeedback: (applicantFeedback: feedback[]) => void;
-  setHiringFeedback: (hiringFeedback: feedback[]) => void;
-}
 
 export type interviewStage = {
   id: number;
@@ -53,6 +39,44 @@ export type interviewer = {
   status: string;
   lastModified: string;
 };
+
+export interface HiringSettingsState {
+  alert: string;
+  activePanel: panel;
+
+  setActivePanel: (activePanel: panel) => void;
+  setAlert: (alert: string) => void;
+}
+
+export interface FeedbackStoreState {
+  applicantFeedback: feedback[];
+  hiringFeedback: feedback[];
+
+  setApplicantFeedback: (applicantFeedback: feedback[]) => void;
+  setHiringFeedback: (hiringFeedback: feedback[]) => void;
+}
+
+export interface vacancyForm {
+  positionTitle: string;
+  company: string;
+  branch: string;
+  division: string;
+  department: string;
+  section: string;
+  employmentType: string;
+  workplaceType: string;
+  vacancyType: string;
+  experienceLevel: string;
+  duration: {
+    start: string;
+    end: string;
+  }
+  noOfOpenPosition: number;
+  jobDescription: string;
+  mustHaveSkills: string;
+  qualification: string;
+}
+
 
 export interface InterviewStageseState {
   interviewStage: interviewStage[];

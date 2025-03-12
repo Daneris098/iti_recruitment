@@ -34,6 +34,8 @@ export const DateRange = ({
 }: DateRangeProps) => {
 
   const [opened, setOpened] = useState(false);
+  const [opened2, setOpened2] = useState(false);
+
   useEffect(() => {
     if (value[0] != null && value[1] != null) {
       setOpened(false)
@@ -64,7 +66,10 @@ export const DateRange = ({
             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
             rightSection={<IconCalendarMonth />}
             styles={{ label: { color: "#6d6d6d" } }}
-            onClick={() => setOpened((o) => !o)}
+            onClick={() => {
+              setOpened((o) => !o)
+              setOpened2((o) => o ? false : o)
+            }}
           />
         </Popover.Target>
         <Popover.Dropdown className="w-full">
@@ -77,7 +82,7 @@ export const DateRange = ({
           />
         </Popover.Dropdown>
       </Popover>
-      <Popover position="bottom" shadow="md">
+      <Popover opened={opened2} position="bottom" shadow="md">
         <Popover.Target>
           <TextInput
             value={
@@ -94,7 +99,10 @@ export const DateRange = ({
             className="w-full"
             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
             styles={{ label: { color: "#6d6d6d" } }}
-            onClick={() => setOpened((o) => !o)}
+            onClick={() => {
+              setOpened((o) => o ? false : o)
+              setOpened2((o) => !o)
+            }}
           />
         </Popover.Target>
         <Popover.Dropdown>

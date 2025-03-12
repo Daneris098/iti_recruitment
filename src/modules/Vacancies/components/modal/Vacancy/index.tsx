@@ -1,13 +1,12 @@
-import { Modal, Divider, Button, Select, TextInput, MultiSelect } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { IconCaretDownFilled } from '@tabler/icons-react';
-import { useRef, useState } from "react";
-import { DateRange } from '../DateRange';
-import { useDateRangeStore } from "@shared/hooks/useDateRange";
-import { VacancyStore } from "@modules/Vacancies/store";
-import { AlertType } from '../../types';
-import { RichTextEditor, Link } from '@mantine/tiptap';
+import '@mantine/tiptap/styles.css';
+import { useEffect, useRef, useState } from "react";
+import { Modal, Divider, Button, Select, TextInput, MultiSelect, Flex, Popover } from '@mantine/core';
+import { IconCalendarMonth, IconCaretDownFilled } from '@tabler/icons-react';
 import { useEditor } from '@tiptap/react';
+import { useForm } from '@mantine/form';
+import { DatePicker } from '@mantine/dates';
+import { RichTextEditor, Link } from '@mantine/tiptap';
+import { VacancyStore } from "@modules/Vacancies/store";
 import Highlight from '@tiptap/extension-highlight';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -16,15 +15,28 @@ import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
-import '@mantine/tiptap/styles.css';
+import { AlertType, ActionTitle, ActionButtonTitle } from '@modules/Vacancies/types';
+import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
+import { selectedDataVal } from '@src/modules/Vacancies/values';
+import { vacancyFormInitialData } from '@src/modules/HiringSettings/values';
 
 export default function index() {
-    const { action, setAction } = VacancyStore()
-    const { setAlert } = VacancyStore();
+    const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy } = VacancyStore();
+    const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
+    const [mustHaveSkills, setMustHaveSkills] = useState<string[]>([]);
+    const [opened, setOpened] = useState(false);
+    const [opened2, setOpened2] = useState(false);
+    useEffect(() => {
+        if (vacancyDuration[0] != null && vacancyDuration[1] != null) {
+            setOpened(false)
+            setOpened2(false)
+        }
+    }, [vacancyDuration])
+    const myRef = useRef(null);
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: {},
+        initialValues: vacancyFormInitialData,
         validate: {
             // firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
             // desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
@@ -32,24 +44,45 @@ export default function index() {
         }
     });
 
-    const [selectedValues, setSelectedValues] = useState<string[]>([]);
-    const myRef = useRef(null);
+    useEffect(() => {
+        console.log('action: ', action)
+        if (action == 'Edit') {
+            console.log('selectedVacancy: ', selectedVacancy)
+            form.setFieldValue('positionTitle', selectedVacancy.position)
+            form.setFieldValue('company', selectedVacancy.company)
+            form.setFieldValue('branch', selectedVacancy.branch)
+            form.setFieldValue('division', selectedVacancy.division)
+            form.setFieldValue('department', selectedVacancy.department)
+            form.setFieldValue('section', selectedVacancy.section)
+            form.setFieldValue('employmentType', selectedVacancy.employmentType)
+            form.setFieldValue('workplace', selectedVacancy.workplace)
+            form.setFieldValue('vacancyType', selectedVacancy.vacancyType)
+            form.setFieldValue('experienceLevel', selectedVacancy.experienceLevel)
+            form.setFieldValue('duration.start', selectedVacancy.vacancyDuration.start)
+            form.setFieldValue('duration.end', selectedVacancy.vacancyDuration.end)
+            form.setFieldValue('noOfOpenPosition', selectedVacancy.quantity)
+            // form.setFieldValue('mustHaveSkills', selectedVacancy.skills.toString())
+        }
+    }, [action, selectedVacancy])
+
+    useEffect(() => {
+        console.log('form: ', form.getValues())
+    }, [form])
+
     const handleChange = (value: any) => {
-        setSelectedValues(value);
+        setMustHaveSkills(value);
     };
+
     const handleKeyDown = (event: any) => {
         if (event.key === 'Enter' && event.target.value) {
             const newValue = event.target.value.trim();
-            if (!selectedValues.includes(newValue)) {
-                setSelectedValues((prev) => [...prev, newValue]);
+            if (!mustHaveSkills.includes(newValue)) {
+                setMustHaveSkills((prev) => [...prev, newValue]);
                 (myRef as any).current.value = "";
             }
             event.preventDefault();
         }
     };
-
-
-
 
     const editor = useEditor({
         extensions: [
@@ -82,11 +115,10 @@ export default function index() {
     const onSubmit = async () => {
     };
 
-    const { value, setValue } = useDateRangeStore();
 
 
     return (
-        <Modal size={'80%'} opened={action != ''} centered onClose={() => setAction('')} title={'Add Vacancy'}
+        <Modal size={'80%'} opened={action != ''} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} title={ActionTitle[action as keyof typeof ActionTitle]}
             styles={{
                 header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                 title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
@@ -95,29 +127,20 @@ export default function index() {
 
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                 <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5'>
-                    <div className="flex flex-col sm:flex-row gap-4 items-end w-full">
-                        <Select
-
-                            {...form.getInputProps("firstChoice")}
-                            label="Company"
-                            placeholder={"Select Company"}
-                            radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                    </div>
+                    <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
+                    <Select key={form.key('company')} {...form.getInputProps("company")} label="Company" placeholder={"Select Company"} radius={8} data={["Cloud Innovations Ltd.", "Business Solutions Inc.", "Tech Innovations Inc.", "Innovate Solutions Ltd.", "Data Insights Corp.", "Creative Marketing Agency"]}
+                        rightSection={<IconCaretDownFilled size='18' />} className="border-none w-full text-sm" classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }} size='lg'
+                    />
 
                     <div className='flex flex-col lg:flex-row gap-4  w-full'>
                         <Select
                             {...form.getInputProps("branch")}
+                            key={form.key('branch')}
                             label="Branch"
                             placeholder={"Select Branch"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Remote Team", "San Francisco", "New Yorks"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -126,10 +149,11 @@ export default function index() {
                         />
                         <Select
                             {...form.getInputProps("division")}
+                            key={form.key('division')}
                             label="Division"
                             placeholder={"Select Division"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA", "Analytics"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm "
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -140,11 +164,12 @@ export default function index() {
 
                     <div className='flex gap-4  w-full flex-col sm:flex-row'>
                         <Select
-                            {...form.getInputProps("firstChoice")}
+                            {...form.getInputProps("department")}
+                            key={form.key('department')}
                             label="Department"
                             placeholder={"Select Department"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Business"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -152,11 +177,12 @@ export default function index() {
                             size='lg'
                         />
                         <Select
-                            {...form.getInputProps("firstChoice")}
+                            {...form.getInputProps("section")}
+                            key={form.key('section')}
                             label="Section"
                             placeholder={"Select Section"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Network Management", "Content Creation", "Business Analysis"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -167,11 +193,12 @@ export default function index() {
 
                     <div className='flex gap-4  w-full flex-col sm:flex-row'>
                         <Select
-                            {...form.getInputProps("firstChoice")}
+                            {...form.getInputProps("employmentType")}
+                            key={form.key('employmentType')}
                             label="Employment Type"
                             placeholder={"Select Employment Type"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Full-time", "Part-time"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -179,11 +206,12 @@ export default function index() {
                             size='lg'
                         />
                         <Select
-                            {...form.getInputProps("firstChoice")}
+                            {...form.getInputProps("workplace")}
+                            key={form.key('workplace')}
                             label="Workplace Type"
                             placeholder={"Select Workplace Type"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Remote", "On-site"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -194,11 +222,12 @@ export default function index() {
 
                     <div className='flex gap-4 flex-col sm:flex-row'>
                         <Select
-                            {...form.getInputProps("firstChoice")}
+                            {...form.getInputProps("vacancyType")}
+                            key={form.key('vacancyType')}
                             label="Vacancy Type"
                             placeholder={"Select Vacancy Type"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["External", "Internal"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -206,11 +235,12 @@ export default function index() {
                             size='lg'
                         />
                         <Select
-                            {...form.getInputProps("firstChoice")}
+                            {...form.getInputProps("experienceLevel")}
+                            key={form.key('experienceLevel')}
                             label="Experience Level"
                             placeholder={"Select Experience Level"}
                             radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                            data={["Entry-level", "Mid-level", "Senior"]}
                             rightSection={<IconCaretDownFilled size='18' />}
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -221,18 +251,84 @@ export default function index() {
 
                     <div className='flex gap-4 items-end'>
                         <div className='w-1/2'>
-                            <DateRange
-                                gapValue={12}
-                                size="lg"
-                                value={value}
-                                setValue={setValue}
-                                fLabel="Vacancy Duration"
-                                lLabel=" "
-                                fPlaceholder="Start Date"
-                                lPlaceholder="End Date"
-                            />
+                            <Flex
+                                direction="row"
+                                justify="space-between"
+                                gap={12}
+                                className="w-full items-end"
+                            >
+                                <Popover opened={opened} position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
+                                    <Popover.Target>
+                                        <TextInput
+                                            radius="md"
+                                            size={'lg'}
+                                            readOnly
+                                            label="Vacancy Duration"
+                                            placeholder="Start Date"
+                                            className="w-full cursor-default"
+                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
+                                            rightSection={<IconCalendarMonth />}
+                                            styles={{ label: { color: "#6d6d6d" } }}
+                                            {...form.getInputProps("duration.start")}
+                                            onClick={() => {
+                                                setOpened((o) => !o)
+                                                setOpened2((o) => o ? false : o)
+                                            }}
+                                        />
+                                    </Popover.Target>
+                                    <Popover.Dropdown className="w-full">
+                                        <DatePicker
+                                            firstDayOfWeek={0}
+                                            numberOfColumns={2}
+                                            type="range"
+                                            value={vacancyDuration}
+                                            onChange={(e) => {
+                                                if (e[0] != null)
+                                                    form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
+                                                if (e[1] != null)
+                                                    form.setFieldValue('duration.end', DateTimeUtils.dayWithDate(`${e[1]?.toString()}`))
+                                                setVacancyDuration(e)
+                                            }}
+                                        />
+                                    </Popover.Dropdown>
+                                </Popover>
+                                <Popover opened={opened2} position="bottom" shadow="md">
+                                    <Popover.Target>
+                                        <TextInput
+                                            radius="md"
+                                            size={'lg'}
+                                            readOnly
+                                            label={""}
+                                            placeholder="End Date"
+                                            rightSection={<IconCalendarMonth />}
+                                            className="w-full"
+                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
+                                            styles={{ label: { color: "#6d6d6d" } }}
+                                            {...form.getInputProps("duration.end")}
+                                            onClick={() => {
+                                                setOpened((o) => o ? false : o)
+                                                setOpened2((o) => !o)
+                                            }}
+                                        />
+                                    </Popover.Target>
+                                    <Popover.Dropdown>
+                                        <DatePicker
+                                            numberOfColumns={2}
+                                            type="range"
+                                            value={vacancyDuration}
+                                            onChange={(e) => {
+                                                if (e[0] != null)
+                                                    form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
+                                                if (e[1] != null)
+                                                    form.setFieldValue('duration.end', DateTimeUtils.dayWithDate(`${e[1]?.toString()}`))
+                                                setVacancyDuration(e)
+                                            }}
+                                        />
+                                    </Popover.Dropdown>
+                                </Popover>
+                            </Flex>
                         </div>
-                        <TextInput className='w-1/2 text-[#6D6D6D]' {...form.getInputProps("desiredSalary")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
+                        <TextInput className='w-1/2 text-[#6D6D6D]' key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
                     </div>
                     <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
                     <RichTextEditor editor={editor}>
@@ -286,15 +382,16 @@ export default function index() {
 
                     <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
                         classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D] ' }}
+                        // key={form.key('mustHaveSkills')} {...form.getInputProps("mustHaveSkills")}
                         className='w-full'
                         placeholder="Type keyword to set required skills."
                         data={[]}
                         searchable
-                        value={selectedValues}
+                        value={mustHaveSkills}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
                     />
-                    
+
                     <p className='text-[#6D6D6D] text-lg'>Qualification</p>
                     <RichTextEditor editor={editor2}>
                         <RichTextEditor.Toolbar sticky stickyOffset={60}>
@@ -352,8 +449,9 @@ export default function index() {
                         onClick={() => {
                             setAlert(AlertType.vacancyAddedSuccesfull)
                             setAction('')
+                            setSelectedVacancy(selectedDataVal);
                         }}
-                    >ADD</Button>
+                    >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}</Button>
 
                 </form>
             </div>
