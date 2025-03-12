@@ -13,9 +13,6 @@ const OfferedStatus: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     return (
         <div className="update-status-offered-modal-overlay" onClick={onClose}>
           <div className="update-status-offered-modal-content" onClick={(e) => e.stopPropagation()}>
-            {/* <button className="close-button" onClick={onClose}>
-              &times;
-            </button> */}
             {children}
           </div>
         </div>

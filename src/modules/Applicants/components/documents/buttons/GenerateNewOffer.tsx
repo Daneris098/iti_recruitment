@@ -1,16 +1,14 @@
+{/*Generate new offer button.*/}
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
 import { IconChevronDown, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Applicants/store"
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
-import JobGeneratedAlert from "@src/modules/Applicants/components/documents/alerts/JobGeneratedAlert"
+import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert"
 import { useCloseModal } from "@modules/Applicants/store"
-
 interface DropDownOfferedProps {
     onClose: () => void;
     ApplicantName: string;
 }
-
-
 
 export default function DropDownOffered({ onClose, ApplicantName }: DropDownOfferedProps) {
 
@@ -44,17 +42,6 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
 
-    // const handleSubmit = (event: any) => {
-    //     event.preventDefault();
-    //     const formData = {
-    //         status,
-    //         fullName,
-    //         position,
-    //         department,
-    //     };
-    //     console.log("Form Submitted:", formData);
-    // };
-
     return (
 
         // Container
@@ -63,7 +50,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             {/* Header */}
             <div >
                 <div className="flex justify-between items-center">
-                    <h1 className="font-semibold text-[#559CDA] text-[22px]">Update Applicant Status</h1>
+                    <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">Generate New Offer</h1>
                     <IconX className="w-[15px] h-[15px] cursor-pointer" onClick={onClose} />
                 </div>
                 <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
@@ -75,17 +62,17 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                 className="space-y-4 mt-4">
                 {/* Applicant Full Name */}
                 <div>
-                    <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
+                    <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                         Applicant Full Name <span className="text-[#F14336]">*</span>
                     </h3>
-                    <p className="relative flex items-center w-[540px] h-[56px] px-4 border border-[#6D6D6D] rounded-lg text-[#6D6D6D] text-[14px] text-[#6D6D6D99] bg-[#6D6D6D30]">{ApplicantName ?? "Applicant name unavailable."}</p>
+                    <p className="relative flex items-center w-[540px] h-[56px] px-4 border border-[#6D6D6D] rounded-lg text-[#6D6D6D] text-[14px] text-[#6D6D6D99] bg-[#6D6D6D30] poppins">{ApplicantName ?? "Applicant name unavailable."}</p>
                 </div>
 
                 {/* Position and Department (Two-Column Layout)*/}
                 <div className="flex gap-4">
                     {/* Position Dropdown */}
                     <div>
-                        <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
+                        <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                             Position/Rank <span className="text-[#F14336]">*</span>
                         </h3>
                         <Combobox store={positionCombobox} withinPortal={false}>
@@ -97,7 +84,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                     rightSection={<IconChevronDown size={16} />}
                                     placeholder="Select Position"
                                     classNames={{
-                                        input: "relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -113,7 +100,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                                 setPosition(role);
                                                 positionCombobox.closeDropdown();
                                             }}
-                                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
+                                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
                                         >
                                             {role}
                                         </Combobox.Option>
@@ -125,7 +112,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
                     {/* Department Dropdown */}
                     <div>
-                        <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
+                        <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                             Department/Division <span className="text-[#F14336]">*</span>
                         </h3>
                         <Combobox store={departmentCombobox} withinPortal={false}>
@@ -137,7 +124,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                     rightSection={<IconChevronDown size={16} />}
                                     placeholder="Select Department"
                                     classNames={{
-                                        input: "relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -153,7 +140,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                                 setDepartment(dept);
                                                 departmentCombobox.closeDropdown();
                                             }}
-                                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
+                                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition  poppins"
                                         >
                                             {dept}
                                         </Combobox.Option>
@@ -179,7 +166,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                     rightSection={<IconChevronDown size={16} />}
                                     placeholder="Monthly Rate"
                                     classNames={{
-                                        input: "relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -195,7 +182,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                                 setSalaryTypes(salary);
                                                 salaryComboBox.closeDropdown();
                                             }}
-                                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
+                                            className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
                                         >
                                             {salary}
                                         </Combobox.Option>
@@ -216,7 +203,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             classNames={{
-                                input: "relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                             }}
                             required
                         />
@@ -225,7 +212,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
                 {/* Comment and suggestion text input */}
                 <div>
-                    <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
+                    <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                         Comments
                     </h3>
                     <Textarea
@@ -235,7 +222,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                         autosize
                         minRows={4}
                         classNames={{
-                            input: "w-[540px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                            input: "poppins w-[540px] h-[98px] pt-2 px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                         }}
                     />
                 </div>
@@ -257,8 +244,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
             <div>
                 <JobGeneratedModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <JobGeneratedAlert
-                        onClose={() => setIsModalOpen(false)} />
+                    <JobGeneratedAlert />
                 </JobGeneratedModal>
             </div>
         </div>

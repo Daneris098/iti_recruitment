@@ -1,4 +1,4 @@
-import { Button, Divider } from "@mantine/core";
+import { Divider } from "@mantine/core";
 import { IconCircleCheck, IconX } from "@tabler/icons-react";
 
 interface JobGeneratedAlertProps {
@@ -7,7 +7,7 @@ interface JobGeneratedAlertProps {
 
 export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
     return (
-        <div className="p-1">
+        <div className="p-1 h-[250px]">
             {/* Header */}
             <div>
                 <div className="flex justify-between items-center">
@@ -24,7 +24,7 @@ export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
 
             {/* Checklist Icon */}
             <div className="justify-center flex py-2">
-                <IconCircleCheck size={26} style={{ width: "90px", height: "90px" }} className="text-[#559CDA] stroke-[0.5]" />
+                <IconCircleCheck size={26} style={{ width: "90px", height: "90px" }} className="text-[#559CDA] stroke-[0.5] mt-7" />
             </div>
 
             {/* Text prompt */}
@@ -34,13 +34,6 @@ export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
                 </h1>
             </div>
 
-            {/* View Button */}
-            <div className="flex justify-center items-center align-middle pt-7">
-                <Button className="font-medium text-[15px] text-[#559CDA] bg-white border-[#559CDA] rounded-[10px] w-[198px]"
-                    onClick={onClose}>
-                    Close
-                </Button>
-            </div>
         </div>
     );
 }

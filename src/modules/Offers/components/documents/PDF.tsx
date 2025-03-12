@@ -104,7 +104,7 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 
 interface MyDocumentProps {
   Name: null | string;
-  Position: string;
+  Position: string | null;
   Department: null | string;
   Remarks: null | string;
   Salary_Monthly: null | string;

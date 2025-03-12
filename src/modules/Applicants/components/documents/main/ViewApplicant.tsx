@@ -9,13 +9,14 @@ import UpdateStatusModal from "@modules/Applicants/components/modal/updateStatus
 import { useState } from "react";
 import TransferPositionModal from "@src/modules/Applicants/components/modal/transferPositionModal";
 import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition"
-import { ViewApplicantsProps } from "@modules/Applicants/store"
+import { useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
 import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer"
 import ApplicantModal from "../../modal/dropdownOfferedModal";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { PDFViewer } from "@react-pdf/renderer";
-export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose }: ViewApplicantsProps) {
+
+export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date }: ViewApplicantsProps) {
 
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
@@ -25,18 +26,37 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
         "Offered": "bg-[#FEC001]",
         "For Transfer": "bg-[#9B51E0]",
         "Archived": "bg-[#FF554A]",
-        "Transferred": "bg-[#6D6D6D]"
+        "Transferred": "bg-[#6D6D6D]",
+        "Assessment": "bg-[#ED8028]",
+        "Final Interview": "bg-[#FEC001]",
+        "Initial Interview": "bg-[#559CDA]",
     }
+
+
 
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
 
-    const [isModalOpen, setIsModalOpen] = useState(false); // Initial state: 
+    // const [isModalOpen, setIsModalOpen] = useState(false); // Initial state: 
+    const {isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen} = useCloseModal();
 
     const [isOffered, setIsOffered] = useState(false); // Set the Offered Modal to True upon triggering
 
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
 
     const [isTransferPosition, setIsTransferPosition] = useState(false) // Set the Transferred Modal to True upon triggering
+
+    // Excluding these three status types to the current status field.
+    const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(Status)
+    const bgColorForInterview = forInterviewStatus ? "bg-[#ED8028]" : statusColors[Status] || "bg-[#559CDA]";
+    const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
+
+    const onCloseAll = () => {
+        // setIsModalOpen(false);
+        setIsUpdateStatusButtonModalOpen(false);
+        setIsTransferPosition(false);
+        setIsOffered(false);
+        onClose(); // This closes ViewApplicant.tsx completely
+    };
 
     return (
         <div className="h-screen w-full p-4">
@@ -59,7 +79,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
             <div className="flex h-full">
 
                 {/* Left Section */}
-                <div className="w-1/3 p-2 sticky top-0 h-screen overflow-y-auto"> {/*Originally 2/6 */}
+                <div className="w-1/4 p-2 sticky top-0 h-screen overflow-y-auto"> {/*Originally 2/6 */}
 
                     {/* Profile Image & Name (Left Aligned) */}
                     <div className="flex flex-col items-left mt-3">
@@ -72,13 +92,12 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     <div className="mt-8 text-[#6D6D6D] text-[12px]">
 
                         {/* Header */}
-                        <h1 className="text-[#559CDA] pb-1">Current Status</h1>
+                        <h1 className="text-[#6D6D6D] pb-1">Current Status</h1>
                         <div className='space-y-2'>
 
-                            {/* Changes background colors of the status based on the current status */}
-                            <p className={`text-white rounded-[10px] bg-[#559CDA] text-[14px] w-[194px] h-[30px] flex items-center justify-center font-semibold
-                                ${statusColors[Status] || "bg-[#559CDA]"}`}>
-                                {Status}
+                            {/* Changes background colors of the status based on the current status while maintaining the For Interview status and its proper styling*/}
+                            <p className={`text-white rounded-[10px] text-[14px] w-[194px] h-[30px] flex items-center justify-center font-semibold ${bgColorForInterview}`}>
+                                {forInterviewDisplayText}
                             </p>
 
                             {/* Hide the Update Status button if the current status is equivalent to either "Hired" or "Transferred" */}
@@ -89,7 +108,8 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                                     ${Status === 'Archived' ? 'cursor-not-allowed' : 'cursor-pointer'}`}
 
                                     // If the current Status is equals to "Archived" then disable the button and change its text to "Inactive"
-                                    onClick={Status !== 'Archived' ? () => setIsModalOpen(true) : undefined}>
+                                    // onClick={Status !== 'Archived' ? () => setIsModalOpen(true) : undefined}>
+                                    onClick={Status !== 'Archived' ? () => setIsUpdateStatusButtonModalOpen(true) : undefined}>
                                     {Status === 'Archived' ? "Inactive" : "Update Status"}
                                 </p>
                             )}
@@ -97,19 +117,19 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     </div>
 
                     {/* Contact Info */}
-                    <div className="mt-8 text-[12px] text-[#6D6D6D] space-y-3">
-                        <h1 className="text-[12px]">Location</h1>
-                        <p className="font-bold text-[#6D6D6D] text-[14px]">United States</p>
+                    <div className="mt-8 text-[12px] text-[#6D6D6D] space-y-3 poppins">
+                        <h1 className="text-[12px] poppins">Location</h1>
+                        <p className="font-bold text-[#6D6D6D] text-[14px] poppins">United States</p>
 
                         <h2 className="text-[12px]">Email</h2>
-                        <p className="font-bold text-[#6D6D6D] text-[14px]">{Email ?? "No Data"}</p>
+                        <p className="font-bold text-[#6D6D6D] text-[14px] break-words poppins">{Email ?? "No Data"}</p>
 
                         <h3 className="text-[12px]">Phone</h3>
-                        <p className="font-bold text-[#6D6D6D] text-[14px]">{Phone ?? "No Data"}</p>
+                        <p className="font-bold text-[#6D6D6D] text-[14px] poppins">{Phone ?? "No Data"}</p>
                     </div>
 
                     {/* Skills Section */}
-                    <div className="mt-8 text-[#6D6D6D] text-[12px]">
+                    <div className="mt-8 text-[#6D6D6D] text-[12px] poppins">
                         <h1>Skills</h1>
                         <div className="flex gap-2 mt-2 flex-wrap">
                             {Skills
@@ -118,26 +138,37 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                                         {skill}
                                     </p>
                                 ))
-                                : <p className="text-gray-500">No Skills Listed</p>} {/* Display this text when there are no skills */}
+                                : <p className="text-[#6D6D6D] poppins">No Skills Listed</p>} {/* Display this text when there are no skills */}
                         </div>
                     </div>
+
+                    {/* Conditional Start Date */}
+                    {(Status === "For Transfer" || Status === "Transferred" || Status === "Hired") && (
+                        <div className="mt-3 text-[#6D6D6D] text-[12px] poppins">
+                            <h1>Start Date</h1>
+                            <div className="flex gap-2 mt-2 flex-wrap">
+                                {Application_Date}
+                            </div>
+                        </div>
+                    )}
 
                     {/* Transfer Position */}
                     <div className="mt-3 pb-6">
 
                         {/* IF status is equivalent to 'Archived' then no button should appear. */}
                         {Status !== 'Archived' && (
-                            <p className="text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer"
+                            <p className="text-white rounded-[10px] poppins bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer"
 
                                 onClick={() => {
                                     if (viewPDFStatuses.includes(Status)) {
                                         setIsViewPDF(true);
                                     }
-                                    else if (Status === 'For Interview' || Status === 'Final Interview' || Status === 'Initial Interview' || Status === 'Assessment') {
+                                    else if (Status === 'For Interview' || Status === 'Final Interview' || Status === 'Initial Interview' || Status === 'Assessment' || Status === 'Applied') {
                                         setIsTransferPosition(true);
                                     }
                                     else {
-                                        setIsModalOpen
+                                        // setIsModalOpen(true);
+                                        setIsUpdateStatusButtonModalOpen(false);
                                     }
                                 }}>
 
@@ -149,7 +180,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                         )}
 
                         {Status === 'Offered' && (
-                            <p className="text-white rounded-[10px] bg-[#6D6D6D] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer mt-2"
+                            <p className="text-white rounded-[10px] bg-[#6D6D6D] poppins text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer mt-2"
                                 onClick={() => setIsOffered(true)}>
                                 Generate new Offer
                             </p>
@@ -160,7 +191,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                 {/* Right Section */}
                 <div className="w-4/5 p-4 overflow-y-auto h-screen">
                     <Tabs defaultValue="personal">
-                        <Tabs.List>
+                        <Tabs.List className="text-[#6D6D6D] space-x-6 pb-2 poppins">
                             {[
                                 { value: "personal", label: "Personal Details" },
                                 { value: "application", label: "Application Movement" },
@@ -171,7 +202,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                                 <Tabs.Tab
                                     key={tab.value}
                                     value={tab.value}
-                                    className="font-semibold text-[14px] transition-colors data-[active=true]:text-[#559CDA] data-[active=false]:text-[#6D6D6D]"
+                                    className="poppins font-semibold text-[16px] transition-colors data-[active=true]:text-[#559CDA] data-[active=false]:text-[#6D6D6D] p-0 pb-2"
                                 >
                                     {tab.label}
                                 </Tabs.Tab>
@@ -203,31 +234,34 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     </Tabs>
                 </div>
             </div>
-
+            
             {/* These modals are independent of each other.
              <UpdateStatusModal> for updating the status of the applicant. 
             <TransferPositionModal> for updating the position of the applied job and so on. */}
             <div>
-                <UpdateStatusModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <UpdateStatus onClose={() => setIsModalOpen(false)} />
+                {/* <UpdateStatusModal isOpen={isModalOpen} onClose={onCloseAll}> */}
+                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} onClose={onCloseAll}>
+                    <UpdateStatus
+                        Status={Status}
+                        onClose={onCloseAll} />
                 </UpdateStatusModal>
 
-                <TransferPositionModal isOpen={isTransferPosition} onClose={() => setIsTransferPosition(false)}>
-                    <TransferPosition onClose={onClose}
-                        Applicant_Name={Applicant_Name} />
+                <TransferPositionModal isOpen={isTransferPosition} onClose={onCloseAll}>
+                    <TransferPosition
+                        Applicant_Name={Applicant_Name}
+                        onClose={onCloseAll} />
                 </TransferPositionModal>
 
-                <ApplicantModal isOpen={isOffered} onClose={() => setIsOffered(false)}>
+                <ApplicantModal isOpen={isOffered} onClose={onCloseAll}>
                     <GenerateNewOffer
                         ApplicantName={Applicant_Name}
-                        onClose={onClose} />
+                        onClose={onCloseAll} />
                 </ApplicantModal>
-
             </div>
 
             {/* PDF */}
             <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
-                <PDFViewer width="100%" height="600" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
+                <PDFViewer width="100%" height="891" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                     <MyDocument
                         Name={Applicant_Name}
                         Position={Position}
@@ -247,7 +281,6 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     />
                 </PDFViewer>
             </ViewPDF>
-
         </div>
     )
 }

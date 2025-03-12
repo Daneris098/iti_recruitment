@@ -1,10 +1,10 @@
-import { Button, Divider, Drawer, Flex, Text, TextInput, useMatches } from "@mantine/core";
+import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { FilterStore } from '@modules/Offers/components/store'
 import { useEffect } from "react";
 import { filterVal } from "@modules/Offers/values";
 import DateRangeFilter from "@src/modules/Offers/components/filter/DateRangeFilter";
-
+import { IconCaretDownFilled } from "@tabler/icons-react";
 
 export default function DrawerFilter() {
   const { filterDrawer, setFilterDrawer, filter, activeTab, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
@@ -47,6 +47,9 @@ export default function DrawerFilter() {
     base: 'xs',
     xl: 'md',
   });
+
+  const statusFilterOptions = ["Pending", "Generated", "Accepted", "Archived", "Rejected"];
+  const remarksFilterOptions = ["No remarks", "Remarks"];
 
   return (
     <Drawer
@@ -129,14 +132,44 @@ export default function DrawerFilter() {
                 onChange={(event) => { setFilter({ ...filter, department: `${event.currentTarget.value}` }) }}
               />
 
-              <TextInput
+              <MultiSelect
                 radius={8}
                 size={inputSize}
-                className="border-none w-full text-sm"
+                className="border-none w-full text-[16px] poppins"
                 label="Status"
-                styles={{ label: { color: "#6d6d6d" } }}
-                value={filter.status}
-                onChange={(event) => { setFilter({ ...filter, status: `${event.currentTarget.value}` }) }}
+                placeholder="Select Status"
+                styles={{
+                  label: { color: "#6d6d6d" },
+                  input: {
+                    display: "flex",
+                    flexWrap: "nowrap", // Prevents wrapping
+                    overflowX: "auto", // Enables horizontal scrolling
+                    maxHeight: "40px", // Keeps input height fixed
+                    scrollbarWidth: "thin", // Makes scrollbar less intrusive
+                  },
+                  values: {
+                    display: "flex",
+                    flexWrap: "nowrap", // Prevents multi-line chips
+                    overflowX: "auto", // Allows horizontal scrolling
+                    maxWidth: "100%", // Ensures it fits within the input
+                    gap: "4px",
+                    padding: "4px",
+                  },
+                }}
+                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
+                data={statusFilterOptions}
+                // value={filter.status}
+                onChange={(values) => setFilter({ ...filter, status: values })}
+                searchable
+                clearable
+                nothingFound="No options"
+                withinPortal
+                maxDropdownHeight={90}
+                rightSection={
+                  <span> {/* Custom dropdown icon */}
+                    <IconCaretDownFilled size={18} stroke={2} />
+                  </span>
+                }
               />
             </>
           )}
@@ -152,6 +185,7 @@ export default function DrawerFilter() {
                 size={inputSize}
                 className="border-none w-full text-sm"
                 label="ID"
+                placeholder="Type ID"
                 styles={{ label: { color: "#6d6d6d" } }}
                 value={filter.id}
                 onChange={(event) => { setFilter({ ...filter, id: `${event.currentTarget.value}` }) }}
@@ -162,9 +196,10 @@ export default function DrawerFilter() {
               <TextInput
                 radius={8}
                 size={inputSize}
-                className="border-none w-full text-sm"
+                className="border-none w-full text-[16px] poppins"
                 label="Applicant Name"
-                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Type Applicant Name"
+                styles={{ label: { color: "#6d6d6d", fontSize: "16px" } }}
                 value={filter.applicantName}
                 onChange={(event) => { setFilter({ ...filter, applicantName: `${event.currentTarget.value}` }) }}
               />
@@ -204,24 +239,86 @@ export default function DrawerFilter() {
 
               <Divider size={0.5} color="#edeeed" className="w-full" />
 
-              <TextInput
+              {/* Remarks chips */}
+              <MultiSelect
                 radius={8}
                 size={inputSize}
-                className="border-none w-full text-sm"
+                className="border-none w-full text-[16px] poppins"
                 label="Remarks"
-                styles={{ label: { color: "#6d6d6d" } }}
-                value={filter.remarks}
-                onChange={(event) => { setFilter({ ...filter, remarks: `${event.currentTarget.value}` }) }}
+                placeholder="Type Remarks"
+                styles={{
+                  label: { color: "#6d6d6d" },
+                  input: {
+                    display: "flex",
+                    flexWrap: "nowrap", // Prevents wrapping
+                    overflowX: "auto", // Enables horizontal scrolling
+                    maxHeight: "40px", // Keeps input height fixed
+                    scrollbarWidth: "thin", // Makes scrollbar less intrusive
+                  },
+                  values: {
+                    display: "flex",
+                    flexWrap: "nowrap", // Prevents multi-line chips
+                    overflowX: "auto", // Allows horizontal scrolling
+                    maxWidth: "100%", // Ensures it fits within the input
+                    gap: "4px",
+                    padding: "4px",
+                  },
+                }}
+
+                data={remarksFilterOptions}
+                // value={filter.status}
+                onChange={(values) => setFilter({ ...filter, remarks: values })}
+                searchable
+                clearable
+                nothingFound="No options"
+                withinPortal
+                maxDropdownHeight={90}
+                rightSection={
+                  <span> {/* Custom dropdown icon */}
+                    <IconCaretDownFilled size={18} stroke={2} />
+                  </span>
+                }
               />
 
-              <TextInput
+              {/* Status chips */}
+              <MultiSelect
                 radius={8}
                 size={inputSize}
-                className="border-none w-full text-sm"
+                className="border-none w-full text-[16px] poppins"
                 label="Status"
-                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Status"
+                styles={{
+                  label: { color: "#6d6d6d" },
+                  input: {
+                    display: "flex",
+                    flexWrap: "nowrap", // Prevents wrapping
+                    overflowX: "auto", // Enables horizontal scrolling
+                    maxHeight: "40px", // Keeps input height fixed
+                    scrollbarWidth: "thin", // Makes scrollbar less intrusive
+                  },
+                  values: {
+                    display: "flex",
+                    flexWrap: "nowrap", // Prevents multi-line chips
+                    overflowX: "auto", // Allows horizontal scrolling
+                    maxWidth: "100%", // Ensures it fits within the input
+                    gap: "4px",
+                    padding: "4px",
+                  },
+                }}
+                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
+                data={statusFilterOptions}
                 value={filter.status}
-                onChange={(event) => { setFilter({ ...filter, status: `${event.currentTarget.value}` }) }}
+                onChange={(values) => setFilter({ ...filter, status: values })}
+                searchable
+                clearable
+                nothingFound="No options"
+                withinPortal
+                maxDropdownHeight={90}
+                rightSection={
+                  <span> {/* Custom dropdown icon */}
+                    <IconCaretDownFilled size={18} stroke={2} />
+                  </span>
+                }
               />
             </>
           )}
@@ -234,6 +331,7 @@ export default function DrawerFilter() {
                 size={inputSize}
                 className="border-none w-full text-sm"
                 label="ID"
+                placeholder="Type ID"
                 styles={{ label: { color: "#6d6d6d" } }}
                 value={filter.id}
                 onChange={(event) => { setFilter({ ...filter, id: `${event.currentTarget.value}` }) }}
@@ -244,8 +342,9 @@ export default function DrawerFilter() {
               <TextInput
                 radius={8}
                 size={inputSize}
-                className="border-none w-full text-sm"
+                className="border-none w-full text-[16px] poppins"
                 label="Applicant Name"
+                placeholder="Type Applicant Name"
                 styles={{ label: { color: "#6d6d6d" } }}
                 value={filter.applicantName}
                 onChange={(event) => { setFilter({ ...filter, applicantName: `${event.currentTarget.value}` }) }}

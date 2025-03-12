@@ -6,6 +6,7 @@ interface ViewApplicantsProps {
     Applicant_Name: string;
     Status: string;
     Remarks: string;
+    Feedback?: string;
 }
 
 export default function ApplicationMovement({ Applicant_Name, Status, Remarks }: ViewApplicantsProps) {
@@ -18,18 +19,21 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
 
     // Filter columns to only include Application_Date, Status, and Remarks (Comments)
     const filterColumns = applicantsColumns.filter(col =>
-        ['Application_Date', 'Status'].includes(col.accessor)
+        ['Application_Date', 'Status'].includes(col.accessor) ||
+        (col.accessor === 'Feedback' && Status === 'Archived')
     );
 
     // Add Comments column manually via props
     const columnsWithComments = [
-        ...filterColumns,
+        ...filterColumns.filter(col => col.accessor !== 'Status'), // All columns except Status
         {
-            accessor: 'Comments',
+            accessor: 'Remarks',
             title: <span className='job-offers-table'>Comments</span>,
             render: () => <span>{Remarks}</span>,
-        }
+        },
+        ...filterColumns.filter(col => col.accessor === 'Status') // Move Status to the end
     ];
+
 
     return (
         <div className="pt-1">
@@ -40,6 +44,7 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
                         sorted: <span></span>,  // Empty element to remove default icon
                         unsorted: <span></span>,
                     }}
+                    className="p-0"
                 />
             </div>
         </div>

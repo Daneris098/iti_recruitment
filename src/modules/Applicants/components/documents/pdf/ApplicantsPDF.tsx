@@ -2,17 +2,17 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import header from '@src/assets/intellismart-header.png'; 
 // Import the local Poppins font file
-import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'
+// import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
+// import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'
 
 // Register the Poppins font
-Font.register({
-  family: 'Poppins',
-  fonts: [
-    { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
-    { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
-  ],
-});
+// Font.register({
+//   family: 'Poppins',
+//   fonts: [
+//     { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
+//     { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
+//   ],
+// });
 
 const styles = StyleSheet.create({  // General styles for Generative PDF
   page: {

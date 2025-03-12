@@ -52,7 +52,7 @@ const applicantsColumns = [
     sortable: true,
   },
   {
-    accessor: 'Phone_Number',
+    accessor: 'Phone',
     title: <span className='job-offers-table'>Phone</span>,
     sortable: true,
   },
@@ -64,6 +64,11 @@ const applicantsColumns = [
   {
     accessor: 'Position',
     title: <span className='job-offers-table'>Position</span>,
+    sortable: true,
+  },
+  {
+    accessor: 'Feedback',
+    title: <span className='job-offers-table'>Feedback</span>,
     sortable: true,
   },
   {

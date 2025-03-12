@@ -3,7 +3,7 @@ import Filter from "@src/modules/Applicants/components/filter/Filter";
 import { DataTable } from "mantine-datatable";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import { useEffect, useMemo, useState } from "react";
-import { useApplicantStore, usePaginationStore } from "@modules/Applicants/store";
+import { useApplicantStore, useCloseModal, usePaginationStore } from "@modules/Applicants/store";
 import { useSortStore } from "@modules/Applicants/store"
 import { IconArrowsUp, IconArrowsUpDown } from "@tabler/icons-react";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer"
@@ -17,17 +17,21 @@ export default function index() {
   const location = useLocation();
   const headerText = {
     "/applied": "Applied",
-    "/for-interview": "For Interview",
+    "/interview": "For Interview",
     "/applicants": "All Applicants",
-    "/offered": "Offered"
+    "/offered": "Offered",
+    "/hired": "Hired",
+    "/transferee": "For Transfer",
+    "/transferred": "Transferred",
+    "/archive": "Archived"
   }[location.pathname] || ""
 
   //initializing applicant, sort and pagination store
   const { records, loadApplicants } = useApplicantStore(); // for records
   const { sortedRecords, setSort, setRecords, columnAccessor, direction } = useSortStore(); // for sorting
   const { page, pageSize, setPage } = usePaginationStore(); // for pagination
-  const [isModalOpen, setIsModalOpen] = useState(false); // Initial state: closed // for Modal
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null); // For Document model
+  const {isViewApplicant, setIsViewApplicant} = useCloseModal(); // For handling the state of view applicant modal.
 
   // for json fetching of applicants record from values/response
   useEffect(() => {
@@ -36,38 +40,35 @@ export default function index() {
 
   // intially load the records from useApplicationStore().
   // The record rendering will conditionally render the displayed status depending on the 
-  // route. For example, if the route is /applied, it will display the applied
+  // route. For example, if the path is /applied, it will display all the applied status.
   useEffect(() => {
-    let filteredRecords = records;
+    const statusFilters: Record<string, string | string[]> = {
+      "/applied": "Applied",
+      "/offered": "Offered",
+      "/interview": ["Assessment", "Initial Interview", "Final Interview"],
+      "/applicants": ["Hired", "Applied", "Offered", "For Transfer", "Archived", "For Interview"],
+      "/hired": "Hired",
+      "/transferee": "For Transfer",
+      "/transferred": "Transferred",
+      "/archive": "Archived",
+    };
 
-    if (location.pathname === "/applied") {
-      filteredRecords = records.filter((applicant) => applicant.Status === "Applied")
-    }
-    else if (location.pathname === "/offered") {
-      filteredRecords = records.filter((applicant) => applicant.Status === "Offered")
-    }
-    else if (location.pathname === "/interview") {
-      filteredRecords = records.filter((applicant) => ["Assessment", "Initial Interview", "Final Interview"].includes(applicant.Status))
-    }
-    else if (location.pathname === "/applicants") {
-      filteredRecords = records.filter((applicant) =>
-        ["Hired", "Applied", "Offered", "For Transfer", "Archived", "For Interview"].includes(applicant.Status));
-    }
-    else if (location.pathname === "/hired") {
-      filteredRecords = records.filter((applicant) => applicant.Status === "Hired");
-    }
-    else if (location.pathname === "/transferee") {
-      filteredRecords = records.filter((applicant) => applicant.Status === "For Transfer");
-    }
-    else if (location.pathname === "/transferred") {
-      filteredRecords = records.filter((applicant) => applicant.Status === "Transferred");
-    }
-    else if (location.pathname === "/archive") {
-      filteredRecords = records.filter((applicant) => applicant.Status === "Archived");
+    // Filtering the records based on the current tab.
+    // This will filter the records based on the status of the applicant.
+    let filteredRecords = records;
+    const filterCriteria = statusFilters[location.pathname];
+
+    if (filterCriteria) {
+      if (Array.isArray(filterCriteria)) {
+        filteredRecords = records.filter((applicant) => filterCriteria.includes(applicant.Status));
+      }
+      else {
+        filteredRecords = records.filter((applicant) => applicant.Status === filterCriteria)
+      }
     }
 
     setRecords(filteredRecords);
-  }, [records, location.pathname, setRecords])
+  }, [records, location.pathname, setRecords]);
 
   // for making sure that the records will be divided into x number of records per page.
   // also responsible for pagination display.
@@ -77,24 +78,39 @@ export default function index() {
     return sortedRecords.slice(startIndex, endIndex);
   }, [sortedRecords, page, pageSize]);
 
+  // For handling the state of row clicking of each record.
+  // This will make each rendered records clickable.
   const handleRowClick = (applicant: string) => {
     setSelectedApplicant(applicant);
-    setIsModalOpen(true);
+    setIsViewApplicant(true);
   }
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
   // it is also responsible for sorting the records based on the selected column.
-  const enhancedColumns = applicantsColumns.map((col) => {
+  const extendedColumn = applicantsColumns
 
-    // Handle sorting logic
-    if (col.sortable) {
-      const isActiveColumn = col.accessor === columnAccessor;
-      const icon =
-        isActiveColumn && direction === "asc" ? (<IconArrowsUp size={14} />) : (<IconArrowsUpDown size={14} />);
-      col = {
-        ...col,
-        title: (
+    // Exclude Feedback Column from the JSON object
+    .filter((col) => col.accessor !== "Feedback")
+    .map((col) => {
+      let updatedCol = { ...col };
+
+      // If the Column from the JSON Object is clickable, then access its column accessor.
+      if (col.sortable) {
+
+        // Set the value of isActiveColumn to true if the columnAccessor (from store) 
+        // matches the current column.accessor from Defined Columns.
+        const isActiveColumn = col.accessor === columnAccessor;
+        const icon = isActiveColumn && direction === "asc" ? (  // Ternary operation to avoid deep nested if else.
+          <IconArrowsUp size={14} />  // if Ascending
+        ) : (
+          <IconArrowsUpDown size={14} /> // Descending
+        );
+
+        // If the column header is set to sortable then allow the sorting function to go through.
+        // Also this enables the Arrow Icon from DataTable to properly change depending on the
+        // Ascending or Descending state of the column. In other words, for sorting animation.
+        updatedCol.title = (  // This is for rendering the column title with the icon. 
           <span
             className="job-offers-table cursor-pointer flex items-center gap-1"
             onClick={() => setSort(col.accessor, sortedRecords)}
@@ -102,95 +118,80 @@ export default function index() {
             {col.title}
             {icon}
           </span>
-        ),
-      };
-    }
+        );
+      } else {
+        updatedCol.title = col.title; // If the column is not sortable then don't allow the sorting animation.
+      }
 
-    // Handle row click functionality
-    return {
-      ...col,
-      render: (row: any) => {
-        if (col.render) {
-          return (
-            <span onClick={() => handleRowClick(row)} className="cursor-pointer">
-              {col.render(row)}
-            </span>
-          );
-        }
+      return updatedCol; // return the header column regardless whether it is sortable or not.
+    });
 
-        if (["Applicant_Name", "Email", "Phone_Number", "Position", "Status", "Application_Date"].includes(col.accessor)) {
-          return (
-            <span className="cursor-pointer text-black" onClick={() => handleRowClick(row)}>
-              {row[col.accessor]}
-            </span>
-          );
-        }
-
-        return row[col.accessor];
-      },
-    };
-  });
 
   // main
   return (
+
+    // Container
     <AppShell className="p-4 h-full relative">
-    {/* Container */}
-    <div className="flex flex-col h-full bg-white rounded-md shadow-md p-6">
+      <div className="flex flex-col h-full bg-white rounded-md shadow-md p-6">
 
-      {/* Header */}
-      <h1 className="text-[#559CDA] text-[22px] font-semibold mb-1">
-        {headerText}
-      </h1>
+        {/* Header */}
+        <h1 className="text-[#559CDA] text-[22px] font-semibold mb-1poppins">
+          {headerText}
+        </h1>
 
-      {/* Filter Component */}
-      <FilterDrawer />
-      <Filter />
+        {/* Filter Component */}
+        <FilterDrawer />
+        <Filter />
 
-      {/* Table Wrapper (Grows to Fill Space) */}
-      <div className="flex-grow overflow-auto">
-        <DataTable
-          columns={enhancedColumns}
-          records={paginatedRecords}
-          sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}
-        />
+        {/* Table Wrapper (Grows to Fill Space) */}
+        <div className="flex-grow overflow-auto poppins">
+          <DataTable
+            columns={extendedColumn}
+            records={paginatedRecords}
+            sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}
+            onRowClick={({ record }) => handleRowClick(record)}
+            rowClassName={() => "cursor-pointer hover:bg-teal-400"} // Add hover effect
+          />
+        </div>
+
+        {/* Pagination and Footer (Sticky at Bottom) */}
+        <div className="flex justify-between items-center mt-auto pt-2">
+          {/* Record count */}
+          <p className="job-offers-table text-sm">
+            {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
+              page * pageSize,
+              records.length
+            )} of ${records.length} entries`}
+          </p>
+
+          {/* Pagination */}
+          <Pagination
+            value={page}
+            onChange={setPage}
+            total={Math.ceil(records.length / pageSize)}
+            siblings={1}
+            size="sm"
+          />
+        </div>
+
+        {/* View Applicant Modal */}
+        {/* <ApplicantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}> */}
+        <ApplicantModal isOpen={isViewApplicant} onClose={() => setIsViewApplicant(false)}>
+          <ViewApplicant
+            Applicant_Name={selectedApplicant?.Applicant_Name}
+            Position={selectedApplicant?.Position}
+            Status={selectedApplicant?.Status}
+            Email={selectedApplicant?.Email}
+            Phone={selectedApplicant?.Phone}
+            Skills={selectedApplicant?.Skills}
+            Remarks={selectedApplicant?.Remarks}
+            Application_Date={selectedApplicant?.Application_Date}
+            onClose={() => setIsViewApplicant(false)}
+          />
+        </ApplicantModal>
+
       </div>
-
-      {/* Pagination and Footer (Sticky at Bottom) */}
-      <div className="flex justify-between items-center mt-auto pt-2">
-        {/* Record count */}
-        <p className="job-offers-table text-sm">
-          {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
-            page * pageSize,
-            records.length
-          )} of ${records.length} entries`}
-        </p>
-
-        {/* Pagination */}
-        <Pagination
-          value={page}
-          onChange={setPage}
-          total={Math.ceil(records.length / pageSize)}
-          siblings={1}
-          size="sm"
-        />
-      </div>
-
-      {/* View Applicant Modal */}
-      <ApplicantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <ViewApplicant
-          Applicant_Name={selectedApplicant?.Applicant_Name}
-          Position={selectedApplicant?.Position}
-          Status={selectedApplicant?.Status}
-          Email={selectedApplicant?.Email}
-          Phone={selectedApplicant?.Phone_Number}
-          Skills={selectedApplicant?.Skills}
-          Remarks={selectedApplicant?.Remarks}
-          onClose={() => setIsModalOpen(false)}
-        />
-      </ApplicantModal>
-
-    </div>
-  </AppShell>
+    </AppShell>
 
   );
 }

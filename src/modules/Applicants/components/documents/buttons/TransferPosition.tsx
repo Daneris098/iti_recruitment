@@ -1,9 +1,9 @@
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
-import { IconChevronDown, IconX } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Applicants/store";
 import { useState } from "react";
 import TransferredPositionModal from "@modules/Applicants/components/modal/jobGenerated";
-import TransferredPosition from "@modules/Applicants/components/documents/alerts/Transferred"
+import TransferredPosition from "@src/modules/Applicants/components/alerts/Transferred"
 interface ApplicantTransfereeName {
     Applicant_Name: string
     onClose: () => void
@@ -25,8 +25,9 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             {/* Header */}
             <div >
                 <div className="flex justify-between items-center">
-                    <h1 className="font-semibold text-[#559CDA] text-[22px]">Transfer Applicant Position</h1>
+                    <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">Transfer Applicant Position</h1>
                     <IconX className="w-[15px] h-[15px] cursor-pointer"
+                        onClick={onClose}
                     />
                 </div>
                 <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
@@ -34,14 +35,14 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
 
             {/* Name */}
             <div className="pt-4">
-                <h1 className="font-medium text-[#6D6D6D] text-[15px] pb-1">Name</h1>
-                <p className="w-[540px] h-[56px] px-4 bg-[#6D6D6D30] border border-[#6D6D6D] rounded-lg flex items-center text-[#6D6D6D99]"> {Applicant_Name ?? "N/A"}</p>
+                <h1 className="poppins font-medium text-[#6D6D6D] text-[15px] pb-1">Name</h1>
+                <p className="poppins w-[540px] h-[56px] px-4 bg-[#6D6D6D30] border border-[#6D6D6D] rounded-lg flex items-center text-[#6D6D6D99]"> {Applicant_Name ?? "N/A"}</p>
             </div>
 
             {/* Position Dropdown */}
             <div className="pt-4">
-                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
-                    Position/Rank <span className="text-[#F14336]">*</span>
+                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
+                    Position
                 </h3>
                 <Combobox store={positionCombobox} withinPortal={false}>
                     <Combobox.Target>
@@ -49,10 +50,10 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                             value={position}
                             onChange={(e) => setPosition(e.currentTarget.value)}
                             onFocus={() => positionCombobox.openDropdown()}
-                            rightSection={<IconChevronDown size={16} />}
-                            placeholder="Select Position"
+                            rightSection={<IconCaretDownFilled size={18} />}
+                            placeholder="Select from open vacancy"
                             classNames={{
-                                input: "relative flex items-center w-[540px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                input: "poppins relative flex items-center w-[540px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                             }}
                             required
                         />
@@ -90,7 +91,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                     autosize
                     minRows={4}
                     classNames={{
-                        input: "w-[540px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                        input: "poppins pt-2 w-[540px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                     }}
                 />
             </div>
@@ -98,22 +99,26 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             {/* Submit Button */}
             <div className="flex justify-between pt-4">
 
-                <Button className="bg-transparent text-[#559CDA] px-6 py-3 rounded-lg border-[#559CDA] font-medium text-[15px]"
+                <Button className="bg-transparent text-[#559CDA] px-6 py-3 rounded-lg border-[#559CDA] font-medium text-[14px] poppins"
                     onClick={onClose}>
                     Cancel
                 </Button>
 
                 <Button
-                    className="custom-gradient text-white px-6 py-3 rounded-lg font-medium text-[15px]"
-                    onClick={() => setIsTransferred(true)}>
+                    className="custom-gradient text-white px-6 py-3 rounded-lg font-medium text-[14px] poppins"
+                    onClick={() => {
+                        setIsTransferred(true); // Open success modal first
+                        setTimeout(() => onClose(), 1000); // Delay closing the transfer modal
+                    }}>
                     {"Transfer Position".toUpperCase()}
                 </Button>
+
             </div>
 
             <div>
                 <TransferredPositionModal isOpen={isTransferred} onClose={() => setIsTransferred(false)}>
-                    <TransferredPosition 
-                    onClose={onClose}
+                    <TransferredPosition
+                        onClose={onClose}
                     />
                 </TransferredPositionModal>
             </div>

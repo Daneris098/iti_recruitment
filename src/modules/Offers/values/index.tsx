@@ -1,4 +1,4 @@
-import { AllJobOffersFilterType, OfferType } from '@modules/Offers/types';
+import { AllJobOffersFilterType, OfferType } from '@modules/Offers/components/types';
 
 // export const filterVal: AllJobOffersFilterType = {
 //     id: "",

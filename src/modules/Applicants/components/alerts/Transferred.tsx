@@ -1,18 +1,17 @@
-import { Button, Divider } from "@mantine/core";
-import { IconChecklist, IconX } from "@tabler/icons-react";
+import { Divider } from "@mantine/core";
+import { IconCircleCheck, IconX } from "@tabler/icons-react";
 
 interface JobGeneratedAlertProps {
     onClose: () => void;
 }
 
 export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
-
     return (
         <div className="p-1">
             {/* Header */}
             <div>
                 <div className="flex justify-between items-center">
-                    <h1 className="font-semibold text-[#559CDA] text-[22px]">Generate Offer</h1>
+                    <h1 className="font-semibold text-[#559CDA] text-[22px]">Transfer Applicant Position</h1>
 
                     {/* Exit Icon - Closes modal */}
                     <IconX
@@ -25,21 +24,14 @@ export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
 
             {/* Checklist Icon */}
             <div className="justify-center flex py-2">
-                <IconChecklist size={26} style={{ width: "90px", height: "90px" }} className="text-[#559CDA] stroke-[0.5]" />
+                <IconCircleCheck size={26} style={{ width: "90px", height: "90px" }} className="text-[#559CDA] stroke-[0.5]" />
             </div>
 
             {/* Text prompt */}
             <div>
-                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D]">
-                    Job Offer Generated Successfully!
+                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] text-center pb-4">
+                    The applicant has been successfully transferred.
                 </h1>
-            </div>
-
-            {/* View Button */}
-            <div className="flex justify-center items-center align-middle pt-7">
-                <Button className="font-medium text-[15px] text-[#559CDA] bg-white border-[#559CDA] rounded-[10px] w-[198px]">
-                    View
-                </Button>
             </div>
         </div>
     );

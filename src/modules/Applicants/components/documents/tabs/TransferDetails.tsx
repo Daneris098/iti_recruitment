@@ -174,14 +174,14 @@ export default function TransferDetails() {
                     { accessor: 'leaveParameter', title: 'Leave Code Parameter' },
                     { accessor: 'payrollParameter', title: 'Leave Parameter' },
                 ]}
-                className="border border-gray-300 rounded-lg shadow-md"
+                className="border border-gray-50 rounded-lg "
             />
 
             {/* Benefits Details */}
             <h1 className="text-[#559CDA] text-[16px] font-bold mt-8">Benefits Details</h1>
             <DataTable
                 highlightOnHover
-                className="border border-gray-300 rounded-lg shadow-md"
+                className="border border-gray-50 rounded-lg "
                 records={sampleData}
                 columns={[
                     { accessor: "code", title: "Code" },

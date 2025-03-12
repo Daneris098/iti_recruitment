@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
         { to: "applicants", icon: <IconUser />, label: "ALL APPLICANTS" },
         { to: "applied", icon: <FileUser />, label: "APPLIED" },
         { to: "interview", icon: <IconMessageCircleUser />, label: "FOR INTERVIEW" },
-        { to: "offered", icon: <IconBriefcase />, label: "FOR OFFERED" },
+        { to: "offered", icon: <IconBriefcase />, label: "OFFERED" },
         { to: "hired", icon: <IconUserPlus />, label: "HIRED" },
         { to: "transferee", icon: <IconTransfer />, label: "FOR TRANSFER" },
         { to: "transferred", icon: <FileUp />, label: "TRANSFERRED" },

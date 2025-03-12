@@ -11,8 +11,8 @@ const ApplicantModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => 
     if (!isOpen) return null;
 
     return (
-        <div className="job-offer-modal-overlay" onClick={onClose}>
-          <div className="job-generated" onClick={(e) => e.stopPropagation()}>
+        <div className="applicant-unreachable-modal-overlay " onClick={onClose}>
+          <div className="applicant-unreachable" onClick={(e) => e.stopPropagation()}>
             {children}
           </div>
         </div>

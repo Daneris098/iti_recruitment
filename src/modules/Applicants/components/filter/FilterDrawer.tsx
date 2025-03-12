@@ -3,9 +3,7 @@ import { IconX } from "@tabler/icons-react";
 import { FilterStore } from '@modules/Applicants/store'
 import { useEffect } from "react";
 import { filterVal } from "@modules/Applicants/values";
-// import applicantsRecord from "@modules/Applicants/values/response/applicants.json"
 import DateRangeFilter from "@modules/Applicants/components/filter/DateRangeFilter";
-// import { useLocation } from "react-router-dom";
 
 export default function DrawerFilter() {
   const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
@@ -14,17 +12,15 @@ export default function DrawerFilter() {
   dateTomorrow.setDate(currentDate.getDate() + 1)
 
   // date formatting
-  const formatDate = (date: string | Date) => {
-    if (!date) return ''; // Handle cases where date is undefined or empty
-    return new Date(date).toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
+  // const formatDate = (date: string | Date) => {
+  //   if (!date) return ''; // Handle cases where date is undefined or empty
+  //   return new Date(date).toLocaleDateString('en-US', { 
+  //     year: 'numeric', 
+  //     month: 'long', 
+  //     day: 'numeric' 
+  //   });
+  // };
   
-    
-
   const clear = () => {
     setFilter(filterVal)
     setIsFiltered(false)

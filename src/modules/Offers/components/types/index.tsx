@@ -33,7 +33,7 @@ export interface FilterState {
   setFilterDrawer: (filterDrawer: boolean) => void;
   setIsFiltered: (isFiltered: boolean) => void;
   setFilter: (filter: AllJobOffersFilterType) => void;
-  setActiveTab: (tab: string) => void;
+  setActiveTab: (tab: string | null) => void;
 }
 
 export interface AllJobOffersFilterType {

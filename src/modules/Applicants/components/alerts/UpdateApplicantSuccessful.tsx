@@ -1,5 +1,5 @@
-import { Button, Divider } from "@mantine/core";
-import { IconCircleCheck, IconX } from "@tabler/icons-react";
+import { Divider } from "@mantine/core";
+import { IconMessage2Check, IconX } from "@tabler/icons-react";
 
 interface JobGeneratedAlertProps {
     onClose: () => void;
@@ -11,7 +11,7 @@ export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
             {/* Header */}
             <div>
                 <div className="flex justify-between items-center">
-                    <h1 className="font-semibold text-[#559CDA] text-[22px]">Transfer Applicant Position</h1>
+                    <h1 className="font-semibold text-[#559CDA] text-[22px]">Update Applicant Status</h1>
 
                     {/* Exit Icon - Closes modal */}
                     <IconX
@@ -23,24 +23,17 @@ export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
             </div>
 
             {/* Checklist Icon */}
-            <div className="justify-center flex py-2">
-                <IconCircleCheck size={26} style={{ width: "90px", height: "90px" }} className="text-[#559CDA] stroke-[0.5]" />
+            <div className="justify-center flex py-4">
+                <IconMessage2Check size={26} style={{ width: "90px", height: "90px" }} className="text-[#559CDA] stroke-[0.5]" />
             </div>
 
             {/* Text prompt */}
             <div>
-                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] text-center">
-                    The applicant has been successfully transferred.
+                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] pb-8 pt-2">
+                    Update Applicant Status Successful
                 </h1>
             </div>
 
-            {/* View Button */}
-            <div className="flex justify-center items-center align-middle pt-7">
-                <Button className="font-medium text-[15px] text-[#559CDA] bg-white border-[#559CDA] rounded-[10px] w-[198px]"
-                    onClick={onClose}>
-                    Close
-                </Button>
-            </div>
         </div>
     );
 }

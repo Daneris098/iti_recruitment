@@ -9,12 +9,13 @@ export interface ApplicantStatus {
 }
 
 export interface Applicants {
+    id: number;
     Applicant_Name: string;
     Application_Date: string;
-    Phone_Number: string;
+    Phone: string;
     Email: string;
     Position: string;
-    Status: string;
+    Status: "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred";
 }
 
 export interface FilterState {

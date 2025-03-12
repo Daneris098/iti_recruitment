@@ -13,7 +13,7 @@ export const filterVal: ApplicantStatus = {
 export const selectedVal: Applicants = {
     Applicant_Name: "",
     Application_Date: "",
-    Phone_Number: "",
+    Phone: "",
     Email: "",
     Position: "",
     Status: "",

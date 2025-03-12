@@ -112,3 +112,13 @@
   overflow: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+/* for job-offers-table styles */
+.job-offers-table {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  /* font-family: 'Popi'; */
+  color: #5E6670;
+  gap: 1.75rem;
+}
