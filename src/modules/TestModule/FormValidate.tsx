@@ -31,7 +31,6 @@ export default function Index() {
             <Group justify="flex-end" mt="md">
                 <Button onClick={() => {
                     form.setFieldError('email', 'No special characters allowed');
-                    alert('validate')
                 }}>Submit</Button>
             </Group>
         </form>
