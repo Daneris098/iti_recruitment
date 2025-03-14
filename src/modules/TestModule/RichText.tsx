@@ -7,7 +7,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import { useForm } from '@mantine/form';
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { Button, Text } from '@mantine/core';
 
 export default function Index() {
@@ -53,7 +53,6 @@ export default function Index() {
                 <Text className="text-gray-500 font-medium">Job Description</Text>
 
                 <div className={`border ${form.errors.content ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
-                    {/* ✅ Add key to force re-creation */}
                     <RichTextEditor editor={editor}>
                         <RichTextEditor.Toolbar sticky >
                             <RichTextEditor.ControlsGroup>

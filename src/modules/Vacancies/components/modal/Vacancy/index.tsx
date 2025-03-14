@@ -19,7 +19,6 @@ import { AlertType, ActionTitle, ActionButtonTitle } from '@modules/Vacancies/ty
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
 import { selectedDataVal } from '@src/modules/Vacancies/values';
 import { vacancyFormInitialData } from '@src/modules/HiringSettings/values';
-import { cn } from '@src/lib/utils';
 
 export default function index() {
     const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy } = VacancyStore();
