@@ -12,10 +12,12 @@ export default function index() {
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [technicalSkills, setTechnicalSkills] = useState<string[]>([]);
     const myRef = useRef(null);
-    
+
     useEffect(() => {
-        setTechnicalSkills(applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(','))
-    },[])
+        if (applicationForm.familyBackground.otherInformation.specialTechnicalSkills != '') {
+            setTechnicalSkills(applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(','))
+        }
+    }, [])
 
     const handleChange = (value: any) => {
         setTechnicalSkills(value);

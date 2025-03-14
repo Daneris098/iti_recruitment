@@ -1,4 +1,4 @@
-import { Divider, Select, TextInput, Popover, Checkbox } from "@mantine/core";
+import { Divider, Select, TextInput, Popover, Checkbox, NumberInput } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore } from "@modules/HomePublic/store"
@@ -112,7 +112,7 @@ export default function index() {
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <TextInput {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
+                    <NumberInput hideControls min={1} {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
                     <Popover
                         position="bottom"
                         shadow="md"
