@@ -60,10 +60,6 @@ export default function index() {
         }
     });
 
-    useEffect(() => {
-        console.log('form: ', form.getValues())
-    }, [form])
-
     const handleChange = (value: any) => {
         setMustHaveSkills(value);
     };
@@ -118,7 +114,6 @@ export default function index() {
     });
 
     useEffect(() => {
-        console.log('action: ', action)
 
         if (action == 'Edit') {
             form.setFieldValue('positionTitle', selectedVacancy.position)

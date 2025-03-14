@@ -9,7 +9,7 @@ import { Step, SubModuleRef, Submodule } from "@modules/AccountSetup/types"
 import { Button } from '@mantine/core';
 import { cn } from "@src/lib/utils";
 import Modals from "@modules/AccountSetup/components/modal/"
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export default function index() {
     const { activeStepper, setActiveStepper } = AccountSetupStore()
@@ -32,10 +32,6 @@ export default function index() {
     else {
         currentStepComponent = <div>Else Page</div>;
     }
-
-    useEffect(() => {
-        console.log('activeStepper: ', Step[activeStepper]) //output: profile 
-    }, [])
 
     const buttons = () => {
         return (
