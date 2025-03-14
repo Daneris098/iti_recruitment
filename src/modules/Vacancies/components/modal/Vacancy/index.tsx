@@ -1,6 +1,6 @@
 import '@mantine/tiptap/styles.css';
 import { useEffect, useRef, useState } from "react";
-import { Modal, Divider, Button, Select, TextInput, MultiSelect, Flex, Popover } from '@mantine/core';
+import { Modal, Divider, Button, Select, TextInput, MultiSelect, Flex, Popover, Text } from '@mantine/core';
 import { IconCalendarMonth, IconCaretDownFilled } from '@tabler/icons-react';
 import { useEditor } from '@tiptap/react';
 import { useForm } from '@mantine/form';
@@ -19,6 +19,7 @@ import { AlertType, ActionTitle, ActionButtonTitle } from '@modules/Vacancies/ty
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
 import { selectedDataVal } from '@src/modules/Vacancies/values';
 import { vacancyFormInitialData } from '@src/modules/HiringSettings/values';
+import { cn } from '@src/lib/utils';
 
 export default function index() {
     const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy } = VacancyStore();
@@ -34,13 +35,29 @@ export default function index() {
         }
     }, [vacancyDuration])
     const myRef = useRef(null);
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: vacancyFormInitialData,
         validate: {
-            // firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
-            // desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
-            // startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
+            positionTitle: (value: string) => value.length === 0 ? "Position Title is required" : null,
+            company: (value: string) => value.length === 0 ? "Company is required" : null,
+            branch: (value: string) => value.length === 0 ? "Branch is required" : null,
+            division: (value: string) => value.length === 0 ? "Division is required" : null,
+            department: (value: string) => value.length === 0 ? "Department is required" : null,
+            section: (value: string) => value.length === 0 ? "Section is required" : null,
+            employmentType: (value: string) => value.length === 0 ? "Employment Type is required" : null,
+            workplaceType: (value: string) => value.length === 0 ? "Work Type is required" : null,
+            vacancyType: (value: string) => value.length === 0 ? "Vacancy Type is required" : null,
+            experienceLevel: (value: string) => value.length === 0 ? "Experience Level is required" : null,
+            duration: {
+                start: (value: string) => value.length === 0 ? "Start date is required" : null,
+                end: (value: string) => value.length === 0 ? "End date is required" : null,
+            },
+            noOfOpenPosition: (value: number) => value <= 0 ? "Number of open position must be greater than 0" : null,
+            jobDescription: (value: string) => value == "<p>Write Job Description Here</p>" || value === '<p></p>' || value == "" ? "Job Description is required" : null,
+            mustHaveSkills: (value: string) => value.length === 0 ? "Must have skills is required" : null,
+            qualification: (value: string) => value == "<p>Write Qualification here</p>" || value === '<p></p>' || value == "" ? "Qualification is required" : null,
         }
     });
 
@@ -63,6 +80,10 @@ export default function index() {
         }
     };
 
+    useEffect(() => {
+        form.setFieldValue('mustHaveSkills', mustHaveSkills.toString())
+    }, [mustHaveSkills])
+
     const editor = useEditor({
         extensions: [
             TextStyle, Color,
@@ -75,6 +96,9 @@ export default function index() {
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
         content: action == 'Edit' ? selectedVacancy.jobDescription : `<p>Write Job Description Here</p>`,
+        onUpdate: ({ editor }) => {
+            form.setFieldValue('jobDescription', editor.getHTML());
+        },
     });
 
     const editor2 = useEditor({
@@ -89,6 +113,9 @@ export default function index() {
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
         content: action == 'Edit' ? selectedVacancy.qualification : `<p>Write Qualification here</p>`,
+        onUpdate: ({ editor }) => {
+            form.setFieldValue('qualification', editor.getHTML());
+        },
     });
 
     useEffect(() => {
@@ -102,7 +129,7 @@ export default function index() {
             form.setFieldValue('department', selectedVacancy.department)
             form.setFieldValue('section', selectedVacancy.section)
             form.setFieldValue('employmentType', selectedVacancy.employmentType)
-            form.setFieldValue('workplace', selectedVacancy.workplace)
+            form.setFieldValue('workplaceType', selectedVacancy.workplace)
             form.setFieldValue('vacancyType', selectedVacancy.vacancyType)
             form.setFieldValue('experienceLevel', selectedVacancy.experienceLevel)
             form.setFieldValue('duration.start', selectedVacancy.vacancyDuration.start)
@@ -125,7 +152,10 @@ export default function index() {
     }, [action, selectedVacancy])
 
     const onSubmit = async () => {
-
+        formRef.current?.requestSubmit();
+        setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
+        setAction('')
+        setSelectedVacancy(selectedDataVal);
     };
 
 
@@ -219,8 +249,8 @@ export default function index() {
                             size='lg'
                         />
                         <Select
-                            {...form.getInputProps("workplace")}
-                            key={form.key('workplace')}
+                            {...form.getInputProps("workplaceType")}
+                            key={form.key('workplaceType')}
                             label="Workplace Type"
                             placeholder={"Select Workplace Type"}
                             radius={8}
@@ -345,56 +375,66 @@ export default function index() {
                     </div>
 
                     <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
-                    <RichTextEditor editor={editor}>
-                        <RichTextEditor.Toolbar sticky stickyOffset={60}>
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Bold />
-                                <RichTextEditor.Italic />
-                                <RichTextEditor.Underline />
-                                <RichTextEditor.Strikethrough />
-                                <RichTextEditor.ClearFormatting />
-                                <RichTextEditor.Highlight />
-                                <RichTextEditor.Code />
-                            </RichTextEditor.ControlsGroup>
+                    <div className={`border ${form.errors.jobDescription ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
+                        <RichTextEditor editor={editor}>
+                            <RichTextEditor.Toolbar sticky>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Bold />
+                                    <RichTextEditor.Italic />
+                                    <RichTextEditor.Underline />
+                                    <RichTextEditor.Strikethrough />
+                                    <RichTextEditor.ClearFormatting />
+                                    <RichTextEditor.Highlight />
+                                    <RichTextEditor.Code />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.H1 />
-                                <RichTextEditor.H2 />
-                                <RichTextEditor.H3 />
-                                <RichTextEditor.H4 />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.H1 />
+                                    <RichTextEditor.H2 />
+                                    <RichTextEditor.H3 />
+                                    <RichTextEditor.H4 />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Blockquote />
-                                <RichTextEditor.Hr />
-                                <RichTextEditor.BulletList />
-                                <RichTextEditor.OrderedList />
-                                <RichTextEditor.Subscript />
-                                <RichTextEditor.Superscript />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Blockquote />
+                                    <RichTextEditor.Hr />
+                                    <RichTextEditor.BulletList />
+                                    <RichTextEditor.OrderedList />
+                                    <RichTextEditor.Subscript />
+                                    <RichTextEditor.Superscript />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Link />
-                                <RichTextEditor.Unlink />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Link />
+                                    <RichTextEditor.Unlink />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.AlignLeft />
-                                <RichTextEditor.AlignCenter />
-                                <RichTextEditor.AlignJustify />
-                                <RichTextEditor.AlignRight />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.AlignLeft />
+                                    <RichTextEditor.AlignCenter />
+                                    <RichTextEditor.AlignJustify />
+                                    <RichTextEditor.AlignRight />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Undo />
-                                <RichTextEditor.Redo />
-                            </RichTextEditor.ControlsGroup>
-                        </RichTextEditor.Toolbar>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Undo />
+                                    <RichTextEditor.Redo />
+                                </RichTextEditor.ControlsGroup>
+                            </RichTextEditor.Toolbar>
 
-                        <RichTextEditor.Content />
-                    </RichTextEditor>
+                            <RichTextEditor.Content className={`border ${form.errors.jobDescription ? 'text-red-500' : ''}`} />
+                        </RichTextEditor>
+                        {form.errors.jobDescription && (
+                            <Text className='absolute' color="red" size="sm">
+                                {form.errors.jobDescription}
+                            </Text>
+                        )}
+
+                    </div>
 
                     <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
+                        {...form.getInputProps("mustHaveSkills")}
+                        key={form.key('mustHaveSkills')}
                         classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]', pill: 'poppins text-[#6D6D6D]' }}
                         className='w-full'
                         placeholder="Type keyword to set required skills."
@@ -406,64 +446,66 @@ export default function index() {
                     />
 
                     <p className='text-[#6D6D6D] text-lg'>Qualification</p>
-                    <RichTextEditor editor={editor2}>
-                        <RichTextEditor.Toolbar sticky stickyOffset={60}>
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Bold />
-                                <RichTextEditor.Italic />
-                                <RichTextEditor.Underline />
-                                <RichTextEditor.Strikethrough />
-                                <RichTextEditor.ClearFormatting />
-                                <RichTextEditor.Highlight />
-                                <RichTextEditor.Code />
-                            </RichTextEditor.ControlsGroup>
+                    <div className={`border ${form.errors.qualification ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
+                        <RichTextEditor editor={editor2}>
+                            <RichTextEditor.Toolbar sticky>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Bold />
+                                    <RichTextEditor.Italic />
+                                    <RichTextEditor.Underline />
+                                    <RichTextEditor.Strikethrough />
+                                    <RichTextEditor.ClearFormatting />
+                                    <RichTextEditor.Highlight />
+                                    <RichTextEditor.Code />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.H1 />
-                                <RichTextEditor.H2 />
-                                <RichTextEditor.H3 />
-                                <RichTextEditor.H4 />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.H1 />
+                                    <RichTextEditor.H2 />
+                                    <RichTextEditor.H3 />
+                                    <RichTextEditor.H4 />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Blockquote />
-                                <RichTextEditor.Hr />
-                                <RichTextEditor.BulletList />
-                                <RichTextEditor.OrderedList />
-                                <RichTextEditor.Subscript />
-                                <RichTextEditor.Superscript />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Blockquote />
+                                    <RichTextEditor.Hr />
+                                    <RichTextEditor.BulletList />
+                                    <RichTextEditor.OrderedList />
+                                    <RichTextEditor.Subscript />
+                                    <RichTextEditor.Superscript />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Link />
-                                <RichTextEditor.Unlink />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Link />
+                                    <RichTextEditor.Unlink />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.AlignLeft />
-                                <RichTextEditor.AlignCenter />
-                                <RichTextEditor.AlignJustify />
-                                <RichTextEditor.AlignRight />
-                            </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.AlignLeft />
+                                    <RichTextEditor.AlignCenter />
+                                    <RichTextEditor.AlignJustify />
+                                    <RichTextEditor.AlignRight />
+                                </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.ControlsGroup>
-                                <RichTextEditor.Undo />
-                                <RichTextEditor.Redo />
-                            </RichTextEditor.ControlsGroup>
-                        </RichTextEditor.Toolbar>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Undo />
+                                    <RichTextEditor.Redo />
+                                </RichTextEditor.ControlsGroup>
+                            </RichTextEditor.Toolbar>
 
-                        <RichTextEditor.Content />
-                    </RichTextEditor>
-
+                            <RichTextEditor.Content className={`border ${form.errors.jobDescription ? 'text-red-500' : ''}`} />
+                        </RichTextEditor>
+                        {form.errors.qualification && (
+                            <Text className='absolute' color="red" size="sm">
+                                {form.errors.qualification}
+                            </Text>
+                        )}
+                    </div>
                     <Button
+                        type="submit"
                         className="br-gradient border-none text-white w-[10%] self-end"
                         variant="transparent"
                         radius={10}
-                        onClick={() => {
-                            setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
-                            setAction('')
-                            setSelectedVacancy(selectedDataVal);
-                        }}
                     >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}</Button>
 
                 </form>

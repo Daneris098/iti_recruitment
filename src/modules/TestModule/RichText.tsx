@@ -6,13 +6,22 @@ import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
+import { useForm } from '@mantine/form';
+import { useRef, useEffect, useState } from 'react';
+import { Button, Text } from '@mantine/core';
 
 export default function Index() {
-    // const content =
-    //     '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
-    
-    const content =
-        'asd';
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const form = useForm({
+        mode: 'uncontrolled',
+        initialValues: {
+            content: '',
+        },
+        validate: {
+            content: (value) => (!value.trim() || value === '<p></p>' ? 'Content is required' : null),
+        },
+    });
 
     const editor = useEditor({
         extensions: [
@@ -24,60 +33,90 @@ export default function Index() {
             Highlight,
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
-        content,
+        content: form.values.content,
+        onUpdate: ({ editor }) => {
+            form.setFieldValue('content', editor.getHTML());
+        },
     });
 
+    const onSubmit = async () => {
+        const isValid = form.validate();
+
+        if (!isValid.hasErrors) {
+            alert('Form submitted successfully');
+        }
+    };
+
     return (
-        <div className='h-screen flex flex-col gap-6'>
-            <p className='text-[#6D6D6D] text-lg text-center' >Job Description</p>
-            <RichTextEditor editor={editor}>
-                <RichTextEditor.Toolbar sticky stickyOffset={60}>
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Bold />
-                        <RichTextEditor.Italic />
-                        <RichTextEditor.Underline />
-                        <RichTextEditor.Strikethrough />
-                        <RichTextEditor.ClearFormatting />
-                        <RichTextEditor.Highlight />
-                        <RichTextEditor.Code />
-                    </RichTextEditor.ControlsGroup>
+        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-5">
+            <div className="flex flex-col">
+                <Text className="text-gray-500 font-medium">Job Description</Text>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.H1 />
-                        <RichTextEditor.H2 />
-                        <RichTextEditor.H3 />
-                        <RichTextEditor.H4 />
-                    </RichTextEditor.ControlsGroup>
+                <div className={`border ${form.errors.content ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
+                    {/* ✅ Add key to force re-creation */}
+                    <RichTextEditor editor={editor}>
+                        <RichTextEditor.Toolbar sticky >
+                            <RichTextEditor.ControlsGroup>
+                                <RichTextEditor.Bold />
+                                <RichTextEditor.Italic />
+                                <RichTextEditor.Underline />
+                                <RichTextEditor.Strikethrough />
+                                <RichTextEditor.ClearFormatting />
+                                <RichTextEditor.Highlight />
+                                <RichTextEditor.Code />
+                            </RichTextEditor.ControlsGroup>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Blockquote />
-                        <RichTextEditor.Hr />
-                        <RichTextEditor.BulletList />
-                        <RichTextEditor.OrderedList />
-                        <RichTextEditor.Subscript />
-                        <RichTextEditor.Superscript />
-                    </RichTextEditor.ControlsGroup>
+                            <RichTextEditor.ControlsGroup>
+                                <RichTextEditor.H1 />
+                                <RichTextEditor.H2 />
+                                <RichTextEditor.H3 />
+                                <RichTextEditor.H4 />
+                            </RichTextEditor.ControlsGroup>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Link />
-                        <RichTextEditor.Unlink />
-                    </RichTextEditor.ControlsGroup>
+                            <RichTextEditor.ControlsGroup>
+                                <RichTextEditor.Blockquote />
+                                <RichTextEditor.Hr />
+                                <RichTextEditor.BulletList />
+                                <RichTextEditor.OrderedList />
+                                <RichTextEditor.Subscript />
+                                <RichTextEditor.Superscript />
+                            </RichTextEditor.ControlsGroup>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.AlignLeft />
-                        <RichTextEditor.AlignCenter />
-                        <RichTextEditor.AlignJustify />
-                        <RichTextEditor.AlignRight />
-                    </RichTextEditor.ControlsGroup>
+                            <RichTextEditor.ControlsGroup>
+                                <RichTextEditor.Link />
+                                <RichTextEditor.Unlink />
+                            </RichTextEditor.ControlsGroup>
 
-                    <RichTextEditor.ControlsGroup>
-                        <RichTextEditor.Undo />
-                        <RichTextEditor.Redo />
-                    </RichTextEditor.ControlsGroup>
-                </RichTextEditor.Toolbar>
+                            <RichTextEditor.ControlsGroup>
+                                <RichTextEditor.AlignLeft />
+                                <RichTextEditor.AlignCenter />
+                                <RichTextEditor.AlignJustify />
+                                <RichTextEditor.AlignRight />
+                            </RichTextEditor.ControlsGroup>
 
-                <RichTextEditor.Content />
-            </RichTextEditor>
-        </div>
+                            <RichTextEditor.ControlsGroup>
+                                <RichTextEditor.Undo />
+                                <RichTextEditor.Redo />
+                            </RichTextEditor.ControlsGroup>
+                        </RichTextEditor.Toolbar>
+
+                        <RichTextEditor.Content />
+                    </RichTextEditor>
+                    {form.errors.content && (
+                        <Text className='absolute' color="red" size="sm">
+                            {form.errors.content}
+                        </Text>
+                    )}
+                </div>
+
+                <Button
+                    type="submit"
+                    className="bg-blue-500 hover:bg-blue-600 text-white w-[10%] self-end"
+                    radius="md"
+                >
+                    Submit
+                </Button>
+            </div>
+        </form>
     );
 }

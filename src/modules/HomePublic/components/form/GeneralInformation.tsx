@@ -18,7 +18,8 @@ export default function index() {
         mode: 'uncontrolled',
         initialValues: applicationForm.generalInformation,
         validate: {
-            firstChoice: (value: string) => value.length === 0 ? "First choice is required" : null,
+            firstChoice: (value: string) => value === null? "First choice is required" : null,
+            secondChoice: (value: string) => value === null? "Second choice is required" : null,
             desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
             startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
