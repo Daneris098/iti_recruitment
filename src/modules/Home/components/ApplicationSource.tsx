@@ -4,7 +4,7 @@
  */
 
 // import { BarChart } from "@mantine/charts";
-import { Container, Flex, Pill, Stack, Text } from "@mantine/core";
+import { Container, Flex, Stack, Text } from "@mantine/core";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 //--- Assets
@@ -12,15 +12,17 @@ import { ApplicationSourceProps } from "../assets/Types";
 
 import ApplicationSourceTooltip from "../components/tooltip/CustomTooltip";
 import { monthData } from "../assets/sample-data";
+import DemoDataHover from "./tooltip/DemoData";
 
 export const ApplicationSource: React.FC<ApplicationSourceProps> = ({ data }) => {
   const fetchData: any = [];
   return (
-    <Stack className="flex flex-col w-full h-[50%] xl:h-[100%] p-2 border-[1px] border-[rgba(85,156,218)] rounded-md">
+    <Stack className="flex flex-col w-full h-[50%] xl:h-[100%] py-2 border-[1px] gap-0 border-[rgba(85,156,218)] rounded-md">
       <Container className="flex flex-row w-full justify-between items-center h-[20%] gap-5">
-        <Text className="font-semibold text-[#559CDA] text-sm w-[20%] lg:w-full">
-          Source Efficiency <Pill children="Demo Data" c="#ED8028" bg="#ffd4b1" />
-        </Text>
+        <Flex className="w-full flex flex-col md:flex-row items-center gap-2">
+          <Text className="font-semibold text-[#559CDA] h-sm:text-xs sm:text-xs md:text-lg">Source Efficiency</Text>
+          <DemoDataHover size="xs" fs="10px" />
+        </Flex>
         <Flex className="w-full flex flex-col md:flex-row gap-2 opacity-40">
           <Container className="flex flex-row w-full justify-end gap-5">
             <Flex className="justify-center items-center gap-2">
@@ -56,8 +58,8 @@ export const ApplicationSource: React.FC<ApplicationSourceProps> = ({ data }) =>
             <YAxis type="category" dataKey="month" tick={{ textAnchor: "start", dx: -90 }} width={150} axisLine={false} className="text-[10px] font-bold" />
             <XAxis type="number" className="text-[12px] " />
             {fetchData.length && <Tooltip content={<ApplicationSourceTooltip />} cursor={{ fill: "rgba(0, 0, 0, 0.05)" }} />}
-            <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 0, 0, 10]} barSize={15} className="cursor-pointer" />
-            <Bar dataKey="Hired" stackId="stack" fill="#ED8028" radius={[0, 10, 10, 0]} barSize={15} className="cursor-pointer" />
+            <Bar dataKey="Applied" stackId="stack" fill="#559CDA" radius={[10, 0, 0, 10]} barSize={10} className="cursor-pointer" />
+            <Bar dataKey="Hired" stackId="stack" fill="#ED8028" radius={[0, 10, 10, 0]} barSize={10} className="cursor-pointer" />
           </BarChart>
         </ResponsiveContainer>
       </Stack>

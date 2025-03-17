@@ -27,7 +27,7 @@ export const ApplicantSummaryCard = ({ data }: { data: Applicant[] }) => {
         return (
           <Container key={index} className={`w-full h-full content-center md:content-between px-1`}>
             <div className="flex flex-row md:flex-col xl:flex-row justify-stretch items-center md:justify-between xl:justify-center gap-2 xl:gap-10 w-full h-full">
-              <div className="bg-[#DFECFE] rounded-full w-auto p-3">
+              <div className="bg-[#DFECFE] rounded-full w-auto h-sm:p-2 p-5">
                 <Icon color={color} {...iconProps} />
               </div>
               <div className="flex flex-col text-center lg:text-start">

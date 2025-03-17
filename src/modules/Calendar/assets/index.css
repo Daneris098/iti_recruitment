@@ -22,6 +22,15 @@
   @apply focus:outline-none  focus:ring-0;
 }
 
+.fc-toolbar-chunk button.fc-test-button.fc-button.fc-button-primary {
+  color: #6d6d6d;
+  background-color: transparent;
+  border: none;
+  text-transform: uppercase;
+  font-weight: 600;
+  @apply focus:outline-none  focus:ring-0;
+}
+
 .fc .fc-header-toolbar .fc-toolbar-chunk h2.fc-toolbar-title {
   color: #6d6d6d;
 }
@@ -140,7 +149,7 @@ button.fc-listWeek-button.fc-button.fc-button-primary.fc-button-active {
   font-weight: 600;
   color: #6d6d6d;
   border: none;
-  background-color: #eff5ff;
+  background-color: #deecff;
 }
 .fc .fc-view-harness .fc-view table[role="grid"] tbody[role="rowgroup"] td {
   border: 1px solid #559cda !important;

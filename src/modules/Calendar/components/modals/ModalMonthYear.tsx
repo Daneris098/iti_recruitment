@@ -50,19 +50,22 @@ const MonthYear = ({ calendarRef, viewType }: MonthYearProps) => {
   };
 
   return (
-    <Modal centered {...propsFunc} title="Choose exact Date" size="lg">
-      <Tabs defaultValue="month">
+    <Modal centered {...propsFunc} title="Filter Date" size="lg">
+      <Tabs defaultValue={viewType === "dayGridMonth" ? "month" : "day"}>
         <Tabs.List>
-          <Tabs.Tab value="month">Month</Tabs.Tab>
-          <Tabs.Tab value="year">Year</Tabs.Tab>
+          {viewType === "dayGridMonth" && <Tabs.Tab value="month">Month</Tabs.Tab>}
+          {viewType === "dayGridMonth" && <Tabs.Tab value="year">Year</Tabs.Tab>}
           {viewType != "dayGridMonth" && <Tabs.Tab value="day">Day</Tabs.Tab>}
         </Tabs.List>
 
         <Tabs.Panel value="month">
-          <Stack className="">
+          <Stack className="mt-2">
             <div className="grid grid-cols-3 justify-center item-center gap-4">
               {Array.from({ length: 12 }, (_, i) => i + 1).map((mnth) => (
-                <Text key={mnth} className="bg-green-200 text-center py-5 text-lg font-semibold cursor-pointer hover:scale-105 select-none" onClick={() => goToMonth(mnth)}>
+                <Text
+                  key={mnth}
+                  className="bg-[#cddcf1] text-[#3495e9] text-center py-5 text-lg font-semibold cursor-pointer hover:scale-105 select-none rounded-md"
+                  onClick={() => goToMonth(mnth)}>
                   {new Date(2000, mnth - 1, 1).toLocaleString("default", { month: "long" })}
                 </Text>
               ))}
@@ -71,19 +74,21 @@ const MonthYear = ({ calendarRef, viewType }: MonthYearProps) => {
         </Tabs.Panel>
 
         <Tabs.Panel value="year">
-          <Stack className="">
+          <Stack className="mt-2">
             <div className="grid grid-cols-3 justify-center item-center gap-4">
               {Array.from({ length: 12 }, (_, i) => today.getFullYear() - 6 + i).map((yr) => (
-                <Text key={yr} className="bg-green-200 text-center py-5 text-lg font-semibold cursor-pointer hover:scale-105 select-none" onClick={() => goToYear(yr)}>
+                <Text
+                  key={yr}
+                  className="bg-[#cddcf1] text-[#3495e9] text-center py-5 text-lg font-semibold cursor-pointer hover:scale-105 select-none rounded-md"
+                  onClick={() => goToYear(yr)}>
                   {yr}
                 </Text>
               ))}
             </div>
           </Stack>
         </Tabs.Panel>
-
         <Tabs.Panel value="day">
-          <Stack>
+          <Stack className="mt-2">
             <DatePickerInput
               label="Pick date"
               placeholder="Pick date"

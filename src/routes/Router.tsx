@@ -1,11 +1,11 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import React from "react";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { GlobalStore, userDetailsValue } from "@src/utils/GlobalStore";
 import { getRefreshTokenFromCookie } from "@src/utils/Auth";
 import axiosInstance from "@src/api";
 
-// Layout 
+// Layout
 import ProtectedLayout from "@src/layout/protected/Layout";
 import PublicLayout from "@src/layout/public/Layout";
 // Modules
@@ -19,16 +19,16 @@ import Calendar from "@src/modules/Calendar";
 import JobOffers from "@src/modules/JobOffers";
 import Reports from "@src/modules/Reports";
 import ProfileSettings from "@src/modules/ProfileSettings";
-import OrganizationSettings from "@src/modules/OrganizationSettings"
-import HiringSettings from "@src/modules/HiringSettings"
-import AdministratorSettings from "@src/modules/AdministratorSettings"
+import OrganizationSettings from "@src/modules/OrganizationSettings";
+import HiringSettings from "@src/modules/HiringSettings";
+import AdministratorSettings from "@src/modules/AdministratorSettings";
 
 const isAuthenticated = () => {
-  const { setUserDetails, userDetails } = GlobalStore()
+  const { setUserDetails, userDetails } = GlobalStore();
   // use access token if exist
   if (Boolean(sessionStorage.getItem("accessTokenFlash"))) {
-    const token = sessionStorage.getItem("accessTokenFlash")
-    const decodedToken = (token != null ? jwtDecode(token) : userDetailsValue);
+    const token = sessionStorage.getItem("accessTokenFlash");
+    const decodedToken = token != null ? jwtDecode(token) : userDetailsValue;
     if (!userDetails.name) {
       setUserDetails(decodedToken);
     }
@@ -38,7 +38,7 @@ const isAuthenticated = () => {
       sessionStorage.removeItem("accessTokenFlash");
       return false;
     }
-    return true
+    return true;
   }
   // use refresh token if exist
   else if (Boolean(getRefreshTokenFromCookie())) {
@@ -52,27 +52,27 @@ const isAuthenticated = () => {
           if (response.status === 200) {
             const { accessToken } = response.data;
             const decodedToken = jwtDecode(accessToken);
-            setUserDetails(decodedToken)
+            setUserDetails(decodedToken);
             sessionStorage.setItem("accessTokenFlash", accessToken);
           }
         })
         .catch((error) => {
-          console.error(error)
-          return false
+          console.error(error);
+          return false;
         });
     })();
-    return true
+    return true;
   }
   // unauthenticated
   else {
-    return false
+    return false;
   }
 };
 
 // Authentication wrapper
 const RequireAuth: React.FC = () => {
   // return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
-  return <Outlet />
+  return <Outlet />;
 };
 
 // Redirect wrapper for public routes

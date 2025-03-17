@@ -4,13 +4,14 @@
  */
 
 // import { BarChart } from "@mantine/charts";
-import { Button, Container, Flex, Pill, Stack, Text } from "@mantine/core";
+import { Button, Container, Flex, Stack, Text } from "@mantine/core";
 
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import RecruitmentFunnelTooltip from "../components/tooltip/CustomTooltip";
 import { recruitmentFunnelData1, recruitmentFunnelData2, recruitmentFunnelData3 } from "../assets/sample-data";
 import React from "react";
+import DemoDataHover from "./tooltip/DemoData";
 
 export const RecruitmentFunnel = () => {
   const yearToday = new Date().getFullYear();
@@ -24,12 +25,12 @@ export const RecruitmentFunnel = () => {
   };
 
   return (
-    <Flex className={`flex flex-col w-full h-[40%] xl:h-[65%] rounded-md border-[1px] px-4 py-1 border-[rgba(85,156,218)]`}>
+    <Stack className="flex flex-col w-full h-[40%] xl:h-[65%] rounded-md border-[1px] px-4 py-2 gap-0 border-[rgba(85,156,218)]">
       {/* Header */}
-      <Stack className="w-full h-[20%] flex flex-col md:flex-row justify-start md:justify-between items-end">
-        <Flex className="w-full justify-center md:justify-start h-1/2 md:h-9 md:items-center gap-2">
-          <Text className="font-semibold text-[#559CDA] text-sm md:text-lg lg:text-1xl xl:text-2xl">Recruitment Funnel</Text>
-          <Pill children="Demo Data" c="#ED8028" bg="#ffd4b1" fw={700} size="lg" />
+      <Stack className="w-full h-[20%] flex flex-col md:flex-row justify-start md:justify-between items-center">
+        <Flex className="w-full justify-between md:justify-start items-center h-1/2 md:h-9 md:items-center gap-2">
+          <Text className="font-semibold text-[#559CDA] h-sm:text-lg text-sm md:text-lg lg:text-1xl xl:text-2xl">Recruitment Funnel</Text>
+          <DemoDataHover size="md" fs="14px" />
         </Flex>
         <Container className="w-full sm:w-auto flex flex-row justify-between rounded-md bg-[#ECF4FE] p-0 h-1/2 md:h-9 xl:h-9 opacity-40">
           <Button
@@ -53,9 +54,9 @@ export const RecruitmentFunnel = () => {
         </Container>
       </Stack>
       {/* Filter */}
-      <Stack className="relative px-2 w-full h-[20%] flex flex-col md:flex-row justify-between items-center opacity-40">
+      <Stack className="relative px-2 w-full h-[15%] flex flex-col md:flex-row justify-start md:justify-between items-center opacity-40">
         {/* Data Indicator Color */}
-        <Flex className="w-full grid grid-cols-2 md:grid-cols-3 lg:flex lg:flex-row gap-0 md:gap-3 overflow-hidden">
+        <Flex className="w-full grid grid-cols-3 md:grid-cols-3 lg:flex lg:flex-row gap-0 md:gap-3 overflow-hidden">
           <Flex className="justify-center items-center gap-2">
             <div className="w-3.5 h-3.5 bg-[#559CDA] rounded-[3px]" />
             <Text className="font-normal text-xs xl:text-[14px] text-[rgb(85,156,218)]">Applied</Text>
@@ -85,7 +86,7 @@ export const RecruitmentFunnel = () => {
         </select>
       </Stack>
       {/* Bar Chart */}
-      <Stack className="w-full h-[60%] lg:h-full pb-0 lg:pb-14 xl:pb-0 opacity-40">
+      <Stack className="w-full h-[65%] lg:h-full pb-0 lg:pb-14 xl:pb-0 opacity-40">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} className="-left-5 -bottom-3">
             <CartesianGrid strokeDasharray="0" strokeWidth={0.5} stroke="#6d6d6d" vertical={false} />
@@ -100,6 +101,6 @@ export const RecruitmentFunnel = () => {
           </BarChart>
         </ResponsiveContainer>
       </Stack>
-    </Flex>
+    </Stack>
   );
 };

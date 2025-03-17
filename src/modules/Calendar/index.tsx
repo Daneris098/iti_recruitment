@@ -31,6 +31,7 @@ import MonthYear from "./components/modals/ModalMonthYear";
 //--- Dummy Data
 import { INITIAL_EVENTS, createEventId } from "./assets/Events";
 import SuccessAlert from "./components/alerts/SuccessAlert";
+import { ResponsiveContainer } from "recharts";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
@@ -71,13 +72,11 @@ export default function index() {
   };
 
   const filteredEvents: EventInput[] = checkedItems.length === 0 ? INITIAL_EVENTS : INITIAL_EVENTS.filter((event) => checkedItems.includes(event.extendedProps?.department));
-  const [monthTitle, setMonthTitle] = React.useState<string>("");
 
   const [type, setType] = React.useState<string>();
   const handleViewChange = () => {
     const api = calendarRef!.current?.getApi() as CalendarApi;
     if (api) {
-      setMonthTitle(api.view.title);
       setType(api.view.type);
     }
   };
@@ -85,36 +84,42 @@ export default function index() {
   return (
     <Stack flex={1} bg="white" w="100%" h="100%">
       <title>Calendar</title>
-      <FullCalendar
-        ref={calendarRef}
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-        headerToolbar={{
-          left: " prev,next, today, filter",
-          center: "title-label",
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-        }}
-        themeSystem="bootstrap5"
-        customButtons={{
-          filter: {
-            click: () => setOnViewFilter(true),
-            text: "☰",
-          },
-          "title-label": {
-            click: () => setOnMonthYear(true),
-            text: monthTitle,
-          },
-        }}
-        datesSet={handleViewChange}
-        dayHeaderFormat={{ weekday: "long" }}
-        dayHeaderClassNames="custom-header"
-        allDayClassNames="custom-all-day"
-        eventClassNames="custom-event"
-        initialView="dayGridMonth"
-        dayMaxEvents={true}
-        initialEvents={filteredEvents}
-        eventContent={renderEventContent}
-        eventClick={handleEventClick}
-      />
+      <ResponsiveContainer width="100%" height="100%">
+        <FullCalendar
+          ref={calendarRef}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+          headerToolbar={{
+            left: " prev,next, today, filter",
+            center: "title, test",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+          }}
+          themeSystem="bootstrap5"
+          customButtons={{
+            filter: {
+              click: () => setOnViewFilter(true),
+              text: "☰",
+            },
+            // "title-label": {
+            //   click: () => setOnMonthYear(true),
+            //   text: monthTitle,
+            // },
+            test: {
+              click: () => setOnMonthYear(true),
+              text: "▼",
+            },
+          }}
+          datesSet={handleViewChange}
+          dayHeaderFormat={{ weekday: "long" }}
+          dayHeaderClassNames="custom-header"
+          allDayClassNames="custom-all-day"
+          eventClassNames="custom-event"
+          initialView="dayGridMonth"
+          dayMaxEvents={true}
+          initialEvents={filteredEvents}
+          eventContent={renderEventContent}
+          eventClick={handleEventClick}
+        />
+      </ResponsiveContainer>
       {/* Drawer Filter */}
       <DrawerFilter />
       {/* Modal View Event */}
