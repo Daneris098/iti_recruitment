@@ -25,6 +25,12 @@ const ApplicationSource = forwardRef((_, ref) => {
                     <p>{data.sourceName}</p>
             },
             {
+                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
+                render: (data: any) => (
+                    <p>{data.lastModified}</p>
+                )
+            },
+            {
                 accessor: 'status', title: 'Status', sortable: true,
                 render: (data: any) => applicationEditMode[data.id] ? (
                     <Select
@@ -40,19 +46,13 @@ const ApplicationSource = forwardRef((_, ref) => {
                         defaultValue={applicationEditableData[data.id]?.status || data.status}
                     />
                 ) :
-                    <p>{data.status}</p>
-                ,
-            },
-            {
-                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
-                render: (data: any) => (
                     <div className='flex justify-between'>
-                        <p>{data.lastModified}</p>
+                        <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
                             {applicationEditMode[data.id] ? '' : <IconPencil />}
                         </div>
                     </div>
-                )
+                ,
             },
         ];
 

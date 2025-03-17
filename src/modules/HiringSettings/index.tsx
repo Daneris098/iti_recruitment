@@ -35,7 +35,7 @@ export default function index() {
                 <div className=" flex items-center justify-between w-[90%] m-auto">
                     <div className="flex flex-col">
                         <p className="text-xs sm:text-3xl text-white font-bold">Hiring Settings</p>
-                        <p className="text-xs sm:text-xl text-white ">Customize Organization Settings</p>
+                        <p className="text-xs sm:text-xl text-white ">Customize Hiring Settings</p>
                     </div>
                     <div className="flex gap-3 sm:w-[15%]">
                         <Button className="rounded-md w-[52%]" onClick={() => { setAlert(AlertType.cancel) }} color="white" variant="outline">Cancel</Button>
@@ -45,7 +45,7 @@ export default function index() {
             </div>
 
             <Tabs defaultValue={panel.customFeedback} variant="default" className="h-[85%]  p-2" onChange={(val) => { setActivePanel(val as panel) }}>
-                <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto">
+                <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto ">
                     <Tabs.Tab value={panel.customFeedback}
                         className={` ${activePanel === panel.customFeedback ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >

@@ -106,6 +106,9 @@ const DataTableComp = forwardRef((_, ref) => {
         },
         cancelAll: () => {
             cancelAll()
+        },
+        getData: () => {
+            return records;
         }
     }));
 
@@ -115,6 +118,7 @@ const DataTableComp = forwardRef((_, ref) => {
                 accessor: 'code', title: 'Code', sortable: true,
                 render: (data: any) => editMode[data.code] ? (
                     <TextInput
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={editableData[data.code]?.code || data.code}
                         onChange={(e: any) => handleEditChange(data.code, 'code', e.target.value)}
                     />
@@ -124,6 +128,7 @@ const DataTableComp = forwardRef((_, ref) => {
                 accessor: 'name', title: 'Name', sortable: true,
                 render: (data: any) => editMode[data.code] ? (
                     <TextInput
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={editableData[data.code]?.name || data.name}
                         onChange={(e: any) => handleEditChange(data.code, 'name', e.target.value)}
                     />
@@ -138,7 +143,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         data={["active", "inactive"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={(val: any) => {
                             handleEditChange(data.code, 'status', val)
@@ -166,7 +171,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         data={["active", "inactive"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={(val: any) => {
                             handleEditChange(data.code, 'status', val)
@@ -175,6 +180,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     />
                 ) : (
                     <TextInput
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={(editableData as any)[data.code]?.[field] || data[field]}
                         onChange={(e: any) => handleEditChange(data.code, field, e.target.value)}
                     />
@@ -206,7 +212,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         data={["active", "inactive"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={(val: any) => {
                             handleEditChange(data.code, 'status', val)
@@ -215,6 +221,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     />
                 ) : (
                     <TextInput
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={(editableData as any)[data.code]?.[field] || data[field]}
                         onChange={(e: any) => handleEditChange(data.code, field, e.target.value)}
                     />
@@ -245,7 +252,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         data={["active", "inactive"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={(val: any) => {
                             handleEditChange(data.code, 'status', val)
@@ -254,6 +261,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     />
                 ) : (
                     <TextInput
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         value={(editableData as any)[data.code]?.[field] || data[field]}
                         onChange={(e: any) => handleEditChange(data.code, field, e.target.value)}
                     />
@@ -284,7 +292,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         data={["active", "inactive"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
+                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={(val: any) => {
                             handleEditChange(data.code, 'status', val)
@@ -293,6 +301,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     />
                 ) : (
                     <TextInput
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         value={(editableData as any)[data.code]?.[field] || data[field]}
                         onChange={(e: any) => handleEditChange(data.code, field, e.target.value)}
                     />
@@ -319,11 +328,11 @@ const DataTableComp = forwardRef((_, ref) => {
             render: (data: any) => editMode[data.code] ? (
                 field === 'status' && editMode[data.code] ? (
                     <Select
+                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                         radius={8}
                         data={["active", "inactive"]}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={(val: any) => {
                             handleEditChange(data.code, 'status', val)
@@ -332,6 +341,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     />
                 ) : (
                     <TextInput
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={(editableData as any)[data.code]?.[field] || data[field]}
                         onChange={(e: any) => handleEditChange(data.code, field, e.target.value)}
                     />
@@ -372,6 +382,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         color: "rgba(0, 0, 0, 0.6)",
                     },
                 }}
+                paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
                 withTableBorder
                 records={[...records, ...newRows]}
                 columns={(columns as any)[activePanel]}

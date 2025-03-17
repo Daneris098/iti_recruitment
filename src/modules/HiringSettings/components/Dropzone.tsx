@@ -48,7 +48,7 @@ export default function Attachment() {
               <Group gap={5}>
                 <IconNotes />
                 <Text size="xl" inline className="flex justify-center gap-2 text-[#6D6D6D]">
-                  File:<span className="text-blue-400">Offer.pdf</span>
+                  File:<span className="text-blue-400">Offer.xlsxs</span>
                 </Text>
                 <Text className="text-[#6D6D6D]">
                   Size: 20mb

@@ -1,4 +1,4 @@
-import { Button, Tabs } from "@mantine/core";
+import { Button, Flex, Tabs } from "@mantine/core";
 import { OrganizationSettingsStore } from "@modules/OrganizationSettings/store"
 import { AlertType } from "./types";
 import Modals from "@src/modules/OrganizationSettings/components/modal"
@@ -6,10 +6,15 @@ import DataTableComp from "@modules/OrganizationSettings/components/DataTable";
 import { panel } from "@modules/OrganizationSettings/types/index"
 import bg2 from '@assets/bg2.png';
 import { useEffect, useRef } from "react";
+import { IconExclamationMark } from "@tabler/icons-react";
 
 export const OrganizationSettings = () => {
     const { setAlert, setActivePanel, activePanel, reroute, setReroute } = OrganizationSettingsStore()
-    const dataTableRef = useRef<{ saveAll: () => void, cancelAll: () => void } | null>(null);
+    const dataTableRef = useRef<{
+        saveAll: () => void,
+        cancelAll: () => void,
+        getData: () => void,
+    } | null>(null);
 
     useEffect(() => {
         if (reroute) {
@@ -18,6 +23,7 @@ export const OrganizationSettings = () => {
         if (reroute == false) {
             setReroute(true)
         }
+        console.log('getData: ', dataTableRef.current?.getData());
     }, [])
 
     return (
@@ -50,7 +56,7 @@ export const OrganizationSettings = () => {
                     <Tabs.Tab value={panel.section}
                         className={` ${activePanel === panel.section ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
-                        Section
+                        <Flex className="items-center">Section <IconExclamationMark color="red" /></Flex>
                     </Tabs.Tab>
                     <Tabs.Tab value={panel.division}
                         className={` ${activePanel === panel.division ? 'text-[#559CDA]' : 'text-gray-500'}`}
@@ -65,7 +71,7 @@ export const OrganizationSettings = () => {
                     <Tabs.Tab value={panel.departments}
                         className={` ${activePanel === panel.departments ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
-                        Departments
+                        <Flex className="items-center">Departments<IconExclamationMark color="red" /></Flex>
                     </Tabs.Tab>
                 </Tabs.List>
 

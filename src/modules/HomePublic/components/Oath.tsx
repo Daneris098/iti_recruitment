@@ -4,13 +4,14 @@ import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, Step } from "../types";
 
 export default function Index() {
-    const [consent, setConsent] = useState(''); 
-    const { submit, activeStepper, setSubmit, setActiveStepper } = ApplicationStore();
+    const [consent, setConsent] = useState('');
+    const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper } = ApplicationStore();
     const { setApplicationFormModal, setAlert } = HomeStore();
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
             if (consent === 'true') {
+                console.log('applicationForm: ', applicationForm)
                 setApplicationFormModal(false);
                 setActiveStepper(Step.GeneralInformation);
                 setAlert(AlertType.applicationSuccesfull);

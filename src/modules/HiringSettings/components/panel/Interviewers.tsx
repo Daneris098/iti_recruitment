@@ -25,6 +25,13 @@ const Interviewers = forwardRef((_, ref) => {
                     <p>{data.name}</p>
             },
             {
+                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
+                render: (data: any) => (
+                    <p>{data.lastModified}</p>
+
+                )
+            },
+            {
                 accessor: 'status', title: 'Status', sortable: true,
                 render: (data: any) => interviewStagesEditMode[data.id] ? (
                     <Select
@@ -40,19 +47,13 @@ const Interviewers = forwardRef((_, ref) => {
                         defaultValue={interviewStagesEditableData[data.id]?.status || data.status}
                     />
                 ) :
-                    <p>{data.status}</p>
-                ,
-            },
-            {
-                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
-                render: (data: any) => (
                     <div className='flex justify-between'>
-                        <p>{data.lastModified}</p>
+                        <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
                             {interviewStagesEditMode[data.id] ? '' : <IconPencil />}
                         </div>
                     </div>
-                )
+                ,
             },
         ];
 
