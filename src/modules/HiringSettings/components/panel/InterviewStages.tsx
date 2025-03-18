@@ -57,17 +57,15 @@ const InterviewStage = forwardRef((_, ref) => {
         ];
 
     const addNewRow = () => {
-        if (Object.keys(interviewStagesEditMode).length === 0) {
-            const newRow: interviewStage = {
-                id: Math.max(...interviewStage.map(r => r.id), 0) + 1, // Automatically generate a new id
-                stageName: '',
-                status: '',
-                lastModified: '',
-            };
-            setInterviewStagesNewRows(prev => [...prev, newRow]);
-            setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
-            setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
-        }
+        const newRow: interviewStage = {
+            id: Math.max(...interviewStage.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
+            stageName: '',
+            status: '',
+            lastModified: '',
+        };
+        setInterviewStagesNewRows(prev => [...prev, newRow]);
+        setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
+        setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
     };
 
 

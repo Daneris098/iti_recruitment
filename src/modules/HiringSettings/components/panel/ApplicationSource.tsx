@@ -57,17 +57,15 @@ const ApplicationSource = forwardRef((_, ref) => {
         ];
 
     const addNewRow = () => {
-        if (Object.keys(applicationEditMode).length === 0) {
-            const newRow: applicationSource = {
-                id: Math.max(...applicationSources.map(r => r.id), 0) + 1, // Automatically generate a new id
-                sourceName: '',
-                status: '',
-                lastModified: '',
-            };
-            setApplcationNewRow(prev => [...prev, newRow]);
-            setApplicationEditMode(prev => ({ ...prev, [newRow.id]: true }));
-            setApplicationEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
-        }
+        const newRow: applicationSource = {
+            id: Math.max(...applicationSources.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
+            sourceName: '',
+            status: '',
+            lastModified: '',
+        };
+        setApplcationNewRow(prev => [...prev, newRow]);
+        setApplicationEditMode(prev => ({ ...prev, [newRow.id]: true }));
+        setApplicationEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
     };
 
 
