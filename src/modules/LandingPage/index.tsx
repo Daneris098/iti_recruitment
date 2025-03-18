@@ -1,17 +1,10 @@
 import { Button } from "@mantine/core";
-import { GlobalStore } from "@src/utils/GlobalStore";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import bg from '@assets/bg.png'; 
 
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { setIsFullscreen } = GlobalStore();
-
-  useEffect(() => {
-    setIsFullscreen(true);
-  }, []);
 
   return (
     <div style={{ backgroundImage: `url(${bg})` }} className="bg-cover bg-center object-fill h-full w-full flex overflow-hidden " >
@@ -35,7 +28,6 @@ export default function LandingPage() {
             className=" w-full sm:w-1/3 h-10 2xl:h-14 rounded-md br-gradient border-none"
             onClick={() => {
               navigate("/vacancyList");
-              setIsFullscreen(false);
             }}
           >
             Search Jobs
