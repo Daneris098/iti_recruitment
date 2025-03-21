@@ -147,8 +147,9 @@ export default function index() {
     useEffect(() => {
         if (submit === true && activeStepper === Step.EducationalAndEmployment && formRef.current) {
             let invalid = false
+            // form.validate();  
             form.getValues().employmentRecord.forEach((item, index) => {
-                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != '' || item.inclusiveDate.to != '' || item.salary != null || item.reasonForLeaving != '') {
+                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || item.salary > 0 || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
                         invalid = true
@@ -164,17 +165,17 @@ export default function index() {
                         invalid = true
                     }
 
-                    if (item.inclusiveDate.from === '') {
+                    if (item.inclusiveDate.from === null) {
                         form.setFieldError(`employmentRecord.${index}.inclusiveDate.from`, 'Inclusive date from is required');
                         invalid = true
                     }
 
-                    if (item.inclusiveDate.to === '') {
+                    if (item.inclusiveDate.to === null) {
                         form.setFieldError(`employmentRecord.${index}.inclusiveDate.to`, 'Inclusive date to is required');
                         invalid = true
                     }
 
-                    if (item.salary === null) {
+                    if (item.salary === 0) {
                         form.setFieldError(`employmentRecord.${index}.salary`, 'Salary is required');
                         invalid = true
                     }
@@ -219,7 +220,7 @@ export default function index() {
                         from: '',
                         to: ''
                     },
-                    salary: null,
+                    salary: 0,
                     reasonForLeaving: '',
                 }]
             }

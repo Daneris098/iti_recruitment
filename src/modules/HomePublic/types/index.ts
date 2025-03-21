@@ -76,7 +76,7 @@ export interface EmploymentRecord {
     from: string | null;
     to: string | null;
   };
-  salary: number | null;
+  salary: number;
   reasonForLeaving: string;
 }
 
@@ -120,15 +120,15 @@ export interface GeneralInformation {
       philhealthNo: string;
       tinNo: string;
       rdoCode: string;
-      driversLiscence: string;
+      driversLicense: string;
       passport: string;
     }
     dateOfBirth: string;
     placeOfBirth: string;
     age: number;
     gender: string;
-    height: string;
-    weight: string;
+    height: number | null;
+    weight: number | null;
     civilStatus: string;
     religion: string;
     mobileNumber: string;

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm, FilterState } from "@modules/HomePublic/types";
 import { ApplicationFormVal, filterVal, selectedDataVal } from "@src/modules/HomePublic/values";
+import { ApplicationFormVal as ApplicationFormCleanVal } from "@src/modules/HomePublic/values/cleanState";
 
 export const HomeStore = create<HomeState>((set) => ({
   selectedData: selectedDataVal,
@@ -29,7 +30,7 @@ export const FilterStore = create<FilterState>((set) => ({
 
 export const ApplicationStore = create<ApplicationState>((set) => ({
   activeStepper: 0,
-  applicationForm: ApplicationFormVal,
+  applicationForm: ApplicationFormCleanVal,
   submit: false,
   isPhotoCaptured: false,
   isPhotoCapture: false,

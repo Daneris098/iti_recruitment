@@ -1,32 +1,62 @@
-import { EducationBackground, FilterType, GeneralInformation, VacancyType, EmploymentRecord, FamilyBackground, Reference, ApplicationForm, EducationalAndEmployment } from "@modules/HomePublic/types";
-
-export const selectedDataVal: VacancyType = {
-  id: 0,
-  position: "",
-  workplace: "",
-  employmentType: "",
-  experienceLevel: "",
-  department: "",
-  jobDescription: "",
-  requirements: [],
-  benefits: [],
-  desirable: [],
-  skills: [],
-  dateCreated: ''
-};
-
-export const filterVal: FilterType = {
-  dateFrom: '',
-  dateTo: '',
-  postedDate: null,
-  jobTitle: '',
-  department: [],
-  employmentType: [],
-  workplaceType: [],
-  experienceLevel: [],
-}
+import { EducationBackground, GeneralInformation, EmploymentRecord, FamilyBackground, Reference, ApplicationForm, EducationalAndEmployment } from "@modules/HomePublic/types";
 
 export const GeneralInformationVal: GeneralInformation = {
+  firstChoice: '',
+  secondChoice: '',
+  desiredSalary: 0,
+  startDateAvailability: '',
+  personalInformation: {
+    fullname: {
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      suffix: ''
+    },
+    presentAddress: {
+      unitNo: '',
+      houseNo: '',
+      street: '',
+      subdivision: '',
+      barangay: '',
+      city: '',
+      zipCode: '',
+      livingArrangement: ''
+    },
+    permanentAddress: {
+      unitNo: '',
+      houseNo: '',
+      street: '',
+      subdivision: '',
+      barangay: '',
+      city: '',
+      zipCode: '',
+      livingArrangement: ''
+    },
+    governmentIdOrNumber: {
+      sssNo: '',
+      gsisNo: '',
+      pagibigNo: '',
+      philhealthNo: '',
+      tinNo: '',
+      rdoCode: '',
+      driversLicense: '',
+      passport: '',
+    },
+    dateOfBirth: '',
+    placeOfBirth: '',
+    age: 0,
+    gender: '',
+    height: null,
+    weight: null,
+    civilStatus: '',
+    religion: '',
+    mobileNumber: '',
+    workingEmailAddress: '',
+    landlineNumber: ''
+  }
+};
+
+export const GeneralInformationVal2: GeneralInformation = {
   firstChoice: 'Web Developer',
   secondChoice: 'Mobile Developer',
   desiredSalary: 40000,
@@ -34,9 +64,9 @@ export const GeneralInformationVal: GeneralInformation = {
   personalInformation: {
     fullname: {
       firstName: 'Jane',
-      middleName: '',
+      middleName: 'N/A',
       lastName: 'Cooper',
-      suffix: ''
+      suffix: 'N/A'
     },
     presentAddress: {
       unitNo: '0001',
@@ -76,13 +106,40 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: 60,
     civilStatus: 'Single',
     religion: 'Roman Catholic',
-    mobileNumber: '+63 93 8722 8380',
+    mobileNumber: '93872283802',
     workingEmailAddress: 'jane@microsoft.com',
     landlineNumber: '+44 20 7123 4567'
   }
 };
 
+
 export const educationBackgroundVal: EducationBackground[] = [{
+  id: 0,
+  nameOfSchool: '',
+  educationalLevel: '',
+  course: '',
+  yearsAttended: {
+    from: null,
+    to: null,
+  },
+  professionalLicenses: '',
+  certfications: '',
+}];
+
+export const employmentRecordVal: EmploymentRecord[] = [{
+  id: 0,
+  employerCompany: '',
+  location: '',
+  positionHeld: '',
+  inclusiveDate: {
+    from: null,
+    to: null
+  },
+  salary: 0,
+  reasonForLeaving: '',
+}];
+
+export const educationBackgroundVal2: EducationBackground[] = [{
   id: 1,
   nameOfSchool: 'UP',
   educationalLevel: 'Bachelor Degree',
@@ -95,7 +152,7 @@ export const educationBackgroundVal: EducationBackground[] = [{
   certfications: '',
 }];
 
-export const employmentRecordVal: EmploymentRecord[] = [{
+export const employmentRecordVal2: EmploymentRecord[] = [{
   id: 1,
   employerCompany: 'Microsoft',
   location: 'Quezon City',
@@ -110,10 +167,55 @@ export const employmentRecordVal: EmploymentRecord[] = [{
 
 export const educationAndEmploymentVal: EducationalAndEmployment = {
   educationBackground: educationBackgroundVal,
-  employmentRecord: employmentRecordVal  
+  employmentRecord: employmentRecordVal
+}
+
+export const educationAndEmploymentVal2: EducationalAndEmployment = {
+  educationBackground: educationBackgroundVal2,
+  employmentRecord: employmentRecordVal2
 }
 
 export const familyBackgroundVal: FamilyBackground = {
+  father: {
+    fullname: '',
+    age: 0,
+    occupation: '',
+    contactNumber: '',
+  },
+  mother: {
+    fullname: '',
+    age: 0,
+    occupation: '',
+    contactNumber: '',
+  },
+  siblings: [
+    {
+      fullname: '',
+      age: 0,
+      occupation: '',
+      contactNumber: '',
+    },
+  ],
+  spouse: {
+    fullname: '',
+    age: 0,
+    occupation: '',
+    contactNumber: '',
+  },
+  children: {
+    numberOfChildren: 0,
+    ageRange: '',
+  },
+  otherInformation: {
+    specialTechnicalSkills: '',
+    isConvictedCrimeDetails: '',
+    isBeenHospitalizedDetails: '',
+    medicalConditionDetails: '',
+    relativeWorkingWithUsDetails: '',
+  },
+};
+
+export const familyBackgroundVal2: FamilyBackground = {
   father: {
     fullname: 'Melandro Jr.Taguinoid',
     age: 70,
@@ -184,8 +286,8 @@ export const referenceValue: Reference = {
 
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal,
-  educationAndEmployment: educationAndEmploymentVal,
+  generalInformation: GeneralInformationVal2,
+  educationAndEmployment: educationAndEmploymentVal2,
   familyBackground: familyBackgroundVal,
   reference: referenceValue,
   photo: null
