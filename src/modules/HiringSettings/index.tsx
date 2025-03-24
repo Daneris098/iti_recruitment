@@ -8,6 +8,7 @@ import ApplicationSettings from "@modules/HiringSettings/components/panel/Applic
 import InterviewStages from "@modules/HiringSettings/components/panel/InterviewStages"
 import Interviewers from "@modules/HiringSettings/components/panel/Interviewers"
 import JobOfferTemplate from "@modules/HiringSettings/components/panel/JobOfferTemplate"
+import ApplicationSource from "@modules/HiringSettings/components/panel/ApplicationSource";
 import bg2 from '@assets/bg2.png';
 import { useEffect, useRef } from "react";
 
@@ -18,6 +19,7 @@ export default function index() {
         customFeedback: useRef<DataTableRef | null>(null),
         interviewers: useRef<DataTableRef | null>(null),
         interviewStages: useRef<DataTableRef | null>(null),
+        applicationSource: useRef<DataTableRef | null>(null),
     };
 
     useEffect(() => {
@@ -69,6 +71,11 @@ export default function index() {
                     >
                         {description.interviewers}
                     </Tabs.Tab>
+                    <Tabs.Tab value={panel.applicationSource}
+                        className={` ${activePanel === panel.applicationSource ? 'text-[#559CDA]' : 'text-gray-500'}`}
+                    >
+                        {description.applicationSource}
+                    </Tabs.Tab>
                     <Tabs.Tab value={panel.jobOfferTemplate}
                         className={` ${activePanel === panel.jobOfferTemplate ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
@@ -82,6 +89,7 @@ export default function index() {
                     <Tabs.Panel value={panel.applicationSettings} className="h-full"><ApplicationSettings /></Tabs.Panel>
                     <Tabs.Panel value={panel.interviewStages} className="h-full"><InterviewStages ref={dataTableRef[panel.interviewStages]} /></Tabs.Panel>
                     <Tabs.Panel value={panel.interviewers} className="h-full"><Interviewers ref={dataTableRef[panel.interviewers]} /></Tabs.Panel>
+                    <Tabs.Panel value={panel.applicationSource} className="h-full"><ApplicationSource ref={dataTableRef[panel.applicationSource]} /></Tabs.Panel>
                     <Tabs.Panel value={panel.jobOfferTemplate} className="h-full"><JobOfferTemplate /></Tabs.Panel>
                 </div>
             </Tabs>

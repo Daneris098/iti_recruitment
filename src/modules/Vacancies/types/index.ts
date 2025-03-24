@@ -110,8 +110,19 @@ export interface DataTableState {
   setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
 }
 
+export enum ActionTitle {
+  New = 'Add Vacancy',
+  Edit = 'Edit Vacancy'
+}
 
+export enum ActionButtonTitle {
+  New = 'ADD',
+  Edit = 'UPDATE'
+}
 
 export enum AlertType {
   vacancyAddedSuccesfull = 'vacancyAddedSuccesfull',
+  closeVacancy = 'closeVacancy',
+  closeSuccessfully = 'closeSuccessfully',
+  updateSuccessfully = 'updateSuccessfully',
 }

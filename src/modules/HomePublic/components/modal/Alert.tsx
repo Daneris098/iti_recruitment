@@ -48,7 +48,7 @@ export default function AlertModals() {
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
                     <CircleCheckBig color="#559cda" size={80}  strokeWidth={1}/>
-                    <Text className="text-xl font-bold">
+                    <Text className="text-xl text-center font-bold">
                         Congratulations, your application has been sent!
                     </Text>
                     <p>Kindly wait for your interview schedule.</p>

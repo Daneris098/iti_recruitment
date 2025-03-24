@@ -14,7 +14,7 @@ import Home from "@src/modules/Home";
 import LandingPage from "@src/modules/LandingPage";
 import Vacancies from "@src/modules/Vacancies";
 import HomePublic from "@src/modules/HomePublic";
-import Test from "@src/modules/HomePublic/components/ValidateArray";
+import Test from "@src/modules/TestModule/RichText";
 import Calendar from "@src/modules/Calendar";
 import Offers from "@src/modules/Offers";
 import Reports from "@src/modules/Reports";

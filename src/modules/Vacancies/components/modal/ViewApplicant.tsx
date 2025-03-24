@@ -50,6 +50,7 @@ export default function index() {
                 <div className='m-auto w-[95%] '>
                     <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                     <DataTable
+                        className="applicants-datatable"
                         defaultColumnProps={{
                             textAlign: 'right',
                             noWrap: true,
@@ -62,7 +63,6 @@ export default function index() {
                         withRowBorders={false}
                         withTableBorder
                         borderRadius="sm"
-                        highlightOnHover
                         records={paginatedRecords}
                         columns={[
                             { accessor: 'applied', title: 'Applied', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[6] })},
