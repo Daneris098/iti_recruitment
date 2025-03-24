@@ -1,9 +1,9 @@
-import { Divider, Popover, TextInput } from "@mantine/core";
+import { Divider, MultiSelect, NumberInput, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCalendarMonth, IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
-import { EducationalAndEmployment, Step } from "../../types";
+import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
+import { useEffect, useRef, useState } from "react";
+import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
@@ -13,38 +13,205 @@ export default function index() {
 
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
+    const [profesionalLicenses, setProfesionalLicenses] = useState<string[][]>([[]]);
+    const [certifications, setCertifications] = useState<string[][]>([[]]);
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: applicationForm.educationAndEmployment,
         validate: {
-            // nameOfSchool: (value: string) => value.length === 0 ? "Name Of School is required" : null,
-            // educationalLevel: (value: string) => value.length === 0 ? "Educational Level is required" : null,
-            // course: (value: string) => value.length === 0 ? "Course is required" : null,
-            // professionalLiscenses: (value: string) => value.length === 0 ? "Professional Liscenses is required" : null,
-            // certfications: (value: string) => value.length === 0 ? "Certfications is required" : null,
-            // yearsAttended: {
-            //     from: (value: string) => value.length === 0 ? "Years Attended From is required" : null,
-            //     to: (value: string) => value.length === 0 ? "Years Attended To is required" : null,
-            // },
+            educationBackground: {
+                nameOfSchool: (value: string) => value.length === 0 ? "Name of School is required" : null,
+                educationalLevel: (value: string) => value.length === 0 ? "Educational Level is required" : null,
+                course: (value: string) => value.length === 0 ? "Course is required" : null,
+                yearsAttended: {
+                    from: (value: Date | string | null) => value == null ? "Year attended from is required" : null,
+                    to: (value: Date | string | null) => value == null ? "Year attended to is required" : null,
+                }
+            },
         }
     });
 
+    useEffect(() => {
+        applicationForm.educationAndEmployment.educationBackground.forEach((item, index) => {
+            const licensesArr = item.professionalLicenses.split(',')
+            const certificationsArr = item.certfications.split(',')
+
+            if (item.professionalLicenses != '') {
+                if (index == 0) {
+                    setProfesionalLicenses([licensesArr]);
+                } else {
+                    setProfesionalLicenses((prevValues) => [...prevValues, licensesArr]);
+                }
+            }
+
+            if (item.certfications != '') {
+                if (index == 0) {
+                    setCertifications([certificationsArr]);
+                } else {
+                    setCertifications((prevValues) => [...prevValues, certificationsArr]);
+                }
+            }
+        })
+    }, [])
+
+    const increaseLicenses = () => {
+        setProfesionalLicenses((prevValues) => [...prevValues, []]);
+    };
+
+    const decreaseLicenses = () => {
+        setProfesionalLicenses((prevValues) => prevValues.length > 0 ? prevValues.slice(0, -1) : prevValues);
+    };
+
+    const increaseCertifications = () => {
+        setCertifications((prevValues) => [...prevValues, []]);
+    };
+
+    const decreaseCertifications = () => {
+        setCertifications((prevValues) => prevValues.length > 0 ? prevValues.slice(0, -1) : prevValues);
+    };
+
+    const handleChangeLicenses = (index: number, value: string[]) => {
+        const newSelectedValues = [...profesionalLicenses];
+        newSelectedValues[index] = value;
+        setProfesionalLicenses(newSelectedValues);
+    };
+
+    const handleKeyDownLicenses = (index: number, event: any) => {
+        if (event.key === 'Enter' && event.target.value) {
+            const newValue = event.target.value.trim();
+            const newSelectedValues = [...profesionalLicenses];
+
+            // Avoid adding the same value more than once
+            if (!newSelectedValues[index].includes(newValue) && newValue != '') {
+                newSelectedValues[index] = [...newSelectedValues[index], newValue];
+                setProfesionalLicenses(newSelectedValues);
+            }
+            event.preventDefault();
+        }
+    };
+
+    const handleChangeCertifications = (index: number, value: string[]) => {
+        const newSelectedValues = [...certifications];
+        newSelectedValues[index] = value;
+        setCertifications(newSelectedValues);
+    };
+
+    const handleKeyDownCertifications = (index: number, event: any) => {
+        if (event.key === 'Enter' && event.target.value) {
+            const newValue = event.target.value.trim();
+            const newSelectedValues = [...certifications];
+
+            // Avoid adding the same value more than once
+            if (!newSelectedValues[index].includes(newValue) && newValue != '') {
+                newSelectedValues[index] = [...newSelectedValues[index], newValue];
+                setCertifications(newSelectedValues);
+            }
+            event.preventDefault();
+        }
+    };
+
     const onSubmit = async (form: EducationalAndEmployment) => {
+        let educationBackground = form.educationBackground
+        for (let i = 0; i < educationBackground.length; i++) {
+            educationBackground[i].professionalLicenses = profesionalLicenses[i].toString()
+            educationBackground[i].certfications = certifications[i].toString()
+        }
+        form.educationBackground = educationBackground
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 
+    const removeEmploymentRecord = (id: number) => {
+        const employmentRecord = applicationForm.educationAndEmployment.employmentRecord
+        const updatedEmploymentRecords = employmentRecord.filter((item: EmploymentRecord) => item.id != id)
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, employmentRecord: updatedEmploymentRecords
+            }
+        })
+    }
+
+    const removeEducationBackground = (id: number) => {
+        decreaseLicenses()
+        decreaseCertifications()
+        const educationBackground = applicationForm.educationAndEmployment.educationBackground
+        const updatedEmploymentRecords = educationBackground.filter((item: EducationBackground) => item.id != id)
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, educationBackground: updatedEmploymentRecords
+            }
+        })
+    }
+
     useEffect(() => {
         if (submit === true && activeStepper === Step.EducationalAndEmployment && formRef.current) {
-            formRef.current.requestSubmit(); // Programmatically trigger form submission
+            let invalid = false
+            form.getValues().employmentRecord.forEach((item, index) => {
+                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != '' || item.inclusiveDate.to != '' || item.salary != null || item.reasonForLeaving != '') {
+                    if (item.employerCompany === '') {
+                        form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
+                        invalid = true
+                    }
+
+                    if (item.location === '') {
+                        form.setFieldError(`employmentRecord.${index}.location`, 'Location is required');
+                        invalid = true
+                    }
+
+                    if (item.positionHeld === '') {
+                        form.setFieldError(`employmentRecord.${index}.positionHeld`, 'Position Held is required');
+                        invalid = true
+                    }
+
+                    if (item.inclusiveDate.from === '') {
+                        form.setFieldError(`employmentRecord.${index}.inclusiveDate.from`, 'Inclusive date from is required');
+                        invalid = true
+                    }
+
+                    if (item.inclusiveDate.to === '') {
+                        form.setFieldError(`employmentRecord.${index}.inclusiveDate.to`, 'Inclusive date to is required');
+                        invalid = true
+                    }
+
+                    if (item.salary === null) {
+                        form.setFieldError(`employmentRecord.${index}.salary`, 'Salary is required');
+                        invalid = true
+                    }
+
+                    if (item.reasonForLeaving === '') {
+                        form.setFieldError(`employmentRecord.${index}.reasonForLeaving`, 'Reason for leaving is required');
+                        invalid = true
+                    }
+                }
+                else {
+                    form.clearFieldError(`employmentRecord.${index}.employerCompany`)
+                    form.clearFieldError(`employmentRecord.${index}.location`)
+                    form.clearFieldError(`employmentRecord.${index}.positionHeld`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.from`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.to`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.salary`)
+                    form.clearFieldError(`employmentRecord.${index}.inclusiveDate.reasonForLeaving`)
+                }
+            });
+
+            if (!invalid) {
+                formRef.current.requestSubmit();
+            }
         }
         return (setSubmit(false))
     }, [submit])
 
-    const addFieldCharacter = () => {
+    const addEmploymentRecord = () => {
+        const employmentRecord = applicationForm.educationAndEmployment.employmentRecord
+        const employmentRecordLength = employmentRecord.length
+        const uniqueId = employmentRecord[employmentRecordLength - 1].id + (Math.floor(Math.random() * 101 + 1))
+
+
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
                 ...applicationForm.educationAndEmployment, employmentRecord: [...form.getValues().employmentRecord, {
+                    id: uniqueId,
                     employerCompany: '',
                     location: '',
                     positionHeld: '',
@@ -52,87 +219,147 @@ export default function index() {
                         from: '',
                         to: ''
                     },
-                    salary: '',
+                    salary: null,
                     reasonForLeaving: '',
                 }]
             }
         })
     };
 
+    const addEducationBackground = () => {
+        increaseLicenses()
+        increaseCertifications()
+        const educationBackground = applicationForm.educationAndEmployment.educationBackground
+        const educationBackgroundLength = educationBackground.length
+        const uniqueId = educationBackground[educationBackgroundLength - 1].id + (Math.floor(Math.random() * 101 + 1))
+
+
+        setApplicationForm({
+            ...applicationForm, educationAndEmployment: {
+                ...applicationForm.educationAndEmployment, educationBackground: [...form.getValues().educationBackground, {
+                    id: uniqueId,
+                    nameOfSchool: '',
+                    educationalLevel: '',
+                    course: '',
+                    yearsAttended: {
+                        from: null,
+                        to: null,
+                    },
+                    professionalLicenses: '',
+                    certfications: '',
+                }]
+            }
+        })
+    };
+
     useEffect(() => {
-        form.setValues({ employmentRecord: applicationForm.educationAndEmployment.employmentRecord });
+        form.setValues({
+            employmentRecord: applicationForm.educationAndEmployment.employmentRecord,
+            educationBackground: applicationForm.educationAndEmployment.educationBackground
+        });
     }, [applicationForm])
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4">
+
                 <p className="font-bold">Educational Background</p>
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }}   {...form.getInputProps("educationBackground.nameOfSchool")} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.educationalLevel")} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
-                </div>
+                {applicationForm.educationAndEmployment.educationBackground.map((item: EducationBackground, index) => (
+                    <div key={item.id} className="flex flex-col gap-4 relative ">
 
-                <div className="flex flex-col items-end sm:flex-row gap-4">
-                    <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("educationBackground.course")} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
-                    <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
+                        <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
+                        <div className="flex flex-col sm:flex-row gap-4 items-end relative">
+                            <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.nameOfSchool`)} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
+                            <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.educationalLevel`)} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
+                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEducationBackground(item.id) }} />)}
+                        </div>
+
+                        <div className="flex flex-col items-end sm:flex-row gap-4">
+                            <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`educationBackground.${index}.course`)} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
+                            <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
 
 
-                        <YearPickerInput
-                            {...form.getInputProps("educationBackground.yearsAttended.from")}
-                            w={isMobile ? '100%' : '100%'}
-                            label="Years Attended"
-                            placeholder={"From"}
-                            radius={8}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(value: Date | null) => {
-                                form.setFieldValue(
-                                    `educationBackground.yearsAttended.from`,
-                                    value
-                                );
-                            }}
-                        />
+                                <YearPickerInput
+                                    {...form.getInputProps(`educationBackground.${index}.yearsAttended.from`)}
+                                    w={isMobile ? '100%' : '100%'}
+                                    label="Years Attended"
+                                    placeholder={"From"}
+                                    radius={8}
+                                    rightSection={<IconCaretDownFilled size='18' />}
+                                    className="border-none w-full text-sm"
+                                    classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                    onChange={(value: Date | null) => {
+                                        form.setFieldValue(
+                                            `educationBackground.${index}.yearsAttended.from`,
+                                            value
+                                        );
+                                    }}
+                                />
 
-                        <YearPickerInput
-                            {...form.getInputProps("educationBackground.yearsAttended.to")}
-                            w={isMobile ? '100%' : '100%'}
-                            label=""
-                            placeholder={"To"}
-                            radius={8}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1" }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(value: Date | null) => {
-                                form.setFieldValue(
-                                    `educationBackground.yearsAttended.to`,
-                                    value
-                                );
-                            }}
-                        />
+                                <YearPickerInput
+                                    {...form.getInputProps(`educationBackground.${index}.yearsAttended.to`)}
+                                    w={isMobile ? '100%' : '100%'}
+                                    label=""
+                                    placeholder={"To"}
+                                    radius={8}
+                                    rightSection={<IconCaretDownFilled size='18' />}
+                                    className="border-none w-full text-sm"
+                                    classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                    onChange={(value: Date | null) => {
+                                        form.setFieldValue(
+                                            `educationBackground.${index}.yearsAttended.to`,
+                                            value
+                                        );
+                                    }}
+                                />
+
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                            <MultiSelect
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                label="Professional Licenses"
+                                placeholder={item.professionalLicenses == '' ? 'Professional Licenses' : ''}
+                                data={[]}
+                                w={isMobile ? '50%' : '100%'}
+                                radius='md'
+                                searchable
+                                value={profesionalLicenses[index]}
+                                onChange={(value) => handleChangeLicenses(index, value)}
+                                onKeyDown={(event) => handleKeyDownLicenses(index, event)}
+                                rightSection
+                            />
+                            <MultiSelect
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                label="Certifications"
+                                placeholder={item.professionalLicenses == '' ? 'Certifications (Local/International)' : ''}
+                                data={[]}
+                                w={isMobile ? '50%' : '100%'}
+                                radius='md'
+                                searchable
+                                value={certifications[index]}
+                                onChange={(value) => handleChangeCertifications(index, value)}
+                                onKeyDown={(event) => handleKeyDownCertifications(index, event)}
+                                rightSection
+                            />
+                        </div>
 
                     </div>
-                </div>
+                ))}
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEducationBackground}><IconCirclePlus size={20} />ADD EDUCATION</p>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.professionalLiscenses")} radius='md' w={isMobile ? '50%' : '100%'} label="Professional Licenses " placeholder="Professional Licenses " />
-                    <TextInput classNames={{ input: 'poppins' }}  {...form.getInputProps("educationBackground.certfications")} radius='md' w={isMobile ? '50%' : '100%'} label="Certifications" placeholder="Certifications (Local/International)" />
-                </div>
 
-                <div>
-                    <p className="font-bold">Employment Record</p>
-                </div>
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
+                <p className="font-bold">Employment Record</p>
+                {applicationForm.educationAndEmployment.employmentRecord.map((item: EmploymentRecord, index) => (
+                    <div key={item.id} className="flex flex-col gap-4 relative ">
 
-                {applicationForm.educationAndEmployment.employmentRecord.map((_, index) => (
-                    <div key={index} className="flex flex-col">
-                        {/* <IconCircleMinus size={35} className="self-end m-0 p-0" onClick={() => { removeExperience() }} /> */}
-                        <div className="flex flex-col sm:flex-row gap-4 items-end">
+                        <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full pb-4" />
+                        <div className="flex flex-col sm:flex-row gap-4 items-end relative">
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentRecord.${index}.employerCompany`)}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
@@ -140,18 +367,19 @@ export default function index() {
                                 placeholder="Employer/Company"
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentRecord.${index}.location`)}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
                                 label="Location"
                                 placeholder="Office Location"
                             />
+                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEmploymentRecord(item.id) }} />)}
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentRecord.${index}.positionHeld`)}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
@@ -171,6 +399,7 @@ export default function index() {
                                             label="Inclusive Date"
                                             placeholder="From"
                                             className="w-full cursor-default"
+                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                                             rightSection={<IconCalendarMonth />}
                                             styles={{ label: { color: "#6d6d6d" } }}
                                         />
@@ -201,6 +430,7 @@ export default function index() {
                                             label=""
                                             placeholder="To"
                                             className="w-full cursor-default"
+                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                                             rightSection={<IconCalendarMonth />}
                                             styles={{ label: { color: "#6d6d6d" } }}
                                         />
@@ -222,8 +452,11 @@ export default function index() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
-                            <TextInput
-                                classNames={{ input: 'poppins' }}
+                            <NumberInput
+                                prefix="₱ "
+                                hideControls
+                                min={0}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
                                 label="Salary"
@@ -231,7 +464,7 @@ export default function index() {
                                 {...form.getInputProps(`employmentRecord.${index}.salary`)}
                             />
                             <TextInput
-                                classNames={{ input: 'poppins' }}
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}
                                 label="Reason for Leaving"
@@ -242,7 +475,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-[13%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />Add Experience</p>
+                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEmploymentRecord}><IconCirclePlus size={20} />ADD EXPERIENCE</p>
 
 
             </div>

@@ -29,12 +29,17 @@ export interface HomeState {
   selectedData: VacancyType;
   applicationFormModal: boolean;
   alert: string;
-  
+
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedData: (selectedData: VacancyType) => void;
 }
 
+export interface PhotoRef {
+  retakePhoto: () => void;
+  upload: () => void;
+  skip: () => void;
+}
 
 export interface ApplicationState {
   activeStepper: number;
@@ -63,14 +68,15 @@ export interface FilterType {
 }
 
 export interface EmploymentRecord {
+  id: number;
   employerCompany: string;
   location: string;
   positionHeld: string;
   inclusiveDate: {
-    from: string;
-    to: string;
+    from: string | null;
+    to: string | null;
   };
-  salary: string;
+  salary: number | null;
   reasonForLeaving: string;
 }
 
@@ -109,16 +115,18 @@ export interface GeneralInformation {
     }
     governmentIdOrNumber: {
       sssNo: string;
+      gsisNo: string;
       pagibigNo: string;
-      philheathNo: string;
+      philhealthNo: string;
       tinNo: string;
+      rdoCode: string;
       driversLiscence: string;
       passport: string;
     }
     dateOfBirth: string;
     placeOfBirth: string;
     age: number;
-    sex: string;
+    gender: string;
     height: string;
     weight: string;
     civilStatus: string;
@@ -130,6 +138,7 @@ export interface GeneralInformation {
 }
 
 export interface EducationBackground {
+  id: number;
   nameOfSchool: string;
   educationalLevel: string;
   course: string;
@@ -137,7 +146,7 @@ export interface EducationBackground {
     from: Date | string | null;
     to: Date | string | null;
   }
-  professionalLiscenses: string;
+  professionalLicenses: string;
   certfications: string;
 }
 
@@ -214,7 +223,7 @@ export interface Reference {
 }
 
 export interface EducationalAndEmployment {
-  educationBackground: EducationBackground;
+  educationBackground: EducationBackground[];
   employmentRecord: EmploymentRecord[];
 }
 

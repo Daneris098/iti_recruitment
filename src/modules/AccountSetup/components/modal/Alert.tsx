@@ -6,10 +6,12 @@ import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "@modules/AccountSetup/types";
 import { IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-
+import { OrganizationSettingsStore } from "@modules/OrganizationSettings/store"
+import { panel } from "@modules/OrganizationSettings/types/index"
 
 export default function AlertModals() {
     const { setAlert, alert, setActiveStepper } = AccountSetupStore();
+    const { setActivePanel, setReroute } = OrganizationSettingsStore()
       const navigate = useNavigate();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.save]: false,
@@ -26,6 +28,8 @@ export default function AlertModals() {
                 }
                 if (alert === AlertType.nextStep) {
                     navigate("/organizationSettings");
+                    setActivePanel(panel.departments)
+                    setReroute(false)
                     setActiveStepper(Step.profile)
                 }
             }, 1600);
@@ -114,7 +118,7 @@ export default function AlertModals() {
                 </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
                     <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
-                    <Text className="text-xl font-semibold">
+                    <Text className="text-xl font-semibold text-center">
                         Next, let's configure your <span className="text-[#559CDA]">Department</span> and Section in the Organization Settings.
                     </Text>
                 </div>

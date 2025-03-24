@@ -28,17 +28,12 @@ export default function index() {
     return (
         <div className="flex flex-col gap-4 text-[#6D6D6D]">
             <p>Company: ABC Company</p>
-
-            <div className="flex justify-between">
+            <div className="grid grid-cols-2 gap-4 justify-between">
                 <p>Date Range: January 1, 2024 - January 1, 2025</p>
                 <p>Source Type: Source Type 1</p>
-            </div>
-
-            <div className="flex justify-between">
                 <p>Department:</p>
                 <p>Position: Web Developer</p>
             </div>
-
 
             <Stack className="h-48 w-full">
                 <ResponsiveContainer width="100%" height="100%">

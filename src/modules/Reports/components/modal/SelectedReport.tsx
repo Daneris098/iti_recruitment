@@ -78,8 +78,8 @@ export default function index() {
                     {isPreview ? (
                         <>
                             {currentReportPreviewComponent}
-                            <Button variant="transparent" className="br-gradient border-none text-white sm:w-[25%] lg:w-[13%] self-end" radius={10} onClick={() => { setAlert(AlertType.downloadReportSuccess) }}
-                            >Download Report</Button>
+                            <Button variant="transparent" className="br-gradient border-none text-white sm:w-[25%] lg:w-[14%] self-end" radius={10} onClick={() => { setAlert(AlertType.downloadReportSuccess); setSelectedReport(null); }}
+                            >DOWNLOAD REPORT</Button>
                         </>) : (
                         <>
                             {currentReportComponent}

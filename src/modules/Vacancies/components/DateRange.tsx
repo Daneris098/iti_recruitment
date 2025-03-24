@@ -6,6 +6,7 @@ import { DatePicker } from "@mantine/dates";
 import { IconCalendarMonth } from "@tabler/icons-react";
 //--- Shared Utils
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { useEffect, useState } from "react";
 interface DateRangeProps {
   value: [Date | null, Date | null];
   setValue: (newValue: [Date | null, Date | null]) => void;
@@ -32,6 +33,15 @@ export const DateRange = ({
   size
 }: DateRangeProps) => {
 
+  const [opened, setOpened] = useState(false);
+  const [opened2, setOpened2] = useState(false);
+
+  useEffect(() => {
+    if (value[0] != null && value[1] != null) {
+      setOpened(false)
+    }
+  }, [value])
+
   return (
     <Flex
       direction={`${isColumn ? "column" : "row"}`}
@@ -39,12 +49,7 @@ export const DateRange = ({
       gap={(gapValue ?? 0)}
       className="w-full items-end"
     >
-      <Popover
-        position="bottom"
-        shadow="md"
-        trapFocus={true}
-        returnFocus={true}
-      >
+      <Popover opened={opened} position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
         <Popover.Target>
           <TextInput
             value={
@@ -58,8 +63,13 @@ export const DateRange = ({
             label={fLabel}
             placeholder={fPlaceholder}
             className="w-full cursor-default"
+            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
             rightSection={<IconCalendarMonth />}
             styles={{ label: { color: "#6d6d6d" } }}
+            onClick={() => {
+              setOpened((o) => !o)
+              setOpened2((o) => o ? false : o)
+            }}
           />
         </Popover.Target>
         <Popover.Dropdown className="w-full">
@@ -72,7 +82,7 @@ export const DateRange = ({
           />
         </Popover.Dropdown>
       </Popover>
-      <Popover position="bottom" shadow="md">
+      <Popover opened={opened2} position="bottom" shadow="md">
         <Popover.Target>
           <TextInput
             value={
@@ -87,7 +97,12 @@ export const DateRange = ({
             placeholder={lPlaceholder}
             rightSection={<IconCalendarMonth />}
             className="w-full"
+            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
             styles={{ label: { color: "#6d6d6d" } }}
+            onClick={() => {
+              setOpened((o) => o ? false : o)
+              setOpened2((o) => !o)
+            }}
           />
         </Popover.Target>
         <Popover.Dropdown>

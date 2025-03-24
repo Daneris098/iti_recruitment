@@ -11,15 +11,12 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const { setAlert, alert, setSelectedReport, setIsPreview } = ReportStore();
+    const { setAlert, alert, setIsPreview } = ReportStore();
 
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setIsPreview(false)
-                if (AlertType.downloadReportSuccess) {
-                    setSelectedReport(null);
-                }
                 setAlert(null);
             }, 1600);
             return () => clearTimeout(timer);

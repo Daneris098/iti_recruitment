@@ -1,4 +1,4 @@
-import { company, branch, division, interviewStage, interviewer, profile, organization, hiring, form } from "@modules/AccountSetup/types"
+import { company, branch, division, interviewStage, interviewer, profile, organization, hiring, accountSetupForm } from "@modules/AccountSetup/types"
 
 // Constant values for the interfaces
 
@@ -8,11 +8,17 @@ export const companyValue: company = {
     name: "Tech Innovations Inc."
 };
 
+export const companyValue2: company = {
+    id: 12,
+    code: "C002",
+    name: "Tech Innovations Inc2."
+};
+
 export const branchValue: branch = {
     id: 1,
     code: "B001",
     name: "Main Branch",
-    location: "123 Tech Lane, Silicon Valley",
+    location: "Quezon City",
     area: "Silicon Valley",
     status: "Active",
     description: "The main branch of Tech Innovations Inc."
@@ -28,12 +34,12 @@ export const divisionValue: division = {
 
 export const interviewStageValue: interviewStage = {
     id: 1,
-    name: "Initial Screening"
+    name: ""
 };
 
 export const interviewerValue: interviewer = {
     id: 1,
-    name: "John Doe"
+    name: ""
 };
 
 /* Stepper Parents */
@@ -41,7 +47,7 @@ export const interviewerValue: interviewer = {
 export const profileValue: profile = {
     name: {
         lastName: "Doe",
-        fisrtName: "Jane",
+        firstName: "Jane",
         middleName: "A.",
         suffix: "Jr."
     }
@@ -54,16 +60,16 @@ export const organizationValue: organization = {
 };
 
 export const hiringValue: hiring = {
-    offerResponsePeriod: 14,
+    offerResponsePeriod: null,
     applicationSettings: {
-        allowReApply: true,
-        alloweReApplyAfer: 30
+        allowReApply: null,
+        alloweReApplyAfer: null
     },
     interviewStages: [interviewStageValue],
     interviewers: [interviewerValue]
 };
 
-export const formValue: form = {
+export const formValue: accountSetupForm = {
     profile: profileValue,
     organization: organizationValue,
     hiring: hiringValue

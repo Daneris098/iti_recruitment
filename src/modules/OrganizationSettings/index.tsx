@@ -8,12 +8,17 @@ import bg2 from '@assets/bg2.png';
 import { useEffect, useRef } from "react";
 
 export const OrganizationSettings = () => {
-    const { setAlert, setActivePanel, activePanel } = OrganizationSettingsStore()
+    const { setAlert, setActivePanel, activePanel, reroute, setReroute } = OrganizationSettingsStore()
     const dataTableRef = useRef<{ saveAll: () => void, cancelAll: () => void } | null>(null);
-    
+
     useEffect(() => {
-        setActivePanel(panel.companyList)
-    },[])
+        if (reroute) {
+            setActivePanel(panel.companyList)
+        }
+        if (reroute == false) {
+            setReroute(true)
+        }
+    }, [])
 
     return (
         <div className="bg-white h-full">
@@ -26,11 +31,11 @@ export const OrganizationSettings = () => {
                     </div>
                     <div className="flex gap-3 sm:w-[15%]">
                         <Button className="rounded-md w-[52%]" onClick={() => { setAlert(AlertType.cancel) }} color="white" variant="outline">Cancel</Button>
-                        <Button className="rounded-md w-[48%]" onClick={() => { dataTableRef.current?.saveAll(); setAlert(AlertType.saved);  }}>Save</Button>
+                        <Button className="rounded-md w-[48%]" onClick={() => { dataTableRef.current?.saveAll(); setAlert(AlertType.saved); }}>Save</Button>
                     </div>
                 </div>
             </div>
-            <Tabs defaultValue={panel.companyList} variant="default" className="h-[85%]  p-2" onChange={(val) => { setActivePanel(`${val}`); dataTableRef.current?.cancelAll(); }}>
+            <Tabs key={activePanel} defaultValue={activePanel} variant="default" className="h-[85%]  p-2" onChange={(val) => { setActivePanel(`${val}`); dataTableRef.current?.cancelAll(); }}>
                 <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto">
                     <Tabs.Tab value={panel.companyList}
                         className={` ${activePanel === panel.companyList ? 'text-[#559CDA]' : 'text-gray-500'}`}

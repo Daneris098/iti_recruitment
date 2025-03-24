@@ -4,13 +4,19 @@ export enum Step {
   hiring,
 }
 
+export enum Submodule {
+  profile = 'profile',
+  organization = 'organization',
+  hiring = 'hiring',
+}
+
 export interface AccountSetupState {
   activeStepper: number;
-  form: form;
+  accountSetupForm: accountSetupForm;
   alert: string;
 
   setAlert: (alert: string) => void;
-  setForm: (form: form) => void;
+  setAccountSetupForm: (form: accountSetupForm) => void;
   setActiveStepper: (activeStepper: number) => void;
 }
 export interface company {
@@ -57,27 +63,32 @@ export enum AlertType {
 export interface profile {
   name: {
     lastName: string
-    fisrtName: string
+    firstName: string
     middleName: string
     suffix: string
   }
 }
+
+export interface SubModuleRef {
+  submit: () => void;
+}
+
 export interface organization {
   companyList: company[]
   branchList: branch[]
   divisionList: division[]
 }
 export interface hiring {
-  offerResponsePeriod: number
+  offerResponsePeriod: number | null
   applicationSettings: {
-    allowReApply: boolean
-    alloweReApplyAfer: number
+    allowReApply: boolean | null
+    alloweReApplyAfer: number | null
   }
   interviewStages: interviewStage[]
   interviewers: interviewer[]
 }
 
-export interface form {
+export interface accountSetupForm {
   profile: profile
   organization: organization
   hiring: hiring

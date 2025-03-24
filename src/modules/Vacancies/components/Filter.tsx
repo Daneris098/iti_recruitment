@@ -31,27 +31,27 @@ export default function Filter() {
     );
   };
 
-  const renderSinglePill = (label: any, item: string) => {
-    return (
-      <div className="flex flex-row items-center  gap-2 ">
-        <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
-        <div className="flex h-full items-center">
-          <div className="">
-            <Pill
-              withRemoveButton
-              onRemove={() => removeFilter(label, item)}
-              className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
-            >
-              {item}
-            </Pill>
-          </div>
-        </div>
-        <Text size="xl" c="#eeeeee">
-          |
-        </Text>
-      </div>
-    );
-  };
+  // const renderSinglePill = (label: any, item: string) => {
+  //   return (
+  //     <div className="flex flex-row items-center  gap-2 ">
+  //       <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
+  //       <div className="flex h-full items-center">
+  //         <div className="">
+  //           <Pill
+  //             withRemoveButton
+  //             onRemove={() => removeFilter(label, item)}
+  //             className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
+  //           >
+  //             {item}
+  //           </Pill>
+  //         </div>
+  //       </div>
+  //       <Text size="xl" c="#eeeeee">
+  //         |
+  //       </Text>
+  //     </div>
+  //   );
+  // };
 
 
   const toCamelCase = (str: string): string => {

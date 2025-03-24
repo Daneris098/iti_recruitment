@@ -7,11 +7,38 @@ export interface DataTableRefs {
   customFeedback: React.RefObject<DataTableRef>;
   interviewers: React.RefObject<DataTableRef>;
   interviewStages: React.RefObject<DataTableRef>;
+  applicationSource: React.RefObject<DataTableRef>;
 
   offerResponsePeriod?: React.RefObject<DataTableRef>;
   applicationSettings?: React.RefObject<DataTableRef>;
   jobOfferTemplate?: React.RefObject<DataTableRef>;
 }
+
+export type feedback = {
+  id: number;
+  feedback: string;
+};
+
+export type interviewStage = {
+  id: number;
+  stageName: string;
+  status: string;
+  lastModified: string;
+};
+
+export type applicationSource = {
+  id: number;
+  sourceName: string;
+  status: string;
+  lastModified: string;
+};
+
+export type interviewer = {
+  id: number;
+  name: string;
+  status: string;
+  lastModified: string;
+};
 
 export interface HiringSettingsState {
   alert: string;
@@ -21,37 +48,47 @@ export interface HiringSettingsState {
   setAlert: (alert: string) => void;
 }
 
-export type feedback = {
-  id: number;
-  feedback: string;
-};
 export interface FeedbackStoreState {
   applicantFeedback: feedback[];
   hiringFeedback: feedback[];
+
   setApplicantFeedback: (applicantFeedback: feedback[]) => void;
   setHiringFeedback: (hiringFeedback: feedback[]) => void;
 }
 
-export type interviewStage = {
-  id: number;
-  stageName: string;
-  status: string;
-  lastModified: string;
-};
+export interface vacancyForm {
+  positionTitle: string;
+  company: string;
+  branch: string;
+  division: string;
+  department: string;
+  section: string;
+  employmentType: string;
+  workplaceType: string;
+  vacancyType: string;
+  experienceLevel: string;
+  duration: {
+    start: string;
+    end: string;
+  }
+  noOfOpenPosition: number;
+  jobDescription: string;
+  mustHaveSkills: string;
+  qualification: string;
+}
+
+
 export interface InterviewStageseState {
   interviewStage: interviewStage[];
   setInterviewStage: (interviewStage: interviewStage[]) => void;
 }
-
-export type interviewer = {
-  id: number;
-  name: string;
-  status: string;
-  lastModified: string;
-};
 export interface InterviewerState {
   interviewers: interviewer[];
   setInterviewers: (interviewers: interviewer[]) => void;
+}
+export interface ApplicationSourceState {
+  applicationSources: applicationSource[];
+  setApplicationSources: (applicationSources: applicationSource[]) => void;
 }
 
 export enum AlertType {
@@ -75,6 +112,7 @@ export enum description {
   applicationSettings = 'Application Settings',
   interviewStages = 'Interview Stages',
   interviewers = 'Interviewers',
+  applicationSource = 'Application Source',
   jobOfferTemplate = 'Job Offer Template',
 }
 
@@ -84,6 +122,7 @@ export enum panel {
   applicationSettings = 'applicationSettings',
   interviewStages = 'interviewStages',
   interviewers = 'interviewers',
+  applicationSource = 'applicationSource',
   jobOfferTemplate = 'jobOfferTemplate',
 }
 

@@ -60,16 +60,18 @@ export const GeneralInformationVal: GeneralInformation = {
     },
     governmentIdOrNumber: {
       sssNo: '1123457789',
+      gsisNo: '1123457789',
       pagibigNo: '1123457789',
-      philheathNo: '1123457789',
+      philhealthNo: '1123457789',
       tinNo: '1123457789',
+      rdoCode: '1123457789',
       driversLiscence: '1123457789',
       passport: '1123457789',
     },
     dateOfBirth: '2000-03-01',
     placeOfBirth: 'Quezon City, PH',
     age: 20,
-    sex: 'Female',
+    gender: 'Female',
     height: "5'6",
     weight: '60kg',
     civilStatus: 'Single',
@@ -80,7 +82,8 @@ export const GeneralInformationVal: GeneralInformation = {
   }
 };
 
-export const educationBackgroundVal: EducationBackground = {
+export const educationBackgroundVal: EducationBackground[] = [{
+  id: 1,
   nameOfSchool: 'UP',
   educationalLevel: 'Bachelor Degree',
   course: 'Computer Science',
@@ -88,11 +91,12 @@ export const educationBackgroundVal: EducationBackground = {
     from: new Date('Wed Jan 01 2020 00:00:00 GMT+0800 (Philippine Standard Time)'),
     to: new Date('Wed Jan 01 2024 00:00:00 GMT+0800 (Philippine Standard Time)'),
   },
-  professionalLiscenses: 'AWS Practitioner',
+  professionalLicenses: 'AWS Practitioner',
   certfications: '',
-};
+}];
 
 export const employmentRecordVal: EmploymentRecord[] = [{
+  id: 1,
   employerCompany: 'Microsoft',
   location: 'Quezon City',
   positionHeld: 'Senior Consultant',
@@ -100,7 +104,7 @@ export const employmentRecordVal: EmploymentRecord[] = [{
     from: '2016-01-02',
     to: '2020-01-02'
   },
-  salary: '50000',
+  salary: 50000,
   reasonForLeaving: 'Better Opportunity',
 }];
 
@@ -141,7 +145,7 @@ export const familyBackgroundVal: FamilyBackground = {
     ageRange: '',
   },
   otherInformation: {
-    specialTechnicalSkills: 'No',
+    specialTechnicalSkills: '',
     isConvictedCrimeDetails: 'No',
     isBeenHospitalizedDetails: 'No',
     medicalConditionDetails: 'No',
