@@ -80,10 +80,6 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
-    useEffect(() => {
-        console.log('form: ',form.getValues())
-    }, [form])
-
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4">

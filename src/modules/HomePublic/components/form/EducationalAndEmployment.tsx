@@ -118,7 +118,6 @@ export default function index() {
             educationBackground[i].certfications = certifications[i].toString()
         }
         form.educationBackground = educationBackground
-        console.log('form: ', form);
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };

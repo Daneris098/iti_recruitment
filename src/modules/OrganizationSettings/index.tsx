@@ -23,7 +23,6 @@ export const OrganizationSettings = () => {
         if (reroute == false) {
             setReroute(true)
         }
-        console.log('getData: ', dataTableRef.current?.getData());
     }, [])
 
     return (

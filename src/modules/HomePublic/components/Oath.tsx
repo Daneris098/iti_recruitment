@@ -235,15 +235,11 @@ export default function Index() {
                             setActiveStepper(Step.GeneralInformation);
                             setAlert(AlertType.applicationSuccesfull);
                         }
-                        console.log('response: ', response);
                     } catch (error: any) {
                         setAlert(AlertType.submitResponse);
-                        const errorText = JSON.parse(error.request.responseText); // Parse the JSON text
-                        const errorTitle = errorText.title; // Extract the 'title' value
-
-                        // Now you can set the alert body with the title
+                        const errorText = JSON.parse(error.request.responseText); 
+                        const errorTitle = errorText.title; 
                         setAlertBody(errorTitle);
-                        console.error('Error in submitting the form:', error);
                     }
                 })();
 

@@ -66,9 +66,6 @@ export default function index() {
     useEffect(() => {
         if (submit === true && activeStepper === Step.FamilyAndOther && formRef.current) {
             let invalid = false
-            form.getValues().siblings.forEach((item) => {
-                console.log(item.contactNumber.toString().length)
-            })
             form.getValues().siblings.forEach((item, index) => {
                 if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString().length < 11)) {
                     if (item.fullname === '') {
