@@ -208,7 +208,7 @@ export interface EmploymentReference {
 }
 
 export interface ApplicationSource {
-  employeeRefereal: boolean;
+  employeeReferal: boolean;
   jobStreet: boolean;
   headHunter: boolean;
   wordOfMouth: boolean;
@@ -219,7 +219,7 @@ export interface ApplicationSource {
 export interface Reference {
   characterReference: CharacterReference[]
   employmentReference: EmploymentReference[]
-  applicationSource: ApplicationSource[]
+  applicationSource: ApplicationSource
 }
 
 export interface EducationalAndEmployment {

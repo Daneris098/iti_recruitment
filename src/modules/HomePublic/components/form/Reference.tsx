@@ -1,4 +1,4 @@
-import { Divider, Checkbox, TextInput } from "@mantine/core";
+import { Divider, Checkbox, TextInput, NumberInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef } from "react";
 import { useForm } from "@mantine/form";
@@ -20,13 +20,13 @@ export default function index() {
                 fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string) => value.length === 0 ? "ContactNo is required" : null,
+                ContactNo: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
             employmentReference: {
                 fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string) => value.length === 0 ? "ContactNo is required" : null,
+                ContactNo: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
         },
     });
@@ -48,29 +48,29 @@ export default function index() {
     const addFieldCharacter = () => {
         setApplicationForm({ ...applicationForm, reference: { ...form.getValues(), characterReference: [...form.getValues().characterReference, { fullname: "", company: "", positionHeld: "", ContactNo: "" }] } })
     };
-    
+
     const removeFieldCharacter = (index: number) => {
-        const updatedCharacterReference = [...form.getValues().characterReference]; 
-        updatedCharacterReference.splice(index, 1); 
-    
+        const updatedCharacterReference = [...form.getValues().characterReference];
+        updatedCharacterReference.splice(index, 1);
+
         setApplicationForm({
             ...applicationForm,
             reference: {
                 ...applicationForm.reference,
-                characterReference: updatedCharacterReference, 
+                characterReference: updatedCharacterReference,
             }
         });
     };
-    
+
     const removeFieldEmployment = (index: number) => {
-        const updatedEmploymentReference = [...form.getValues().employmentReference]; 
-        updatedEmploymentReference.splice(index, 1); 
-    
+        const updatedEmploymentReference = [...form.getValues().employmentReference];
+        updatedEmploymentReference.splice(index, 1);
+
         setApplicationForm({
             ...applicationForm,
             reference: {
                 ...applicationForm.reference,
-                employmentReference: updatedEmploymentReference, 
+                employmentReference: updatedEmploymentReference,
             }
         });
     };
@@ -82,6 +82,7 @@ export default function index() {
     useEffect(() => {
         form.setValues({ characterReference: applicationForm.reference.characterReference });
         form.setValues({ employmentReference: applicationForm.reference.employmentReference });
+        form.setValues({ applicationSource: applicationForm.reference.applicationSource });
     }, [applicationForm])
 
     return (
@@ -116,7 +117,8 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
-                            <TextInput
+                            <NumberInput
+                                hideControls
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.ContactNo`)}
                                 radius="md"
@@ -161,14 +163,15 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
-                            <TextInput
+                            <NumberInput
+                                hideControls
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Contact Number"
                             />
-                             {index === applicationForm.reference.employmentReference.length - 1 && index > 0 && (<div>
+                            {index === applicationForm.reference.employmentReference.length - 1 && index > 0 && (<div>
                                 <IconCircleMinus size={35} className="" onClick={() => { removeFieldEmployment(index) }} />
                             </div>)}
                         </div>
@@ -181,28 +184,34 @@ export default function index() {
                 <p>How did you learn about our vacancy? How did you apply in our company? *</p>
                 <div className="flex gap-2 sm:gap-0">
                     <Checkbox
+                        {...form.getInputProps(`applicationSource.employeeReferal`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Employee Refereal"
                     />
                     <Checkbox
+                        {...form.getInputProps(`applicationSource.jobStreet`, { type: 'checkbox' })}
                         className="w-[33%] "
                         label="Jobstreet"
                     />
                     <Checkbox
+                        {...form.getInputProps(`applicationSource.headHunter`, { type: 'checkbox' })}
                         className="w-[33%] truncate"
                         label="Headhunter"
                     />
                 </div>
                 <div className="flex  gap-2 sm:gap-0">
                     <Checkbox
+                        {...form.getInputProps(`applicationSource.wordOfMouth`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Word of Mouth"
                     />
                     <Checkbox
+                        {...form.getInputProps(`applicationSource.walkin`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Walk-in"
                     />
                     <Checkbox
+                        {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Others"
                     />

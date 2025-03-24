@@ -81,73 +81,74 @@ export default function Index() {
                                     contactNo: applicationForm.familyBackground.spouse?.contactNumber,
                                     occupation: applicationForm.familyBackground.spouse?.occupation,
                                 },
-                                siblings: applicationForm.familyBackground.siblings.map((item) => {
-                                    return {
+                                siblings: applicationForm.familyBackground.siblings
+                                    .filter(item => !(item.fullname === '' && item.age === 0 && item.occupation === '' && item.contactNumber === ''))
+                                    .map(item => ({
                                         name: item.fullname,
                                         age: item.age,
                                         contactNo: item.contactNumber,
                                         occupation: item.occupation,
-                                    }
-                                }),
-                                // siblings: [
-                                //     {
-                                //         name: 'Yuji',
-                                //         age: 17,
-                                //         contactNo: '09871423',
-                                //         occupation: 'TEST ING',
-                                //     },
-                                //     {
-                                //         name: 'MEGUMI',
-                                //         age: 18,
-                                //         contactNo: '09981233412',
-                                //         occupation: 'TEST GIN',
-                                //     },
-                                // ],
+                                    })),
                                 childCount: applicationForm.familyBackground.children.numberOfChildren,
                                 childAgeRangeFrom: 1,
                                 childAgeRangeTo: 2,
                             },
                             postingType: {
-                                fromEmployeeReferral: false,
-                                fromHeadHunter: false,
-                                fromJobPosting: true,
-                                fromWordOfMouth: false,
-                                walkIn: false,
-                                others: false,
-                                description: 'test',
+                                fromEmployeeReferral: applicationForm.reference.applicationSource.employeeReferal,
+                                fromHeadHunter: applicationForm.reference.applicationSource.headHunter,
+                                fromJobPosting: applicationForm.reference.applicationSource.jobStreet,
+                                fromWordOfMouth: applicationForm.reference.applicationSource.wordOfMouth,
+                                walkIn: applicationForm.reference.applicationSource.walkin,
+                                others: applicationForm.reference.applicationSource.others,
+                                description: '',
                             },
                             religion: {
                                 id: 1,
                                 name: 'Catholic',
                             },
                             characterReferences: [
-                                {
-                                    name: 'Satoru Gojo',
-                                    company: 'TEST',
-                                    position: 'Developer',
-                                    contactNo: '90878123',
-                                    isEmploymentReference: true,
-                                },
-                                {
-                                    name: 'Yuta',
-                                    company: 'TEST',
-                                    position: 'Developer',
-                                    contactNo: '097889189271',
-                                    isEmploymentReference: false,
-                                },
+                                ...applicationForm.reference.employmentReference.map((item) => {
+                                    return {
+                                        name: item.fullname,
+                                        company: item.company,
+                                        contactNo: item.ContactNo,
+                                        position: item.positionHeld,
+                                        isEmploymentReference: true
+                                    };
+                                }),
+                                ...applicationForm.reference.characterReference.map((item) => {
+                                    return {
+                                        name: item.fullname,
+                                        company: item.company,
+                                        contactNo: item.ContactNo,
+                                        position: item.positionHeld,
+                                        isEmploymentReference: false
+                                    };
+                                })
                             ],
                             addresses: [
                                 {
-                                    unitNo: '12',
-                                    houseNo: '15',
-                                    street: 'Catanduanes',
-                                    subdivision: 'bgg',
-                                    barangay: 'brgy',
-                                    city: { id: 1, name: 'Caloocan' },
-                                    arrangement: { id: 1, name: 'Stay-IN' },
+                                    unitNo: applicationForm.generalInformation.personalInformation.permanentAddress.unitNo,
+                                    houseNo: applicationForm.generalInformation.personalInformation.permanentAddress.houseNo,
+                                    street: applicationForm.generalInformation.personalInformation.permanentAddress.street,
+                                    subdivision: applicationForm.generalInformation.personalInformation.permanentAddress.subdivision,
+                                    barangay: applicationForm.generalInformation.personalInformation.permanentAddress.barangay,
+                                    city: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.city },
+                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement },
                                     isPermanent: true,
-                                    zipCode: { id: 1, name: 'National Capital Region' },
+                                    zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.zipCode },
                                 },
+                                {
+                                    unitNo: applicationForm.generalInformation.personalInformation.presentAddress.unitNo,
+                                    houseNo: applicationForm.generalInformation.personalInformation.presentAddress.houseNo,
+                                    street: applicationForm.generalInformation.personalInformation.presentAddress.street,
+                                    subdivision: applicationForm.generalInformation.personalInformation.presentAddress.subdivision,
+                                    barangay: applicationForm.generalInformation.personalInformation.presentAddress.barangay,
+                                    city: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.city },
+                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement },
+                                    isPermanent: false,
+                                    zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.zipCode },
+                                }
                             ],
                             positions: [
                                 {
@@ -202,7 +203,10 @@ export default function Index() {
                                 return { keyword: item }
                             }),
                         });
-
+                        for (let [key, value] of formData.entries()) {
+                            console.log(key, value);
+                        }
+                        // console.log('formData: ', formData)
                         const response = await axiosInstance.post('/recruitment/applicants/application-form', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data',

@@ -226,7 +226,7 @@ export const familyBackgroundVal2: FamilyBackground = {
     fullname: 'Darlene Taguinoid',
     age: 60,
     occupation: 'Neurologist',
-    contactNumber: '60',
+    contactNumber: '60234567854',
   },
   siblings: [
     {
@@ -258,6 +258,34 @@ export const familyBackgroundVal2: FamilyBackground = {
 export const referenceValue: Reference = {
   characterReference: [
     {
+      fullname: '',
+      company: '',
+      positionHeld: '',
+      ContactNo: '',
+    },
+  ],
+  employmentReference: [
+    {
+      fullname: '',
+      company: '',
+      positionHeld: '',
+      ContactNo: '',
+    },
+  ],
+  applicationSource:
+  {
+    employeeReferal: false,
+    jobStreet: false,
+    headHunter: false,
+    wordOfMouth: false,
+    walkin: false,
+    others: false,
+  },
+};
+
+export const referenceValue2: Reference = {
+  characterReference: [
+    {
       fullname: 'Mary Ann Santiago',
       company: 'Intellismart',
       positionHeld: 'Project Manager',
@@ -272,23 +300,22 @@ export const referenceValue: Reference = {
       ContactNo: '+63 94 7744 3626',
     },
   ],
-  applicationSource: [
-    {
-      employeeRefereal: false,
-      jobStreet: false,
-      headHunter: false,
-      wordOfMouth: false,
-      walkin: false,
-      others: false,
-    },
-  ],
+  applicationSource:
+  {
+    employeeReferal: false,
+    jobStreet: false,
+    headHunter: false,
+    wordOfMouth: false,
+    walkin: false,
+    others: false,
+  },
 };
 
 
 export const ApplicationFormVal: ApplicationForm = {
   generalInformation: GeneralInformationVal2,
   educationAndEmployment: educationAndEmploymentVal2,
-  familyBackground: familyBackgroundVal,
+  familyBackground: familyBackgroundVal2,
   reference: referenceValue,
   photo: null
 }
