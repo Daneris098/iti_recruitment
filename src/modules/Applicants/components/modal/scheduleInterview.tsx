@@ -11,8 +11,8 @@ const ApplicantModal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => 
     if (!isOpen) return null;
 
     return (
-        <div className="applicant-unreachable-modal-overlay ">
-          <div className="applicant-unreachable" onClick={(e) => e.stopPropagation()}>
+        <div className="schedule-interview-modal-overlay">
+          <div className="schedule-interview-content" onClick={(e) => e.stopPropagation()}>
             {children}
           </div>
         </div>

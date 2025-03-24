@@ -1,7 +1,5 @@
 import { Divider } from "@mantine/core";
-import { useCloseModal } from "@src/modules/Applicants/store";
 import { IconMessage2Check, IconX } from "@tabler/icons-react";
-import { useEffect } from "react";
 
 interface JobGeneratedAlertProps {
     onClose: () => void;
@@ -10,20 +8,6 @@ interface JobGeneratedAlertProps {
 
 export default function JobGeneratedAlert({ onClose, selectedStatus }: JobGeneratedAlertProps) {
 
-    const { setIsDropdownOpen, setIsViewApplicant, setIsUpdateStatusButtonModalOpen, isFeedbackSent,setIsUpdatedStatusModalOpen } = useCloseModal(); // ✅ Get dropdown state setter
-    useEffect(() => {
-        if (isFeedbackSent) {
-            const timer = setTimeout(() => {
-                setIsDropdownOpen(false);
-                setIsUpdateStatusButtonModalOpen(false);
-                setIsViewApplicant(false);
-                setIsUpdatedStatusModalOpen(false);
-                onClose(); // ✅ Close modal after states update
-            }, 1000); // Auto-close after 1 second
-
-            return () => clearTimeout(timer);
-        } // Cleanup on unmount
-    }, [onClose, setIsDropdownOpen, setIsUpdateStatusButtonModalOpen, setIsViewApplicant]);
     return (
 
         <div className="p-1">
@@ -40,12 +24,8 @@ export default function JobGeneratedAlert({ onClose, selectedStatus }: JobGenera
                     <IconX
                         className="w-[15px] h-[15px] cursor-pointer"
                         onClick={() => {
-                            setIsDropdownOpen(false);  // ✅ Ensure dropdown is closed
-                            setTimeout(() => {
-                                onClose();  // ✅ Close modal after state update
-                            }, 10);
+                            onClose();
                         }}
-
 
                     />
                 </div>

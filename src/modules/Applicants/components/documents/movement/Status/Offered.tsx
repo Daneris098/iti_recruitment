@@ -47,7 +47,7 @@ export default function OfferedStatus() {
         <div>
 
             {/* Applicant Full Name */}
-            <div className="pb-4">
+            <div className="pt-4">
                 <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                     Applicant Full Name <span className="text-[#F14336]">*</span>
                 </h3>
@@ -57,14 +57,14 @@ export default function OfferedStatus() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     classNames={{
-                        input: "poppins relative flex items-center w-[540px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                        input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                     }}
                     required
                 />
             </div>
 
             {/* Position and Department (Two-Column Layout)*/}
-            <div className="flex gap-4 pb-4 poppins">
+            <div className="flex gap-4 pt-4 poppins">
                 {/* Position Dropdown */}
                 <div>
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
@@ -79,7 +79,7 @@ export default function OfferedStatus() {
                                 rightSection={<IconCaretDownFilled size={16} />}
                                 placeholder="Select Position"
                                 classNames={{
-                                    input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                    input: "poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                 }}
                                 required
                             />
@@ -119,7 +119,7 @@ export default function OfferedStatus() {
                                 rightSection={<IconCaretDownFilled size={16} />}
                                 placeholder="Select Department"
                                 classNames={{
-                                    input: " poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                    input: " poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                 }}
                                 required
                             />
@@ -147,7 +147,7 @@ export default function OfferedStatus() {
             </div>
 
             {/* Salary Types and Amount (Two-Column layout) */}
-            <div className="flex gap-4 pb-4">
+            <div className="flex gap-4 pt-4">
                 <div>
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                         Salary Type <span className="text-[#F14336]">*</span>
@@ -161,7 +161,7 @@ export default function OfferedStatus() {
                                 rightSection={<IconCaretDownFilled size={16} />}
                                 placeholder="Monthly Rate"
                                 classNames={{
-                                    input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                    input: "poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                 }}
                                 required
                             />
@@ -198,7 +198,7 @@ export default function OfferedStatus() {
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         classNames={{
-                            input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                            input: "poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                         }}
                         required
                     />

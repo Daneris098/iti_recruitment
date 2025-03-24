@@ -3,7 +3,7 @@ import { IconChecklist } from "@tabler/icons-react";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { PDFViewer } from "@react-pdf/renderer";
-import { useCloseModal } from "@src/modules/Applicants/store";
+import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated";
 
@@ -19,17 +19,26 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
         isViewPDF, setIsViewPDF,
         isUpdateSuccessful, setIsUpdateSuccessful,
         isJobGeneratedOpen,
-        // isModalOpen, setIsModalOpen,setIsDropdownOpen,setIsUpdateStatusButtonModalOpen,
-        setIsViewApplicant
+        setIsUpdateStatusButtonModalOpen,
+        setIsViewApplicant,
+        setIsOffered,
+        setIsGenerateNewOffer,
+        setIsModalOpen
     } = useCloseModal();
 
     if (!isJobGeneratedOpen) return null; // Prevents rendering if modal is closed
+    const { setSelectedStatus } = useStatusStore();
 
     const handleCloseAll = () => {
         setIsViewPDF(false); // Close PDF Viewer
         setIsUpdateSuccessful(false); // Close success alert
         setIsViewApplicant(false);
-
+        setSelectedStatus(null);
+        setIsUpdateStatusButtonModalOpen(false);
+        setIsViewApplicant(false);
+        setIsGenerateNewOffer(false);
+        setIsOffered(false);
+        setIsModalOpen(false);
         // Call onClose if provided to close the JobGeneratedAlert
         if (typeof onClose === "function") {
             onClose();
@@ -65,9 +74,6 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                 <Button className="font-medium text-[15px] text-[#559CDA] bg-white border-[#559CDA] rounded-[10px] w-[198px]"
                     onClick={() => {
                         setIsViewPDF(true); // Open PDF
-                        // setIsUpdateStatusButtonModalOpen(false); // ✅ Close Update Status Button Modal
-                        // setIsViewApplicant(false)
-
                     }}>
                     View
                 </Button>
@@ -108,7 +114,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                             h-[42px] font-medium text-[15px] cursor-pointer 
                             hover:bg-white hover:text-[#559CDA]"
                             onClick={() => {
-
+                                setIsOffered(false)
                             }}
                         >
                             {"Edit Details".toUpperCase()}
@@ -121,7 +127,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                                 setIsViewPDF(false); // Close the PDF viewer
                                 setTimeout(() => {
                                     handleCloseAll(); // Close everything after 2 seconds
-                                }, 2000);
+                                }, 1000);
                             }}
                         >
                             {"done".toUpperCase()}

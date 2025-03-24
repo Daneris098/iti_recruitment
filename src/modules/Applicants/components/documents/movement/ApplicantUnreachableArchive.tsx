@@ -1,18 +1,14 @@
 import { Button, Combobox, Menu, Textarea, TextInput, useCombobox } from "@mantine/core";
-import { useCloseModal, useDropDownOfferedStore, useFeedbacksStore, useStatusStore } from "@src/modules/Applicants/store";
+import { useDropDownOfferedStore, useFeedbacksStore } from "@src/modules/Applicants/store";
 import { IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
 
 
 interface DropDrowOfferedProps {
     Status: string;
     onClose: () => void;
-    // onCloseAll: () => void;
 }
 
-export default function ApplicantUnreachableArchived({ 
-    // onClose, 
-    Status }: DropDrowOfferedProps) {
-    //    const {isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen} = useCloseModal();
+export default function ApplicantUnreachableArchived({ Status }: DropDrowOfferedProps) {
 
     const feedbacksComboBox = useCombobox({
         onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
@@ -26,8 +22,6 @@ export default function ApplicantUnreachableArchived({
         setStatus,
         comments, setComments
     } = useDropDownOfferedStore();
-    
-    // const { selectedStatus, setSelectedStatus } = useStatusStore();
 
     return (
         <div className="p-9">
@@ -114,13 +108,6 @@ export default function ApplicantUnreachableArchived({
                 />
             </div>
 
-            {/* <div>
-                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} onClose={onCloseAll}>
-                    <UpdateStatus
-                        Status={Status}
-                        onClose={onCloseAll} />
-                </UpdateStatusModal>
-            </div> */}
         </div>
     )
 }

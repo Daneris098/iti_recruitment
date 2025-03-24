@@ -37,7 +37,6 @@ const TimePicker: React.FC<TimePickerProps> = ({ selectedTime, onTimeChange }) =
                                 border: "1px solid #6D6D6D",
                                 borderRadius: "10px",
                                 height: "56px",
-                                width: "259px",
                                 fontFamily: "poppins",
                             },
                         }}

@@ -5,11 +5,12 @@ import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated
 import { useCloseModal } from "@src/modules/Applicants/store";
 interface ApplicantContactProps {
     onClose: () => void;
+    updateSelectedStatus: () => void;
 }
 
-export default function ApplicantContactNumber({ onClose }: ApplicantContactProps) {
-// const [isAddtoCalendar, setIsAddtoCalendar] = useState(false)
-const {isAddtoCalendar, setIsAddtoCalendar} = useCloseModal();
+export default function ApplicantContactNumber({ onClose, updateSelectedStatus }: ApplicantContactProps) {
+
+    const { isAddtoCalendar, setIsAddtoCalendar } = useCloseModal();
 
     return (
         <div className="p-2 w-full h-full">
@@ -45,10 +46,10 @@ const {isAddtoCalendar, setIsAddtoCalendar} = useCloseModal();
             <div className="flex justify-center space-x-8 pt-12 pb-2">
                 {/*YES*/}
                 <Button className="br-gradient w-[191px] h-[42px] rounded-[10px] poppins"
-                onClick={() => setIsAddtoCalendar(true)}
+                    onClick={() => setIsAddtoCalendar(true)}
                 >{"add to calendar".toUpperCase()}</Button>
 
-                {/*NO*/}
+                {/*Archive*/}
                 <Button
                     className="
                     w-[152px] h-[42px] 
@@ -57,6 +58,7 @@ const {isAddtoCalendar, setIsAddtoCalendar} = useCloseModal();
                     border-[#559CDA] 
                     hover:text-[#559CDA]
                     hover:bg-white poppins"
+                    onClick={updateSelectedStatus}
                 >
                     {"archive".toUpperCase()}
                 </Button>

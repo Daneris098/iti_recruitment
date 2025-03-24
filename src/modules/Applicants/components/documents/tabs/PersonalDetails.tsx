@@ -1,12 +1,6 @@
-// import { Button, Divider } from "@mantine/core";
-
 interface ViewApplicantsProps {
-    // Applicant_Name: string;
+
     Position: string;
-    // Status: string;
-    // Email: string;
-    // Phone: string;
-    // Skills: string;
 }
 
 export default function PersonalDetails({ Position }: ViewApplicantsProps) {

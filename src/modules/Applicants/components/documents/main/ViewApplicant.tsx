@@ -35,11 +35,11 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
 
 
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
+    const {
+        isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered
+    } = useCloseModal();
 
-    // const [isModalOpen, setIsModalOpen] = useState(false); // Initial state: 
-    const {isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen} = useCloseModal();
-
-    const [isOffered, setIsOffered] = useState(false); // Set the Offered Modal to True upon triggering
+    // const [isOffered, setIsOffered] = useState(false); // Set the Offered Modal to True upon triggering
 
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
 
@@ -51,8 +51,6 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
     const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
 
     const onCloseAll = () => {
-        // setIsModalOpen(false);
-        setIsUpdateStatusButtonModalOpen(false);
         setIsTransferPosition(false);
         setIsOffered(false);
         onClose(); // This closes ViewApplicant.tsx completely
@@ -181,7 +179,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
 
                         {Status === 'Offered' && (
                             <p className="text-white rounded-[10px] bg-[#6D6D6D] poppins text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer mt-2"
-                                onClick={() => setIsOffered(true)}>
+                                onClick={() => setIsGenerateNewOffer(true)}>
                                 Generate new Offer
                             </p>
                         )}
@@ -234,16 +232,17 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     </Tabs>
                 </div>
             </div>
-            
+
             {/* These modals are independent of each other.
              <UpdateStatusModal> for updating the status of the applicant. 
             <TransferPositionModal> for updating the position of the applied job and so on. */}
             <div>
                 {/* <UpdateStatusModal isOpen={isModalOpen} onClose={onCloseAll}> */}
-                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} onClose={onCloseAll}>
+                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} onClose={onClose}>
                     <UpdateStatus
                         Status={Status}
-                        onClose={onCloseAll} />
+                        onClose={onCloseAll}
+                    />
                 </UpdateStatusModal>
 
                 <TransferPositionModal isOpen={isTransferPosition} onClose={onCloseAll}>
@@ -252,10 +251,10 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                         onClose={onCloseAll} />
                 </TransferPositionModal>
 
-                <ApplicantModal isOpen={isOffered} onClose={onCloseAll}>
+                <ApplicantModal isOpen={isGenerateNewOffer} onClose={onCloseAll}>
                     <GenerateNewOffer
                         ApplicantName={Applicant_Name}
-                        onClose={onCloseAll} />
+                        onClose={() => setIsGenerateNewOffer(false)} />
                 </ApplicantModal>
             </div>
 

@@ -1,21 +1,17 @@
 import { Button } from "@mantine/core";
-import { useCloseModal } from "@src/modules/Applicants/store";
+import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import { IconUserQuestion } from "@tabler/icons-react";
-import { useEffect } from "react";
+import ForTransfer from "@modules/Applicants/components/modal/forTransfer";
+import TransferApplicants from "@modules/Applicants/components/documents/movement/TransferApplicants";
 
-interface TransferredProps {
-    onClose: () => void;
-}
 
-export default function Transferred({ onClose }: TransferredProps) {
+export default function Transferred() {
 
-    const { setisForTransfer, resetTransferState, isForTransfer } = useCloseModal();
+    const { isForTransferLoader, setIsForTransferLoader } = useCloseModal();
 
-    useEffect(() => {
-        if (isForTransfer) {
-            resetTransferState();  // ✅ Reset before opening new modal
-        }
-    }, [isForTransfer]);
+    const { setSelectedStatus } = useStatusStore();
+
+
 
     return (
         <div className="p-1 w-full h-full">
@@ -37,8 +33,7 @@ export default function Transferred({ onClose }: TransferredProps) {
                 {/*YES*/}
                 <Button className="br-gradient w-[152px] h-[42px] rounded-[10px] poppins"
                     onClick={() => {
-                        resetTransferState(); 
-                        setisForTransfer(true); // Re-enable transfer
+                        setIsForTransferLoader(true); // Re-enable transfer
                     }}
                 >
                     {"yes".toUpperCase()}
@@ -53,11 +48,20 @@ export default function Transferred({ onClose }: TransferredProps) {
                                 border-[#559CDA] 
                                 hover:text-[#559CDA]
                                 hover:bg-white poppins"
-                    onClick={onClose}
+                    onClick={() => {
+                        setSelectedStatus(null)
+                    }}
                 >
                     {"no".toUpperCase()}
                 </Button>
             </div>
+
+            {/* This modal will be called when the selectedStatus === Transferred and the user agrees to transfer applicants to hrdotnet. */}
+            <ForTransfer isOpen={isForTransferLoader} onClose={() => setIsForTransferLoader(false)}>
+                <TransferApplicants
+                    onClose={() => setIsForTransferLoader(false)}
+                />
+            </ForTransfer>
         </div>
     )
 }

@@ -1,11 +1,30 @@
 import { Divider } from "@mantine/core";
 import { IconCircleCheck, IconX } from "@tabler/icons-react";
+import { useEffect } from "react";
+import { useCloseModal } from "@src/modules/Applicants/store";
 
 interface JobGeneratedAlertProps {
     onClose: () => void;
 }
 
+
+
 export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
+
+    const { isDefaultUpdated, setIsDefaultUpdated, setIsViewApplicant } = useCloseModal(); //  Get dropdown state setter
+
+    useEffect(() => {
+        if (isDefaultUpdated) {
+            const timer = setTimeout(() => {
+                setIsDefaultUpdated(false);
+                setIsViewApplicant(false)
+                // onClose();
+            }, 1000); // Close modals after 1 second
+
+            return () => clearTimeout(timer);
+        }
+    }, [isDefaultUpdated]);
+
     return (
         <div className="p-1 h-[250px]">
             {/* Header */}

@@ -182,11 +182,17 @@ interface Feedbacks {
 
   comments: string;
   setComments: (comments: string) => void;
+
+  applicantFeedback: string;
+  setApplicantFeedback: (applicantFeedback: string) => void;
 }
 
 export const useFeedbacksStore = create<Feedbacks>((set) => ({
   feedback: "",
   setFeedback: (feedback) => set({ feedback }),
+
+  applicantFeedback: "",
+  setApplicantFeedback: (applicantFeedback) => set({ applicantFeedback }),
 
   status: "Archived",
   setStatus: (status) => set({ status }),
@@ -250,6 +256,9 @@ interface CloseModal {
   isUpdated: boolean;
   setIsUpdated: (isOpen: boolean) => void;
 
+  isDefaultUpdated: boolean;
+  setIsDefaultUpdated: (isOpen: boolean) => void;
+
   isJobGeneratedAlertOpen: boolean;
   setIsJobGeneratedAlertOpen: (isOpen: boolean) => void;
 
@@ -267,6 +276,25 @@ interface CloseModal {
 
   isApplicantUnreachableArchive: boolean;
   setIsApplicantUnreachableArchive: (isOpen: boolean) => void;
+
+  isForInterviewOpen: boolean;
+  setIsForInterviewOpen: (isOpen: boolean) => void;
+
+  isOffered: boolean;
+  setIsOffered: (isOffered: boolean) => void;
+
+  isUpdateStatus: boolean;
+  setIsUpdateStatus: (isOffered: boolean) => void;
+
+  isStatusUpdated: boolean;
+  setIsStatusUpdated: (isOffered: boolean) => void;
+
+  isForTransferLoader: boolean;
+  setIsForTransferLoader: (isOffered: boolean) => void;
+
+  isGenerateNewOffer: boolean;
+  setIsGenerateNewOffer: (isOffered: boolean) => void;
+  
 }
 
 export const useCloseModal = create<CloseModal>((set) => ({
@@ -300,13 +328,14 @@ export const useCloseModal = create<CloseModal>((set) => ({
   isAddtoCalendar: false,
   setIsAddtoCalendar: (value) => set({ isAddtoCalendar: value }),
 
-
   isContactApplicant: false,
   setIsContactApplicant: (value) => set({ isContactApplicant: value }),
 
   isUpdated: false,
   setIsUpdated: (value) => set({ isUpdated: value }),
 
+  isDefaultUpdated: false,
+  setIsDefaultUpdated: (value) => set({ isDefaultUpdated: value }),
 
   isUpdatedStatusModalOpen: false,
   setIsUpdatedStatusModalOpen: (value) => set({ isUpdatedStatusModalOpen: value }),
@@ -325,6 +354,24 @@ export const useCloseModal = create<CloseModal>((set) => ({
 
   isApplicantUnreachableArchive: false,
   setIsApplicantUnreachableArchive: (value) => set({ isApplicantUnreachableArchive: value }),
+
+  isForInterviewOpen: false,
+  setIsForInterviewOpen: (value) => set({ isForInterviewOpen: value }),
+
+  isOffered: false,
+  setIsOffered: (value) => set({ isOffered: value }),
+
+  isUpdateStatus: false,
+  setIsUpdateStatus: (value) => set({ isUpdateStatus: value }),
+
+  isStatusUpdated: false,
+  setIsStatusUpdated: (value) => set({ isStatusUpdated: value }),
+
+  isForTransferLoader: false,
+  setIsForTransferLoader: (value) => set({ isForTransferLoader: value }),
+
+  isGenerateNewOffer: false,
+  setIsGenerateNewOffer: (value) => set({ isGenerateNewOffer: value }),
 
   resetTransferState: () => set((state) => ({
     ...state,  //  Keep existing state

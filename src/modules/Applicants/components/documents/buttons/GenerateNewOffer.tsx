@@ -244,7 +244,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
             <div>
                 <JobGeneratedModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <JobGeneratedAlert />
+                    <JobGeneratedAlert onClose={onClose} title={""}/>
                 </JobGeneratedModal>
             </div>
         </div>

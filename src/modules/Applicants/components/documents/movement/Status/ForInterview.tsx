@@ -5,7 +5,9 @@ import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 import { useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 
+
 export default function ForInterview() {
+
 
     const {
         fullName, setFullName,
@@ -27,7 +29,7 @@ export default function ForInterview() {
     return (
         <div>
             {/*  Name */}
-            <div className="pb-4">
+            <div className="pt-4">
                 <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                     Interview Stages <span className="text-[#F14336]">*</span>
                 </h3>
@@ -37,13 +39,13 @@ export default function ForInterview() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     classNames={{
-                        input: "poppins relative flex items-center w-[540px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                        input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                     }}
                     required
                 />
             </div>
 
-            <div className="flex gap-4 pb-4">
+            <div className="flex gap-4 pt-4">
                 <div className="w-1/2">
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                         Date <span className="text-[#F14336]">*</span>
@@ -70,7 +72,7 @@ export default function ForInterview() {
             </div>
 
             <div>
-                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
+                <h3 className="font-medium text-[#6D6D6D] text-[15px] pt-4 poppins">
                     Interviewer <span className="text-[#F14336] poppins">*</span>
                 </h3>
                 <Combobox store={interviewerCombobox} withinPortal={false}>

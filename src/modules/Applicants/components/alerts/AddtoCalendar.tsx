@@ -1,58 +1,47 @@
 import { Divider } from "@mantine/core";
-import { useCloseModal } from "@src/modules/Applicants/store";
+import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import { IconBrandTelegram, IconX } from "@tabler/icons-react";
 import { useEffect } from "react";
 
 interface AddtoCalendarAlertProps {
     onClose: () => void;
-    // selectedStatus: string | null;
-    // onCloseAllModal: () => void;
 }
 
-export default function AddtoCalendar({ onClose,
-    // onCloseAllModal
-}: AddtoCalendarAlertProps) {
+export default function AddtoCalendar({ onClose }: AddtoCalendarAlertProps) {
 
     const {
-        isContactApplicant, setIsContactApplicant,
-        isAddtoCalendar, setIsAddtoCalendar,
-        setIsScheduleInterview, setIsUpdatedStatusModalOpen,
-        setIsUpdateStatusButtonModalOpen, setIsApplicantNotReachable,
-        setIsViewApplicant
+        isScheduleInterview, setIsScheduleInterview,
+        isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
+        isViewApplicant, setIsViewApplicant,
+        isAddtoCalendar,
+        setIsAddtoCalendar, setIsDropdownOpen,
+        setIsApplicantUnreachableArchive
     } = useCloseModal();
 
+    const { setSelectedStatus } = useStatusStore();
+
     useEffect(() => {
-        if (isContactApplicant || isAddtoCalendar) {
+        if (setIsScheduleInterview) {
             const timer = setTimeout(() => {
-                // setIsContactApplicant(false);
-                setIsAddtoCalendar(false); // For closing the Add Calendar
-                setIsScheduleInterview(false); // For closing the applicant not reachable modal
-                setIsApplicantNotReachable(false); // For Closing the Applicant Contact Number modal
-                setIsViewApplicant(false); // For Closing the View Applicant Modal
-                setIsContactApplicant(false); // for closing the Add to calendar dropdown under schedule interview button
-                setIsUpdatedStatusModalOpen(false); // For Closing the Update Applicant Status (For Interview) modal
-                setIsUpdateStatusButtonModalOpen(false); // For closing the Update Status Button
-            }, 1000); // Closes modal after 1 second
+                setIsScheduleInterview(false);
+                setIsUpdateStatusButtonModalOpen(false);
+                setSelectedStatus(null);
+                setIsUpdateStatusButtonModalOpen(false);
+                setIsViewApplicant(false);
+                setIsAddtoCalendar(false);
+                setIsDropdownOpen(false);
+                setIsApplicantUnreachableArchive(false);
+                onClose();
+            }, 1000); // Close modals after 1 second
 
-            return () => clearTimeout(timer); // Cleanup timeout on unmount
+            return () => clearTimeout(timer);
         }
-    }, [isContactApplicant, setIsAddtoCalendar]);
-
-    // useEffect(() => {
-    //     if (isContactApplicant) {
-    //         onCloseAllModal(); // Close all modals when isContactApplicant is true
-    //         const timer = setTimeout(() => {
-    //             setIsContactApplicant(false);
-    //             setisAddtoCalendar(false);
-    //         }, 1000); // Closes modal after 1 second
-
-    //         return () => clearTimeout(timer); // Cleanup timeout on unmount
-    //     }
-    // }, [isContactApplicant, onCloseAllModal, setIsContactApplicant, setisAddtoCalendar]);
+    }, [isViewApplicant, isUpdateStatusButtonModalOpen, isScheduleInterview, isAddtoCalendar]);
 
 
     return (
         <div className="p-1">
+
             {/* Header */}
             <div>
                 <div className="flex justify-between items-center">
@@ -61,7 +50,13 @@ export default function AddtoCalendar({ onClose,
                     {/* Exit Icon - Closes modal */}
                     <IconX
                         className="w-[15px] h-[15px] cursor-pointer"
-                        onClick={onClose} // Closes modal
+                        onClick={() => {
+                            setIsScheduleInterview(false);
+                            setIsUpdateStatusButtonModalOpen(false);
+                            setIsViewApplicant(false);
+                            onClose();
+                        }} // Closes modal
+
                     />
                 </div>
                 <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
