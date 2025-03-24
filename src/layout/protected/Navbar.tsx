@@ -30,14 +30,14 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
     ];
 
     const applicantsNavLinks = [
-        { to: "", icon: <IconUser />, label: "ALL APPLICANTS" },
-        { to: "", icon: <FileUser />, label: "APPLIED" },
-        { to: "", icon: <IconMessageCircleUser />, label: "FOR INTERVIEW" },
-        { to: "", icon: <IconBriefcase />, label: "FOR OFFERED" },
-        { to: "", icon: <IconUserPlus />, label: "HIRED" },
-        { to: "", icon: <IconTransfer />, label: "FOR TRANSFEREE" },
-        { to: "", icon: <FileUp />, label: "TRANSFERED" },
-        { to: "", icon: <IconArchive />, label: "ARCHIVED" },
+        { to: "applicants", icon: <IconUser />, label: "ALL APPLICANTS" },
+        { to: "applied", icon: <FileUser />, label: "APPLIED" },
+        { to: "interview", icon: <IconMessageCircleUser />, label: "FOR INTERVIEW" },
+        { to: "offered", icon: <IconBriefcase />, label: "OFFERED" },
+        { to: "hired", icon: <IconUserPlus />, label: "HIRED" },
+        { to: "transferee", icon: <IconTransfer />, label: "FOR TRANSFER" },
+        { to: "transferred", icon: <FileUp />, label: "TRANSFERRED" },
+        { to: "archive", icon: <IconArchive />, label: "ARCHIVED" },
     ];
 
     // Filter the navLinks and applicantsNavLinks based on the search term

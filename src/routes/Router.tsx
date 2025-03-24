@@ -16,7 +16,7 @@ import Vacancies from "@src/modules/Vacancies";
 import HomePublic from "@src/modules/HomePublic";
 import Test from "@src/modules/TestModule/RichText";
 import Calendar from "@src/modules/Calendar";
-import JobOffers from "@src/modules/JobOffers";
+import Offers from "@src/modules/Offers";
 import Reports from "@src/modules/Reports";
 import ProfileSettings from "@src/modules/ProfileSettings";
 import OrganizationSettings from "@src/modules/OrganizationSettings";
@@ -140,7 +140,7 @@ const router = createBrowserRouter([
           },
           {
             path: "jobOffers",
-            element: <JobOffers />,
+            element: <Offers />,
           },
           {
             path: "reports",
@@ -161,6 +161,38 @@ const router = createBrowserRouter([
           {
             path: "administratorSettings",
             element: <AdministratorSettings />,
+          },
+          {
+            path: "applicants",
+            element: <Applicants />,
+          },
+          {
+            path: "applied",
+            element: <Applied />,
+          },
+          {
+            path: "interview",
+            element: <ForInterview />,
+          },
+          {
+            path: "offered",
+            element: <ForOffered />,
+          },
+          {
+            path: "hired",
+            element: <Hired />,
+          },
+          {
+            path: "transferee",
+            element: <ForTransferee />,
+          },
+          {
+            path: "transferred",
+            element: <Transferred />,
+          },
+          {
+            path: "archive",
+            element: <Archived />,
           },
         ],
       },
