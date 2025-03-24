@@ -14,13 +14,5 @@
   "htmlWhitespaceSensitivity": "strict",
   "endOfLine": "auto",
   "embeddedLanguageFormatting": "auto",
-  "singleAttributePerLine": false,
-  "overrides": [
-    {
-      "files": "*.html",
-      "options": {
-        "parser": "angular"
-      }
-    }
-  ]
+  "singleAttributePerLine": false
 }

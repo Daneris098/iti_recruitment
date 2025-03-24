@@ -8,7 +8,7 @@ import { Flex, Stack } from "@mantine/core";
 
 import "./assets/index.css";
 
-import { sourceEfficiencyData, applicantsData, offerAcceptanceData, recruitmentFunnelData } from "./assets/sample-data";
+import { sourceEfficiencyData, applicantsData, offerAcceptanceData } from "./assets/sample-data";
 
 //--- Home Dashboard Components
 import { ApplicantSummaryCard } from "./components/ApplicantSummaryCard";
@@ -26,7 +26,7 @@ export default function index() {
       {/* Chart Container */}
       <Flex className="bg-white mb-10 lg:mb-0 p-4 rounded-md w-full h-full xl:h-[85%] gap-4 flex flex-col shadow-md shadow-[#559CDA]">
         {/* Vertical Bar Chart Recruitment Funnel */}
-        <RecruitmentFunnel data={recruitmentFunnelData} />
+        <RecruitmentFunnel />
 
         {/* Another Chart Vertical */}
         <Flex className="w-full h-[60%] xl:h-[35%] flex flex-col xl:flex-row gap-4">

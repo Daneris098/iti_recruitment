@@ -1,6 +1,6 @@
 import { IconUserCheck, IconUsers, IconUserUp, IconUserX } from "@tabler/icons-react";
 
-export const recruitmentFunnelData = [
+export const recruitmentFunnelData1 = [
   { month: "Jan", Applied: 100, "For Interview": 75, Offered: 16.67, Hired: 8.33, Archived: 4.17 },
   { month: "Feb", Applied: 100, "For Interview": 63.16, Offered: 21.05, Hired: 15.79, Archived: 5.26 },
   { month: "Mar", Applied: 100, "For Interview": 80.57, Offered: 20, Hired: 15, Archived: 8 },
@@ -13,6 +13,23 @@ export const recruitmentFunnelData = [
   { month: "Oct", Applied: 100, "For Interview": 85.71, Offered: 42.86, Hired: 46.43, Archived: 22.86 },
   { month: "Nov", Applied: 100, "For Interview": 62.5, Offered: 56.25, Hired: 46.88, Archived: 21.88 },
   { month: "Dec", Applied: 100, "For Interview": 72.73, Offered: 27.27, Hired: 45.45, Archived: 36.36 },
+];
+
+export const recruitmentFunnelData2 = [
+  { month: "1-7", Applied: 100, "For Interview": 75, Offered: 16.67, Hired: 8.33, Archived: 4.17 },
+  { month: "8-14", Applied: 100, "For Interview": 63.16, Offered: 21.05, Hired: 15.79, Archived: 5.26 },
+  { month: "15-21", Applied: 100, "For Interview": 72.73, Offered: 27.27, Hired: 45.45, Archived: 36.36 },
+  { month: "22-31", Applied: 100, "For Interview": 20, Offered: 80, Hired: 40, Archived: 12 },
+];
+
+export const recruitmentFunnelData3 = [
+  { month: "Sunday", Applied: 100, "For Interview": 75, Offered: 16.67, Hired: 8.33, Archived: 4.17 },
+  { month: "Monday", Applied: 100, "For Interview": 40, Offered: 85.71, Hired: 35.71, Archived: 14.29 },
+  { month: "Tuesday", Applied: 100, "For Interview": 72.73, Offered: 27.27, Hired: 45.45, Archived: 36.36 },
+  { month: "Wednesday", Applied: 100, "For Interview": 20, Offered: 80, Hired: 40, Archived: 12 },
+  { month: "Thursday", Applied: 100, "For Interview": 63.16, Offered: 21.05, Hired: 15.79, Archived: 5.26 },
+  { month: "Friday", Applied: 100, "For Interview": 60, Offered: 80, Hired: 45, Archived: 18 },
+  { month: "Saturday", Applied: 100, "For Interview": 84.62, Offered: 38.46, Hired: 46.15, Archived: 19.23 },
 ];
 
 export const offerAcceptanceData = [
@@ -38,6 +55,33 @@ export const sourceEfficiencyData = [
   { month: "Head Hunter", Applied: 120, Hired: 115 },
   { month: "Others", Applied: 90, Hired: 110 },
 ];
+
+export const data = {
+  details: [
+    {
+      year: "2025",
+      data: [
+        { month: "Employee Referral", Applied: 75, Hired: 25 },
+        { month: "Jobstreet", Applied: 89, Hired: 120 },
+        { month: "Walk-in", Applied: 165, Hired: 135 },
+        { month: "Word of Mouth", Applied: 80, Hired: 130 },
+        { month: "Head Hunter", Applied: 120, Hired: 115 },
+        { month: "Others", Applied: 90, Hired: 110 },
+      ],
+    },
+    {
+      year: "2024",
+      data: [
+        { month: "Employee Referral", Applied: 75, Hired: 25 },
+        { month: "Jobstreet", Applied: 96, Hired: 22 },
+        { month: "Walk-in", Applied: 224, Hired: 115 },
+        { month: "Word of Mouth", Applied: 80, Hired: 226 },
+        { month: "Head Hunter", Applied: 120, Hired: 115 },
+        { month: "Others", Applied: 90, Hired: 110 },
+      ],
+    },
+  ],
+};
 
 export enum ApplicantIcons {
   Users = "Users",
@@ -69,10 +113,10 @@ export interface Applicant {
 }
 
 export const applicantsData: Applicant[] = [
-  { icon: ApplicantIcons.Users, title: "Total Applicants", value: "5,423" },
-  { icon: ApplicantIcons.UserUp, title: "For Interview", value: "1,000" },
-  { icon: ApplicantIcons.UserCheck, title: "Hired", value: "200" },
-  { icon: ApplicantIcons.UserX, title: "Archived", value: "1,893" },
+  { icon: ApplicantIcons.Users, title: "Total Applicants", value: "0" },
+  { icon: ApplicantIcons.UserUp, title: "For Interview", value: "0" },
+  { icon: ApplicantIcons.UserCheck, title: "Hired", value: "0" },
+  { icon: ApplicantIcons.UserX, title: "Archived", value: "0" },
 ];
 
 export const monthData = [
