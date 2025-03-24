@@ -1,26 +1,33 @@
 import bg2 from '@assets/bg2.png';
 import "@modules/AccountSetup/styles/index.css"
 import Stepper from '@modules/AccountSetup/components/stepper'
-import ProfileDetails from "@modules/AccountSetup/components/profileDetails"
-import Organization from "@modules/AccountSetup/components/organization"
-import Hiring from "@modules/AccountSetup/components/hiring"
+import ProfileDetails from "@modules/AccountSetup/components/ProfileDetails"
+import Organization from "@modules/AccountSetup/components/Organization"
+import Hiring from "@modules/AccountSetup/components/Hiring"
 import { AccountSetupStore } from "@modules/AccountSetup/store/index"
-import { Step, AlertType } from "@modules/AccountSetup/types/index"
+import { Step, SubModuleRef, Submodule } from "@modules/AccountSetup/types"
 import { Button } from '@mantine/core';
 import { cn } from "@src/lib/utils";
 import Modals from "@modules/AccountSetup/components/modal/"
+import { useRef } from 'react';
 
 export default function index() {
-    const { activeStepper, setActiveStepper, setAlert } = AccountSetupStore()
+    const { activeStepper, setActiveStepper } = AccountSetupStore()
+    const subModuleRef = {
+        profile: useRef<SubModuleRef | null>(null),
+        organization: useRef<SubModuleRef | null>(null),
+        hiring: useRef<SubModuleRef | null>(null),
+    };
+
     let currentStepComponent;
     if (activeStepper === Step.profile) {
-        currentStepComponent = <ProfileDetails />;
+        currentStepComponent = <ProfileDetails ref={subModuleRef.profile} />;
     }
     else if (activeStepper === Step.organization) {
-        currentStepComponent = <Organization />;
+        currentStepComponent = <Organization ref={subModuleRef.organization} />;
     }
     else if (activeStepper === Step.hiring) {
-        currentStepComponent = <Hiring />;
+        currentStepComponent = <Hiring ref={subModuleRef.hiring} />;
     }
     else {
         currentStepComponent = <div>Else Page</div>;
@@ -37,11 +44,7 @@ export default function index() {
                         BACK
                     </Button>
                     <Button variant='outline' className={cn("self-end w-[150px] rounded-md br-gradient border-none text-white")} onClick={() => {
-                        if (activeStepper < ((Object.keys(Step).length / 2) - 1))
-                            setActiveStepper(activeStepper + 1)
-                        else {
-                            setAlert(AlertType.save)
-                        }
+                        subModuleRef[Step[activeStepper] as keyof typeof Submodule].current?.submit();
                     }}>
                         NEXT
                     </Button>
@@ -50,16 +53,16 @@ export default function index() {
         )
     }
 
-    const scrollableComponent = () => {
-        return (
-            <div className='flex flex-col  md:h-[65%] gap-6 '>
-                <div className='h-[90%] md:overflow-y-auto mb-2 md:mb-2'>
-                    {currentStepComponent}
-                </div>
-                {buttons()}
-            </div>
-        )
-    }
+    // const scrollableComponent = () => {
+    //     return (
+    //         <div className='flex flex-col  md:h-[65%] gap-6 '>
+    //             <div className='h-[90%] md:overflow-y-auto mb-2 md:mb-2'>
+    //                 {currentStepComponent}
+    //             </div>
+    //             {buttons()}
+    //         </div>
+    //     )
+    // }
 
     const fixHeightComponent = () => {
         return (

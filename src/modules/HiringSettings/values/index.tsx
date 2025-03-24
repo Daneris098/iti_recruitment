@@ -1,4 +1,4 @@
-import { feedback, interviewStage, interviewer } from "../types";
+import { applicationSource, feedback, interviewStage, interviewer, vacancyForm } from "../types";
 
 export const PAGE_SIZE = 15;
 export const applicantInitialData: feedback[] = [
@@ -21,3 +21,29 @@ export const interviewerInitialData: interviewer[] = [
     { id: 2, name: 'Ezreal', status: 'INACTIVE', lastModified: 'Feb 17, 2025'},
     { id: 3, name: 'John', status: 'ACTIVE', lastModified: 'Feb 17, 2025'},
 ];
+export const applicationSourcesInitialData: applicationSource[] = [
+    { id: 1, sourceName: 'Taylor', status: 'ACTIVE', lastModified : 'Feb 17, 2025'},
+    { id: 2, sourceName: 'Ezreal', status: 'INACTIVE', lastModified: 'Feb 17, 2025'},
+    { id: 3, sourceName: 'John', status: 'ACTIVE', lastModified: 'Feb 17, 2025'},
+];
+
+export const vacancyFormInitialData: vacancyForm = {
+    positionTitle: '',
+    company: '',
+    branch: '',
+    division: '',
+    department: '',
+    section: '',
+    employmentType: '',
+    workplaceType: '',
+    vacancyType: '',
+    experienceLevel: '',
+    duration: {
+        start: '',
+        end: '',
+    },
+    noOfOpenPosition: 0,
+    jobDescription: '',
+    qualification: '',
+    mustHaveSkills: '',
+};

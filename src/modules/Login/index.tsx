@@ -68,7 +68,6 @@ export default function Login() {
           <div className="flex flex-col gap-10 sm:h-[45%] sm:w-[80%] m-auto p-4 sm:p-0">
             <p className="text-white text-7xl font-bold text-center">Welcome Aboard!</p>
             <p className="text-white text-center text-xl w-[80%] self-center">To access the HRDotNet Recruitment and Onboarding Platform, please log-in with your credentials.</p>
-            <Button variant="outline" color="white" radius={'md'} className="w-1/2 self-center" size="lg">Login Now</Button>
           </div>
         </div>
       </div>
@@ -78,14 +77,14 @@ export default function Login() {
             <p className=" text-center font-semibold poppins text-5xl sm:text-6xl text-[#559CDA]">Admin Log-in</p>
             <p className=" text-center poppins text-md text-[#6D6D6D]">Forget Password? <span className="text-[#559CDA] underline cursor-pointer">Contact System Administrator</span></p>
             <div className="w-full text-start text-slate-700 mt-6">
-              <Text size="md" className="poppins ">
+              <Text size="md" className="poppins text-[#6D6D6D]">
                 Username
               </Text>
               <TextInput
                 variant="default"
                 size="md"
                 radius="md"
-                classNames={{ input: "poppins" }}
+                classNames={{ input: "poppins text-[#6D6D6D] " }}
                 placeholder="Enter your username"
                 rightSection={
                   <div className="bg-[#559CDA] p-2 rounded-lg text-white">
@@ -96,11 +95,11 @@ export default function Login() {
               />
             </div>
             <div className="text-start text-slate-700">
-              <Text size="md" className="poppins">
+              <Text size="md" className="poppins text-[#6D6D6D]">
                 Password
               </Text>
               <PasswordInput
-                classNames={{ input: "poppins" }}
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
 
                 variant="default"
                 size="md"

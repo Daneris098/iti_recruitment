@@ -3,7 +3,9 @@ export interface OrganizationSettingsState {
   alert: string;
   activePanel: string;
   action: string,
+  reroute: boolean,
 
+  setReroute: (reroute: boolean) => void;
   setAction: (action: string) => void;
   setActivePanel: (activePanel: string) => void;
   setAlert: (alert: string) => void;

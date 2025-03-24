@@ -52,7 +52,7 @@ export const reports = [
         type: Reports.timeToHire
     },
     {
-        title: 'Generate Acceptance Report',
+        title: 'Generate Offer Acceptance Report',
         icon: <IconFileCheck strokeWidth={1} />,
         name: "Offer Acceptance Report",
         description: "Analysis of offer acceptance rates by department.",
