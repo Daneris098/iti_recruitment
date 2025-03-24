@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";
 import axiosInstance from "@src/api";
+import { ApplicationFormVal } from "../values";
 export default function Index() {
     const [consent, setConsent] = useState('');
-    const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper } = ApplicationStore();
+    const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, setSubmitLoading } = ApplicationStore();
     const { setApplicationFormModal, setAlert, setAlertBody } = HomeStore();
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
             if (consent === 'true') {
-
+                setSubmitLoading(true);
                 (async () => {
                     try {
                         const formData = new FormData();
@@ -231,15 +232,19 @@ export default function Index() {
                             },
                         })
                         if (response.status == 201) {
+                            setApplicationForm(ApplicationFormVal)
                             setApplicationFormModal(false);
                             setActiveStepper(Step.GeneralInformation);
                             setAlert(AlertType.applicationSuccesfull);
                         }
                     } catch (error: any) {
                         setAlert(AlertType.submitResponse);
-                        const errorText = JSON.parse(error.request.responseText); 
-                        const errorTitle = errorText.title; 
+                        const errorText = JSON.parse(error.request.responseText);
+                        const errorTitle = errorText.title;
                         setAlertBody(errorTitle);
+                    }
+                    finally {
+                        setSubmitLoading(false);
                     }
                 })();
 

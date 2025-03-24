@@ -110,7 +110,7 @@ export const employmentRecordVal: EmploymentRecord[] = [{
 
 export const educationAndEmploymentVal: EducationalAndEmployment = {
   educationBackground: educationBackgroundVal,
-  employmentRecord: employmentRecordVal  
+  employmentRecord: employmentRecordVal
 }
 
 export const familyBackgroundVal: FamilyBackground = {
@@ -118,7 +118,7 @@ export const familyBackgroundVal: FamilyBackground = {
     fullname: 'Melandro Jr.Taguinoid',
     age: 70,
     occupation: 'Graphic Designer',
-    contactNumber: '+255 555-0118',
+    contactNumber: '255 555-0118',
   },
   mother: {
     fullname: 'Darlene Taguinoid',
@@ -170,16 +170,15 @@ export const referenceValue: Reference = {
       ContactNo: '+63 94 7744 3626',
     },
   ],
-  applicationSource: [
-    {
-      employeeRefereal: false,
-      jobStreet: false,
-      headHunter: false,
-      wordOfMouth: false,
-      walkin: false,
-      others: false,
-    },
-  ],
+  applicationSource:
+  {
+    employeeReferal: false,
+    jobStreet: false,
+    headHunter: false,
+    wordOfMouth: false,
+    walkin: false,
+    others: false,
+  },
 };
 
 
@@ -188,5 +187,5 @@ export const ApplicationFormVal: ApplicationForm = {
   educationAndEmployment: educationAndEmploymentVal,
   familyBackground: familyBackgroundVal,
   reference: referenceValue,
-  photo: null
+  photo: ''
 }

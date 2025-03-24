@@ -39,6 +39,7 @@ export default function AlertModals({ arg }: ArgProps) {
         <>
             {/* Form Error */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.submitResponse}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -60,6 +61,7 @@ export default function AlertModals({ arg }: ArgProps) {
             </Modal>
             {/* Application Successful Modal */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.applicationSuccesfull}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -83,6 +85,7 @@ export default function AlertModals({ arg }: ArgProps) {
 
             {/* Cancelled Application Modal */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.cancelledApplication}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -105,6 +108,7 @@ export default function AlertModals({ arg }: ArgProps) {
 
             {/* Confirm Cancel Application Modal */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.cancelApplication}
                 withCloseButton={false}
                 onClose={() => setAlert("")}

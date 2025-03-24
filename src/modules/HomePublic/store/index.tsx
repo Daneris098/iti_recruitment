@@ -8,7 +8,7 @@ export const HomeStore = create<HomeState>((set) => ({
   applicationFormModal: false,
   alert: '',
   alertBody: '',
-  
+
   setAlertBody: (alertBody: string) => set({ alertBody: alertBody }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
@@ -36,8 +36,9 @@ export const ApplicationStore = create<ApplicationState>((set) => ({
   submit: false,
   isPhotoCaptured: false,
   isPhotoCapture: false,
+  submitLoading: false,
 
-
+  setSubmitLoading: (submitLoading: boolean) => set({ submitLoading: submitLoading }),
   setIsPhotoCapture: (isPhotoCapture: boolean) => set({ isPhotoCapture: isPhotoCapture }),
   setIsPhotoCaptured: (isPhotoCaptured: boolean) => set({ isPhotoCaptured: isPhotoCaptured }),
   setSubmit: (submit: boolean) => set({ submit: submit }),

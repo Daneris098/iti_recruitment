@@ -49,7 +49,9 @@ export interface ApplicationState {
   applicationForm: ApplicationForm
   isPhotoCaptured: boolean;
   isPhotoCapture: boolean;
+  submitLoading: boolean,
 
+  setSubmitLoading: (submitLoading: boolean) => void;
   setIsPhotoCapture: (submit: boolean) => void;
   setIsPhotoCaptured: (submit: boolean) => void;
   setSubmit: (submit: boolean) => void;

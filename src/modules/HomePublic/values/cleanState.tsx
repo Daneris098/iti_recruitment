@@ -220,7 +220,7 @@ export const familyBackgroundVal2: FamilyBackground = {
     fullname: 'Melandro Jr.Taguinoid',
     age: 70,
     occupation: 'Graphic Designer',
-    contactNumber: '+255 555-0118',
+    contactNumber: '2555550118',
   },
   mother: {
     fullname: 'Darlene Taguinoid',
