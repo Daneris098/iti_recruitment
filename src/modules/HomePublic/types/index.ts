@@ -232,7 +232,7 @@ export interface ApplicationForm {
   educationAndEmployment: EducationalAndEmployment;
   familyBackground: FamilyBackground;
   reference: Reference;
-  photo: string | null;
+  photo: string;
 }
 
 export enum Step {

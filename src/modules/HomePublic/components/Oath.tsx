@@ -16,9 +16,36 @@ export default function Index() {
                 // setActiveStepper(Step.GeneralInformation);
                 // setAlert(AlertType.applicationSuccesfull);
 
+                // const photoFile = applicationForm.photo;
+
+
                 (async () => {
                     try {
                         const formData = new FormData();
+                        const split = applicationForm.photo.split('/');
+                        const mimeToExtension = (mimeType: string): string => {
+                            const mimeTypesMap: { [key: string]: string } = {
+                                'image/jpeg': '.jpg',
+                                'image/png': '.png',
+                                'image/gif': '.gif',
+                                'image/webp': '.webp',
+                                'image/bmp': '.bmp',
+                                'image/tiff': '.tiff',
+                                // Add other mime types if needed
+                            };
+                            return mimeTypesMap[mimeType] || ''; // Default to empty if not found
+                        };
+
+                        // Fetch the image, convert it to a file, and add extension
+                        const fileUri = applicationForm.photo; // path or URL to the photo
+                        const fileName = split[split.length - 1];
+                        const file = await fetch(fileUri)
+                            .then(res => res.blob())
+                            .then(blob => {
+                                const fileExtension = mimeToExtension(blob.type); // Get file extension from MIME type
+                                const updatedFileName = `${fileName}${fileExtension}`; // Add the extension to the file name
+                                return new File([blob], updatedFileName, { type: blob.type });
+                            });
 
                         const appendFormData = (data: any, parentKey?: string) => {
                             if (data && typeof data === 'object' && !(data instanceof File)) {
@@ -32,13 +59,13 @@ export default function Index() {
                                 }
                             }
                         };
-
                         appendFormData({
                             name: applicationForm.generalInformation.personalInformation.fullname,
+                            Photo: file,
                             birthDate: applicationForm.generalInformation.personalInformation.dateOfBirth,
                             birthPlace: applicationForm.generalInformation.personalInformation.placeOfBirth,
-                            height: 160,
-                            weight: 50,
+                            height: applicationForm.generalInformation.personalInformation.height,
+                            weight: applicationForm.generalInformation.personalInformation.weight,
                             identification: {
                                 sssNo: applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo,
                                 hdmfNo: '',
@@ -104,7 +131,7 @@ export default function Index() {
                             },
                             religion: {
                                 id: 1,
-                                name: 'Catholic',
+                                name: applicationForm.generalInformation.personalInformation.religion,
                             },
                             characterReferences: [
                                 ...applicationForm.reference.employmentReference.map((item) => {
@@ -153,22 +180,24 @@ export default function Index() {
                             positions: [
                                 {
                                     id: 1,
-                                    name: 'Developer',
-                                    salary: 15000,
+                                    name: applicationForm.generalInformation.firstChoice,
+                                    salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 1, name: 'First Choice' },
-                                    availableDateStart: '2025-03-30',
+                                    availableDateStart: applicationForm.generalInformation.startDateAvailability,
                                 },
                                 {
                                     id: 2,
-                                    name: 'QA',
-                                    salary: 15000,
+                                    name: applicationForm.generalInformation.secondChoice,
+                                    salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 2, name: 'Second Choice' },
-                                    availableDateStart: '2025-03-30',
+                                    availableDateStart: applicationForm.generalInformation.startDateAvailability,
                                 },
                             ],
                             questionnaires: [
-                                { id: 1, Question: 'Have you ever been convicted of a crime?', Answer: 'NO' },
-                                { id: 2, Question: 'Have you ever been hospitalized?', Answer: 'NO' },
+                                { id: 1, Question: 'Have you ever been convicted of a crime?', Answer: applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails },
+                                { id: 2, Question: 'Have you ever been hospitalized?', Answer: applicationForm.familyBackground.otherInformation.isBeenHospitalizedDetails },
+                                { id: 3, Question: 'Do you have any medical condition that may prevent you from performing certain types of jobs?', Answer: applicationForm.familyBackground.otherInformation.medicalConditionDetails },
+                                { id: 4, Question: 'Do you have any relatives/family/people in a relationship with you, who are working with us?F', Answer: applicationForm.familyBackground.otherInformation.relativeWorkingWithUsDetails },
                             ],
                             educations: applicationForm.educationAndEmployment.educationBackground.map((item: EducationBackground, index) => {
                                 const formatDate = (date: any) => {
@@ -203,9 +232,9 @@ export default function Index() {
                                 return { keyword: item }
                             }),
                         });
-                        for (let [key, value] of formData.entries()) {
-                            console.log(key, value);
-                        }
+                            // for (let [key, value] of formData.entries()) {
+                            //     console.log(key, value);
+                            // }
                         // console.log('formData: ', formData)
                         const response = await axiosInstance.post('/recruitment/applicants/application-form', formData, {
                             headers: {

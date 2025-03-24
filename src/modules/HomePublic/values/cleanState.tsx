@@ -316,6 +316,6 @@ export const ApplicationFormVal: ApplicationForm = {
   generalInformation: GeneralInformationVal2,
   educationAndEmployment: educationAndEmploymentVal2,
   familyBackground: familyBackgroundVal2,
-  reference: referenceValue,
-  photo: null
+  reference: referenceValue2,
+  photo: ''
 }

@@ -53,13 +53,14 @@ export default function index() {
                         </div>
                         <div className="flex gap-1 sm:flex-col sm:gap-2">
                             <p className="text-[#6D6D6D]">Skills</p>
-                            <Pill.Group>
-                                {applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(',').map((item, index) => (
-                                    <Pill key={index}>
-                                        {item}
-                                    </Pill>
-                                ))}
-                            </Pill.Group>
+                            {applicationForm.familyBackground.otherInformation.specialTechnicalSkills != '' &&
+                                (<Pill.Group>
+                                    {applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(',').map((item, index) => (
+                                        <Pill key={index}>
+                                            {item}
+                                        </Pill>
+                                    ))}
+                                </Pill.Group>)}
                         </div>
                     </div>
 
