@@ -29,7 +29,9 @@ export interface HomeState {
   selectedData: VacancyType;
   applicationFormModal: boolean;
   alert: string;
+  alertBody: string;
 
+  setAlertBody: (alertBody: string) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedData: (selectedData: VacancyType) => void;
@@ -249,4 +251,5 @@ export enum AlertType {
   applicationSuccesfull = 'applicationSuccessfull',
   cancelApplication = 'cancelApplication',
   cancelledApplication = 'cancelledApplication',
+  submitResponse = 'submitResponse',
 }

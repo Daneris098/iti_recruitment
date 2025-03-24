@@ -118,6 +118,7 @@ export default function index() {
             educationBackground[i].certfications = certifications[i].toString()
         }
         form.educationBackground = educationBackground
+        console.log('form: ', form);
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -165,12 +166,12 @@ export default function index() {
                         invalid = true
                     }
 
-                    if (item.inclusiveDate.from === null) {
+                    if (item.inclusiveDate.from == null || item.inclusiveDate.from == "") {
                         form.setFieldError(`employmentRecord.${index}.inclusiveDate.from`, 'Inclusive date from is required');
                         invalid = true
                     }
 
-                    if (item.inclusiveDate.to === null) {
+                    if (item.inclusiveDate.to == null || item.inclusiveDate.to == "") {
                         form.setFieldError(`employmentRecord.${index}.inclusiveDate.to`, 'Inclusive date to is required');
                         invalid = true
                     }

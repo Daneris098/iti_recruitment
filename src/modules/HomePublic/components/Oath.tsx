@@ -6,18 +6,11 @@ import axiosInstance from "@src/api";
 export default function Index() {
     const [consent, setConsent] = useState('');
     const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper } = ApplicationStore();
-    const { setApplicationFormModal, setAlert } = HomeStore();
+    const { setApplicationFormModal, setAlert, setAlertBody } = HomeStore();
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
             if (consent === 'true') {
-                console.log('applicationForm: ', applicationForm);
-                // setApplicationFormModal(false);
-                // setActiveStepper(Step.GeneralInformation);
-                // setAlert(AlertType.applicationSuccesfull);
-
-                // const photoFile = applicationForm.photo;
-
 
                 (async () => {
                     try {
@@ -232,17 +225,24 @@ export default function Index() {
                                 return { keyword: item }
                             }),
                         });
-                            // for (let [key, value] of formData.entries()) {
-                            //     console.log(key, value);
-                            // }
-                        // console.log('formData: ', formData)
                         const response = await axiosInstance.post('/recruitment/applicants/application-form', formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data',
                             },
                         })
+                        if (response.status == 201) {
+                            setApplicationFormModal(false);
+                            setActiveStepper(Step.GeneralInformation);
+                            setAlert(AlertType.applicationSuccesfull);
+                        }
                         console.log('response: ', response);
-                    } catch (error) {
+                    } catch (error: any) {
+                        setAlert(AlertType.submitResponse);
+                        const errorText = JSON.parse(error.request.responseText); // Parse the JSON text
+                        const errorTitle = errorText.title; // Extract the 'title' value
+
+                        // Now you can set the alert body with the title
+                        setAlertBody(errorTitle);
                         console.error('Error in submitting the form:', error);
                     }
                 })();

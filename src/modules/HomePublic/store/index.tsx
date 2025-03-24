@@ -7,7 +7,9 @@ export const HomeStore = create<HomeState>((set) => ({
   selectedData: selectedDataVal,
   applicationFormModal: false,
   alert: '',
+  alertBody: '',
   
+  setAlertBody: (alertBody: string) => set({ alertBody: alertBody }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
   setSelectedData: (selectedData: VacancyType) => set({ selectedData: selectedData }),
