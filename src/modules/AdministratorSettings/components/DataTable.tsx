@@ -68,6 +68,7 @@ export default function index() {
                         color: "rgba(0, 0, 0, 0.6)",
                     },
                 }}
+                paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
                 withTableBorder
                 records={records}
                 columns={(columns as any)[activePanel]}

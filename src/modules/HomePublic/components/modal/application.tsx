@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover } from '@mantine/core';
+import { Modal, Divider, Button, Popover, LoadingOverlay } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
@@ -16,7 +16,7 @@ import "@modules/HomePublic/styles/index.css"
 
 export default function index() {
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
-    const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture } = ApplicationStore();
+    const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
 
     let currentStepComponent;
@@ -65,6 +65,7 @@ export default function index() {
                     </div>)}
 
                     {currentStepComponent}
+                    <LoadingOverlay visible={submitLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
 
                     <div className={cn('flex gap-2 self-end w-[100%] sm:w-[25%] ', (activeStepper === Step.GeneralInformation) && 'sm:w-[10%]', (activeStepper === Step.Oath) && 'sm:w-[100%] justify-between')}>
                         {activeStepper > Step.GeneralInformation && (
@@ -90,6 +91,7 @@ export default function index() {
                                         setSubmit(true)
                                     }
                                     setOpened(false)
+
                                 }}>
                                     <div className='flex'>
 
@@ -107,8 +109,8 @@ export default function index() {
                                 </div>
                             </Popover.Target>
                             <Popover.Dropdown className="p-0 rounded-lg flex flex-col">
-                                <Button variant="transparent" onClick={() => { photo?.current?.retakePhoto() }}>RETAKE</Button>
-                                <Button variant="transparent" onClick={() => { photo?.current?.upload();  }}>UPLOAD</Button>
+                                {isPhotoCaptured && (<Button variant="transparent" onClick={() => { photo?.current?.retakePhoto() }}>RETAKE</Button>)}
+                                <Button variant="transparent" onClick={() => { photo?.current?.upload(); }}>UPLOAD</Button>
                                 <Button variant="transparent" onClick={() => { photo?.current?.skip(); setSubmit(true); setOpened(false); }}>SKIP THIS STEP</Button>
                             </Popover.Dropdown>
                         </Popover>

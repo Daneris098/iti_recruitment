@@ -10,12 +10,17 @@ import { cn } from "@src/lib/utils";
 const AlertAutoClose: Record<AlertType, boolean> = {
     [AlertType.applicationSuccesfull]: true,
     [AlertType.cancelledApplication]: true,
-    [AlertType.cancelApplication]: false, // Confirmation dialogs should not auto-close
+    [AlertType.cancelApplication]: false,
+    [AlertType.submitResponse]: true,
 };
 
-export default function AlertModals() {
-   const { setActiveStepper } = ApplicationStore();
-    const { setApplicationFormModal, setAlert, alert } = HomeStore();
+interface ArgProps {
+    arg?: string
+}
+
+export default function AlertModals({ arg }: ArgProps) {
+    const { setActiveStepper } = ApplicationStore();
+    const { setApplicationFormModal, setAlert, alert, alertBody } = HomeStore();
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
@@ -32,8 +37,31 @@ export default function AlertModals() {
 
     return (
         <>
+            {/* Form Error */}
+            <Modal
+                zIndex={1000}
+                opened={alert === AlertType.submitResponse}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                title="Error"
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <Divider size="xs" color="#6D6D6D" />
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <CircleAlert color="#559cda" size={80} strokeWidth={1} />
+                    <Text className="text-xl text-center font-bold">
+                        {alertBody}
+                    </Text>
+                </div>
+            </Modal>
             {/* Application Successful Modal */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.applicationSuccesfull}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -47,7 +75,7 @@ export default function AlertModals() {
             >
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleCheckBig color="#559cda" size={80}  strokeWidth={1}/>
+                    <CircleCheckBig color="#559cda" size={80} strokeWidth={1} />
                     <Text className="text-xl text-center font-bold">
                         Congratulations, your application has been sent!
                     </Text>
@@ -57,6 +85,7 @@ export default function AlertModals() {
 
             {/* Cancelled Application Modal */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.cancelledApplication}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -79,6 +108,7 @@ export default function AlertModals() {
 
             {/* Confirm Cancel Application Modal */}
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.cancelApplication}
                 withCloseButton={false}
                 onClose={() => setAlert("")}

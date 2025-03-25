@@ -6,7 +6,7 @@ const Photo = forwardRef((_, ref) => {
     const videoRef = useRef<any>(null);
     const canvasRef = useRef<any>(null);
     const fileInputRef = useRef<any>(null);
-    const [capturedImage, setCapturedImage] = useState(null);
+    const [capturedImage, setCapturedImage] = useState('');
     const [stream, setStream] = useState<any>(null);
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm, setIsPhotoCaptured, isPhotoCapture, setIsPhotoCapture } = ApplicationStore();
 
@@ -106,13 +106,13 @@ const Photo = forwardRef((_, ref) => {
 
 
     const retakePhoto = () => {
-        setCapturedImage(null);
+        setCapturedImage('');
         startCamera();
         setIsPhotoCaptured(false);
     };
 
     const skip = () => {
-        setCapturedImage(null);
+        setCapturedImage('');
         setIsPhotoCaptured(true);
     };
 

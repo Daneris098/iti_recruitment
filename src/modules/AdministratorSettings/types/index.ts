@@ -16,6 +16,7 @@ export enum AlertType {
   cancellled = 'Cancelled',
   editSuccess = 'editSuccess',
   resetSuccess = 'resetSuccess',
+  createAccountSuccess = 'createAccountSuccess',
   resetConfirmation = 'resetConfirmation',
 }
 

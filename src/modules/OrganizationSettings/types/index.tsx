@@ -89,6 +89,7 @@ export const columns = {
 };
 
 export type Company = {
+  id: number;
   name: string;
   code: string;
   location: string;

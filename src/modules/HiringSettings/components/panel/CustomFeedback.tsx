@@ -87,18 +87,18 @@ const CustomFeedback = forwardRef((_, ref) => {
     };
 
     const addNewRow = (mode: string) => {
-        if (mode === 'applicantFeedback' && Object.keys(applicantEditMode).length === 0) {
+        if (mode === 'applicantFeedback') {
             const newRow: feedback = {
-                id: Math.max(...applicantFeedback.map(r => r.id), 0) + 1, // Automatically generate a new id
+                id: Math.max(...applicantFeedback.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
                 feedback: '',
             };
             setApplicantNewRows(prev => [...prev, newRow]);
             setApplicantEditMode(prev => ({ ...prev, [newRow.id]: true }));
             setApplicantEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
         }
-        else if (mode === 'hiringFeedback' && Object.keys(hiringEditMode).length === 0) {
+        else if (mode === 'hiringFeedback') {
             const newRow: feedback = {
-                id: Math.max(...hiringFeedback.map(r => r.id), 0) + 1, // Automatically generate a new id
+                id: Math.max(...hiringFeedback.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
                 feedback: '',
             };
             setHiringNewRows(prev => [...prev, newRow]);
