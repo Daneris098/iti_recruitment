@@ -25,6 +25,12 @@ const InterviewStage = forwardRef((_, ref) => {
                     <p>{data.stageName}</p>
             },
             {
+                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
+                render: (data: any) => (
+                    <p>{data.lastModified}</p>
+                )
+            },
+            {
                 accessor: 'status', title: 'Status', sortable: true,
                 render: (data: any) => interviewStagesEditMode[data.id] ? (
                     <Select
@@ -40,34 +46,26 @@ const InterviewStage = forwardRef((_, ref) => {
                         defaultValue={interviewStagesEditableData[data.id]?.status || data.status}
                     />
                 ) :
-                    <p>{data.status}</p>
-                ,
-            },
-            {
-                accessor: 'lastModified', title: ('Last Modified'), sortable: true,
-                render: (data: any) => (
                     <div className='flex justify-between'>
-                        <p>{data.lastModified}</p>
+                        <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
                             {interviewStagesEditMode[data.id] ? '' : <IconPencil />}
                         </div>
                     </div>
-                )
+                ,
             },
         ];
 
     const addNewRow = () => {
-        if (Object.keys(interviewStagesEditMode).length === 0) {
-            const newRow: interviewStage = {
-                id: Math.max(...interviewStage.map(r => r.id), 0) + 1, // Automatically generate a new id
-                stageName: '',
-                status: '',
-                lastModified: '',
-            };
-            setInterviewStagesNewRows(prev => [...prev, newRow]);
-            setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
-            setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
-        }
+        const newRow: interviewStage = {
+            id: Math.max(...interviewStage.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
+            stageName: '',
+            status: '',
+            lastModified: '',
+        };
+        setInterviewStagesNewRows(prev => [...prev, newRow]);
+        setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
+        setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
     };
 
 

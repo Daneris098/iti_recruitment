@@ -29,7 +29,9 @@ export interface HomeState {
   selectedData: VacancyType;
   applicationFormModal: boolean;
   alert: string;
+  alertBody: string;
 
+  setAlertBody: (alertBody: string) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedData: (selectedData: VacancyType) => void;
@@ -47,7 +49,9 @@ export interface ApplicationState {
   applicationForm: ApplicationForm
   isPhotoCaptured: boolean;
   isPhotoCapture: boolean;
+  submitLoading: boolean,
 
+  setSubmitLoading: (submitLoading: boolean) => void;
   setIsPhotoCapture: (submit: boolean) => void;
   setIsPhotoCaptured: (submit: boolean) => void;
   setSubmit: (submit: boolean) => void;
@@ -76,7 +80,7 @@ export interface EmploymentRecord {
     from: string | null;
     to: string | null;
   };
-  salary: number | null;
+  salary: number;
   reasonForLeaving: string;
 }
 
@@ -120,15 +124,15 @@ export interface GeneralInformation {
       philhealthNo: string;
       tinNo: string;
       rdoCode: string;
-      driversLiscence: string;
+      driversLicense: string;
       passport: string;
     }
     dateOfBirth: string;
     placeOfBirth: string;
     age: number;
     gender: string;
-    height: string;
-    weight: string;
+    height: number | null;
+    weight: number | null;
     civilStatus: string;
     religion: string;
     mobileNumber: string;
@@ -208,7 +212,7 @@ export interface EmploymentReference {
 }
 
 export interface ApplicationSource {
-  employeeRefereal: boolean;
+  employeeReferal: boolean;
   jobStreet: boolean;
   headHunter: boolean;
   wordOfMouth: boolean;
@@ -219,7 +223,7 @@ export interface ApplicationSource {
 export interface Reference {
   characterReference: CharacterReference[]
   employmentReference: EmploymentReference[]
-  applicationSource: ApplicationSource[]
+  applicationSource: ApplicationSource
 }
 
 export interface EducationalAndEmployment {
@@ -232,7 +236,7 @@ export interface ApplicationForm {
   educationAndEmployment: EducationalAndEmployment;
   familyBackground: FamilyBackground;
   reference: Reference;
-  photo: string | null;
+  photo: string;
 }
 
 export enum Step {
@@ -249,4 +253,5 @@ export enum AlertType {
   applicationSuccesfull = 'applicationSuccessfull',
   cancelApplication = 'cancelApplication',
   cancelledApplication = 'cancelledApplication',
+  submitResponse = 'submitResponse',
 }

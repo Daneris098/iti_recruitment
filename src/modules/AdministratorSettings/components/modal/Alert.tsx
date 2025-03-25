@@ -14,6 +14,7 @@ export default function AlertModals() {
         [AlertType.cancellled]: true,
         [AlertType.saved]: true,
         [AlertType.editSuccess]: true,
+        [AlertType.createAccountSuccess]: false,
         [AlertType.resetSuccess]: false,
         [AlertType.resetConfirmation]: false,
     };
@@ -114,6 +115,38 @@ export default function AlertModals() {
                     <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold text-center">
                         You've successfully reset the user credentials.
+                    </Text>
+                    <div className="flex gap-4 w-[80%]">
+                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert('') }}>COPY CREDENTIALS</Button>
+                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>DOWNLOAD</Button>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal
+                opened={alert === AlertType.createAccountSuccess}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Create Account Success
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <CircleCheckBig color="#559cda" size={70} strokeWidth={1} />
+                    <Text className="text-xl font-bold text-center">
+                        You've successfully added a new account.
                     </Text>
                     <div className="flex gap-4 w-[80%]">
                         <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert('') }}>COPY CREDENTIALS</Button>

@@ -18,15 +18,17 @@ export default function index() {
         mode: 'uncontrolled',
         initialValues: applicationForm.generalInformation,
         validate: {
-            firstChoice: (value: string) => value === null? "First choice is required" : null,
-            secondChoice: (value: string) => value === null? "Second choice is required" : null,
+            firstChoice: (value: string) => value === null || value === '' ? "First choice is required" : null,
+            secondChoice: (value: string) => value === null || value === '' ? "Second choice is required" : null,
             desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
             startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
             personalInformation: {
                 fullname: {
-                    firstName: (value: string) => value.length === 0 ? "First name is required" : null,
-                    lastName: (value: string) => value.length === 0 ? "Last name is required" : null,
+                    firstName: (value: string) => !value.trim()  ? "First name is required" : null,
+                    middleName: (value: string) => !value.trim() ? "(Write N/A if not applicable)" : null,
+                    lastName: (value: string) => !value.trim() ? "Last name is required" : null,
+                    suffix: (value: string) => !value.trim() ? "(Write N/A if not applicable)" : null,
                 },
                 presentAddress: {
                     unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
@@ -56,8 +58,8 @@ export default function index() {
                 religion: (value: string) => value.length === 0 ? "Religion is required" : null,
                 age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
                 gender: (value: string) => value.length === 0 ? "Gender is required" : null,
-                height: (value: string) => value.length === 0 ? "Height is required" : null,
-                weight: (value: string) => value.length === 0 ? "Weight is required" : null,
+                height: (value: number | null) => value  === null ? "Height is required" : null,
+                weight: (value: number | null) => value === null ? "Weight is required" : null,
                 civilStatus: (value: string) => value.length === 0 ? "Civil Status is required" : null,
                 mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
@@ -144,8 +146,8 @@ export default function index() {
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Full Name <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Last Name" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="First Name" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Middle Name" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Suffix(Jr. Sr. etc.)" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Middle Name" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Suffix(Jr. Sr. etc.)" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
@@ -324,8 +326,8 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
+                    <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
+                    <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
                 </div>
@@ -345,7 +347,7 @@ export default function index() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.philhealthNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="PhilHealth No." />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.driversLiscence")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Drivers License No." />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.driversLicense")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Drivers License No." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.passport")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Passport No." />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">

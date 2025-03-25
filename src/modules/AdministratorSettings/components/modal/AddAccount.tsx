@@ -1,9 +1,11 @@
 import { Modal, Divider, Button, TextInput, Checkbox } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useRef } from "react";
-import { DialogStore } from "@modules/AdministratorSettings/store";
+import { AdministratorSettingsStore, DialogStore } from "@modules/AdministratorSettings/store";
+import { AlertType } from '../../types';
 
 export default function index() {
+    const { setAlert } = AdministratorSettingsStore();
     const { action, setAction } = DialogStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const form = useForm({
@@ -71,7 +73,7 @@ export default function index() {
                                 variant="transparent"
                                 className="br-gradient border-none text-white w-[30%] self-end"
                                 radius={10}
-                                onClick={() => { }}
+                                onClick={() => { setAction(''); setAlert(AlertType.createAccountSuccess); }}
                             >GENERATE ACCOUNT</Button>
                         </div>
                     </div>

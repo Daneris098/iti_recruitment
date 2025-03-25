@@ -38,10 +38,6 @@ const Organization = forwardRef((_, ref) => {
         },
     });
 
-    useEffect(() => {
-        console.log('branchList: ', form.values.branchList)
-    }, [form])
-
     const submit = () => {
         formRef.current?.requestSubmit();
     }
