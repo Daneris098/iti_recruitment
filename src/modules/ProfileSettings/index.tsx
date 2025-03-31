@@ -80,14 +80,14 @@ export const ProfileSettings = () => {
 
                     <div className="flex flex-col gap-4">
                         <div className="flex gap-2 flex-col sm:flex-row">
-                            <TextInput className="sm:w-[25%]" radius='md' label="Last Name" value="Cooper" />
-                            <TextInput className="sm:w-[25%]" radius='md' label="First Name" value="Jane" />
-                            <TextInput className="sm:w-[25%]" radius='md' label="Middle Name" value="Andrade" />
-                            <TextInput className="sm:w-[25%]" radius='md' label="Name Extension" />
+                            <TextInput className="sm:w-[25%]" radius='md' label="Last Name" value="Cooper" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                            <TextInput className="sm:w-[25%]" radius='md' label="First Name" value="Jane" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                            <TextInput className="sm:w-[25%]" radius='md' label="Middle Name" value="Andrade" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                            <TextInput className="sm:w-[25%]" radius='md' label="Name Extension" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
                         </div>
                         <div className="flex gap-2 flex-col sm:flex-row">
-                            <TextInput className="sm:w-[50%]" radius='md' label="Email" value="janecooper@gmail.com" />
-                            <TextInput className="sm:w-[50%]" radius='md' label="Username" value="janecooper32" />
+                            <TextInput className="sm:w-[50%]" radius='md' label="Email" value="janecooper@gmail.com" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                            <TextInput className="sm:w-[50%]" radius='md' label="Username" value="janecooper32" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
                         </div>
                     </div>
 
@@ -100,9 +100,9 @@ export const ProfileSettings = () => {
                     </div>
                     
                     <div className="flex gap-2 items-end">
-                        <PasswordInput label="Current Password" className="w-[33%]" radius='md' value="password" />
-                        <PasswordInput label="New Password" className="w-[33%]" radius='md' value="password" />
-                        <PasswordInput label="Confirm Password" className="w-[33%]" radius='md' value="password" />
+                        <PasswordInput label="Current Password" className="w-[33%]" radius='md' value="password" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                        <PasswordInput label="New Password" className="w-[33%]" radius='md' value="password" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                        <PasswordInput label="Confirm Password" className="w-[33%]" radius='md' value="password" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }}  />
                     </div>
                 </Tabs.Panel>
             </Tabs>
