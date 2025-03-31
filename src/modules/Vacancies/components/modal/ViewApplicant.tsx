@@ -9,7 +9,7 @@ import "@modules/Vacancies/style.css"
 
 
 export default function index() {
-    const { selectedData, setSelectedData } = ApplicantStore();
+    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
     const [vacancyRecords, setVacancyRecords] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
@@ -65,7 +65,7 @@ export default function index() {
                         borderRadius="sm"
                         records={paginatedRecords}
                         columns={[
-                            { accessor: 'applied', title: 'Applied', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[6] })},
+                            { accessor: 'applied', title: 'Applied', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[6] }) },
                             { accessor: 'forInterview', title: 'For Interview', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6] }) },
                             { accessor: 'offered', title: 'Offered', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6] }) },
                             { accessor: 'hired', title: 'Hired', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6] }) },
@@ -76,6 +76,21 @@ export default function index() {
                         page={page}
                         onPageChange={setPage}
                         sortStatus={sortStatus}
+                        onCellClick={(val) => {
+                            setSelectedApplicant({
+                                Applicant_Name: val.record[val.column.accessor],
+                                Position: 'Data Analyst',
+                                Status: 'For Transfer',
+                                Email: 'maxineramsey@pearlessa.com',
+                                Phone: '+63 (856) 555-3987',
+                                Skills: '',
+                                Remarks: '',
+                                Application_Date: 'September 20, 2025'
+                            })
+                            // setSelectedData(selectedDataVal)
+                            setIsViewApplicant(true)
+                            console.log(val.record[val.column.accessor])
+                        }}
                         onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
                     />
 
