@@ -29,7 +29,7 @@ export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
 
             {/* Text prompt */}
             <div>
-                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] pb-8 pt-2">
+                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] pb-8 pt-2 text-center">
                     Update Applicant Status Successful
                 </h1>
             </div>

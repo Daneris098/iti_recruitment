@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCloseModal } from "@modules/Shared/components/applicantProfile/store"
 import { Divider, Modal, Tabs } from "@mantine/core";
 import { IconFileUpload, IconX } from "@tabler/icons-react";
@@ -60,6 +60,9 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
         setIsOpen(false)
     };
 
+    useEffect(() => {
+        console.log('Status: ', Status  )
+    }, [])
 
     return (
         <Modal size={'65%'} opened={isOpen} onClose={() => { setIsOpen(false) }} withCloseButton={false} >

@@ -23,6 +23,10 @@ export default function index() {
         setVacancyRecords(Vacancies); // Type assertion
     }, []);
 
+    useEffect(() => {
+        console.log('vacancyRecords: ', vacancyRecords)
+    }, [vacancyRecords])
+
     const sortedRecords = [...vacancyRecords].sort((a, b) => {
         if (!sortStatus.columnAccessor) return 0;
         const valueA = a[sortStatus.columnAccessor as keyof VacancyType];
@@ -65,11 +69,11 @@ export default function index() {
                         borderRadius="sm"
                         records={paginatedRecords}
                         columns={[
-                            { accessor: 'applied', title: 'Applied', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[6] }) },
-                            { accessor: 'forInterview', title: 'For Interview', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6] }) },
-                            { accessor: 'offered', title: 'Offered', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6] }) },
-                            { accessor: 'hired', title: 'Hired', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6] }) },
-                            { accessor: 'archived', title: 'Archived', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6] }) },
+                            { accessor: 'applied', render: (data: any) => (<>{data.applied.name}</>), title: 'Applied', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[6] }) },
+                            { accessor: 'forInterview', render: (data: any) => (<>{data.forInterview.name}</>), title: 'For Interview', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6] }) },
+                            { accessor: 'offered', render: (data: any) => (<>{data.offered.name}</>), title: 'Offered', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6] }) },
+                            { accessor: 'hired', render: (data: any) => (<>{data.hired.name}</>), title: 'Hired', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6] }) },
+                            { accessor: 'archived', render: (data: any) => (<>{data.archived.name}</>), title: 'Archived', textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6] }) },
                         ]}
                         totalRecords={vacancyRecords.length}
                         recordsPerPage={pageSize}
@@ -77,10 +81,14 @@ export default function index() {
                         onPageChange={setPage}
                         sortStatus={sortStatus}
                         onCellClick={(val) => {
+                            console.log('val: ', val);
+                            console.log('exact val: ', val.record['applied']['name']);
+                            console.log('accessor: ', val.column.accessor)
+                            console.log('exact val: ', val.record[val.column.accessor]['name']);
                             setSelectedApplicant({
-                                Applicant_Name: val.record[val.column.accessor],
+                                Applicant_Name: val.record[val.column.accessor]['name'],
                                 Position: 'Data Analyst',
-                                Status: 'For Transfer',
+                                Status: val.record[val.column.accessor]['status'],
                                 Email: 'maxineramsey@pearlessa.com',
                                 Phone: '+63 (856) 555-3987',
                                 Skills: '',

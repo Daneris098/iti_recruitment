@@ -2,7 +2,6 @@
 import { Button, Combobox, Divider, Modal, Textarea, TextInput, useCombobox } from "@mantine/core";
 import { IconChevronDown, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Shared/components/applicantProfile/store"
-import JobGeneratedModal from "@modules/Shared/components/applicantProfile/modal/jobGenerated"
 import JobGeneratedAlert from "@modules/Shared/components/applicantProfile/alerts/JobGeneratedAlert"
 import { useCloseModal } from "@modules/Applicants/store"
 interface DropDownOfferedProps {
@@ -243,7 +242,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             </form>
 
             <div>
-                <Modal radius={"md"} size={"35%"} withCloseButton={false} centered opened={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <Modal  radius={"md"} size={"35%"} withCloseButton={false} centered opened={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <JobGeneratedAlert onClose={onClose} title={""} />
                 </Modal>
             </div>

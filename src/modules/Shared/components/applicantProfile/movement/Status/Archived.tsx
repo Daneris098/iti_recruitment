@@ -91,7 +91,7 @@ export default function ArchivedStatus({ Status } : Pick<ViewApplicantsProps, "S
                                     rightSection={<IconCaretDownFilled size={16} />}
                                     placeholder="Applicant Feedback"
                                     classNames={{
-                                        input: "poppins relative flex items-center w-[560px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center  h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -122,7 +122,7 @@ export default function ArchivedStatus({ Status } : Pick<ViewApplicantsProps, "S
                             <span className="text-[#F14336] poppins">*</span>
                         </p>
 
-                        <div className="bg-[#d5d5d599] h-[223px] w-[555px] poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center">
+                        <div className="bg-[#d5d5d599] h-[223px]  poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center">
                             {/* Upload Icon */}
                             <div className="flex justify-center">
                                 <IconCloudUpload className="text-[#559CDA]" size={70} stroke={1} />

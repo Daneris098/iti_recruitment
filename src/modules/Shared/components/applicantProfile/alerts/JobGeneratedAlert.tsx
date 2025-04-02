@@ -62,7 +62,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
 
             {/* Text prompt */}
             <div>
-                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] poppins">
+                <h1 className="font-semibold flex justify-center text-[24px] text-[#6D6D6D] poppins text-center">
                     Job Offer Generated Successfully!
                 </h1>
             </div>
@@ -84,7 +84,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                 This PDF Component will be rendered when the user
                 click the "View" button under the "Job Generated Successfully prompt."
                 */}
-                <Modal opened={isViewPDF} onClose={() => setIsViewPDF(false)} title={title === "Offered" ? "Generate Offer" : "Job Offer"}>
+                <Modal size={'65%'} opened={isViewPDF} onClose={() => setIsViewPDF(false)} title={title === "Offered" ? "Generate Offer" : "Job Offer"}>
                     <PDFViewer width="100%" height="710" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                         <MyDocument
                             Name={null}

@@ -27,7 +27,7 @@ export default function Hired() {
                 <span className="text-[#F14336] poppins">*</span>
             </p>
 
-            <div className="bg-[#d5d5d599] h-[223px] w-[555px] poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center">
+            <div className="bg-[#d5d5d599] h-[223px]  poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center">
                 {/* Upload Icon */}
                 <div className="flex justify-center">
                     <IconCloudUpload className="text-[#559CDA]" size={70} stroke={1} />
