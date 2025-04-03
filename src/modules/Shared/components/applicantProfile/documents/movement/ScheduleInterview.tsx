@@ -138,7 +138,7 @@ export default function ApplicantNotReachable({ onClose }: ApplicantNotReachable
             </div>
 
             <div>
-                <ScheduleInterviewModal isOpen={isAddtoCalendar} onClose={() => setIsAddtoCalendar(false)}>
+                <ScheduleInterviewModal isOpen={isAddtoCalendar}>
                     <ScheduleInterviewAlert onClose={() => setIsAddtoCalendar(false)} />
                 </ScheduleInterviewModal>
             </div>

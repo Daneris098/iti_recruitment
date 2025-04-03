@@ -2,7 +2,6 @@ import { Button, Combobox, Divider, Modal, Textarea, TextInput, useCombobox } fr
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Shared/components/applicantProfile/store";
 import { useState } from "react";
-import TransferredPositionModal from "@modules/Shared/components/applicantProfile/modal/jobGenerated";
 import TransferredPosition from "@src/modules/Shared/components/applicantProfile//alerts/Transferred"
 interface ApplicantTransfereeName {
     Applicant_Name: string

@@ -9,13 +9,13 @@ export interface ApplicantStatus {
 }
 
 export interface Applicants {
-    id: number;
+    id: string;
     Applicant_Name: string;
     Application_Date: string;
     Phone: string;
     Email: string;
     Position: string;
-    Status: "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred";
+    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred";
 }
 
 export interface FilterState {
@@ -30,7 +30,7 @@ export interface FilterState {
     setAlert: (alert: string) => void;
     setModal: (modal: boolean) => void;
     setClearFilter: (clearFilter: boolean) => void;
-    setSelectedData: (selectedData: ApplicantStatus) => void;
+    setSelectedData: (selectedData: Applicants) => void;
     setFilterDrawer: (filterDrawer: boolean) => void;
     setIsFiltered: (isFiltered: boolean) => void;
     setFilter: (filter: ApplicantStatus) => void;

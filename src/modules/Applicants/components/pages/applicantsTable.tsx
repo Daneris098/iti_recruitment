@@ -80,7 +80,7 @@ export default function index() {
 
   // For handling the state of row clicking of each record.
   // This will make each rendered records clickable.
-  const handleRowClick = (applicant: string) => {
+  const handleRowClick = (applicant: any) => {
     setSelectedApplicant(applicant);
     setIsViewApplicant(true);
   }
@@ -176,7 +176,7 @@ export default function index() {
 
         {/* View Applicant Modal */}
         {/* <ApplicantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}> */}
-        <ApplicantModal isOpen={isViewApplicant} onClose={() => setIsViewApplicant(false)}>
+        <ApplicantModal isOpen={isViewApplicant}>
           <ViewApplicant
             Applicant_Name={selectedApplicant?.Applicant_Name}
             Position={selectedApplicant?.Position}

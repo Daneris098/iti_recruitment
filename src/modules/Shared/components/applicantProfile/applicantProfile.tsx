@@ -258,19 +258,19 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                             <MyDocument
                                 Name={Applicant_Name}
                                 Position={Position}
-                                Department={null}
-                                Remarks={Status}
-                                Salary_Monthly={null}
-                                Salary_Yearly={null}
-                                Note_Salary={null}
-                                Merit_Increase={null}
-                                Description_VL={null}
-                                Description_SL={null}
-                                Description_BL={null}
-                                Benefit_Paternity={null}
-                                Benefit_Maternity={null}
-                                Description_Transpo={null}
-                                Acknowledgement={null}
+                                Department=""
+                                Remarks=""
+                                Salary_Monthly=""
+                                Salary_Yearly=""
+                                Note_Salary=""
+                                Merit_Increase=""
+                                Description_VL=""
+                                Description_SL=""
+                                Description_BL=""
+                                Benefit_Paternity=""
+                                Benefit_Maternity=""
+                                Description_Transpo=""
+                                Acknowledgement=""
                             />
                         </PDFViewer>
                     </div>

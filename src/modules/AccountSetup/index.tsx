@@ -1,9 +1,9 @@
 import bg2 from '@assets/bg2.png';
 import "@modules/AccountSetup/styles/index.css"
 import Stepper from '@modules/AccountSetup/components/stepper'
-import ProfileDetails from "@modules/AccountSetup/components/ProfileDetails"
-import Organization from "@modules/AccountSetup/components/Organization"
-import Hiring from "@modules/AccountSetup/components/Hiring"
+import ProfileDetails from "@modules/AccountSetup/components/profileDetails"
+import Organization from "@modules/AccountSetup/components/organization"
+import Hiring from "@modules/AccountSetup/components/hiring"
 import { AccountSetupStore } from "@modules/AccountSetup/store/index"
 import { Step, SubModuleRef, Submodule } from "@modules/AccountSetup/types"
 import { Button } from '@mantine/core';

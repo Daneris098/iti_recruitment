@@ -111,8 +111,8 @@ export const FilterStore = create<FilterState>((set) => ({
 
   setAlert: (alert: string) => set({ alert: alert }),
   setModal: (modal: boolean) => set({ modal: modal }),
-  setClearFilter: (filter: ApplicantStatus) => set({ filter: filter }),
-  setSeleselectedVal: (selectedData: Applicants) => set({ selectedData: selectedData }),
+  setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
+  setSelectedData: (selectedData: Applicants) => set({ selectedData: selectedData }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
   setFilter: (filter: ApplicantStatus) => set({ filter: filter }),

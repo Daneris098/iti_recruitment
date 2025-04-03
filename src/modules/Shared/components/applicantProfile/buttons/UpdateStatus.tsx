@@ -19,6 +19,7 @@ import TransferredStatus from "@modules/Shared/components/applicantProfile/movem
 import ForInterviewStatus from "@modules/Shared/components/applicantProfile/movement/Status/ForInterview";
 
 import ScheduleInterview from "@modules/Shared/components/applicantProfile/movement/ScheduleInterview";
+import { useEffect } from "react";
 
 interface UpdateStatusProps {
   Status: string;
@@ -26,6 +27,10 @@ interface UpdateStatusProps {
 }
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
+
+  useEffect(() => {
+    console.log('Status: ', Status)
+  }, [Status])
 
   const { selectedStatus, setSelectedStatus } = useStatusStore();
   const {
@@ -118,6 +123,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     "Final Interview": ["Offered", "Archived"],
     "Initial Interview": ["Offered", "Archived"],
     "Assessment": ["Offered", "Archived"],
+    "For Interview": ["Offered", "Archived"],
     Offered: ["Hired", "Archived"],
     Hired: [],
     "For Transfer": ["Transferred", "Archived"],

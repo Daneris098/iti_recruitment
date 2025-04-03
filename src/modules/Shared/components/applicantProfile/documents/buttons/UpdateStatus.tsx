@@ -342,7 +342,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       </JobGeneratedModal>
 
       {/* This modal will be called when the selected status is equivalent to "For Interview" and the "Schedule Interview button has been clicked." */}
-      <ApplicantUnreachable isOpen={isScheduleInterview} onClose={() => setIsScheduleInterview(false)}>
+      <ApplicantUnreachable isOpen={isScheduleInterview} >
         <ScheduleInterview onClose={() => {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 
@@ -355,7 +355,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
       {/* This modal will appear if the user clicks on the "Add to Calendar" 
           button under the Schedule interview of update applicant status modal. */}
-      <ApplicantUnreachable isOpen={isContactApplicant} onClose={() => setIsContactApplicant(false)}>
+      <ApplicantUnreachable isOpen={isContactApplicant} >
         <ScheduleInterviewAlert onClose={() => setIsContactApplicant(false)}
         />
       </ApplicantUnreachable>

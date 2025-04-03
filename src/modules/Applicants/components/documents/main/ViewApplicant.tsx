@@ -259,24 +259,24 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
             </div>
 
             {/* PDF */}
-            <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
+            <ViewPDF  isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
                 <PDFViewer width="100%" height="891" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                     <MyDocument
                         Name={Applicant_Name}
                         Position={Position}
-                        Department={null}
+                        Department=''
                         Remarks={Status}
-                        Salary_Monthly={null}
-                        Salary_Yearly={null}
-                        Note_Salary={null}
-                        Merit_Increase={null}
-                        Description_VL={null}
-                        Description_SL={null}
-                        Description_BL={null}
-                        Benefit_Paternity={null}
-                        Benefit_Maternity={null}
-                        Description_Transpo={null}
-                        Acknowledgement={null}
+                        Salary_Monthly=''
+                        Salary_Yearly=''
+                        Note_Salary=''
+                        Merit_Increase=''
+                        Description_VL=''
+                        Description_SL=''
+                        Description_BL=''
+                        Benefit_Paternity=''
+                        Benefit_Maternity=''
+                        Description_Transpo=''
+                        Acknowledgement=''
                     />
                 </PDFViewer>
             </ViewPDF>

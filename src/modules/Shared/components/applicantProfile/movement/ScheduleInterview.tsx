@@ -3,7 +3,6 @@ import { IconUserQuestion, IconX } from "@tabler/icons-react";
 import { useCloseModal } from "@src/modules/Applicants/store";
 
 import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar"
-import ScheduleInterviewModal from "@modules/Applicants/components/modal/scheduleInterview";
 interface ApplicantNotReachableProps {
     onClose: () => void;
 

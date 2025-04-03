@@ -11,6 +11,7 @@ export const filterVal: ApplicantStatus = {
 }
 
 export const selectedVal: Applicants = {
+    id: "",
     Applicant_Name: "",
     Application_Date: "",
     Phone: "",

@@ -73,9 +73,9 @@ const applicantsColumns = [
   },
   {
     accessor: 'Status',
-    title: <span className='job-offers-table'>Status</span>,
+    title: <span className='job-offers-table font-bold text-[15px]'>Status</span>,
     sortable: true,
-    render: ({ Status }) => checkStatus(Status)
+    render: ({ Status }: { Status: string }) => checkStatus(Status)
   },
 ];
 

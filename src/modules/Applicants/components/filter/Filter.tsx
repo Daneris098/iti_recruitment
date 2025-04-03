@@ -7,14 +7,14 @@ import { FilterStore } from "@modules/Applicants/store"
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
   // date formatting
-  const formatDate = (date: string | Date) => {
-    if (!date) return ''; // Handle cases where date is undefined or empty
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+  // const formatDate = (date: string | Date) => {
+  //   if (!date) return ''; // Handle cases where date is undefined or empty
+  //   return new Date(date).toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: 'long',
+  //     day: 'numeric'
+  //   });
+  // };
   useEffect(() => {
     if (filter) {
       setIsFiltered(false)
