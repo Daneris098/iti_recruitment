@@ -45,7 +45,7 @@
     "forInterview": { "name": "Olivia Brown", "id": 2, "status": "For Interview" },
     "offered": { "name": "Noah Johnson", "id": 3, "status": "Offered" },
     "hired": { "name": "Emma Davis", "id": 4, "status": "Hired" },
-    "archived": { "name": "Ava Wilson", "id": 5, "status": "Archived" }
+    "archived": {  }
   },
   {
     "id": 7,
@@ -53,7 +53,7 @@
     "forInterview": { "name": "Mason Garcia", "id": 2, "status": "For Interview" },
     "offered": { "name": "Lucas Rodriguez", "id": 3, "status": "Offered" },
     "hired": { "name": "Isabella Lee", "id": 4, "status": "Hired" },
-    "archived": { "name": "Mia Hernandez", "id": 5, "status": "Archived" }
+    "archived": {  }
   },
   {
     "id": 8,
@@ -61,102 +61,23 @@
     "forInterview": { "name": "Charlotte Gonzalez", "id": 2, "status": "For Interview" },
     "offered": { "name": "Amelia Perez", "id": 3, "status": "Offered" },
     "hired": { "name": "Harper Wilson", "id": 4, "status": "Hired" },
-    "archived": { "name": "Ella Anderson", "id": 5, "status": "Archived" }
+    "archived": {  }
   },
   {
     "id": 9,
-    "applied": { "name": "James Thomas", "id": 1, "status": "Applied" },
+    "applied": {},
     "forInterview": { "name": "Avery Taylor", "id": 2, "status": "For Interview" },
     "offered": { "name": "Lily Moore", "id": 3, "status": "Offered" },
     "hired": { "name": "Sofia Jackson", "id": 4, "status": "Hired" },
-    "archived": { "name": "Grace White", "id": 5, "status": "Archived" }
+    "archived": {  }
   },
   {
     "id": 10,
-    "applied": { "name": "Benjamin Harris", "id": 1, "status": "Applied" },
+    "applied": { },
     "forInterview": { "name": "Zoe Martin", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Chloe Thompson", "id": 3, "status": "Offered" },
+    "offered": { },
     "hired": { "name": "Mia Clark", "id": 4, "status": "Hired" },
-    "archived": { "name": "Ella Lewis", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 11,
-    "applied": { "name": "Oliver Young", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Aiden Hall", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Scarlett Allen", "id": 3, "status": "Offered" },
-    "hired": { "name": "Victoria King", "id": 4, "status": "Hired" },
-    "archived": { "name": "Luna Wright", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 12,
-    "applied": { "name": "Henry Scott", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Grace Hill", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Zoe Green", "id": 3, "status": "Offered" },
-    "hired": { "name": "Ella Adams", "id": 4, "status": "Hired" },
-    "archived": { "name": "Mia Baker", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 13,
-    "applied": { "name": "Lucas Nelson", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Mia Carter", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Ava Mitchell", "id": 3, "status": "Offered" },
-    "hired": { "name": "Isabella Perez", "id": 4, "status": "Hired" },
-    "archived": { "name": "Sophia Roberts", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 14,
-    "applied": { "name": "Elijah Turner", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Liam Phillips", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Mason Campbell", "id": 3, "status": "Offered" },
-    "hired": { "name": "Harper Parker", "id": 4, "status": "Hired" },
-    "archived": { "name": "Ella Roberts", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 15,
-    "applied": { "name": "Avery Edwards", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "James Collins", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Mia Stewart", "id": 3, "status": "Offered" },
-    "hired": { "name": "Liam Sanchez", "id": 4, "status": "Hired" },
-    "archived": { "name": "Olivia Rivera", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 16,
-    "applied": { "name": "Ella Morris", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Benjamin Reed", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Charlotte Cook", "id": 3, "status": "Offered" },
-    "hired": { "name": "Amelia Bell", "id": 4, "status": "Hired" },
-    "archived": { "name": "Zoe Murphy", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 17,
-    "applied": { "name": "Mason Cooper", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Aiden Bailey", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Sofia Rivera", "id": 3, "status": "Offered" },
-    "hired": { "name": "Isabella Reed", "id": 4, "status": "Hired" },
-    "archived": { "name": "Liam Price", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 18,
-    "applied": { "name": "Harper Bennett", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Lucas Hughes", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Ella Foster", "id": 3, "status": "Offered" },
-    "hired": { "name": "Mia Simmons", "id": 4, "status": "Hired" },
-    "archived": { "name": "Ava Long", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 19,
-    "applied": { "name": "Oliver Ward", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Liam Torres", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Mason Rivera", "id": 3, "status": "Offered" },
-    "hired": { "name": "Sophia Reed", "id": 4, "status": "Hired" },
-    "archived": { "name": "Grace Cooper", "id": 5, "status": "Archived" }
-  },
-  {
-    "id": 20,
-    "applied": { "name": "Aiden Price", "id": 1, "status": "Applied" },
-    "forInterview": { "name": "Ella Bennett", "id": 2, "status": "For Interview" },
-    "offered": { "name": "Zoe Hughes", "id": 3, "status": "Offered" },
-    "hired": { "name": "Liam Scott", "id": 4, "status": "Hired" },
-    "archived": { "name": "Mia Young", "id": 5, "status": "Archived" }
-  }
+    "archived": { }
+  } 
+  
 ]

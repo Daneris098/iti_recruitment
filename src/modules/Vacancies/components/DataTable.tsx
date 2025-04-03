@@ -68,6 +68,7 @@ export default function index() {
                 { accessor: 'interviewer', title: 'Interviewer', textAlign: "left", sortable: true },
                 { accessor: 'department', title: 'Department', textAlign: "left", sortable: true },
                 { accessor: 'quantity', title: 'Quantity', textAlign: "center", sortable: true },
+                { accessor: 'totalApplicant', title: 'Total Applicant', textAlign: "center", sortable: true },
                 {
                     accessor: 'status', title: 'Status', textAlign: "center", sortable: true,
                     render: ({ status }) => (
@@ -82,7 +83,7 @@ export default function index() {
                     textAlign: "center",
                     render: (data) => (
                         <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => { e.stopPropagation(); setSelectedData(data); }}>
-                            View Applicant
+                            View Applicants
                         </div>
                     ),
                 },
