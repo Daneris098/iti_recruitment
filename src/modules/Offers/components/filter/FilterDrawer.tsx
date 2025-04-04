@@ -1,13 +1,21 @@
 import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { FilterStore } from '@modules/Offers/components/store'
+import { useDateRangeStore, useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
 import { useEffect } from "react";
 import { filterVal } from "@modules/Offers/values";
-import DateRangeFilter from "@src/modules/Offers/components/filter/DateRangeFilter";
+// import DateRangeFilter from "@src/modules/Offers/components/filter/DateRangeFilter";
 import { IconCaretDownFilled } from "@tabler/icons-react";
+import { DateRange } from "@modules/Offers/components/filter/DateRange";
+
 
 export default function DrawerFilter() {
   const { filterDrawer, setFilterDrawer, filter, activeTab, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
+  const { value, setValue } = useDateRangeStore();
+  const { value: jobOfferValue, setValue: setJobOfferValue } = useJobOfferDateRangeStore();
+  const { value: filterValue, setValue: setFilterValue } = useGeneratedOfferStore();
+  const { value: archiveValue, setValue: setArchiveValue } = useArchivedStore();
+
   const currentDate = new Date();
   const dateTomorrow = new Date(currentDate);
   dateTomorrow.setDate(currentDate.getDate() + 1)
@@ -50,6 +58,12 @@ export default function DrawerFilter() {
 
   const statusFilterOptions = ["Pending", "Generated", "Accepted", "Archived", "Rejected"];
   const remarksFilterOptions = ["No remarks", "Remarks"];
+
+
+  useEffect(() => {
+    // Reset filter values when conditions change
+    setFilterValue([null, null]);
+  }, [isGenerated, isAccepted, isArchived]);
 
   return (
     <Drawer
@@ -96,18 +110,16 @@ export default function DrawerFilter() {
 
               <Text fw={500} c="#6d6d6d">Published Date Range</Text>
 
-              <DateRangeFilter
-                label="From"
-                value={filter.dateFrom}
-                onChange={(date) => setFilter({ ...filter, dateFrom: date })}
-                placeholder={currentDate.toDateString()}
-              />
-
-              <DateRangeFilter
-                label="To"
-                value={filter.dateTo}
-                onChange={(date) => setFilter({ ...filter, dateTo: date })}
-                placeholder={dateTomorrow.toDateString()}
+              <DateRange
+                gapValue={12}
+                size="md"
+                value={value}
+                setValue={setValue}
+                fLabel="From"
+                lLabel="To"
+                fPlaceholder="Start Date"
+                lPlaceholder="End Date"
+                isColumn
               />
 
               <Divider size={0.5} color="#edeeed" className="w-full" />
@@ -138,7 +150,7 @@ export default function DrawerFilter() {
                 className="border-none w-full text-[16px] poppins"
                 label="Status"
                 placeholder="Select Status"
-                styles={{
+                styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
@@ -155,15 +167,15 @@ export default function DrawerFilter() {
                     gap: "4px",
                     padding: "4px",
                   },
-                }}
+                })}
                 // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
                 // value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
-                nothingFound="No options"
-                withinPortal
+                nothingFoundMessage="No options"
+                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span> {/* Custom dropdown icon */}
@@ -206,35 +218,29 @@ export default function DrawerFilter() {
 
               <Text fw={500} c="#6d6d6d">Date Generated Range</Text>
 
-              <DateRangeFilter
-                label="From"
-                value={filter.dateFrom}
-                onChange={(date) => setFilter({ ...filter, dateFrom: date })}
-                placeholder={currentDate.toDateString()}
+              <DateRange
+                gapValue={12}
+                size="md"
+                value={value}
+                setValue={setValue}
+                fLabel="From"
+                lLabel="To"
+                fPlaceholder="Start Date"
+                lPlaceholder="End Date"
+                isColumn
               />
-
-              <DateRangeFilter
-                label="To"
-                value={filter.dateTo}
-                onChange={(date) => setFilter({ ...filter, dateTo: date })}
-                placeholder={dateTomorrow.toDateString()}
-              />
-
-
               <Text fw={500} c="#6d6d6d">Date Last Updated Range</Text>
 
-              <DateRangeFilter
-                label="From"
-                value={filter.dateLastUpdatedFrom}
-                onChange={(date) => setFilter({ ...filter, dateLastUpdatedFrom: date })}
-                placeholder={currentDate.toDateString()}
-              />
-
-              <DateRangeFilter
-                label="To"
-                value={filter.dateLastUpdatedTo}
-                onChange={(date) => setFilter({ ...filter, dateLastUpdatedTo: date })}
-                placeholder={dateTomorrow.toDateString()}
+              <DateRange
+                gapValue={12}
+                size="md"
+                value={jobOfferValue}
+                setValue={setJobOfferValue}
+                fLabel="From"
+                lLabel="To"
+                fPlaceholder="Start Date"
+                lPlaceholder="End Date"
+                isColumn
               />
 
               <Divider size={0.5} color="#edeeed" className="w-full" />
@@ -246,7 +252,7 @@ export default function DrawerFilter() {
                 className="border-none w-full text-[16px] poppins"
                 label="Remarks"
                 placeholder="Type Remarks"
-                styles={{
+                styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
@@ -263,15 +269,15 @@ export default function DrawerFilter() {
                     gap: "4px",
                     padding: "4px",
                   },
-                }}
+                })}
 
                 data={remarksFilterOptions}
                 // value={filter.status}
                 onChange={(values) => setFilter({ ...filter, remarks: values })}
                 searchable
                 clearable
-                nothingFound="No options"
-                withinPortal
+                nothingFoundMessage="No options"
+                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span> {/* Custom dropdown icon */}
@@ -287,7 +293,7 @@ export default function DrawerFilter() {
                 className="border-none w-full text-[16px] poppins"
                 label="Status"
                 placeholder="Select Status"
-                styles={{
+                styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
@@ -304,15 +310,15 @@ export default function DrawerFilter() {
                     gap: "4px",
                     padding: "4px",
                   },
-                }}
+                })}
                 // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
                 value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
-                nothingFound="No options"
-                withinPortal
+                nothingFoundMessage="No options"
+                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span> {/* Custom dropdown icon */}
@@ -352,41 +358,37 @@ export default function DrawerFilter() {
 
               <Text fw={500} c="#6d6d6d">Date Generated Range</Text>
 
-              <DateRangeFilter
-                label="From"
-                value={filter.dateFrom}
-                onChange={(date) => setFilter({ ...filter, dateFrom: date })}
-                placeholder={currentDate.toDateString()}
-              />
 
-              <DateRangeFilter
-                label="To"
-                value={filter.dateTo}
-                onChange={(date) => setFilter({ ...filter, dateTo: date })}
-                placeholder={dateTomorrow.toDateString()}
+              <DateRange
+                gapValue={12}
+                size="md"
+                value={filterValue}
+                setValue={setFilterValue}
+                fLabel="From"
+                lLabel="To"
+                fPlaceholder="Start Date"
+                lPlaceholder="End Date"
+                isColumn
               />
 
               <Text fw={500} c="#6d6d6d">Date Last Updated Range</Text>
 
-              <DateRangeFilter
-                label="From"
-                value={filter.dateLastUpdatedFrom}
-                onChange={(date) => setFilter({ ...filter, dateLastUpdatedFrom: date })}
-                placeholder={currentDate.toDateString()}
-              />
-
-              <DateRangeFilter
-                label="To"
-                value={filter.dateLastUpdatedTo}
-                onChange={(date) => setFilter({ ...filter, dateLastUpdatedTo: date })}
-                placeholder={dateTomorrow.toDateString()}
+              <DateRange
+                gapValue={12}
+                size="md"
+                value={archiveValue}
+                setValue={setArchiveValue}
+                fLabel="From"
+                lLabel="To"
+                fPlaceholder="Start Date"
+                lPlaceholder="End Date"
+                isColumn
               />
             </>
           )}
           {/* End of generated */}
           <>
           </>
-
         </div>
 
         <Flex className="w-full py-5" justify="flex-end" gap={10} >

@@ -80,7 +80,7 @@ export default function index() {
 
   // For handling the state of row clicking of each record.
   // This will make each rendered records clickable.
-  const handleRowClick = (applicant: string) => {
+  const handleRowClick = (applicant: any) => {
     setSelectedApplicant(applicant);
     setIsViewApplicant(true);
   }
@@ -102,7 +102,7 @@ export default function index() {
         // matches the current column.accessor from Defined Columns.
         const isActiveColumn = col.accessor === columnAccessor;
         const icon = isActiveColumn && direction === "asc" ? (  // Ternary operation to avoid deep nested if else.
-          <IconArrowsUp size={14} />  // if Ascending
+          <IconArrowsUp size={14}/>  // if Ascending
         ) : (
           <IconArrowsUpDown size={14} /> // Descending
         );
@@ -150,7 +150,7 @@ export default function index() {
             records={paginatedRecords}
             sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}
             onRowClick={({ record }) => handleRowClick(record)}
-            rowClassName={() => "cursor-pointer hover:bg-teal-400"} // Add hover effect
+            rowClassName={() => "cursor-pointer text-[#6D6D6D]"} // Add hover effect
           />
         </div>
 
@@ -176,7 +176,7 @@ export default function index() {
 
         {/* View Applicant Modal */}
         {/* <ApplicantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}> */}
-        <ApplicantModal isOpen={isViewApplicant} onClose={() => setIsViewApplicant(false)}>
+        <ApplicantModal isOpen={isViewApplicant}>
           <ViewApplicant
             Applicant_Name={selectedApplicant?.Applicant_Name}
             Position={selectedApplicant?.Position}
@@ -186,6 +186,7 @@ export default function index() {
             Skills={selectedApplicant?.Skills}
             Remarks={selectedApplicant?.Remarks}
             Application_Date={selectedApplicant?.Application_Date}
+            IsJobOffer={selectedApplicant?.isJobOffer}
             onClose={() => setIsViewApplicant(false)}
           />
         </ApplicantModal>

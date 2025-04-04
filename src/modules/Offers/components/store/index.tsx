@@ -78,11 +78,11 @@ export const usePaginationStore = create<PaginationState>((set, get) => ({
   page: 1,
   pageSize: 10,
 
-  setPage: (page) => set ({page}),
-  setPageSize: (size) => set({pageSize: size}),
+  setPage: (page) => set({ page }),
+  setPageSize: (size) => set({ pageSize: size }),
 
   getPaginatedRecords: (records) => {
-    const {page, pageSize} = get();
+    const { page, pageSize } = get();
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     return records.slice(startIndex, endIndex);
@@ -100,15 +100,15 @@ export const FilterStore = create<FilterState>((set) => ({
   isFiltered: false,
   modal: false,
   alert: '',
-  activeTab: "All_Offers",
+  activeTab: "All_offers",
 
-  setAlert: (alert: string) => set ({ alert : alert}),
-  setModal: (modal: boolean) => set({modal : modal}),
-  setClearFilter: (filter: AllJobOffersFilterType) => set({filter: filter}),
-  setSelectedData: (selectedData: OfferType) => set({ selectedData: selectedData}),
-  setFilterDrawer: (filterDrawer: boolean) => set({filterDrawer: filterDrawer}),
-  setIsFiltered: (isFiltered: boolean) => set({isFiltered: isFiltered}),
+  setAlert: (alert: string) => set({ alert: alert }),
+  setModal: (modal: boolean) => set({ modal: modal }),
+  setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
+  setSelectedData: (selectedData: OfferType) => set({ selectedData: selectedData }),
+  setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
+  setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
   setFilter: (filter: AllJobOffersFilterType) => set({ filter: filter }),
-  setActiveTab: (tab) => set({ activeTab: tab }), // 
+  setActiveTab: (tab) => set({ activeTab: tab }), 
 }));
 // end of filtering

@@ -1,1263 +1,1022 @@
 [
-    {
-      "id": 2503,
-      "Applicant_Name": "Alyce Chaney",
-      "Application_Date": "March 26, 2025",
-      "Email": "alycechaney@pearlessa.com",
-      "Phone": "+63 (940) 493-2863",
-      "Position": "Graphic Designer",
-      "Status": "For Interview"
-    },
-    {
-      "id": 36,
-      "Applicant_Name": "Carmela Rollins",
-      "Application_Date": "August 17, 2025",
-      "Email": "carmelarollins@pearlessa.com",
-      "Phone": "+63 (927) 443-2298",
-      "Position": "Data Analyst",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 4692,
-      "Applicant_Name": "Maxine Ramsey",
-      "Application_Date": "September 26, 2025",
-      "Email": "maxineramsey@pearlessa.com",
-      "Phone": "+63 (856) 555-3987",
-      "Position": "Data Analyst",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 225,
-      "Applicant_Name": "Moss Baxter",
-      "Application_Date": "June 8, 2025",
-      "Email": "mossbaxter@pearlessa.com",
-      "Phone": "+63 (937) 433-2058",
-      "Position": "Marketing Manager",
-      "Status": "For Interview"
-    },
-    {
-      "id": 7299,
-      "Applicant_Name": "Ayala Bell",
-      "Application_Date": "September 20, 2025",
-      "Email": "ayalabell@pearlessa.com",
-      "Phone": "+63 (944) 569-3086",
-      "Position": "HR Specialist",
-      "Status": "Assessment"
-    },
-    {
-      "id": 962,
-      "Applicant_Name": "Long William",
-      "Application_Date": "February 21, 2025",
-      "Email": "longwilliam@pearlessa.com",
-      "Phone": "+63 (868) 519-2551",
-      "Position": "Product Manager",
-      "Status": "Hired",
-      "Skills": "Leadership, Communication, Problem Solving"
-    },
-    {
-      "id": 2851,
-      "Applicant_Name": "Aguirre Tillman",
-      "Application_Date": "September 16, 2025",
-      "Email": "aguirretillman@pearlessa.com",
-      "Phone": "+63 (898) 427-2179",
-      "Position": "Marketing Manager",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 6162,
-      "Applicant_Name": "Rosa Benton",
-      "Application_Date": "May 26, 2025",
-      "Email": "rosabenton@pearlessa.com",
-      "Phone": "+63 (857) 455-3538",
-      "Position": "Graphic Designer",
-      "Status": "Hired"
-    },
-    {
-      "id": 5770,
-      "Applicant_Name": "Zimmerman Barry",
-      "Application_Date": "July 30, 2025",
-      "Email": "zimmermanbarry@pearlessa.com",
-      "Phone": "+63 (911) 444-2529",
-      "Position": "Data Analyst",
-      "Status": "Applied"
-    },
-    {
-      "id": 3883,
-      "Applicant_Name": "Charmaine Cantu",
-      "Application_Date": "July 8, 2025",
-      "Email": "charmainecantu@pearlessa.com",
-      "Phone": "+63 (814) 465-3792",
-      "Position": "Graphic Designer",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 1745,
-      "Applicant_Name": "Marcella Bauer",
-      "Application_Date": "June 9, 2025",
-      "Email": "marcellabauer@pearlessa.com",
-      "Phone": "+63 (989) 426-3953",
-      "Position": "Product Manager",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 8973,
-      "Applicant_Name": "Lizzie Hardy",
-      "Application_Date": "December 11, 2025",
-      "Email": "lizziehardy@pearlessa.com",
-      "Phone": "+63 (917) 427-2147",
-      "Position": "Sales Associate",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 3279,
-      "Applicant_Name": "Gracie Hancock",
-      "Application_Date": "November 26, 2025",
-      "Email": "graciehancock@pearlessa.com",
-      "Phone": "+63 (885) 583-3405",
-      "Position": "Graphic Designer",
-      "Status": "For Interview"
-    },
-    {
-      "id": 4608,
-      "Applicant_Name": "Rita Pope",
-      "Application_Date": "May 2, 2025",
-      "Email": "ritapope@pearlessa.com",
-      "Phone": "+63 (979) 436-2113",
-      "Position": "Product Manager",
-      "Status": "Archived"
-    },
-    {
-      "id": 4686,
-      "Applicant_Name": "Page Davis",
-      "Application_Date": "November 17, 2025",
-      "Email": "pagedavis@pearlessa.com",
-      "Phone": "+63 (809) 461-2434",
-      "Position": "Sales Associate",
-      "Status": "Transferred"
-    },
-    {
-      "id": 3368,
-      "Applicant_Name": "Holder Vance",
-      "Application_Date": "May 30, 2025",
-      "Email": "holdervance@pearlessa.com",
-      "Phone": "+63 (800) 600-3993",
-      "Position": "HR Specialist",
-      "Status": "Assessment"
-    },
-    {
-      "id": 8113,
-      "Applicant_Name": "Rene Sellers",
-      "Application_Date": "November 11, 2025",
-      "Email": "renesellers@pearlessa.com",
-      "Phone": "+63 (966) 578-2575",
-      "Position": "Marketing Manager",
-      "Status": "For Interview"
-    },
-    {
-      "id": 2950,
-      "Applicant_Name": "Elinor Fernandez",
-      "Application_Date": "August 24, 2025",
-      "Email": "elinorfernandez@pearlessa.com",
-      "Phone": "+63 (988) 562-3474",
-      "Position": "Graphic Designer",
-      "Status": "Archived"
-    },
-    {
-      "id": 7015,
-      "Applicant_Name": "Combs Mcconnell",
-      "Application_Date": "October 22, 2025",
-      "Email": "combsmcconnell@pearlessa.com",
-      "Phone": "+63 (982) 540-2056",
-      "Position": "Marketing Manager",
-      "Status": "Offered"
-    },
-    {
-      "id": 5470,
-      "Applicant_Name": "Clarissa Acosta",
-      "Application_Date": "April 8, 2025",
-      "Email": "clarissaacosta@pearlessa.com",
-      "Phone": "+63 (975) 509-2951",
-      "Position": "HR Specialist",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 6520,
-      "Applicant_Name": "Macdonald Lindsey",
-      "Application_Date": "July 4, 2025",
-      "Email": "macdonaldlindsey@pearlessa.com",
-      "Phone": "+63 (864) 593-2784",
-      "Position": "Marketing Manager",
-      "Status": "Applied"
-    },
-    {
-      "id": 8551,
-      "Applicant_Name": "Wiley Curry",
-      "Application_Date": "July 12, 2025",
-      "Email": "wileycurry@pearlessa.com",
-      "Phone": "+63 (851) 475-3368",
-      "Position": "Product Manager",
-      "Status": "Archived"
-    },
-    {
-      "id": 658,
-      "Applicant_Name": "Slater Rios",
-      "Application_Date": "January 18, 2025",
-      "Email": "slaterrios@pearlessa.com",
-      "Phone": "+63 (977) 579-3781",
-      "Position": "Marketing Manager",
-      "Status": "Applied"
-    },
-    {
-      "id": 978,
-      "Applicant_Name": "Bethany Bond",
-      "Application_Date": "August 14, 2025",
-      "Email": "bethanybond@pearlessa.com",
-      "Phone": "+63 (827) 416-2764",
-      "Position": "Software Engineer",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 9260,
-      "Applicant_Name": "Katheryn Cash",
-      "Application_Date": "March 23, 2025",
-      "Email": "katheryncash@pearlessa.com",
-      "Phone": "+63 (846) 529-2420",
-      "Position": "Sales Associate",
-      "Status": "For Interview"
-    },
-    {
-      "id": 195,
-      "Applicant_Name": "Jessie Nash",
-      "Application_Date": "September 9, 2025",
-      "Email": "jessienash@pearlessa.com",
-      "Phone": "+63 (820) 500-3146",
-      "Position": "Product Manager",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 7425,
-      "Applicant_Name": "Jensen Cain",
-      "Application_Date": "November 12, 2025",
-      "Email": "jensencain@pearlessa.com",
-      "Phone": "+63 (845) 581-3250",
-      "Position": "Software Engineer",
-      "Status": "Archived"
-    },
-    {
-      "id": 3651,
-      "Applicant_Name": "Oneal Barrera",
-      "Application_Date": "March 31, 2025",
-      "Email": "onealbarrera@pearlessa.com",
-      "Phone": "+63 (970) 425-3620",
-      "Position": "Graphic Designer",
-      "Status": "Offered"
-    },
-    {
-      "id": 8243,
-      "Applicant_Name": "Imogene Kirk",
-      "Application_Date": "May 21, 2025",
-      "Email": "imogenekirk@pearlessa.com",
-      "Phone": "+63 (814) 475-2684",
-      "Position": "Sales Associate",
-      "Status": "Transferred"
-    },
-    {
-      "id": 4373,
-      "Applicant_Name": "Diann Delgado",
-      "Application_Date": "May 15, 2025",
-      "Email": "dianndelgado@pearlessa.com",
-      "Phone": "+63 (873) 536-3708",
-      "Position": "Sales Associate",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 1053,
-      "Applicant_Name": "Francisca Scott",
-      "Application_Date": "April 5, 2025",
-      "Email": "franciscascott@pearlessa.com",
-      "Phone": "+63 (805) 544-3639",
-      "Position": "Product Manager",
-      "Status": "Archived"
-    },
-    {
-      "id": 6276,
-      "Applicant_Name": "Sykes Park",
-      "Application_Date": "September 6, 2025",
-      "Email": "sykespark@pearlessa.com",
-      "Phone": "+63 (935) 435-3560",
-      "Position": "Sales Associate",
-      "Status": "Hired"
-    },
-    {
-      "id": 360,
-      "Applicant_Name": "Valentine Melton",
-      "Application_Date": "December 30, 2025",
-      "Email": "valentinemelton@pearlessa.com",
-      "Phone": "+63 (826) 414-3000",
-      "Position": "Graphic Designer",
-      "Status": "Archived"
-    },
-    {
-      "id": 2250,
-      "Applicant_Name": "Oneil Munoz",
-      "Application_Date": "July 19, 2025",
-      "Email": "oneilmunoz@pearlessa.com",
-      "Phone": "+63 (961) 473-2797",
-      "Position": "HR Specialist",
-      "Status": "Hired"
-    },
-    {
-      "id": 4314,
-      "Applicant_Name": "Ruiz Wheeler",
-      "Application_Date": "October 6, 2025",
-      "Email": "ruizwheeler@pearlessa.com",
-      "Phone": "+63 (833) 490-2488",
-      "Position": "Graphic Designer",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 2447,
-      "Applicant_Name": "Sargent Norris",
-      "Application_Date": "February 6, 2025",
-      "Email": "sargentnorris@pearlessa.com",
-      "Phone": "+63 (915) 433-3097",
-      "Position": "Graphic Designer",
-      "Status": "Applied"
-    },
-    {
-      "id": 4865,
-      "Applicant_Name": "Cathryn Davidson",
-      "Application_Date": "April 12, 2025",
-      "Email": "cathryndavidson@pearlessa.com",
-      "Phone": "+63 (804) 440-3363",
-      "Position": "Data Analyst",
-      "Status": "Transferred"
-    },
-    {
-      "id": 2712,
-      "Applicant_Name": "Alexis House",
-      "Application_Date": "January 21, 2025",
-      "Email": "alexishouse@pearlessa.com",
-      "Phone": "+63 (873) 454-3175",
-      "Position": "Product Manager",
-      "Status": "Transferred"
-    },
-    {
-      "id": 3165,
-      "Applicant_Name": "Rasmussen Schneider",
-      "Application_Date": "March 26, 2025",
-      "Email": "rasmussenschneider@pearlessa.com",
-      "Phone": "+63 (808) 415-3549",
-      "Position": "HR Specialist",
-      "Status": "Offered"
-    },
-    {
-      "id": 1943,
-      "Applicant_Name": "Fischer Alford",
-      "Application_Date": "December 13, 2025",
-      "Email": "fischeralford@pearlessa.com",
-      "Phone": "+63 (904) 524-3172",
-      "Position": "Sales Associate",
-      "Status": "Offered"
-    },
-    {
-      "id": 2266,
-      "Applicant_Name": "Christa Flowers",
-      "Application_Date": "February 24, 2025",
-      "Email": "christaflowers@pearlessa.com",
-      "Phone": "+63 (943) 594-3787",
-      "Position": "Marketing Manager",
-      "Status": "Archived"
-    },
-    {
-      "id": 4114,
-      "Applicant_Name": "Laverne Reilly",
-      "Application_Date": "June 28, 2025",
-      "Email": "lavernereilly@pearlessa.com",
-      "Phone": "+63 (982) 579-2483",
-      "Position": "Sales Associate",
-      "Status": "Offered"
-    },
-    {
-      "id": 853,
-      "Applicant_Name": "Callie Chase",
-      "Application_Date": "April 26, 2025",
-      "Email": "calliechase@pearlessa.com",
-      "Phone": "+63 (984) 535-2936",
-      "Position": "Sales Associate",
-      "Status": "Assessment"
-    },
-    {
-      "id": 3993,
-      "Applicant_Name": "Hubbard Raymond",
-      "Application_Date": "February 5, 2025",
-      "Email": "hubbardraymond@pearlessa.com",
-      "Phone": "+63 (901) 406-3013",
-      "Position": "Product Manager",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 6119,
-      "Applicant_Name": "Willis Fry",
-      "Application_Date": "September 19, 2025",
-      "Email": "willisfry@pearlessa.com",
-      "Phone": "+63 (828) 568-2643",
-      "Position": "Marketing Manager",
-      "Status": "Hired"
-    },
-    {
-      "id": 7256,
-      "Applicant_Name": "Robertson Cotton",
-      "Application_Date": "March 2, 2025",
-      "Email": "robertsoncotton@pearlessa.com",
-      "Phone": "+63 (941) 482-2823",
-      "Position": "Marketing Manager",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 2869,
-      "Applicant_Name": "Dillon Spears",
-      "Application_Date": "January 13, 2025",
-      "Email": "dillonspears@pearlessa.com",
-      "Phone": "+63 (951) 468-3486",
-      "Position": "HR Specialist",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 5869,
-      "Applicant_Name": "Humphrey Decker",
-      "Application_Date": "December 9, 2025",
-      "Email": "humphreydecker@pearlessa.com",
-      "Phone": "+63 (934) 532-3637",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 1959,
-      "Applicant_Name": "Verna Bruce",
-      "Application_Date": "July 4, 2025",
-      "Email": "vernabruce@pearlessa.com",
-      "Phone": "+63 (914) 599-3060",
-      "Position": "Data Analyst",
-      "Status": "Archived"
-    },
-    {
-      "id": 5391,
-      "Applicant_Name": "Gay Burris",
-      "Application_Date": "February 4, 2025",
-      "Email": "gayburris@pearlessa.com",
-      "Phone": "+63 (806) 545-2048",
-      "Position": "HR Specialist",
-      "Status": "Assessment"
-    },
-    {
-      "id": 9325,
-      "Applicant_Name": "Carly Casey",
-      "Application_Date": "October 15, 2025",
-      "Email": "carlycasey@pearlessa.com",
-      "Phone": "+63 (913) 550-2819",
-      "Position": "Data Analyst",
-      "Status": "Applied"
-    },
-    {
-      "id": 3028,
-      "Applicant_Name": "Kemp Kim",
-      "Application_Date": "July 7, 2025",
-      "Email": "kempkim@pearlessa.com",
-      "Phone": "+63 (920) 453-2729",
-      "Position": "Software Engineer",
-      "Status": "Applied"
-    },
-    {
-      "id": 9528,
-      "Applicant_Name": "Velazquez Spence",
-      "Application_Date": "January 21, 2025",
-      "Email": "velazquezspence@pearlessa.com",
-      "Phone": "+63 (869) 516-3021",
-      "Position": "HR Specialist",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 970,
-      "Applicant_Name": "May Hamilton",
-      "Application_Date": "January 1, 2025",
-      "Email": "mayhamilton@pearlessa.com",
-      "Phone": "+63 (826) 473-2181",
-      "Position": "Graphic Designer",
-      "Status": "Archived"
-    },
-    {
-      "id": 4578,
-      "Applicant_Name": "Cynthia Levine",
-      "Application_Date": "October 23, 2025",
-      "Email": "cynthialevine@pearlessa.com",
-      "Phone": "+63 (981) 574-3338",
-      "Position": "Graphic Designer",
-      "Status": "Archived"
-    },
-    {
-      "id": 4666,
-      "Applicant_Name": "Mcconnell Randall",
-      "Application_Date": "November 7, 2025",
-      "Email": "mcconnellrandall@pearlessa.com",
-      "Phone": "+63 (947) 527-2392",
-      "Position": "Software Engineer",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 9426,
-      "Applicant_Name": "Horn Sanchez",
-      "Application_Date": "December 26, 2025",
-      "Email": "hornsanchez@pearlessa.com",
-      "Phone": "+63 (851) 435-3674",
-      "Position": "Software Engineer",
-      "Status": "Hired"
-    },
-    {
-      "id": 1687,
-      "Applicant_Name": "Cooke Lee",
-      "Application_Date": "February 10, 2025",
-      "Email": "cookelee@pearlessa.com",
-      "Phone": "+63 (923) 439-2320",
-      "Position": "Product Manager",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 6896,
-      "Applicant_Name": "Solis Fox",
-      "Application_Date": "May 1, 2025",
-      "Email": "solisfox@pearlessa.com",
-      "Phone": "+63 (846) 547-3956",
-      "Position": "Product Manager",
-      "Status": "Archived"
-    },
-    {
-      "id": 4168,
-      "Applicant_Name": "Osborn Holmes",
-      "Application_Date": "June 18, 2025",
-      "Email": "osbornholmes@pearlessa.com",
-      "Phone": "+63 (842) 539-3877",
-      "Position": "Sales Associate",
-      "Status": "For Interview"
-    },
-    {
-      "id": 1887,
-      "Applicant_Name": "Constance Mclean",
-      "Application_Date": "March 16, 2025",
-      "Email": "constancemclean@pearlessa.com",
-      "Phone": "+63 (938) 482-2108",
-      "Position": "Data Analyst",
-      "Status": "Offered"
-    },
-    {
-      "id": 6025,
-      "Applicant_Name": "Dollie Mckee",
-      "Application_Date": "October 29, 2025",
-      "Email": "dolliemckee@pearlessa.com",
-      "Phone": "+63 (939) 491-3475",
-      "Position": "HR Specialist",
-      "Status": "Archived"
-    },
-    {
-      "id": 5702,
-      "Applicant_Name": "Haley Vega",
-      "Application_Date": "October 31, 2025",
-      "Email": "haleyvega@pearlessa.com",
-      "Phone": "+63 (852) 477-2780",
-      "Position": "Sales Associate",
-      "Status": "For Interview"
-    },
-    {
-      "id": 4525,
-      "Applicant_Name": "Matthews Dillon",
-      "Application_Date": "June 23, 2025",
-      "Email": "matthewsdillon@pearlessa.com",
-      "Phone": "+63 (907) 528-2725",
-      "Position": "Data Analyst",
-      "Status": "Hired"
-    },
-    {
-      "id": 8004,
-      "Applicant_Name": "Cooper Johnston",
-      "Application_Date": "February 2, 2025",
-      "Email": "cooperjohnston@pearlessa.com",
-      "Phone": "+63 (941) 413-3410",
-      "Position": "HR Specialist",
-      "Status": "Assessment"
-    },
-    {
-      "id": 4049,
-      "Applicant_Name": "Bentley Fleming",
-      "Application_Date": "July 24, 2025",
-      "Email": "bentleyfleming@pearlessa.com",
-      "Phone": "+63 (885) 593-2085",
-      "Position": "Data Analyst",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 188,
-      "Applicant_Name": "Mcdaniel Rivera",
-      "Application_Date": "September 29, 2025",
-      "Email": "mcdanielrivera@pearlessa.com",
-      "Phone": "+63 (904) 558-3079",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 113,
-      "Applicant_Name": "Witt Hodge",
-      "Application_Date": "January 3, 2025",
-      "Email": "witthodge@pearlessa.com",
-      "Phone": "+63 (964) 436-2202",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 4753,
-      "Applicant_Name": "Johns Romero",
-      "Application_Date": "May 26, 2025",
-      "Email": "johnsromero@pearlessa.com",
-      "Phone": "+63 (885) 566-2038",
-      "Position": "Marketing Manager",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 4904,
-      "Applicant_Name": "Doyle Medina",
-      "Application_Date": "November 9, 2025",
-      "Email": "doylemedina@pearlessa.com",
-      "Phone": "+63 (992) 437-2460",
-      "Position": "Sales Associate",
-      "Status": "Assessment"
-    },
-    {
-      "id": 7363,
-      "Applicant_Name": "Hurley Green",
-      "Application_Date": "December 24, 2025",
-      "Email": "hurleygreen@pearlessa.com",
-      "Phone": "+63 (854) 512-3207",
-      "Position": "Software Engineer",
-      "Status": "Archived"
-    },
-    {
-      "id": 4517,
-      "Applicant_Name": "Lelia Roach",
-      "Application_Date": "October 25, 2025",
-      "Email": "leliaroach@pearlessa.com",
-      "Phone": "+63 (828) 592-3171",
-      "Position": "Graphic Designer",
-      "Status": "Transferred"
-    },
-    {
-      "id": 1131,
-      "Applicant_Name": "Barron Savage",
-      "Application_Date": "October 27, 2025",
-      "Email": "barronsavage@pearlessa.com",
-      "Phone": "+63 (944) 534-3024",
-      "Position": "Graphic Designer",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 8276,
-      "Applicant_Name": "Emily Caldwell",
-      "Application_Date": "March 3, 2025",
-      "Email": "emilycaldwell@pearlessa.com",
-      "Phone": "+63 (819) 581-2029",
-      "Position": "HR Specialist",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 2560,
-      "Applicant_Name": "Campos Ruiz",
-      "Application_Date": "August 25, 2025",
-      "Email": "camposruiz@pearlessa.com",
-      "Phone": "+63 (838) 578-2722",
-      "Position": "Graphic Designer",
-      "Status": "Archived"
-    },
-    {
-      "id": 1493,
-      "Applicant_Name": "Angeline Cote",
-      "Application_Date": "October 23, 2025",
-      "Email": "angelinecote@pearlessa.com",
-      "Phone": "+63 (900) 514-3761",
-      "Position": "Product Manager",
-      "Status": "For Interview"
-    },
-    {
-      "id": 7935,
-      "Applicant_Name": "Annabelle Luna",
-      "Application_Date": "December 22, 2025",
-      "Email": "annabelleluna@pearlessa.com",
-      "Phone": "+63 (998) 575-2273",
-      "Position": "Sales Associate",
-      "Status": "Applied"
-    },
-    {
-      "id": 4053,
-      "Applicant_Name": "Reed Cook",
-      "Application_Date": "July 24, 2025",
-      "Email": "reedcook@pearlessa.com",
-      "Phone": "+63 (919) 587-2194",
-      "Position": "HR Specialist",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 3297,
-      "Applicant_Name": "Allie Dale",
-      "Application_Date": "May 23, 2025",
-      "Email": "alliedale@pearlessa.com",
-      "Phone": "+63 (933) 436-3079",
-      "Position": "HR Specialist",
-      "Status": "Transferred"
-    },
-    {
-      "id": 8353,
-      "Applicant_Name": "Rosemary Garrison",
-      "Application_Date": "July 18, 2025",
-      "Email": "rosemarygarrison@pearlessa.com",
-      "Phone": "+63 (801) 524-3994",
-      "Position": "Sales Associate",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 3222,
-      "Applicant_Name": "Naomi Hansen",
-      "Application_Date": "August 12, 2025",
-      "Email": "naomihansen@pearlessa.com",
-      "Phone": "+63 (921) 439-2501",
-      "Position": "Sales Associate",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 2902,
-      "Applicant_Name": "Keri Woodward",
-      "Application_Date": "September 5, 2025",
-      "Email": "keriwoodward@pearlessa.com",
-      "Phone": "+63 (921) 445-3163",
-      "Position": "HR Specialist",
-      "Status": "Archived"
-    },
-    {
-      "id": 608,
-      "Applicant_Name": "Hannah Aguilar",
-      "Application_Date": "March 5, 2025",
-      "Email": "hannahaguilar@pearlessa.com",
-      "Phone": "+63 (981) 535-3632",
-      "Position": "Marketing Manager",
-      "Status": "Transferred"
-    },
-    {
-      "id": 2755,
-      "Applicant_Name": "Obrien Barton",
-      "Application_Date": "October 9, 2025",
-      "Email": "obrienbarton@pearlessa.com",
-      "Phone": "+63 (948) 588-2233",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 294,
-      "Applicant_Name": "Kirby Calhoun",
-      "Application_Date": "September 1, 2025",
-      "Email": "kirbycalhoun@pearlessa.com",
-      "Phone": "+63 (929) 542-3822",
-      "Position": "Sales Associate",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 6637,
-      "Applicant_Name": "Hardin Vang",
-      "Application_Date": "December 27, 2025",
-      "Email": "hardinvang@pearlessa.com",
-      "Phone": "+63 (997) 510-3852",
-      "Position": "Data Analyst",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 4017,
-      "Applicant_Name": "Malinda Wolf",
-      "Application_Date": "April 20, 2025",
-      "Email": "malindawolf@pearlessa.com",
-      "Phone": "+63 (947) 531-3054",
-      "Position": "Graphic Designer",
-      "Status": "For Interview"
-    },
-    {
-      "id": 4015,
-      "Applicant_Name": "Alicia Simmons",
-      "Application_Date": "May 11, 2025",
-      "Email": "aliciasimmons@pearlessa.com",
-      "Phone": "+63 (904) 558-3848",
-      "Position": "Data Analyst",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 9492,
-      "Applicant_Name": "Carney Estrada",
-      "Application_Date": "July 30, 2025",
-      "Email": "carneyestrada@pearlessa.com",
-      "Phone": "+63 (938) 495-3608",
-      "Position": "Product Manager",
-      "Status": "Transferred"
-    },
-    {
-      "id": 144,
-      "Applicant_Name": "Barr Hodges",
-      "Application_Date": "September 23, 2025",
-      "Email": "barrhodges@pearlessa.com",
-      "Phone": "+63 (830) 559-2464",
-      "Position": "Product Manager",
-      "Status": "Assessment"
-    },
-    {
-      "id": 4611,
-      "Applicant_Name": "Lillie Hernandez",
-      "Application_Date": "June 18, 2025",
-      "Email": "lilliehernandez@pearlessa.com",
-      "Phone": "+63 (954) 572-3018",
-      "Position": "HR Specialist",
-      "Status": "Assessment"
-    },
-    {
-      "id": 1541,
-      "Applicant_Name": "Savage Head",
-      "Application_Date": "August 9, 2025",
-      "Email": "savagehead@pearlessa.com",
-      "Phone": "+63 (980) 561-3811",
-      "Position": "Sales Associate",
-      "Status": "Offered"
-    },
-    {
-      "id": 8149,
-      "Applicant_Name": "Elnora Yang",
-      "Application_Date": "January 6, 2025",
-      "Email": "elnorayang@pearlessa.com",
-      "Phone": "+63 (887) 546-3340",
-      "Position": "Marketing Manager",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 4363,
-      "Applicant_Name": "Dyer Reynolds",
-      "Application_Date": "September 1, 2025",
-      "Email": "dyerreynolds@pearlessa.com",
-      "Phone": "+63 (880) 499-2447",
-      "Position": "Software Engineer",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 8070,
-      "Applicant_Name": "Taylor Sullivan",
-      "Application_Date": "July 11, 2025",
-      "Email": "taylorsullivan@pearlessa.com",
-      "Phone": "+63 (916) 514-2488",
-      "Position": "Product Manager",
-      "Status": "Archived"
-    },
-    {
-      "id": 9648,
-      "Applicant_Name": "Tamika Schwartz",
-      "Application_Date": "August 31, 2025",
-      "Email": "tamikaschwartz@pearlessa.com",
-      "Phone": "+63 (936) 455-2953",
-      "Position": "Marketing Manager",
-      "Status": "Offered"
-    },
-    {
-      "id": 4759,
-      "Applicant_Name": "Sasha Wallace",
-      "Application_Date": "June 26, 2025",
-      "Email": "sashawallace@pearlessa.com",
-      "Phone": "+63 (837) 551-2432",
-      "Position": "Sales Associate",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 2755,
-      "Applicant_Name": "Snow Nichols",
-      "Application_Date": "April 19, 2025",
-      "Email": "snownichols@pearlessa.com",
-      "Phone": "+63 (932) 550-3079",
-      "Position": "Graphic Designer",
-      "Status": "Offered"
-    },
-    {
-      "id": 8231,
-      "Applicant_Name": "Farley Ballard",
-      "Application_Date": "January 29, 2025",
-      "Email": "farleyballard@pearlessa.com",
-      "Phone": "+63 (922) 544-2038",
-      "Position": "HR Specialist",
-      "Status": "For Interview"
-    },
-    {
-      "id": 9491,
-      "Applicant_Name": "Alana Wilcox",
-      "Application_Date": "September 30, 2025",
-      "Email": "alanawilcox@pearlessa.com",
-      "Phone": "+63 (922) 483-2006",
-      "Position": "Data Analyst",
-      "Status": "Hired"
-    },
-    {
-      "id": 4307,
-      "Applicant_Name": "Rowland Mcmillan",
-      "Application_Date": "November 4, 2025",
-      "Email": "rowlandmcmillan@pearlessa.com",
-      "Phone": "+63 (866) 512-2610",
-      "Position": "Data Analyst",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 6163,
-      "Applicant_Name": "Myers Vazquez",
-      "Application_Date": "December 23, 2025",
-      "Email": "myersvazquez@pearlessa.com",
-      "Phone": "+63 (879) 517-2263",
-      "Position": "HR Specialist",
-      "Status": "Hired"
-    },
-    {
-      "id": 3300,
-      "Applicant_Name": "Velasquez Aguirre",
-      "Application_Date": "June 28, 2025",
-      "Email": "velasquezaguirre@pearlessa.com",
-      "Phone": "+63 (990) 587-2868",
-      "Position": "Data Analyst",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 6035,
-      "Applicant_Name": "Monica Kirkland",
-      "Application_Date": "February 4, 2025",
-      "Email": "monicakirkland@pearlessa.com",
-      "Phone": "+63 (880) 569-3723",
-      "Position": "Marketing Manager",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 6386,
-      "Applicant_Name": "Frieda Franks",
-      "Application_Date": "December 8, 2025",
-      "Email": "friedafranks@pearlessa.com",
-      "Phone": "+63 (955) 552-2219",
-      "Position": "Marketing Manager",
-      "Status": "For Interview"
-    },
-    {
-      "id": 691,
-      "Applicant_Name": "Carol Whitfield",
-      "Application_Date": "May 25, 2025",
-      "Email": "carolwhitfield@pearlessa.com",
-      "Phone": "+63 (985) 444-2491",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 2987,
-      "Applicant_Name": "Odom Jackson",
-      "Application_Date": "December 29, 2025",
-      "Email": "odomjackson@pearlessa.com",
-      "Phone": "+63 (906) 456-3921",
-      "Position": "Graphic Designer",
-      "Status": "Offered"
-    },
-    {
-      "id": 7919,
-      "Applicant_Name": "Kim Prince",
-      "Application_Date": "May 19, 2025",
-      "Email": "kimprince@pearlessa.com",
-      "Phone": "+63 (937) 431-2217",
-      "Position": "Data Analyst",
-      "Status": "Applied"
-    },
-    {
-      "id": 6389,
-      "Applicant_Name": "Kellie Martinez",
-      "Application_Date": "April 6, 2025",
-      "Email": "kelliemartinez@pearlessa.com",
-      "Phone": "+63 (864) 446-2949",
-      "Position": "Marketing Manager",
-      "Status": "Applied"
-    },
-    {
-      "id": 387,
-      "Applicant_Name": "Smith Mason",
-      "Application_Date": "November 16, 2025",
-      "Email": "smithmason@pearlessa.com",
-      "Phone": "+63 (853) 430-2481",
-      "Position": "HR Specialist",
-      "Status": "Assessment"
-    },
-    {
-      "id": 9565,
-      "Applicant_Name": "Booth Morrow",
-      "Application_Date": "August 2, 2025",
-      "Email": "boothmorrow@pearlessa.com",
-      "Phone": "+63 (984) 423-2406",
-      "Position": "Product Manager",
-      "Status": "Final Interview"
-    },
-    {
-      "id": 4560,
-      "Applicant_Name": "Holland Wright",
-      "Application_Date": "September 10, 2025",
-      "Email": "hollandwright@pearlessa.com",
-      "Phone": "+63 (856) 594-2286",
-      "Position": "Graphic Designer",
-      "Status": "Hired"
-    },
-    {
-      "id": 6750,
-      "Applicant_Name": "Pansy Rocha",
-      "Application_Date": "June 25, 2025",
-      "Email": "pansyrocha@pearlessa.com",
-      "Phone": "+63 (810) 451-3435",
-      "Position": "Software Engineer",
-      "Status": "Archived"
-    },
-    {
-      "id": 3773,
-      "Applicant_Name": "Glass Gamble",
-      "Application_Date": "December 27, 2025",
-      "Email": "glassgamble@pearlessa.com",
-      "Phone": "+63 (992) 426-3053",
-      "Position": "Product Manager",
-      "Status": "Assessment"
-    },
-    {
-      "id": 9864,
-      "Applicant_Name": "Rich Hogan",
-      "Application_Date": "January 15, 2025",
-      "Email": "richhogan@pearlessa.com",
-      "Phone": "+63 (896) 449-2103",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 5685,
-      "Applicant_Name": "Pollard Bullock",
-      "Application_Date": "August 19, 2025",
-      "Email": "pollardbullock@pearlessa.com",
-      "Phone": "+63 (911) 567-3024",
-      "Position": "Software Engineer",
-      "Status": "Transferred"
-    },
-    {
-      "id": 2910,
-      "Applicant_Name": "Gould Richmond",
-      "Application_Date": "February 13, 2025",
-      "Email": "gouldrichmond@pearlessa.com",
-      "Phone": "+63 (976) 577-3045",
-      "Position": "Sales Associate",
-      "Status": "Archived"
-    },
-    {
-      "id": 5688,
-      "Applicant_Name": "Brenda Brewer",
-      "Application_Date": "June 1, 2025",
-      "Email": "brendabrewer@pearlessa.com",
-      "Phone": "+63 (969) 471-2825",
-      "Position": "Graphic Designer",
-      "Status": "Hired"
-    },
-    {
-      "id": 9356,
-      "Applicant_Name": "Nanette Cooley",
-      "Application_Date": "October 6, 2025",
-      "Email": "nanettecooley@pearlessa.com",
-      "Phone": "+63 (882) 445-2909",
-      "Position": "Graphic Designer",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 7542,
-      "Applicant_Name": "Stephanie Jordan",
-      "Application_Date": "May 14, 2025",
-      "Email": "stephaniejordan@pearlessa.com",
-      "Phone": "+63 (992) 546-3234",
-      "Position": "Sales Associate",
-      "Status": "Transferred"
-    },
-    {
-      "id": 1561,
-      "Applicant_Name": "Elena Hoover",
-      "Application_Date": "September 3, 2025",
-      "Email": "elenahoover@pearlessa.com",
-      "Phone": "+63 (948) 486-2464",
-      "Position": "Marketing Manager",
-      "Status": "Applied"
-    },
-    {
-      "id": 8593,
-      "Applicant_Name": "Lindsay Buckley",
-      "Application_Date": "November 5, 2025",
-      "Email": "lindsaybuckley@pearlessa.com",
-      "Phone": "+63 (925) 475-3971",
-      "Position": "Product Manager",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 1051,
-      "Applicant_Name": "Browning Rowland",
-      "Application_Date": "June 4, 2025",
-      "Email": "browningrowland@pearlessa.com",
-      "Phone": "+63 (919) 427-3810",
-      "Position": "Marketing Manager",
-      "Status": "Applied"
-    },
-    {
-      "id": 1003,
-      "Applicant_Name": "Medina Morse",
-      "Application_Date": "October 10, 2025",
-      "Email": "medinamorse@pearlessa.com",
-      "Phone": "+63 (935) 467-3126",
-      "Position": "HR Specialist",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 6005,
-      "Applicant_Name": "Ava Rojas",
-      "Application_Date": "September 24, 2025",
-      "Email": "avarojas@pearlessa.com",
-      "Phone": "+63 (874) 582-3710",
-      "Position": "Sales Associate",
-      "Status": "For Interview"
-    },
-    {
-      "id": 2941,
-      "Applicant_Name": "Nelda Downs",
-      "Application_Date": "January 17, 2025",
-      "Email": "neldadowns@pearlessa.com",
-      "Phone": "+63 (837) 538-3373",
-      "Position": "Software Engineer",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 5386,
-      "Applicant_Name": "Aline Stevens",
-      "Application_Date": "January 9, 2025",
-      "Email": "alinestevens@pearlessa.com",
-      "Phone": "+63 (999) 600-2940",
-      "Position": "Product Manager",
-      "Status": "For Transfer"
-    },
-    {
-      "id": 1165,
-      "Applicant_Name": "Hayes Banks",
-      "Application_Date": "July 19, 2025",
-      "Email": "hayesbanks@pearlessa.com",
-      "Phone": "+63 (882) 563-3093",
-      "Position": "Sales Associate",
-      "Status": "Hired"
-    },
-    {
-      "id": 8918,
-      "Applicant_Name": "Whitaker Meyers",
-      "Application_Date": "May 17, 2025",
-      "Email": "whitakermeyers@pearlessa.com",
-      "Phone": "+63 (980) 488-2345",
-      "Position": "Sales Associate",
-      "Status": "Applied"
-    },
-    {
-      "id": 2153,
-      "Applicant_Name": "Marisol Middleton",
-      "Application_Date": "October 7, 2025",
-      "Email": "marisolmiddleton@pearlessa.com",
-      "Phone": "+63 (976) 466-2377",
-      "Position": "Marketing Manager",
-      "Status": "Offered"
-    },
-    {
-      "id": 7510,
-      "Applicant_Name": "Gregory Washington",
-      "Application_Date": "April 15, 2025",
-      "Email": "gregorywashington@pearlessa.com",
-      "Phone": "+63 (941) 454-3733",
-      "Position": "Product Manager",
-      "Status": "Applied"
-    },
-    {
-      "id": 8926,
-      "Applicant_Name": "Morton Castro",
-      "Application_Date": "April 16, 2025",
-      "Email": "mortoncastro@pearlessa.com",
-      "Phone": "+63 (942) 574-3289",
-      "Position": "HR Specialist",
-      "Status": "Applied"
-    },
-    {
-      "id": 857,
-      "Applicant_Name": "Walls Rose",
-      "Application_Date": "May 16, 2025",
-      "Email": "wallsrose@pearlessa.com",
-      "Phone": "+63 (890) 595-2930",
-      "Position": "Product Manager",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 1401,
-      "Applicant_Name": "Pam Baldwin",
-      "Application_Date": "May 20, 2025",
-      "Email": "pambaldwin@pearlessa.com",
-      "Phone": "+63 (931) 557-2228",
-      "Position": "Marketing Manager",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 7550,
-      "Applicant_Name": "Vaughn Horne",
-      "Application_Date": "October 20, 2025",
-      "Email": "vaughnhorne@pearlessa.com",
-      "Phone": "+63 (910) 551-3987",
-      "Position": "Software Engineer",
-      "Status": "Transferred"
-    },
-    {
-      "id": 3303,
-      "Applicant_Name": "Ashlee Carter",
-      "Application_Date": "December 7, 2025",
-      "Email": "ashleecarter@pearlessa.com",
-      "Phone": "+63 (930) 469-3829",
-      "Position": "Software Engineer",
-      "Status": "Archived"
-    },
-    {
-      "id": 9160,
-      "Applicant_Name": "Shelia Vaughn",
-      "Application_Date": "January 6, 2025",
-      "Email": "sheliavaughn@pearlessa.com",
-      "Phone": "+63 (856) 570-3155",
-      "Position": "Data Analyst",
-      "Status": "Inital Interview"
-    },
-    {
-      "id": 2126,
-      "Applicant_Name": "Carissa Mccoy",
-      "Application_Date": "September 26, 2025",
-      "Email": "carissamccoy@pearlessa.com",
-      "Phone": "+63 (949) 482-3867",
-      "Position": "Sales Associate",
-      "Status": "Hired"
-    },
-    {
-      "id": 8589,
-      "Applicant_Name": "Campbell Franco",
-      "Application_Date": "November 17, 2025",
-      "Email": "campbellfranco@pearlessa.com",
-      "Phone": "+63 (854) 414-3633",
-      "Position": "HR Specialist",
-      "Status": "Transferred"
-    },
-    {
-      "id": 3272,
-      "Applicant_Name": "Hollie Stout",
-      "Application_Date": "May 31, 2025",
-      "Email": "holliestout@pearlessa.com",
-      "Phone": "+63 (932) 430-3222",
-      "Position": "HR Specialist",
-      "Status": "Archived"
-    }
-  ]
+  {
+    "id": 2790,
+    "Applicant_Name": "West Shaw",
+    "Application_Date": "November 23, 2025",
+    "Email": "westshaw@artworlds.com",
+    "Phone": "+63 (980) 499-2724",
+    "Position": "Marketing Manager",
+    "Status": "Offered",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 411,
+    "Applicant_Name": "Shields Sharp",
+    "Application_Date": "May 1, 2025",
+    "Email": "shieldssharp@artworlds.com",
+    "Phone": "+63 (862) 441-3186",
+    "Position": "Graphic Designer",
+    "Status": "Applied",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4020,
+    "Applicant_Name": "Levy Wilder",
+    "Application_Date": "May 15, 2025",
+    "Email": "levywilder@artworlds.com",
+    "Phone": "+63 (863) 450-3831",
+    "Position": "Sales Associate",
+    "Status": "For Interview",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5734,
+    "Applicant_Name": "Yates Reed",
+    "Application_Date": "March 10, 2025",
+    "Email": "yatesreed@artworlds.com",
+    "Phone": "+63 (869) 423-2624",
+    "Position": "Graphic Designer",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 980,
+    "Applicant_Name": "Chandra Vasquez",
+    "Application_Date": "October 26, 2025",
+    "Email": "chandravasquez@artworlds.com",
+    "Phone": "+63 (859) 438-3976",
+    "Position": "Data Analyst",
+    "Status": "Applied",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5223,
+    "Applicant_Name": "Figueroa Rodgers",
+    "Application_Date": "December 6, 2025",
+    "Email": "figueroarodgers@artworlds.com",
+    "Phone": "+63 (922) 414-2049",
+    "Position": "Marketing Manager",
+    "Status": "Final Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8793,
+    "Applicant_Name": "Doreen Stephenson",
+    "Application_Date": "September 28, 2025",
+    "Email": "doreenstephenson@artworlds.com",
+    "Phone": "+63 (800) 415-2977",
+    "Position": "Marketing Manager",
+    "Status": "Hired",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 9242,
+    "Applicant_Name": "Tameka Gray",
+    "Application_Date": "February 24, 2025",
+    "Email": "tamekagray@artworlds.com",
+    "Phone": "+63 (819) 527-3059",
+    "Position": "Sales Associate",
+    "Status": "Offered",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5476,
+    "Applicant_Name": "Jerri Lindsey",
+    "Application_Date": "March 29, 2025",
+    "Email": "jerrilindsey@artworlds.com",
+    "Phone": "+63 (961) 583-3914",
+    "Position": "Product Manager",
+    "Status": "Applied",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8091,
+    "Applicant_Name": "Knight Sims",
+    "Application_Date": "January 12, 2025",
+    "Email": "knightsims@artworlds.com",
+    "Phone": "+63 (919) 598-2749",
+    "Position": "Graphic Designer",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 4512,
+    "Applicant_Name": "Constance Velazquez",
+    "Application_Date": "September 9, 2025",
+    "Email": "constancevelazquez@artworlds.com",
+    "Phone": "+63 (929) 527-3160",
+    "Position": "Software Engineer",
+    "Status": "Hired",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 730,
+    "Applicant_Name": "Riley Meyers",
+    "Application_Date": "January 11, 2025",
+    "Email": "rileymeyers@artworlds.com",
+    "Phone": "+63 (841) 493-3413",
+    "Position": "Software Engineer",
+    "Status": "Transferred",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 2123,
+    "Applicant_Name": "Alma Shannon",
+    "Application_Date": "June 27, 2025",
+    "Email": "almashannon@artworlds.com",
+    "Phone": "+63 (915) 403-2693",
+    "Position": "Marketing Manager",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7753,
+    "Applicant_Name": "Lindsey Soto",
+    "Application_Date": "August 13, 2025",
+    "Email": "lindseysoto@artworlds.com",
+    "Phone": "+63 (912) 530-3455",
+    "Position": "Sales Associate",
+    "Status": "Transferred",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 4785,
+    "Applicant_Name": "Bettie Dillon",
+    "Application_Date": "April 10, 2025",
+    "Email": "bettiedillon@artworlds.com",
+    "Phone": "+63 (931) 580-3958",
+    "Position": "HR Specialist",
+    "Status": "Transferred",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 7336,
+    "Applicant_Name": "Ferguson Glenn",
+    "Application_Date": "April 13, 2025",
+    "Email": "fergusonglenn@artworlds.com",
+    "Phone": "+63 (838) 593-2514",
+    "Position": "Software Engineer",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 722,
+    "Applicant_Name": "Sofia Bishop",
+    "Application_Date": "March 17, 2025",
+    "Email": "sofiabishop@artworlds.com",
+    "Phone": "+63 (867) 530-3359",
+    "Position": "Marketing Manager",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 5888,
+    "Applicant_Name": "Jami Owens",
+    "Application_Date": "December 9, 2025",
+    "Email": "jamiowens@artworlds.com",
+    "Phone": "+63 (984) 480-3838",
+    "Position": "Data Analyst",
+    "Status": "Final Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7937,
+    "Applicant_Name": "Nona Savage",
+    "Application_Date": "February 26, 2025",
+    "Email": "nonasavage@artworlds.com",
+    "Phone": "+63 (918) 572-3145",
+    "Position": "Data Analyst",
+    "Status": "For Transfer",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2622,
+    "Applicant_Name": "Wells Jacobs",
+    "Application_Date": "October 8, 2025",
+    "Email": "wellsjacobs@artworlds.com",
+    "Phone": "+63 (869) 412-3237",
+    "Position": "Graphic Designer",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 9597,
+    "Applicant_Name": "Wilcox Hunter",
+    "Application_Date": "January 30, 2025",
+    "Email": "wilcoxhunter@artworlds.com",
+    "Phone": "+63 (847) 508-3406",
+    "Position": "Marketing Manager",
+    "Status": "Offered",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 4221,
+    "Applicant_Name": "Marion Benson",
+    "Application_Date": "July 23, 2025",
+    "Email": "marionbenson@artworlds.com",
+    "Phone": "+63 (854) 424-3508",
+    "Position": "Marketing Manager",
+    "Status": "Offered",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7817,
+    "Applicant_Name": "Jones Roach",
+    "Application_Date": "May 14, 2025",
+    "Email": "jonesroach@artworlds.com",
+    "Phone": "+63 (843) 404-3931",
+    "Position": "HR Specialist",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 3727,
+    "Applicant_Name": "Foster Todd",
+    "Application_Date": "May 19, 2025",
+    "Email": "fostertodd@artworlds.com",
+    "Phone": "+63 (801) 415-2621",
+    "Position": "Graphic Designer",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6516,
+    "Applicant_Name": "Owens Stein",
+    "Application_Date": "April 23, 2025",
+    "Email": "owensstein@artworlds.com",
+    "Phone": "+63 (837) 453-3071",
+    "Position": "Graphic Designer",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 938,
+    "Applicant_Name": "Hester Mosley",
+    "Application_Date": "October 22, 2025",
+    "Email": "hestermosley@artworlds.com",
+    "Phone": "+63 (827) 547-3332",
+    "Position": "Sales Associate",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 5282,
+    "Applicant_Name": "Stephanie Wynn",
+    "Application_Date": "March 15, 2025",
+    "Email": "stephaniewynn@artworlds.com",
+    "Phone": "+63 (988) 485-2746",
+    "Position": "Graphic Designer",
+    "Status": "Final Interview",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5753,
+    "Applicant_Name": "Rebekah Pope",
+    "Application_Date": "April 19, 2025",
+    "Email": "rebekahpope@artworlds.com",
+    "Phone": "+63 (885) 461-2206",
+    "Position": "Software Engineer",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 7189,
+    "Applicant_Name": "Valenzuela Cortez",
+    "Application_Date": "December 8, 2025",
+    "Email": "valenzuelacortez@artworlds.com",
+    "Phone": "+63 (930) 421-2119",
+    "Position": "Data Analyst",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4857,
+    "Applicant_Name": "Alston Mccarty",
+    "Application_Date": "March 7, 2025",
+    "Email": "alstonmccarty@artworlds.com",
+    "Phone": "+63 (937) 584-2103",
+    "Position": "Product Manager",
+    "Status": "Transferred",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4712,
+    "Applicant_Name": "Janell Walsh",
+    "Application_Date": "May 14, 2025",
+    "Email": "janellwalsh@artworlds.com",
+    "Phone": "+63 (993) 450-3333",
+    "Position": "HR Specialist",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5087,
+    "Applicant_Name": "Osborn Watkins",
+    "Application_Date": "December 10, 2025",
+    "Email": "osbornwatkins@artworlds.com",
+    "Phone": "+63 (802) 590-3411",
+    "Position": "Software Engineer",
+    "Status": "Applied",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 1579,
+    "Applicant_Name": "Albert Poole",
+    "Application_Date": "April 27, 2025",
+    "Email": "albertpoole@artworlds.com",
+    "Phone": "+63 (957) 534-3536",
+    "Position": "Sales Associate",
+    "Status": "Hired",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 3096,
+    "Applicant_Name": "Mcbride Jenkins",
+    "Application_Date": "March 3, 2025",
+    "Email": "mcbridejenkins@artworlds.com",
+    "Phone": "+63 (834) 546-3943",
+    "Position": "Software Engineer",
+    "Status": "For Transfer",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8912,
+    "Applicant_Name": "Harriet Crane",
+    "Application_Date": "September 19, 2025",
+    "Email": "harrietcrane@artworlds.com",
+    "Phone": "+63 (944) 520-2468",
+    "Position": "HR Specialist",
+    "Status": "Initial Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7947,
+    "Applicant_Name": "Klein Combs",
+    "Application_Date": "September 20, 2025",
+    "Email": "kleincombs@artworlds.com",
+    "Phone": "+63 (879) 432-3243",
+    "Position": "HR Specialist",
+    "Status": "For Interview",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 1350,
+    "Applicant_Name": "Callie Anthony",
+    "Application_Date": "November 28, 2025",
+    "Email": "callieanthony@artworlds.com",
+    "Phone": "+63 (971) 494-3843",
+    "Position": "Graphic Designer",
+    "Status": "Final Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6709,
+    "Applicant_Name": "Ray Singleton",
+    "Application_Date": "August 10, 2025",
+    "Email": "raysingleton@artworlds.com",
+    "Phone": "+63 (804) 534-2614",
+    "Position": "Data Analyst",
+    "Status": "Offered",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 723,
+    "Applicant_Name": "Pearson Lott",
+    "Application_Date": "July 2, 2025",
+    "Email": "pearsonlott@artworlds.com",
+    "Phone": "+63 (854) 436-2546",
+    "Position": "Marketing Manager",
+    "Status": "Assessment",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 9221,
+    "Applicant_Name": "Andrews Trujillo",
+    "Application_Date": "August 8, 2025",
+    "Email": "andrewstrujillo@artworlds.com",
+    "Phone": "+63 (952) 480-3500",
+    "Position": "Data Analyst",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5945,
+    "Applicant_Name": "Marcie Perez",
+    "Application_Date": "December 7, 2025",
+    "Email": "marcieperez@artworlds.com",
+    "Phone": "+63 (916) 408-3064",
+    "Position": "Product Manager",
+    "Status": "Offered",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5728,
+    "Applicant_Name": "Irma Bernard",
+    "Application_Date": "September 23, 2025",
+    "Email": "irmabernard@artworlds.com",
+    "Phone": "+63 (853) 523-2570",
+    "Position": "HR Specialist",
+    "Status": "Assessment",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 6089,
+    "Applicant_Name": "Teresa Wolf",
+    "Application_Date": "July 18, 2025",
+    "Email": "teresawolf@artworlds.com",
+    "Phone": "+63 (889) 493-3839",
+    "Position": "Graphic Designer",
+    "Status": "Offered",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8022,
+    "Applicant_Name": "Coffey Ratliff",
+    "Application_Date": "December 25, 2025",
+    "Email": "coffeyratliff@artworlds.com",
+    "Phone": "+63 (821) 413-2953",
+    "Position": "Graphic Designer",
+    "Status": "For Transfer",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 5680,
+    "Applicant_Name": "Buckley Waller",
+    "Application_Date": "October 14, 2025",
+    "Email": "buckleywaller@artworlds.com",
+    "Phone": "+63 (980) 462-2041",
+    "Position": "Graphic Designer",
+    "Status": "For Interview",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5973,
+    "Applicant_Name": "Margo Mccormick",
+    "Application_Date": "May 29, 2025",
+    "Email": "margomccormick@artworlds.com",
+    "Phone": "+63 (822) 464-3560",
+    "Position": "Software Engineer",
+    "Status": "Initial Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7128,
+    "Applicant_Name": "Dorothea Rivers",
+    "Application_Date": "January 25, 2025",
+    "Email": "dorothearivers@artworlds.com",
+    "Phone": "+63 (900) 527-3712",
+    "Position": "Sales Associate",
+    "Status": "Assessment",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4057,
+    "Applicant_Name": "Allen Bruce",
+    "Application_Date": "March 28, 2025",
+    "Email": "allenbruce@artworlds.com",
+    "Phone": "+63 (853) 580-3380",
+    "Position": "Product Manager",
+    "Status": "Hired",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6535,
+    "Applicant_Name": "Lane Watts",
+    "Application_Date": "January 23, 2025",
+    "Email": "lanewatts@artworlds.com",
+    "Phone": "+63 (915) 427-3705",
+    "Position": "Software Engineer",
+    "Status": "Assessment",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5497,
+    "Applicant_Name": "Harrell Ross",
+    "Application_Date": "March 30, 2025",
+    "Email": "harrellross@artworlds.com",
+    "Phone": "+63 (926) 510-3185",
+    "Position": "HR Specialist",
+    "Status": "For Transfer",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2695,
+    "Applicant_Name": "Stuart Mccray",
+    "Application_Date": "July 30, 2025",
+    "Email": "stuartmccray@artworlds.com",
+    "Phone": "+63 (817) 504-2059",
+    "Position": "Graphic Designer",
+    "Status": "Hired",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6362,
+    "Applicant_Name": "Davenport Alvarez",
+    "Application_Date": "October 7, 2025",
+    "Email": "davenportalvarez@artworlds.com",
+    "Phone": "+63 (860) 581-3255",
+    "Position": "Sales Associate",
+    "Status": "Assessment",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 2382,
+    "Applicant_Name": "Janice Shepherd",
+    "Application_Date": "May 31, 2025",
+    "Email": "janiceshepherd@artworlds.com",
+    "Phone": "+63 (800) 561-3445",
+    "Position": "Graphic Designer",
+    "Status": "Applied",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 1888,
+    "Applicant_Name": "Reid Weiss",
+    "Application_Date": "February 10, 2025",
+    "Email": "reidweiss@artworlds.com",
+    "Phone": "+63 (854) 442-2801",
+    "Position": "Sales Associate",
+    "Status": "Transferred",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 444,
+    "Applicant_Name": "Erika Nelson",
+    "Application_Date": "May 11, 2025",
+    "Email": "erikanelson@artworlds.com",
+    "Phone": "+63 (953) 405-3341",
+    "Position": "Software Engineer",
+    "Status": "Hired",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2123,
+    "Applicant_Name": "Tyler Walters",
+    "Application_Date": "June 19, 2025",
+    "Email": "tylerwalters@artworlds.com",
+    "Phone": "+63 (811) 538-2367",
+    "Position": "Data Analyst",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 1252,
+    "Applicant_Name": "Finley Ray",
+    "Application_Date": "June 6, 2025",
+    "Email": "finleyray@artworlds.com",
+    "Phone": "+63 (854) 424-3427",
+    "Position": "Sales Associate",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7022,
+    "Applicant_Name": "Aurora Estes",
+    "Application_Date": "November 13, 2025",
+    "Email": "auroraestes@artworlds.com",
+    "Phone": "+63 (948) 460-2948",
+    "Position": "Marketing Manager",
+    "Status": "Final Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6886,
+    "Applicant_Name": "Tia Brewer",
+    "Application_Date": "October 9, 2025",
+    "Email": "tiabrewer@artworlds.com",
+    "Phone": "+63 (800) 519-2098",
+    "Position": "Sales Associate",
+    "Status": "Applied",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8482,
+    "Applicant_Name": "Latoya Donaldson",
+    "Application_Date": "August 6, 2025",
+    "Email": "latoyadonaldson@artworlds.com",
+    "Phone": "+63 (981) 528-3596",
+    "Position": "Marketing Manager",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 9326,
+    "Applicant_Name": "Ursula Pennington",
+    "Application_Date": "December 8, 2025",
+    "Email": "ursulapennington@artworlds.com",
+    "Phone": "+63 (966) 554-3389",
+    "Position": "Product Manager",
+    "Status": "Transferred",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 4775,
+    "Applicant_Name": "Gena Lambert",
+    "Application_Date": "October 20, 2025",
+    "Email": "genalambert@artworlds.com",
+    "Phone": "+63 (966) 580-3305",
+    "Position": "Sales Associate",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 3068,
+    "Applicant_Name": "Gibbs Wilcox",
+    "Application_Date": "February 11, 2025",
+    "Email": "gibbswilcox@artworlds.com",
+    "Phone": "+63 (939) 585-2540",
+    "Position": "Marketing Manager",
+    "Status": "Initial Interview",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5934,
+    "Applicant_Name": "Nichols Morton",
+    "Application_Date": "September 5, 2025",
+    "Email": "nicholsmorton@artworlds.com",
+    "Phone": "+63 (808) 551-2767",
+    "Position": "Marketing Manager",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 9610,
+    "Applicant_Name": "Estelle Marks",
+    "Application_Date": "January 24, 2025",
+    "Email": "estellemarks@artworlds.com",
+    "Phone": "+63 (829) 414-2047",
+    "Position": "Product Manager",
+    "Status": "Transferred",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7317,
+    "Applicant_Name": "Noreen Nash",
+    "Application_Date": "September 9, 2025",
+    "Email": "noreennash@artworlds.com",
+    "Phone": "+63 (923) 487-3969",
+    "Position": "Data Analyst",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 8822,
+    "Applicant_Name": "Ewing Head",
+    "Application_Date": "April 12, 2025",
+    "Email": "ewinghead@artworlds.com",
+    "Phone": "+63 (987) 425-2402",
+    "Position": "HR Specialist",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2773,
+    "Applicant_Name": "Jensen Fitzpatrick",
+    "Application_Date": "February 20, 2025",
+    "Email": "jensenfitzpatrick@artworlds.com",
+    "Phone": "+63 (840) 567-3315",
+    "Position": "Marketing Manager",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 7197,
+    "Applicant_Name": "Caroline Skinner",
+    "Application_Date": "May 8, 2025",
+    "Email": "carolineskinner@artworlds.com",
+    "Phone": "+63 (837) 421-3089",
+    "Position": "HR Specialist",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 7950,
+    "Applicant_Name": "Dorsey Hicks",
+    "Application_Date": "December 26, 2025",
+    "Email": "dorseyhicks@artworlds.com",
+    "Phone": "+63 (871) 473-3560",
+    "Position": "Graphic Designer",
+    "Status": "Assessment",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2307,
+    "Applicant_Name": "Heidi Wong",
+    "Application_Date": "November 6, 2025",
+    "Email": "heidiwong@artworlds.com",
+    "Phone": "+63 (886) 486-3388",
+    "Position": "HR Specialist",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 9556,
+    "Applicant_Name": "Hyde Ryan",
+    "Application_Date": "August 14, 2025",
+    "Email": "hyderyan@artworlds.com",
+    "Phone": "+63 (979) 558-2178",
+    "Position": "HR Specialist",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2894,
+    "Applicant_Name": "Merrill Russo",
+    "Application_Date": "August 26, 2025",
+    "Email": "merrillrusso@artworlds.com",
+    "Phone": "+63 (838) 468-2487",
+    "Position": "Graphic Designer",
+    "Status": "For Transfer",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8299,
+    "Applicant_Name": "House Riddle",
+    "Application_Date": "September 10, 2025",
+    "Email": "houseriddle@artworlds.com",
+    "Phone": "+63 (865) 508-2463",
+    "Position": "Software Engineer",
+    "Status": "Assessment",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 8257,
+    "Applicant_Name": "Monroe Pate",
+    "Application_Date": "August 29, 2025",
+    "Email": "monroepate@artworlds.com",
+    "Phone": "+63 (871) 576-2412",
+    "Position": "Data Analyst",
+    "Status": "Offered",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4125,
+    "Applicant_Name": "Kelly Mejia",
+    "Application_Date": "July 30, 2025",
+    "Email": "kellymejia@artworlds.com",
+    "Phone": "+63 (863) 457-2763",
+    "Position": "Graphic Designer",
+    "Status": "Final Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6472,
+    "Applicant_Name": "Petra Baxter",
+    "Application_Date": "June 16, 2025",
+    "Email": "petrabaxter@artworlds.com",
+    "Phone": "+63 (814) 441-2065",
+    "Position": "Software Engineer",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 6252,
+    "Applicant_Name": "Milagros Reynolds",
+    "Application_Date": "December 18, 2025",
+    "Email": "milagrosreynolds@artworlds.com",
+    "Phone": "+63 (987) 577-3258",
+    "Position": "HR Specialist",
+    "Status": "Hired",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 2648,
+    "Applicant_Name": "Loraine Burgess",
+    "Application_Date": "December 14, 2025",
+    "Email": "loraineburgess@artworlds.com",
+    "Phone": "+63 (803) 529-3953",
+    "Position": "Data Analyst",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4666,
+    "Applicant_Name": "Ayers Lewis",
+    "Application_Date": "October 7, 2025",
+    "Email": "ayerslewis@artworlds.com",
+    "Phone": "+63 (884) 480-3786",
+    "Position": "Data Analyst",
+    "Status": "Transferred",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 3458,
+    "Applicant_Name": "Leila Bennett",
+    "Application_Date": "August 12, 2025",
+    "Email": "leilabennett@artworlds.com",
+    "Phone": "+63 (810) 589-3208",
+    "Position": "Marketing Manager",
+    "Status": "Assessment",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 2289,
+    "Applicant_Name": "Betty Taylor",
+    "Application_Date": "December 15, 2025",
+    "Email": "bettytaylor@artworlds.com",
+    "Phone": "+63 (979) 462-3966",
+    "Position": "Graphic Designer",
+    "Status": "Transferred",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 9130,
+    "Applicant_Name": "Shelton Hayes",
+    "Application_Date": "May 2, 2025",
+    "Email": "sheltonhayes@artworlds.com",
+    "Phone": "+63 (804) 573-2519",
+    "Position": "Graphic Designer",
+    "Status": "Applied",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 6757,
+    "Applicant_Name": "Blake Molina",
+    "Application_Date": "July 13, 2025",
+    "Email": "blakemolina@artworlds.com",
+    "Phone": "+63 (878) 499-3926",
+    "Position": "Data Analyst",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 2159,
+    "Applicant_Name": "Marie Cross",
+    "Application_Date": "April 27, 2025",
+    "Email": "mariecross@artworlds.com",
+    "Phone": "+63 (925) 582-2877",
+    "Position": "Data Analyst",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 6395,
+    "Applicant_Name": "Harper England",
+    "Application_Date": "November 5, 2025",
+    "Email": "harperengland@artworlds.com",
+    "Phone": "+63 (940) 481-3864",
+    "Position": "Software Engineer",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4321,
+    "Applicant_Name": "Maryann Reilly",
+    "Application_Date": "July 17, 2025",
+    "Email": "maryannreilly@artworlds.com",
+    "Phone": "+63 (985) 497-2736",
+    "Position": "Product Manager",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 4875,
+    "Applicant_Name": "Graham Mack",
+    "Application_Date": "January 1, 2025",
+    "Email": "grahammack@artworlds.com",
+    "Phone": "+63 (920) 452-3349",
+    "Position": "Data Analyst",
+    "Status": "For Interview",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 2363,
+    "Applicant_Name": "Rodriquez Guthrie",
+    "Application_Date": "May 13, 2025",
+    "Email": "rodriquezguthrie@artworlds.com",
+    "Phone": "+63 (915) 568-2587",
+    "Position": "Marketing Manager",
+    "Status": "Applied",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 2040,
+    "Applicant_Name": "Morrow Conley",
+    "Application_Date": "February 11, 2025",
+    "Email": "morrowconley@artworlds.com",
+    "Phone": "+63 (877) 517-3351",
+    "Position": "Software Engineer",
+    "Status": "Initial Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7626,
+    "Applicant_Name": "Dora Briggs",
+    "Application_Date": "October 3, 2025",
+    "Email": "dorabriggs@artworlds.com",
+    "Phone": "+63 (888) 470-2756",
+    "Position": "Product Manager",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 1472,
+    "Applicant_Name": "Rowe Huber",
+    "Application_Date": "December 20, 2025",
+    "Email": "rowehuber@artworlds.com",
+    "Phone": "+63 (887) 458-3458",
+    "Position": "Product Manager",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 4268,
+    "Applicant_Name": "Vera Rogers",
+    "Application_Date": "June 30, 2025",
+    "Email": "verarogers@artworlds.com",
+    "Phone": "+63 (829) 508-2110",
+    "Position": "Product Manager",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 7693,
+    "Applicant_Name": "Jessie Fulton",
+    "Application_Date": "February 10, 2025",
+    "Email": "jessiefulton@artworlds.com",
+    "Phone": "+63 (884) 406-2967",
+    "Position": "HR Specialist",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 5672,
+    "Applicant_Name": "Jaclyn Mcguire",
+    "Application_Date": "October 22, 2025",
+    "Email": "jaclynmcguire@artworlds.com",
+    "Phone": "+63 (837) 495-2412",
+    "Position": "Data Analyst",
+    "Status": "For Transfer",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 8382,
+    "Applicant_Name": "Cooke Dunlap",
+    "Application_Date": "October 13, 2025",
+    "Email": "cookedunlap@artworlds.com",
+    "Phone": "+63 (908) 416-3891",
+    "Position": "Sales Associate",
+    "Status": "Transferred",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 9283,
+    "Applicant_Name": "Elba Sexton",
+    "Application_Date": "March 23, 2025",
+    "Email": "elbasexton@artworlds.com",
+    "Phone": "+63 (846) 519-3258",
+    "Position": "Product Manager",
+    "Status": "For Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 60,
+    "Applicant_Name": "Rita Lane",
+    "Application_Date": "July 18, 2025",
+    "Email": "ritalane@artworlds.com",
+    "Phone": "+63 (959) 513-3520",
+    "Position": "Product Manager",
+    "Status": "Initial Interview",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7791,
+    "Applicant_Name": "Candace Charles",
+    "Application_Date": "November 13, 2025",
+    "Email": "candacecharles@artworlds.com",
+    "Phone": "+63 (979) 566-3415",
+    "Position": "Marketing Manager",
+    "Status": "Archived",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 5871,
+    "Applicant_Name": "Jenifer Hogan",
+    "Application_Date": "December 22, 2025",
+    "Email": "jeniferhogan@artworlds.com",
+    "Phone": "+63 (814) 422-3322",
+    "Position": "Product Manager",
+    "Status": "Archived",
+    "isJobOffer": "Yes"
+  },
+  {
+    "id": 7584,
+    "Applicant_Name": "Lacey Rivera",
+    "Application_Date": "October 16, 2025",
+    "Email": "laceyrivera@artworlds.com",
+    "Phone": "+63 (942) 503-3558",
+    "Position": "Marketing Manager",
+    "Status": "Hired",
+    "isJobOffer": "No"
+  },
+  {
+    "id": 7242,
+    "Applicant_Name": "Darla Dillard",
+    "Application_Date": "July 20, 2025",
+    "Email": "darladillard@artworlds.com",
+    "Phone": "+63 (878) 478-2729",
+    "Position": "Sales Associate",
+    "Status": "Offered",
+    "isJobOffer": "Yes"
+  }
+]

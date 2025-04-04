@@ -1,4 +1,4 @@
-import { Divider, Tabs } from "@mantine/core";
+import { Button, Divider, Tabs } from "@mantine/core";
 import { IconFileUpload, IconX } from "@tabler/icons-react";
 import profileImage from '@src/assets/jane.png'
 import PersonalDetails from "@src/modules/Applicants/components/documents/tabs/PersonalDetails";
@@ -16,7 +16,7 @@ import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { PDFViewer } from "@react-pdf/renderer";
 
-export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date }: ViewApplicantsProps) {
+export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date, IsJobOffer }: ViewApplicantsProps) {
 
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
@@ -144,18 +144,32 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     {(Status === "For Transfer" || Status === "Transferred" || Status === "Hired") && (
                         <div className="mt-3 text-[#6D6D6D] text-[12px] poppins">
                             <h1>Start Date</h1>
-                            <div className="flex gap-2 mt-2 flex-wrap">
+                            <div className="flex gap-2 mt-2 flex-wrap font-semibold">
                                 {Application_Date}
                             </div>
+
+                            {/* <h1>Job Offer</h1>
+                            <div className="flex gap-2 mt-2 flex-wrap font-semibold">
+                                {IsJobOffer}
+                            </div> */}
                         </div>
                     )}
+
+                    <>
+                        {IsJobOffer === "Yes" && (
+                            <div>
+                                <h1 className="mt-8 text-[#6D6D6D] text-[12px] poppins">Job Offer</h1>
+                            </div>
+                        )}
+                    </>
 
                     {/* Transfer Position */}
                     <div className="mt-3 pb-6">
 
                         {/* IF status is equivalent to 'Archived' then no button should appear. */}
-                        {Status !== 'Archived' && (
-                            <p className="text-white rounded-[10px] poppins bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer"
+                        {/* {Status !== 'Archived' && ( */}
+                        {(IsJobOffer === 'Yes' && Status !== 'Archived') && (
+                            <Button className="text-white rounded-[10px] poppins bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer"
 
                                 onClick={() => {
                                     if (viewPDFStatuses.includes(Status)) {
@@ -174,7 +188,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                                     display the generated PDF For the applicant per se. 
                                     Otherwise, Transfer position modal will appear. */}
                                 {Status === 'Hired' || Status === 'Offered' || Status === 'For Transfer' || Status === 'Transferred' ? 'View PDF' : "Transfer Position"}
-                            </p>
+                            </Button>
                         )}
 
                         {Status === 'Offered' && (
@@ -238,10 +252,12 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
             <TransferPositionModal> for updating the position of the applied job and so on. */}
             <div>
                 {/* <UpdateStatusModal isOpen={isModalOpen} onClose={onCloseAll}> */}
-                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} onClose={onClose}>
+                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} >
                     <UpdateStatus
                         Status={Status}
                         onClose={onCloseAll}
+                        IsJobOffer={IsJobOffer}
+                        Name={Applicant_Name}
                     />
                 </UpdateStatusModal>
 
@@ -251,7 +267,7 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                         onClose={onCloseAll} />
                 </TransferPositionModal>
 
-                <ApplicantModal isOpen={isGenerateNewOffer} onClose={onCloseAll}>
+                <ApplicantModal isOpen={isGenerateNewOffer}>
                     <GenerateNewOffer
                         ApplicantName={Applicant_Name}
                         onClose={() => setIsGenerateNewOffer(false)} />
@@ -264,19 +280,19 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
                     <MyDocument
                         Name={Applicant_Name}
                         Position={Position}
-                        Department={null}
+                        Department=""
                         Remarks={Status}
-                        Salary_Monthly={null}
-                        Salary_Yearly={null}
-                        Note_Salary={null}
-                        Merit_Increase={null}
-                        Description_VL={null}
-                        Description_SL={null}
-                        Description_BL={null}
-                        Benefit_Paternity={null}
-                        Benefit_Maternity={null}
-                        Description_Transpo={null}
-                        Acknowledgement={null}
+                        Salary_Monthly=""
+                        Salary_Yearly=""
+                        Note_Salary=""
+                        Merit_Increase=""
+                        Description_VL=""
+                        Description_SL=""
+                        Description_BL=""
+                        Benefit_Paternity=""
+                        Benefit_Maternity=""
+                        Description_Transpo=""
+                        Acknowledgement=""
                     />
                 </PDFViewer>
             </ViewPDF>

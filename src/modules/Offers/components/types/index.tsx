@@ -24,7 +24,7 @@ export interface FilterState {
   isFiltered: boolean;
   modal: boolean;
   alert: string;
-  activeTab: string;
+  activeTab: string | null;
 
   setAlert: (alert: string) => void;
   setModal: (modal: boolean) => void;
@@ -37,15 +37,16 @@ export interface FilterState {
 }
 
 export interface AllJobOffersFilterType {
-  status: string;
+  status: string[];
   interviewer: string;
   department: string ;
   vacancy: string;
   id: string;
   applicantName: string;
-  dateFrom: string | null;
-  dateTo: string | null;
-  dateLastUpdatedFrom: string | null;
-  dateLastUpdatedTo: string | null;
-  remarks: string;
+  remarks: string[];
+
+  dateRange?: [Date | null, Date | null];
+  jobOfferDateRange?: [Date | null, Date | null];
+  generatedOfferDateRange?: [Date | null, Date | null];
+  archiveDateRange?: [Date | null, Date | null];
 }

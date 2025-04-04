@@ -18,13 +18,16 @@ import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/Ad
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
 import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
-
+import TransferEmployee from "@modules/Applicants/components/documents/movement/Status/TransferEmployee"
+import TransferEmployeeModal from "@modules/Applicants/components/modal/transferEmployee"
 interface UpdateStatusProps {
   Status: string;
   onClose: () => void;
+  IsJobOffer: string;
+  Name: string;
 }
 
-export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
+export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProps) {
 
   const { selectedStatus, setSelectedStatus } = useStatusStore();
   const {
@@ -42,10 +45,11 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     isDropdownOpen, setIsDropdownOpen,
     setIsContactApplicant, isContactApplicant,
     setIsViewApplicant,
-    setIsAddtoCalendar
+    setIsAddtoCalendar,
+    isTransferEmployee, setIsTransferEmployee
   } = useCloseModal();
 
-  const handleStatusClick = (status: "Offered" | "Archived" | "Hired" | "For Interview") => {
+  const handleStatusClick = (status: "Offered" | "Archived" | "Hired" | "For Interview" | "Transfer Employee") => {
     setSelectedStatus(status);
     setIsModalOpen(true);
   };
@@ -82,7 +86,8 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   else if (selectedStatus === "For Interview") {
     buttonText = "Schedule Interview"
     handleClick = () => {
-      setIsScheduleInterview(true);
+      // setIsScheduleInterview(true);
+      setIsContactApplicant(true)
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Schedule Interview"
     };
   } else if (selectedStatus === "Offered") {
@@ -112,24 +117,35 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   }
 
   // This is the array of possible drop down options for update status button depending on the user's selected status.
-  const statusOptions = {
-    Applied: ["For Interview", "Offered", "Archived"],
-    "Final Interview": ["Offered", "Archived"],
-    "Initial Interview": ["Offered", "Archived"],
-    "Assessment": ["Offered", "Archived"],
-    Offered: ["Hired", "Archived"],
-    Hired: [],
-    "For Transfer": ["Transferred", "Archived"],
-    Transferred: [],
-    Archived: [],
-  } as const;
+  enum ApplicantStatus {
+    Applied = "Applied",
+    FinalInterview = "Final Interview",
+    InitialInterview = "Initial Interview",
+    ForInterview = "For Interview",
+    Assessment = "Assessment",
+    Offered = "Offered",
+    Hired = "Hired",
+    ForTransfer = "For Transfer",
+    Transferred = "Transferred",
+    Archived = "Archived",
+  }
 
-  type ApplicantStatus = keyof typeof statusOptions;
+  const statusTransitions: Record<ApplicantStatus, readonly ApplicantStatus[]> = {
+    [ApplicantStatus.Applied]: [ApplicantStatus.ForInterview, ApplicantStatus.Offered, ApplicantStatus.Archived],
+    [ApplicantStatus.FinalInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived], 
+    [ApplicantStatus.InitialInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
+    [ApplicantStatus.ForInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
+    [ApplicantStatus.Assessment]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
+    [ApplicantStatus.Offered]: [ApplicantStatus.Hired, ApplicantStatus.Archived],
+    [ApplicantStatus.Hired]: [],
+    [ApplicantStatus.ForTransfer]: [ApplicantStatus.Transferred, ApplicantStatus.Archived],
+    [ApplicantStatus.Transferred]: [],
+    [ApplicantStatus.Archived]: [],
+  };
 
-  // Ensure Status is a valid key
-  let availableStatuses: readonly string[] =
-    Object.keys(statusOptions).includes(Status)
-      ? statusOptions[Status as ApplicantStatus]
+   let availableStatuses: readonly string[] =
+    Object.keys(statusTransitions).includes(Status)
+      ? statusTransitions[Status as ApplicantStatus]
       : [];
 
   return (
@@ -141,10 +157,14 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         <div>
           <div className="flex justify-between items-center">
             <h2 className="text-[22px] font-semibold text-[#559CDA]">
-              Update Applicant Status
+              {/* Update Applicant Status */}
+              {selectedStatus === "Transferred" || selectedStatus === "Transfer Employee" ? "Transfer Applicant" : "Update Applicant Status"}
             </h2>
             <IconX
-              onClick={() => setIsUpdateStatusButtonModalOpen(false)}
+              onClick={() => {
+                setIsUpdateStatusButtonModalOpen(false);
+                setSelectedStatus(null);
+              }}
               className="w-[15px] h-[15px] cursor-pointer" />
           </div>
 
@@ -182,7 +202,14 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
                 <Menu.Dropdown className="border-1 border-[#6D6D6D] rounded-[10px]" style={{ width: "559px" }}>
                   {availableStatuses.length > 0 ? (
                     availableStatuses.map((status) => (
-                      <Menu.Item key={status} onClick={() => handleStatusClick(status as "For Interview" | "Offered" | "Archived" | "Hired")}>
+                      <Menu.Item key={status}
+                        onClick={() => {
+                          handleStatusClick(status as "For Interview" | "Offered" | "Archived" | "Hired" | "Transfer Employee")
+                          if (status === "Transferred") {
+                            setIsTransferEmployee(true);
+                          }
+                        }}
+                      >
                         {status}
                       </Menu.Item>
                     ))
@@ -244,6 +271,16 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             )}
           </>
           {/* End of Transferred Status */}
+
+          {/* Transferred Status */}
+          {/* <> */}
+          {/* {selectedStatus === "Transfer Employee" && ( 
+            <TransferEmployee
+              Name={Name}
+            />
+             )} */}
+          {/* </> */}
+          {/* End of Transferred Status
 
           {/* Comment and suggestion text input */}
           {/* If the selected Status is "Hired" then do not show the comment and suggestion text input */}
@@ -313,7 +350,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       </div>
 
       {/* This is the update successful modal. This modal is the default modal. */}
-      <StatusUpdatedModal isOpen={isDefaultUpdated} onClose={() => setIsDefaultUpdated(false)}>
+      <StatusUpdatedModal isOpen={isDefaultUpdated}>
         <StatusUpdatedAlert
           onClose={() => {
             setIsUpdateStatusButtonModalOpen(false);
@@ -324,14 +361,14 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
       {/* This modal will be activated when the  the user clicked the button "Generate Offer" from update status form 
        and is reponsible for generating a PDF of the offer letter. */}
-      <JobGeneratedModal isOpen={isOffered} onClose={() => setIsOffered(false)}>
+      <JobGeneratedModal isOpen={isOffered}>
         <JobGeneratedAlert
           title={selectedStatus}
           onClose={() => setIsOffered(false)} />
       </JobGeneratedModal>
 
       {/* Modal that will appear when the user selected archived status and clicked on the save feedback button. */}
-      <JobGeneratedModal isOpen={isFeedbackSent} onClose={() => setIsFeedbackSent(false)}>
+      <JobGeneratedModal isOpen={isFeedbackSent}>
         <FeedbackSent
           selectedStatus={selectedStatus}
           onClose={() => {
@@ -342,7 +379,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       </JobGeneratedModal>
 
       {/* This modal will be called when the selected status is equivalent to "For Interview" and the "Schedule Interview button has been clicked." */}
-      <ApplicantUnreachable isOpen={isScheduleInterview} onClose={() => setIsScheduleInterview(false)}>
+      <ApplicantUnreachable isOpen={isScheduleInterview} >
         <ScheduleInterview onClose={() => {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 
@@ -355,10 +392,21 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
       {/* This modal will appear if the user clicks on the "Add to Calendar" 
           button under the Schedule interview of update applicant status modal. */}
-      <ApplicantUnreachable isOpen={isContactApplicant} onClose={() => setIsContactApplicant(false)}>
+      <ApplicantUnreachable isOpen={isContactApplicant} >
         <ScheduleInterviewAlert onClose={() => setIsContactApplicant(false)}
         />
       </ApplicantUnreachable>
+
+      <TransferEmployeeModal isOpen={isTransferEmployee} onClose={() => setIsTransferEmployee(false)}>
+        <TransferEmployee
+          onClose={() => {
+            setIsTransferEmployee(false)
+            setSelectedStatus(null);
+          }}
+          Name={Name}
+          Status={Status}
+        />
+      </TransferEmployeeModal>
     </div >
   );
 }

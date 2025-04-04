@@ -7,14 +7,14 @@ import { FilterStore } from "@modules/Applicants/store"
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
   // date formatting
-  const formatDate = (date: string | Date) => {
-    if (!date) return ''; // Handle cases where date is undefined or empty
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+  // const formatDate = (date: string | Date) => {
+  //   if (!date) return ''; // Handle cases where date is undefined or empty
+  //   return new Date(date).toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: 'long',
+  //     day: 'numeric'
+  //   });
+  // };
   useEffect(() => {
     if (filter) {
       setIsFiltered(false)
@@ -95,7 +95,7 @@ export default function Filter() {
   });
 
   return (
-    <div className="w-full rounded-lg flex flex-row justify-between items-center bg-gray-100 h-fit">
+    <div className="w-full rounded-lg flex flex-row justify-between items-center bg-white h-fit border-2 border-black-600">
 
       <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-52 ">
         <ListFilter size={ListFilterSize} color="#6d6d6d" />

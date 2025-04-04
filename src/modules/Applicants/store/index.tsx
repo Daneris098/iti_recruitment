@@ -99,7 +99,25 @@ export const usePaginationStore = create<PaginationState>((set, get) => ({
 }));
 // end of pagination store
 
-// For Filter
+// // For Filter
+// export const FilterStore = create<FilterState>((set) => ({
+//   selectedData: selectedVal,
+//   filterDrawer: false,
+//   filter: filterVal,
+//   clearFilter: false,
+//   isFiltered: false,
+//   modal: false,
+//   alert: '',
+
+//   setAlert: (alert: string) => set({ alert: alert }),
+//   setModal: (modal: boolean) => set({ modal: modal }),
+//   // setClearFilter: (filter: ApplicantStatus) => set({ filter: filter }),
+//    setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
+//   setSelelectedVal: (selectedData: Applicants) => set({ selectedData: selectedData }),
+//   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
+//   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
+//   setFilter: (filter: ApplicantStatus) => set({ filter: filter }),
+// }))
 export const FilterStore = create<FilterState>((set) => ({
   selectedData: selectedVal,
   filterDrawer: false,
@@ -111,13 +129,12 @@ export const FilterStore = create<FilterState>((set) => ({
 
   setAlert: (alert: string) => set({ alert: alert }),
   setModal: (modal: boolean) => set({ modal: modal }),
-  setClearFilter: (filter: ApplicantStatus) => set({ filter: filter }),
-  setSeleselectedVal: (selectedData: Applicants) => set({ selectedData: selectedData }),
+  setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
+  setSelectedData: (selectedData: Applicants) => set({ selectedData: selectedData }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
   setFilter: (filter: ApplicantStatus) => set({ filter: filter }),
 }))
-
 
 
 // For DropDownOffered modal
@@ -295,6 +312,11 @@ interface CloseModal {
   isGenerateNewOffer: boolean;
   setIsGenerateNewOffer: (isOffered: boolean) => void;
   
+  isTransferEmployee: boolean;
+  setIsTransferEmployee: (isOpen: boolean) => void;
+
+  isTransferEmployeePosition: boolean;
+  setIsTransferEmployeePosition: (isOpen: boolean) => void;
 }
 
 export const useCloseModal = create<CloseModal>((set) => ({
@@ -373,6 +395,12 @@ export const useCloseModal = create<CloseModal>((set) => ({
   isGenerateNewOffer: false,
   setIsGenerateNewOffer: (value) => set({ isGenerateNewOffer: value }),
 
+  isTransferEmployee: false,
+  setIsTransferEmployee: (value) => set({ isTransferEmployee: value }),
+
+  isTransferEmployeePosition: false,
+  setIsTransferEmployeePosition: (value) => set({ isTransferEmployeePosition: value }),
+
   resetTransferState: () => set((state) => ({
     ...state,  //  Keep existing state
     isForTransfer: false,
@@ -403,6 +431,7 @@ export interface ViewApplicantsProps {
   Skills: string;
   Remarks: string;
   Application_Date: string;
+  IsJobOffer: string;
   onClose: () => void;
 }
 

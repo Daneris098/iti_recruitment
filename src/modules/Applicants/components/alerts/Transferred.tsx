@@ -1,11 +1,11 @@
 import { Divider } from "@mantine/core";
 import { IconCircleCheck, IconX } from "@tabler/icons-react";
 
-interface JobGeneratedAlertProps {
+interface TransferPositionProps {
     onClose: () => void;
 }
 
-export default function JobGeneratedAlert({ onClose }: JobGeneratedAlertProps) {
+export default function TransferPosition({ onClose }: TransferPositionProps) {
     return (
         <div className="p-1">
             {/* Header */}

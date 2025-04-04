@@ -3,10 +3,14 @@ import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { useEffect } from "react";
 import { FilterStore } from '@modules/Offers/components/store'
+import { useDateRangeStore, useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
-
+  const { value: dateRangeValue } = useDateRangeStore();
+  const { value: jobOfferDateValue } = useJobOfferDateRangeStore();
+  const { value: generatedOfferValue } = useGeneratedOfferStore();
+  const { value: archiveValue } = useArchivedStore();
   useEffect(() => {
     const hasActiveFilters = Object.values(filter).some(value => value !== '' && value !== null);
     setIsFiltered(hasActiveFilters);
@@ -60,15 +64,27 @@ export default function Filter() {
       .replace(/\s+/g, '');
   };
 
-  const removeFilter = (label: string, item: any) => {
+  const removeFilter = (label: string, item: any, index?: number) => {
     const updatedFilter = { ...filter };
     const camelCaseLabel = toCamelCase(label);
 
-    if ((updatedFilter as any)[camelCaseLabel] === item) {
-      (updatedFilter as any)[camelCaseLabel] = ''; // Reset field
+    if (label === 'ID') {
+      updatedFilter.id = '';
+    }
+    else if (dateRangeValue) {
+      updatedFilter.dateRange = [...(updatedFilter.dateRange || [null, null])];
+      updatedFilter.dateRange[index!] = null;
+    }
+    // Handle single-value filters
+    else if (typeof (updatedFilter as any)[camelCaseLabel] === 'string') {
+      (updatedFilter as any)[camelCaseLabel] = '';
+    }
+    // Handle array-based filters (like status, remarks)
+    else if (Array.isArray((updatedFilter as any)[camelCaseLabel])) {
+      (updatedFilter as any)[camelCaseLabel] = (updatedFilter as any)[camelCaseLabel].filter((val: any) => val !== item);
     }
 
-    setFilter({ ...updatedFilter }); // Ensure state triggers a re-render
+    setFilter(updatedFilter);
   };
 
   const iconSize: MantineSize = useMatches({
@@ -82,7 +98,7 @@ export default function Filter() {
   });
 
   return (
-    <div className="w-full rounded-lg flex flex-row items-center bg-gray-100 h-fit">
+    <div className="w-full rounded-lg  flex flex-row justify-between items-center bg-white h-full border-2 border-black-600">
       {/* Fixed Left Section */}
       <div className="h-full flex items-center gap-2 bg-[#D9D9D9] rounded-l-lg p-2 justify-center w-52">
         <ListFilter size={ListFilterSize} color="#6d6d6d" />
@@ -95,22 +111,31 @@ export default function Filter() {
       {isFiltered && (
         <div className="flex w-full max-h-[39px] overflow-hidden">
           <div className="scrollbar flex flex-wrap gap-2 px-4 py-1 w-full max-h-fit overflow-y-auto">
-            {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
-            {filter.dateFrom && renderSinglePill('Date From', filter.dateFrom)}
-            {filter.dateTo && renderSinglePill('Date To', filter.dateTo)}
-            {filter.dateLastUpdatedFrom && renderSinglePill('Date Last Updated From', filter.dateLastUpdatedFrom)}
-            {filter.dateLastUpdatedTo && renderSinglePill('Date Last Updated To', filter.dateLastUpdatedTo)}
             {filter.id && renderSinglePill('ID', filter.id)}
-            {filter.remarks && renderPills('Remarks', filter.remarks)}
-            {filter.status && renderPills('Status', filter.status)}
+            {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
+            {filter.status && filter.status.length > 0 && renderPills('Status', filter.status)}
             {filter.department && renderSinglePill('Department', filter.department)}
             {filter.interviewer && renderSinglePill('Interviewer', filter.interviewer)}
+
+            {/* Date Range Pills */}
+            {[dateRangeValue, jobOfferDateValue, generatedOfferValue, archiveValue].map((range, i) =>
+              range.map((date, index) =>
+                date
+                  ? renderSinglePill(
+                    ['Date', 'Job Offer Date', 'Generated Offer Date', 'Archived Date'][i] +
+                    (index === 0 ? ' From' : ' To'),
+                    date.toDateString()
+                  )
+                  : null
+              )
+            )}
+
           </div>
         </div>
       )}
 
       {/* Actions: Open Filter Drawer / Clear Filters */}
-      <div className="flex h-full items-center px-3">
+      <div className="flex h-full items-center px-3 ml-auto">
         <ActionIcon onClick={() => setFilterDrawer(true)} variant="transparent" color="gray" size={iconSize}>
           <IconCirclePlus style={{ width: "80%", height: "100%" }} stroke={1.5} color="#6d6d6d" />
         </ActionIcon>

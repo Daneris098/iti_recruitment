@@ -1,4 +1,4 @@
-
+import ExcelJS from "exceljs";
 export interface DataTableRef {
   saveAll: () => void;
   cancelAll: () => void;
@@ -167,4 +167,18 @@ export const columns = {
     { accessor: 'description', title: 'Description', sortable: true },
     { accessor: 'status', title: 'Status', sortable: true },
   ],
+};
+
+export type SpreadsheetCell = {
+  value: string;
+  readOnly?: boolean;
+  className?: string;
+};
+
+export type ExportOptions = {
+    sheetName?: string;
+    fileName?: string;
+    data: SpreadsheetCell[][];
+    image?: string; // base64 or URL
+    customStylingFn?: (worksheet: ExcelJS.Worksheet) => void;
 };
