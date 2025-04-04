@@ -23,10 +23,6 @@ export default function index() {
         setVacancyRecords(Vacancies); // Type assertion
     }, []);
 
-    useEffect(() => {
-        console.log('vacancyRecords: ', vacancyRecords)
-    }, [vacancyRecords])
-
     const sortedRecords = [...vacancyRecords].sort((a, b) => {
         if (!sortStatus.columnAccessor) return 0;
         const valueA = a[sortStatus.columnAccessor as keyof VacancyType];

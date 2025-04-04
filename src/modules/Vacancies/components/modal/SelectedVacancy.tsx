@@ -98,7 +98,7 @@ export default function index() {
                             <p className="font-bold">{selectedVacancy.qualification}</p>
                         </div>
                         <div className="flex self-end w-2/6 gap-2">
-                            <Button className="w-1/2 self-end br-gradient border-none rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>
+                            <Button variant="outline" className="w-1/2 self-end  rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>
                             <Button className="w-1/2 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>
                         </div>
                     </div>

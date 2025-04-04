@@ -64,13 +64,13 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                         Applicant Full Name <span className="text-[#F14336]">*</span>
                     </h3>
-                    <p className="relative flex items-center w-[540px] h-[56px] px-4 border border-[#6D6D6D] rounded-lg text-[#6D6D6D] text-[14px] text-[#6D6D6D99] bg-[#6D6D6D30] poppins">{ApplicantName ?? "Applicant name unavailable."}</p>
+                    <p className="relative flex items-center h-[56px] px-4 border border-[#6D6D6D] rounded-lg text-[#6D6D6D] text-[14px] text-[#6D6D6D99] bg-[#6D6D6D30] poppins">{ApplicantName ?? "Applicant name unavailable."}</p>
                 </div>
 
                 {/* Position and Department (Two-Column Layout)*/}
                 <div className="flex gap-4">
                     {/* Position Dropdown */}
-                    <div>
+                    <div className="w-1/2">
                         <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                             Position/Rank <span className="text-[#F14336]">*</span>
                         </h3>
@@ -83,7 +83,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                     rightSection={<IconChevronDown size={16} />}
                                     placeholder="Select Position"
                                     classNames={{
-                                        input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -110,7 +110,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                     </div>
 
                     {/* Department Dropdown */}
-                    <div>
+                    <div className="w-1/2">
                         <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                             Department/Division <span className="text-[#F14336]">*</span>
                         </h3>
@@ -123,7 +123,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                     rightSection={<IconChevronDown size={16} />}
                                     placeholder="Select Department"
                                     classNames={{
-                                        input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -152,7 +152,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
                 {/* Salary Types and Amount (Two-Column layout) */}
                 <div className="flex gap-4">
-                    <div>
+                    <div className="w-1/2">
                         <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
                             Salary Type <span className="text-[#F14336]">*</span>
                         </h3>
@@ -165,7 +165,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                     rightSection={<IconChevronDown size={16} />}
                                     placeholder="Monthly Rate"
                                     classNames={{
-                                        input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                        input: "poppins relative flex items-center h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                     }}
                                     required
                                 />
@@ -192,7 +192,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                     </div>
 
                     {/* Amouunt */}
-                    <div>
+                    <div className="w-1/2">
                         <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1">
                             Amount <span className="text-[#F14336]">*</span>
                         </h3>
@@ -202,7 +202,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             classNames={{
-                                input: "poppins relative flex items-center w-[259px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                input: "poppins relative flex items-center h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                             }}
                             required
                         />
@@ -221,7 +221,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                         autosize
                         minRows={4}
                         classNames={{
-                            input: "poppins w-[540px] h-[98px] pt-2 px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                            input: "poppins h-[98px] pt-2 px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                         }}
                     />
                 </div>
@@ -242,7 +242,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             </form>
 
             <div>
-                <Modal  radius={"md"} size={"35%"} withCloseButton={false} centered opened={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <Modal radius={"md"} size={"35%"} withCloseButton={false} centered opened={isModalOpen} onClose={() => setIsModalOpen(false)}>
                     <JobGeneratedAlert onClose={onClose} title={""} />
                 </Modal>
             </div>

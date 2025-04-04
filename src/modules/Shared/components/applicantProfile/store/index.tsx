@@ -209,7 +209,6 @@ export const useFeedbacksStore = create<Feedbacks>((set) => ({
         newFeedback,
         "Add Feedback", // Add it back to the end
       ];
-      console.log("Updated feedbacks:", updatedFeedbacks); // Debugging
       return { feedbacks: updatedFeedbacks };
     }),
 

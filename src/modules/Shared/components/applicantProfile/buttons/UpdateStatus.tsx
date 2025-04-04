@@ -188,7 +188,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
                 <div>
                   {/* For Dynamically rendering the dropdown options based on the application movement. */}
-                  <Menu.Dropdown className="border-1 border-[#6D6D6D] rounded-[10px]" style={{ width: "559px" }}>
+                  <Menu.Dropdown className="border-1 border-[#6D6D6D] rounded-[10px]" style={{ width: "522px" }}>
                     {availableStatuses.length > 0 ? (
                       availableStatuses.map((status) => (
                         <Menu.Item key={status} onClick={() => handleStatusClick(status as "For Interview" | "Offered" | "Archived" | "Hired")}>

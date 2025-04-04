@@ -60,10 +60,6 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
         setIsOpen(false)
     };
 
-    useEffect(() => {
-        console.log('Status: ', Status  )
-    }, [])
-
     return (
         <Modal size={'65%'} opened={isOpen} onClose={() => { setIsOpen(false) }} withCloseButton={false} >
             <div className="h-[85vh] w-full p-4">
