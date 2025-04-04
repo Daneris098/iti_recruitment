@@ -3,6 +3,7 @@ import { VacancyStore } from "@modules/Vacancies/store";
 import { selectedDataVal } from "@modules/Vacancies/values";
 import { AlertType } from "@modules/Vacancies/types";
 import "@modules/Vacancies/style.css"
+import { Pill } from "@mantine/core";
 
 export default function index() {
     const { selectedVacancy, action, setSelectedVacancy, setAlert, setAction } = VacancyStore();
@@ -20,7 +21,7 @@ export default function index() {
 
                         <div className="flex">
                             <div className="w-[30%]">
-                                <p>Job Title</p>
+                                <p>Position Title</p>
                                 <p className="font-bold">{selectedVacancy.position}</p>
                             </div>
                             <div className="w-[30%]">
@@ -48,25 +49,15 @@ export default function index() {
                                 <p className="font-bold">{selectedVacancy.section}</p>
                             </div>
                             <div className="w-[30%]">
-                                <p>Position Level</p>
-                                <p className="font-bold">{selectedVacancy.positionLevel}</p>
+                                <p>Employment Type</p>
+                                <p className="font-bold">{selectedVacancy.employmentType}</p>
                             </div>
-                        </div>
-                        <div className="flex">
                             <div className="w-[30%]">
                                 <p>Workplace Type</p>
                                 <p className="font-bold">{selectedVacancy.workplace}</p>
                             </div>
-                            <div className="w-[30%]">
-                                <p>No. of Open Position </p>
-                                <p className="font-bold">{selectedVacancy.quantity}</p>
-                            </div>
                         </div>
                         <div className="flex">
-                            <div className="w-[30%]">
-                                <p>Hiring Manager</p>
-                                <p className="font-bold">{selectedVacancy.hiringManager}</p>
-                            </div>
                             <div className="w-[30%]">
                                 <p>Experience Level</p>
                                 <p className="font-bold">{selectedVacancy.experienceLevel}</p>
@@ -75,12 +66,36 @@ export default function index() {
                                 <p>Vacancy Type</p>
                                 <p className="font-bold">{selectedVacancy.vacancyType}</p>
                             </div>
+                            <div className="w-[30%]">
+                                <p>No. of Open Position </p>
+                                <p className="font-bold">{selectedVacancy.quantity}</p>
+                            </div>
                         </div>
                         <div className="flex">
                             <div className="w-[30%]">
                                 <p>Vacancy Duration</p>
-                                <p className="font-bold">{`${selectedVacancy.vacancyDuration.start} - ${selectedVacancy.vacancyDuration.end}`}</p>
+                                <p className="font-bold">{`${new Date(selectedVacancy.vacancyDuration.start).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} - ${new Date(selectedVacancy.vacancyDuration.end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
                             </div>
+                        </div>
+                        <div>
+                            <p>Job Description</p>
+                            <p className="font-bold">{selectedVacancy.jobDescription}</p>
+                        </div>
+                        <div>
+                            <p>Must Have Skills</p>
+                            <p className="font-bold">
+                                <Pill.Group>
+                                    {selectedVacancy.mustHaveSkills.split(',').map((item, index) => (
+                                        <Pill key={index}>
+                                            <p className="font-bold  text-[#6D6D6D] text-[16px]">{ item}</p>
+                                        </Pill>
+                                    ))}
+                                </Pill.Group>
+                            </p>
+                        </div>
+                        <div>
+                            <p>Qualification</p>
+                            <p className="font-bold">{selectedVacancy.qualification}</p>
                         </div>
                         <div className="flex self-end w-2/6 gap-2">
                             <Button className="w-1/2 self-end br-gradient border-none rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>

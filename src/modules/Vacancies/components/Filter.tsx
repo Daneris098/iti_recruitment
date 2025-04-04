@@ -102,6 +102,11 @@ export default function Filter() {
 
       {isFiltered && (<div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4 gap-2 sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
 
+        {filter.company && filter.company.length > 0 && renderPills(
+          'Company',
+          filter.company
+        )}
+
         {filter.vacancy && filter.vacancy.length > 0 && renderPills(
           'Vacancy',
           filter.vacancy

@@ -79,6 +79,19 @@ export default function DrawerFilter() {
             </Flex>
           </Flex>
 
+          <MultiSelect
+            value={filter.company}
+            size={inputSize}
+            label="Company"
+            placeholder={filter.company.length > 0 ? '' : "Company"}
+            radius={8}
+            data={["Company 1", "Company 2", "Company 3"]}
+            rightSection={<IconCaretDownFilled size='18' />}
+            className="border-none w-full text-sm"
+            styles={{ label: { color: "#6d6d6d" } }}
+            onChange={(value) => setFilter({ ...filter, company: value })}
+          />  
+          
           {isArchived && (
             <>
               {/* Archived */}

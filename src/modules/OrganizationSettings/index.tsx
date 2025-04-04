@@ -74,7 +74,7 @@ export const OrganizationSettings = () => {
                     </Tabs.Tab>
                 </Tabs.List>
 
-                <div className="border-[2px] border-blue-300  rounded-md  px-4 sm:m-4 h-[85%] sm:h-[90%] p-4 sm:p-8">
+                <div className="border-[2px] border-blue-300  rounded-md  px-4 sm:m-4 h-[85%] sm:h-[90%] p-4 sm:p-8 ">
                     <DataTableComp ref={dataTableRef} />
                 </div>
             </Tabs>

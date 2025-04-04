@@ -25,6 +25,7 @@ export interface FilterType {
   dateFrom?: string;
   dateTo?: string;
   postedDate: string | null;
+  company: string[];
   vacancy: string[];
   interviewer: string[];
   department: string[];

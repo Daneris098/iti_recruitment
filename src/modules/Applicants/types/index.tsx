@@ -1,4 +1,5 @@
 export interface ApplicantStatus {
+    company: string[];
     applicantName: string;
     applicationDateFrom: string | null;
     applicationDateTo: string | null;

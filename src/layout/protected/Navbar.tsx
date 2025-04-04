@@ -73,6 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
                     <TextInput
                         leftSection={<Search color="#6D6D6D" />}
                         placeholder="Search..."
+                        size="md"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.currentTarget.value)}
                         styles={{
@@ -81,6 +82,9 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
                                 borderWidth: 2,
                                 borderRadius: 10,
                                 color: "#559CDA",
+                            },
+                            label: {
+                                color: "green",
                             },
                         }}
                         className={cn("w-full")}

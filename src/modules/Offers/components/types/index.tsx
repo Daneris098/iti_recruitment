@@ -39,6 +39,7 @@ export interface FilterState {
 export interface AllJobOffersFilterType {
   status: string[];
   interviewer: string;
+  company: string[];
   department: string ;
   vacancy: string;
   id: string;

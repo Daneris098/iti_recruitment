@@ -100,7 +100,7 @@ export default function index() {
                                 accessor: 'hired', render: (data: any) => (<>{data.hired.name}</>), title:
                                     <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem]">
                                         <p>Hired</p>
-                                        <Badge color="green">9</Badge>
+                                        <Badge color="green">10</Badge>
                                     </div>
                                 , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6], background: 'rgb(215,255,185, 0.3)', fontWeight: 'normal' })
                             },
@@ -108,7 +108,7 @@ export default function index() {
                                 accessor: 'archived', render: (data: any) => (<>{data.archived.name}</>), title:
                                     <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem]">
                                         <p>Archived</p>
-                                        <Badge color="red">9</Badge>
+                                        <Badge color="red">5</Badge>
                                     </div>
                                 , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6], background: "rgb(255,203,199, 0.3)", fontWeight: 'normal' })
                             },

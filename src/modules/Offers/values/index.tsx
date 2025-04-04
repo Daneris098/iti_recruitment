@@ -18,6 +18,7 @@ export const filterVal: AllJobOffersFilterType = {
   dateLastUpdatedFrom: null,
   dateLastUpdatedTo: null,
   remarks: [],
+  company: [],
   status: [],
   department: "",
   interviewer: "",

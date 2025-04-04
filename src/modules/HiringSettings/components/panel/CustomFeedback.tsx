@@ -1,6 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconArrowsSort } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconArrowsSort, IconRowRemove, IconTrashFilled } from "@tabler/icons-react";
 import { TextInput } from '@mantine/core';
 import { FeedbackStore } from '@modules/HiringSettings/store';
 import { feedback } from '@modules/HiringSettings/types';
@@ -164,6 +164,14 @@ const CustomFeedback = forwardRef((_, ref) => {
                     <TextInput
                         value={applicantEditableData[data.id]?.feedback || data.feedback}
                         onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'applicantFeedback')}
+                        rightSection={<IconTrashFilled className='cursor-pointer' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(applicantEditMode).filter(([key]) => key != data.id));
+                            const updatedApplicantEditableData = Object.fromEntries(Object.entries(applicantEditableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = applicantNewRows.filter((row) => row.id !== data.id);
+                            setApplicantEditableData(updatedApplicantEditableData);
+                            setApplicantEditMode(updatedEditMode);
+                            setApplicantNewRows(updatedNewRows);
+                        }} />}
                     />
                 ) : <div className='flex justify-between'>
                     <p>{data.feedback}</p>
@@ -188,6 +196,14 @@ const CustomFeedback = forwardRef((_, ref) => {
                     <TextInput
                         value={hiringEditableData[data.id]?.feedback || data.feedback}
                         onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'hiringFeedback')}
+                        rightSection={<IconTrashFilled className='cursor-pointer' onClick={() => {
+                            const updatedHiringEditMode = Object.fromEntries(Object.entries(hiringEditMode).filter(([key]) => key != data.id));
+                            const updatedHiringEditableData = Object.fromEntries(Object.entries(hiringEditableData).filter(([key]) => key != data.id));
+                            const updatedHiringNewRows = hiringNewRows.filter((row) => row.id !== data.id);
+                            setHiringEditMode(updatedHiringEditMode);
+                            setHiringEditableData(updatedHiringEditableData);
+                            setHiringNewRows (updatedHiringNewRows);
+                        }} />}
                     />
                 ) : <div className='flex justify-between'>
                     <p>{data.feedback}</p>
@@ -200,13 +216,13 @@ const CustomFeedback = forwardRef((_, ref) => {
     };
 
     return (
-        <div className="flex flex-col h-[100%] gap-8">
+        <div className="flex flex-col h-[100%] gap-8  ">
             <div className='flex flex-col mb-4 gap-2'>
                 <p className="text-[#559CDA] font-bold">Feedback</p>
                 <p className="text-[#6D6D6D]">This section allows you to add custom feedback from both the hiring team (after every interview) and the applicant (upon receiving a job offer). If no feedback is provided by the applicant, select "No Response."</p>
             </div>
-            <div className='flex justify-start gap-[15%]'>
-                <div className='w-[30%] h-full'>
+            <div className='flex justify-start gap-[15%] h-[78%]'>
+                <div className='w-[30%] '>
                     <DataTable
                         styles={{
                             header: {
@@ -222,7 +238,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                         columns={(columns as any)['applicantFeedback']}
                     />
                 </div>
-                <div className='w-[30%] h-full'>
+                <div className='w-[30%] '>
                     <DataTable
                         styles={{
                             header: {

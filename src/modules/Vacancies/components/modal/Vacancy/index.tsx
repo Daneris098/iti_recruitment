@@ -1,7 +1,7 @@
 import '@mantine/tiptap/styles.css';
 import { useEffect, useRef, useState } from "react";
 import { Modal, Divider, Button, Select, TextInput, MultiSelect, Flex, Popover, Text } from '@mantine/core';
-import { IconCalendarMonth, IconCaretDownFilled } from '@tabler/icons-react';
+import { IconCalendarMonth, IconCaretDownFilled, IconX } from '@tabler/icons-react';
 import { useEditor } from '@tiptap/react';
 import { useForm } from '@mantine/form';
 import { DatePicker } from '@mantine/dates';
@@ -155,14 +155,21 @@ export default function index() {
 
 
     return (
-        <Modal size={'80%'} opened={action != ''} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} title={ActionTitle[action as keyof typeof ActionTitle]}
+        <Modal radius="lg" size={'80%'} opened={action != ''} withCloseButton={false} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }}
+            className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
+
             styles={{
                 header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                 title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
             }} >
             <div className='m-auto w-[95%] poppins text-[#6D6D6D] '>
-
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
+                <div className='top-0 z-50 sticky bg-white'>
+                    <div className='flex justify-between'>
+                        <p className='text-[#559CDA] text-[22px] font-bold py-2'>{ActionTitle[action as keyof typeof ActionTitle]}</p>
+                        <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} />
+                    </div>
+                    <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
+                </div>
                 <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5'>
                     <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
                     <Select key={form.key('company')} {...form.getInputProps("company")} label="Company" placeholder={"Select Company"} radius={8} data={["Cloud Innovations Ltd.", "Business Solutions Inc.", "Tech Innovations Inc.", "Innovate Solutions Ltd.", "Data Insights Corp.", "Creative Marketing Agency"]}

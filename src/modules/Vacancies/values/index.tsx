@@ -39,6 +39,7 @@ export const filterVal: FilterType = {
   postedDate: null,
   jobTitle: '',
   vacancy: [],
+  company: [],
   interviewer: [],
   status: [],
   department: [],

@@ -83,7 +83,7 @@ export default function index() {
                     </Tabs.Tab>
                 </Tabs.List>
 
-                <div className="border-[2px] border-blue-300  rounded-md  px-4 sm:m-4 h-[85%] sm:h-[90%] p-4 sm:p-8">
+                <div className="border-[2px] border-blue-300  rounded-md  px-4 sm:m-4 h-[85%] sm:h-[90%] p-4 sm:p-8 ">
                     <Tabs.Panel value={panel.customFeedback} className="h-full"><CustomFeedback ref={dataTableRef[panel.customFeedback]} /></Tabs.Panel>
                     <Tabs.Panel value={panel.offerResponsePeriod} className="h-full"><OfferResponsePeriod /></Tabs.Panel>
                     <Tabs.Panel value={panel.applicationSettings} className="h-full"><ApplicationSettings /></Tabs.Panel>
