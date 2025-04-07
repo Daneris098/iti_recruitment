@@ -1,12 +1,24 @@
+import { useState } from "react";
+import headerImage from "@src/assets/intellismart-header.png";
+import { JobOfferExcelTemplateData } from "@modules/HiringSettings/constants/jobOfferExcelTemplateData"
 import Dropzone from "@modules/HiringSettings/components/Dropzone";
-export default function index() {
-    return (
-        <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
-                <p className="text-[#559CDA] font-bold">Custom Job Offer</p>
-                <p className="text-[#6D6D6D]">Click to <span className="text-[#559CDA] cursor-pointer underline font-semibold">GENERATE AND DOWNLOAD TEMPLATE</span>. Customize the benefits, then upload the updated Job Offer Template for use during Job Offer Generation.</p>
-            </div>
-            <Dropzone />
-        </div>
-    )
-}
+import SpreadsheetExportButton from "@modules/HiringSettings/components/excel/SpreadSheetExportButton";
+
+const MySpreadsheet = () => {
+  const [data] = useState(JobOfferExcelTemplateData)
+
+  return (
+    <div className="flex flex-col gap-8">
+
+      <SpreadsheetExportButton
+        data={data}
+        image={headerImage}
+        fileName="job-offer-template.xlsx"
+      />
+
+      <Dropzone />
+    </div>
+  );
+};
+
+export default MySpreadsheet;

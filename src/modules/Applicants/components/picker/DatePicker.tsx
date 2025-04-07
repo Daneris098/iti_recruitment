@@ -3,14 +3,14 @@ import { Popover, TextInput, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { IconCalendar } from "@tabler/icons-react";
 
-interface DateRangeFilerProps {
+interface DateRangeFilterProps {
   label: string;
   value: string | null;
   onChange: (date: string | null) => void;
   placeholder: string;
-};
+}
 
-const DateRangeFilter: React.FC<DateRangeFilerProps> = ({ label, value, onChange, placeholder }) => {
+const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ label, value, onChange, placeholder }) => {
   const [opened, setOpened] = useState(false);
   const selectedDate = value ? new Date(value) : null;
 
@@ -26,24 +26,15 @@ const DateRangeFilter: React.FC<DateRangeFilerProps> = ({ label, value, onChange
       >
         <Popover.Target>
           <TextInput
-          
             value={selectedDate ? selectedDate.toDateString() : ""}
-            onChange={() => { }} // No need to handle changes here
+            onChange={() => { }} // Read-only, no need to handle changes here
             readOnly
             placeholder={placeholder}
+            onClick={() => setOpened((prev) => !prev)} // Make entire field clickable
             rightSection={
-              <div
-                style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent event bubbling
-                  setOpened((o) => !o); // Toggle the calendar
-                  console.log("Clicked")
-                }}
-              >
-                <IconCalendar size={22} color="#6d6d6d" />
-              </div>
+              <IconCalendar size={22} color="#6d6d6d" />
             }
-            className="rounded-md w-full text-sm "
+            className="rounded-md w-full text-sm cursor-pointer"
             styles={{
               input: {
                 paddingLeft: "18px",
@@ -53,16 +44,17 @@ const DateRangeFilter: React.FC<DateRangeFilerProps> = ({ label, value, onChange
                 height: "56px",
                 fontFamily: "poppins",
                 color: "#6D6D6D",
+                cursor: "pointer", // Ensures cursor pointer for the entire input
               },
             }}
           />
         </Popover.Target>
-        <Popover.Dropdown style={{ zIndex: 1000, position: "absolute" }} >
+        <Popover.Dropdown style={{ zIndex: 1000, position: "absolute" }}>
           <DatePicker
             value={selectedDate}
             onChange={(date) => {
-              onChange(date ? date.toISOString() : null); // Update the selected date
-              setOpened(false); // Close the calendar after selecting a date
+              onChange(date ? date.toISOString() : null); // Update selected date
+              setOpened(false); // Close the calendar
             }}
           />
         </Popover.Dropdown>

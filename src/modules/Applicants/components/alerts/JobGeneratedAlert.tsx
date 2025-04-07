@@ -6,13 +6,13 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated";
-
-interface JobGeneratedAlertProps {
+import { PDFProps } from "@modules/Applicants/types";
+interface JobGeneratedAlertProps extends Partial<PDFProps>{
     onClose: () => void;
     title: string | null;
 }
 
-export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertProps) {
+export default function JobGeneratedAlert({ title, onClose, Applicant_Name, Position, Department, Remarks }: JobGeneratedAlertProps) {
 
     // zustand store.
     const {
@@ -138,7 +138,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
             </div>
 
             <div>
-                <JobGeneratedModal isOpen={isUpdateSuccessful} onClose={() => setIsUpdateSuccessful(false)}>
+                <JobGeneratedModal isOpen={isUpdateSuccessful}>
                     <UpdateApplicantSucessful onClose={() => setIsUpdateSuccessful(false)} />
                 </JobGeneratedModal>
             </div>

@@ -7,10 +7,11 @@ import { DataTable } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import { PDFViewer } from "@react-pdf/renderer";
-import MyDocument from "@modules/Offers/components/documents/PDF";
+import PDFDocument from "@modules/Offers/components/documents/PDF";
 import { IconArrowsUp, IconArrowsUpDown, IconFileCheck, IconFileX } from "@tabler/icons-react";
-import { useJobOfferStore, useSortStore, usePaginationStore, FilterStore } from "@src/modules/Offers/components/store";
+import { useJobOfferStore, useSortStore, usePaginationStore, FilterStore } from "@src/modules/Offers/store";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
+import { PDFProps } from "@modules/Offers/types"
 
 
 export default function index() {
@@ -23,7 +24,7 @@ export default function index() {
         loadCandidates();
     }, [loadCandidates]);
 
-    const [selectedRow, setSelectedRow] = useState<Record<string, any> | null>(null);
+    const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
 
     const handleRowClick = (row: any) => {
         setSelectedRow(row);
@@ -31,13 +32,13 @@ export default function index() {
 
     const TABS = [
         { value: "All_offers", label: "All Job Offers" },
-        { value: "Generated", label: "Generated" },
+        { value: "Pending", label: "Pending" },
         { value: "Accepted", label: "Accepted" },
         { value: "Archived", label: "Archived" },
     ];
 
     const filterRecords = (tab: string, records: any[]) => {
-        if (tab === "Generated") return records.filter(record => record.Status === "Generated");
+        if (tab === "Pending") return records.filter(record => record.Status === "Pending");
         if (tab === "Archived") return records.filter(record => record.Status === "Archived");
         if (tab === "Accepted") return records.filter(record => record.Status === "Accepted");
         return records;
@@ -55,14 +56,14 @@ export default function index() {
         }
 
         if (col.accessor === "Attachments") {
-            const isGenerated = row.Status?.toLowerCase() === "generated";
-            const Icon = isGenerated ? IconFileX : IconFileCheck;
-            const cursorClass = isGenerated ? "cursor-not-allowed opacity-50" : "cursor-pointer";
+            const isPending = row.Status?.toLowerCase() === "pending";
+            const Icon = isPending ? IconFileX : IconFileCheck;
+            const cursorClass = isPending ? "cursor-not-allowed opacity-50" : "cursor-pointer";
 
             return (
                 <span
                     className={`flex justify-center ${cursorClass}`}
-                    onClick={!isGenerated ? () => handleRowClick(row) : undefined}
+                    onClick={!isPending ? () => handleRowClick(row) : undefined}
                 >
                     {row.Attachments ? <Icon className="text-gray-600 w-[34px] h-[34px] stroke-1" /> : null}
                 </span>
@@ -89,7 +90,7 @@ export default function index() {
 
     const getFilteredColumns = (tab: string) => {
         const columnSets: Record<string, string[]> = {
-            Generated: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status"],
+            Pending: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status"],
             Accepted: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Attachments"],
             All_offers: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Attachments"],
             Archived: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Remarks", "Attachments"],
@@ -101,7 +102,7 @@ export default function index() {
         ...col,
         title: col.sortable ? (
             <span
-                className="job-offers-table cursor-pointer flex items-center gap-1 poppins font-medium text-[14px]"
+                className="job-offers-table cursor-pointer flex justify-between items-center poppins font-medium text-[14px] w-full"
                 onClick={() => setSort(col.accessor, records)}
             >
                 {col.title}
@@ -141,7 +142,7 @@ export default function index() {
                             <Tabs.Panel key={tab.value} value={tab.value} className="flex flex-1 overflow-hidden poppins">
                                 <div className="flex-grow overflow-auto">
                                     <DataTable
-                                        className="w-full poppins text-[#6D6D6D] font-medium text-[16px]"
+                                        className="poppins text-[#6D6D6D] font-normal text-[16px]"
                                         columns={enhancedColumns}
                                         records={filterRecords(activeTab!, paginatedRecords)}
                                         sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}

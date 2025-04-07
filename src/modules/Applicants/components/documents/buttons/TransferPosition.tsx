@@ -116,7 +116,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             </div>
 
             <div>
-                <TransferredPositionModal isOpen={isTransferred} onClose={() => setIsTransferred(false)}>
+                <TransferredPositionModal isOpen={isTransferred}>
                     <TransferredPosition
                         onClose={onClose}
                     />

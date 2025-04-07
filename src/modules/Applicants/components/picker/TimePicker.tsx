@@ -27,10 +27,8 @@ const TimePicker: React.FC<TimePickerProps> = ({ selectedTime, onTimeChange }) =
                         value={selectedTime}
                         readOnly
                         placeholder="hh:mm"
-                        onClick={(e) => {
-                            e.stopPropagation(); // Prevents dropdown conflicts
-                            setTimeOpened((prev) => !prev);
-                        }}
+                        onClick={() => setTimeOpened((prev) => !prev)} // Toggle popover on field click
+                        className="cursor-pointer" // Change cursor to pointer on the input
                         styles={{
                             input: {
                                 fontSize: "16px",
@@ -38,14 +36,15 @@ const TimePicker: React.FC<TimePickerProps> = ({ selectedTime, onTimeChange }) =
                                 borderRadius: "10px",
                                 height: "56px",
                                 fontFamily: "poppins",
+                                cursor: "pointer"
                             },
                         }}
                         rightSection={
                             <button
                                 className="text-gray-500"
                                 onClick={(e) => {
-                                    e.stopPropagation();
-                                    setTimeOpened((prev) => !prev);
+                                    e.stopPropagation(); // Prevents conflict with popover toggle
+                                    setTimeOpened((prev) => !prev); // Toggle popover on icon click
                                 }}
                             >
                                 <IconClock size={22} />

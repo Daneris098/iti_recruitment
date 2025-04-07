@@ -95,7 +95,7 @@ export default function Filter() {
   });
 
   return (
-    <div className="w-full rounded-lg flex flex-row justify-between items-center bg-gray-100 h-fit">
+    <div className="w-full rounded-lg flex flex-row justify-between items-center bg-white h-fit border-2 border-black-600">
 
       <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-52 ">
         <ListFilter size={ListFilterSize} color="#6d6d6d" />
