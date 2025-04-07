@@ -1,162 +1,83 @@
 [
   {
     "id": 1,
-    "applied": "Bob Smith",
-    "forInterview": "John",
-    "offered": "Michael",
-    "hired": "Charlie Brown",
-    "archived": "Zayn"
+    "applied": { "name": "Bob Smith", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "John", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Michael", "id": 3, "status": "Offered" },
+    "hired": { "name": "Charlie Brown", "id": 4, "status": "Hired" },
+    "archived": { "name": "Zayn", "id": 5, "status": "Archived" }
   },
   {
     "id": 2,
-    "applied": "Alice Johnson",
-    "forInterview": "David Wilson",
-    "offered": "David Wilson",
-    "hired": "David Wilson",
-    "archived": "David Wilson"
+    "applied": { "name": "Alice Johnson", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "David Wilson", "id": 2, "status": "For Interview" },
+    "offered": { "name": "David Wilson", "id": 3, "status": "Offered" },
+    "hired": { "name": "David Wilson", "id": 4, "status": "Hired" },
+    "archived": { "name": "David Wilson", "id": 5, "status": "Archived" }
   },
   {
     "id": 3,
-    "applied": "Eve Adams",
-    "forInterview": "Frank Thomas",
-    "offered": "Frank Thomas",
-    "hired": "Frank Thomas",
-    "archived": "Frank Thomas"
+    "applied": { "name": "Eve Adams", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "Frank Thomas", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Frank Thomas", "id": 3, "status": "Offered" },
+    "hired": { "name": "Frank Thomas", "id": 4, "status": "Hired" },
+    "archived": { "name": "Frank Thomas", "id": 5, "status": "Archived" }
   },
   {
     "id": 4,
-    "applied": "Grace Lee",
-    "forInterview": "Henry White",
-    "offered": "Henry White",
-    "hired": "Henry White",
-    "archived": "Henry White"
+    "applied": { "name": "Grace Lee", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "Henry White", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Henry White", "id": 3, "status": "Offered" },
+    "hired": { "name": "Henry White", "id": 4, "status": "Hired" },
+    "archived": { "name": "Henry White", "id": 5, "status": "Archived" }
   },
   {
     "id": 5,
-    "applied": "Isaac Martinez",
-    "forInterview": "Jack Taylor",
-    "offered": "Jack Taylor",
-    "hired": "Jack Taylor",
-    "archived": "Jack Taylor"
+    "applied": { "name": "Isaac Martinez", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "Jack Taylor", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Jack Taylor", "id": 3, "status": "Offered" },
+    "hired": { "name": "Jack Taylor", "id": 4, "status": "Hired" },
+    "archived": { "name": "Jack Taylor", "id": 5, "status": "Archived" }
   },
   {
     "id": 6,
-    "applied": "Karen Rodriguez",
-    "forInterview": "Leo Harris",
-    "offered": "Leo Harris",
-    "hired": "Leo Harris",
-    "archived": "Leo Harris"
+    "applied": { "name": "Liam Smith", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "Olivia Brown", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Noah Johnson", "id": 3, "status": "Offered" },
+    "hired": { "name": "Emma Davis", "id": 4, "status": "Hired" },
+    "archived": {  }
   },
   {
     "id": 7,
-    "applied": "Michael Scott",
-    "forInterview": "Nancy King",
-    "offered": "Nancy King",
-    "hired": "Nancy King",
-    "archived": "Nancy King"
+    "applied": { "name": "Sophia Martinez", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "Mason Garcia", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Lucas Rodriguez", "id": 3, "status": "Offered" },
+    "hired": { "name": "Isabella Lee", "id": 4, "status": "Hired" },
+    "archived": {  }
   },
   {
     "id": 8,
-    "applied": "Oliver Perez",
-    "forInterview": "Paul Walker",
-    "offered": "Paul Walker",
-    "hired": "Paul Walker",
-    "archived": "Paul Walker"
+    "applied": { "name": "Ethan Lopez", "id": 1, "status": "Applied" },
+    "forInterview": { "name": "Charlotte Gonzalez", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Amelia Perez", "id": 3, "status": "Offered" },
+    "hired": { "name": "Harper Wilson", "id": 4, "status": "Hired" },
+    "archived": {  }
   },
   {
     "id": 9,
-    "applied": "Quinn Baker",
-    "forInterview": "Rachel Evans",
-    "offered": "Rachel Evans",
-    "hired": "Rachel Evans",
-    "archived": "Rachel Evans"
+    "applied": {},
+    "forInterview": { "name": "Avery Taylor", "id": 2, "status": "For Interview" },
+    "offered": { "name": "Lily Moore", "id": 3, "status": "Offered" },
+    "hired": { "name": "Sofia Jackson", "id": 4, "status": "Hired" },
+    "archived": {  }
   },
   {
     "id": 10,
-    "applied": "Steve Carter",
-    "forInterview": "Tom Johnson",
-    "offered": "Tom Johnson",
-    "hired": "Tom Johnson",
-    "archived": "Tom Johnson"
-  },
-  {
-    "id": 11,
-    "applied": "Anna Green",
-    "forInterview": "Oliver Brown",
-    "offered": "Oliver Brown",
-    "hired": "Oliver Brown",
-    "archived": "Oliver Brown"
-  },
-  {
-    "id": 12,
-    "applied": "Peter White",
-    "forInterview": "Samantha Black",
-    "offered": "Samantha Black",
-    "hired": "Samantha Black",
-    "archived": "Samantha Black"
-  },
-  {
-    "id": 13,
-    "applied": "Quincy Adams",
-    "forInterview": "Tina Turner",
-    "offered": "Tina Turner",
-    "hired": "Tina Turner",
-    "archived": "Tina Turner"
-  },
-  {
-    "id": 14,
-    "applied": "Ursula Knight",
-    "forInterview": "Victor Hugo",
-    "offered": "Victor Hugo",
-    "hired": "Victor Hugo",
-    "archived": "Victor Hugo"
-  },
-  {
-    "id": 15,
-    "applied": "Wendy Scott",
-    "forInterview": "Xander Lee",
-    "offered": "Xander Lee",
-    "hired": "Xander Lee",
-    "archived": "Xander Lee"
-  },
-  {
-    "id": 16,
-    "applied": "Yvonne Carter",
-    "forInterview": "Zachary Taylor",
-    "offered": "Zachary Taylor",
-    "hired": "Zachary Taylor",
-    "archived": "Zachary Taylor"
-  },
-  {
-    "id": 17,
-    "applied": "Alice Cooper",
-    "forInterview": "Brian Adams",
-    "offered": "Brian Adams",
-    "hired": "Brian Adams",
-    "archived": "Brian Adams"
-  },
-  {
-    "id": 18,
-    "applied": "Cathy Smith",
-    "forInterview": "Daniel Craig",
-    "offered": "Daniel Craig",
-    "hired": "Daniel Craig",
-    "archived": "Daniel Craig"
-  },
-  {
-    "id": 19,
-    "applied": "Ethan Hunt",
-    "forInterview": "Fiona Gallagher",
-    "offered": "Fiona Gallagher",
-    "hired": "Fiona Gallagher",
-    "archived": "Fiona Gallagher"
-  },
-  {
-    "id": 20,
-    "applied": "George Lucas",
-    "forInterview": "Hannah Montana",
-    "offered": "Hannah Montana",
-    "hired": "Hannah Montana",
-    "archived": "Hannah Montana"
-  }
+    "applied": { },
+    "forInterview": { "name": "Zoe Martin", "id": 2, "status": "For Interview" },
+    "offered": { },
+    "hired": { "name": "Mia Clark", "id": 4, "status": "Hired" },
+    "archived": { }
+  } 
+  
 ]

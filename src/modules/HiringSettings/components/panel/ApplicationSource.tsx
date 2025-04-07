@@ -1,4 +1,4 @@
-import { IconCaretDownFilled, IconCirclePlus, IconPencil } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCirclePlus, IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { DataTable } from "mantine-datatable";
 import { ApplicationSourceStore } from "@modules/HiringSettings/store"
@@ -33,18 +33,31 @@ const ApplicationSource = forwardRef((_, ref) => {
             {
                 accessor: 'status', title: 'Status', sortable: true,
                 render: (data: any) => applicationEditMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["ACTIVE", "INACTIVE"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={applicationEditableData[data.id]?.status || data.status}
-                    />
+                    <div className="flex ">
+
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1" }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={applicationEditableData[data.id]?.status || data.status}
+                        />
+
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedApplicationEditMode = Object.fromEntries(Object.entries(applicationEditMode).filter(([key]) => key != data.id));
+                            const updatedInterviewStagesEditableData = Object.fromEntries(Object.entries(applicationEditableData).filter(([key]) => key != data.id));
+                            const updatedApplicationNewRow = applicationNewRow.filter((row) => row.id !== data.id);
+                            setApplicationEditMode(updatedApplicationEditMode);
+                            setApplicationEditableData(updatedInterviewStagesEditableData);
+                            setApplcationNewRow(updatedApplicationNewRow);
+                        }} />
+
+                    </div>
                 ) :
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
@@ -60,7 +73,7 @@ const ApplicationSource = forwardRef((_, ref) => {
         const newRow: applicationSource = {
             id: Math.max(...applicationSources.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
             sourceName: '',
-            status: '',
+            status: 'ACTIVE',
             lastModified: '',
         };
         setApplcationNewRow(prev => [...prev, newRow]);

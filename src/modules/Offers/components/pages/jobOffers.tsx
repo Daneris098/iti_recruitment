@@ -2,7 +2,7 @@ import '@modules/Offers/styles/index.css'
 import Filter from "@modules/Offers/components/filter/Filter";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
-import { AppShell, Divider, Pagination, Tabs } from "@mantine/core";
+import { AppShell, Pagination, Tabs } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
@@ -97,7 +97,7 @@ export default function index() {
 
         return jobOfferColumns.filter(col => columnSets[tab]?.includes(col.accessor));
     };
-    const enhancedColumns = getFilteredColumns(activeTab).map((col) => ({
+    const enhancedColumns = getFilteredColumns(activeTab!).map((col) => ({
         ...col,
         title: col.sortable ? (
             <span
@@ -143,7 +143,7 @@ export default function index() {
                                     <DataTable
                                         className="w-full poppins text-[#6D6D6D] font-medium text-[16px]"
                                         columns={enhancedColumns}
-                                        records={filterRecords(activeTab, paginatedRecords)}
+                                        records={filterRecords(activeTab!, paginatedRecords)}
                                         sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}
                                         highlightOnHover
                                     />
@@ -169,7 +169,21 @@ export default function index() {
                 {selectedRow && (
                     <PDFViewer width="100%" height="891" style={{ border: "1px solid #ccc", borderRadius: "8px" }}>
                         <MyDocument
-
+                            Name=''
+                            Position=''
+                            Department=''
+                            Remarks=''
+                            Salary_Monthly=''
+                            Salary_Yearly=''
+                            Note_Salary=''
+                            Merit_Increase=''
+                            Description_VL=''
+                            Description_SL=''
+                            Description_BL=''
+                            Benefit_Paternity=''
+                            Benefit_Maternity=''
+                            Description_Transpo=''
+                            Acknowledgement=''
                         />
                     </PDFViewer>
                 )}

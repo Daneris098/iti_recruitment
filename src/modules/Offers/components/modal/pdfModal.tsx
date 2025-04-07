@@ -4,7 +4,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  header: string;
+  header?: string;
 }
 
 const JobOffersModal: React.FC<ModalProps> = ({ isOpen, onClose, children, header }) => {

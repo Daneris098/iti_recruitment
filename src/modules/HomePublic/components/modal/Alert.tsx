@@ -14,11 +14,7 @@ const AlertAutoClose: Record<AlertType, boolean> = {
     [AlertType.submitResponse]: true,
 };
 
-interface ArgProps {
-    arg?: string
-}
-
-export default function AlertModals({ arg }: ArgProps) {
+export default function AlertModals() {
     const { setActiveStepper } = ApplicationStore();
     const { setApplicationFormModal, setAlert, alert, alertBody } = HomeStore();
     useEffect(() => {

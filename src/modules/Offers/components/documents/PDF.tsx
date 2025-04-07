@@ -103,21 +103,21 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 
 
 interface MyDocumentProps {
-  Name: null | string;
-  Position: string | null;
-  Department: null | string;
-  Remarks: null | string;
-  Salary_Monthly: null | string;
-  Salary_Yearly: null | string;
-  Note_Salary: null | string;
-  Merit_Increase: null | string;
-  Description_VL: null | string;
-  Description_SL: null | string;
-  Description_BL: null | string;
-  Benefit_Paternity: null | string;
-  Benefit_Maternity: null | string;
-  Description_Transpo: null | string;
-  Acknowledgement: null | string;
+  Name: string;
+  Position: string;
+  Department: string;
+  Remarks: string;
+  Salary_Monthly: string;
+  Salary_Yearly: string;
+  Note_Salary: string;
+  Merit_Increase: string;
+  Description_VL: string;
+  Description_SL: string;
+  Description_BL: string;
+  Benefit_Paternity: string;
+  Benefit_Maternity: string;
+  Description_Transpo: string;
+  Acknowledgement: string;
 }
 
 // Create Document Component

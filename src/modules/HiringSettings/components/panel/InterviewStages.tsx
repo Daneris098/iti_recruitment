@@ -1,4 +1,4 @@
-import { IconCaretDownFilled, IconCirclePlus, IconPencil } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCirclePlus, IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { InteviewStagesStore } from "@modules/HiringSettings/store"
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { interviewStage } from "@modules/HiringSettings/types"
@@ -33,18 +33,30 @@ const InterviewStage = forwardRef((_, ref) => {
             {
                 accessor: 'status', title: 'Status', sortable: true,
                 render: (data: any) => interviewStagesEditMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["ACTIVE", "INACTIVE"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1" }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={interviewStagesEditableData[data.id]?.status || data.status}
-                    />
+                    <div className="flex ">
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1" }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={interviewStagesEditableData[data.id]?.status || data.status}
+                        />
+
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedInterviewStagesEditMode = Object.fromEntries(Object.entries(interviewStagesEditMode).filter(([key]) => key != data.id));
+                            const updatedInterviewStagesEditableData = Object.fromEntries(Object.entries(interviewStagesEditableData).filter(([key]) => key != data.id));
+                            const updatedInterviewStagesNewRows = interviewStagesNewRows.filter((row) => row.id !== data.id);
+                            setInterviewStagesEditMode(updatedInterviewStagesEditMode);
+                            setInterviewStagesEditableData(updatedInterviewStagesEditableData);
+                            setInterviewStagesNewRows(updatedInterviewStagesNewRows);
+                        }} />
+
+                    </div>
                 ) :
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
@@ -60,7 +72,7 @@ const InterviewStage = forwardRef((_, ref) => {
         const newRow: interviewStage = {
             id: Math.max(...interviewStage.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
             stageName: '',
-            status: '',
+            status: 'ACTIVE',
             lastModified: '',
         };
         setInterviewStagesNewRows(prev => [...prev, newRow]);
@@ -132,8 +144,8 @@ const InterviewStage = forwardRef((_, ref) => {
 
 
     return (
-        <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-8 h-[100%]">
+            <div className="flex flex-col gap-2 ">
                 <div className="flex gap-2">
                     <p className="text-[#559CDA] font-bold">Custom Interview Stages</p>
                     <div>
@@ -147,6 +159,7 @@ const InterviewStage = forwardRef((_, ref) => {
                 <p className="text-[#6D6D6D]">Customize your interview stages to align with your organization's specific recruitment process.</p>
             </div>
             <DataTable
+                className=" mx-2"
                 styles={{
                     header: {
                         color: "rgba(109, 109, 109, 0.6)",

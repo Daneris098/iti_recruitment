@@ -1,5 +1,5 @@
-import { Button, Divider, Drawer, Flex, Text, TextInput, useMatches } from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
+import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
+import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { FilterStore } from '@modules/Applicants/store'
 import { useEffect } from "react";
 import { filterVal } from "@modules/Applicants/values";
@@ -80,7 +80,20 @@ export default function DrawerFilter() {
             </Flex>
           </Flex>
           <>
+          
             <Divider size={2} color="#6d6d6d" className="w-full" />
+            <MultiSelect
+              value={filter.company}
+              size={inputSize}
+              label="Company"
+              placeholder={filter.company.length > 0 ? '' : "Company"}
+              radius={8}
+              data={["Company 1", "Company 2", "Company 3"]}
+              rightSection={<IconCaretDownFilled size='18' />}
+              className="border-none w-full text-sm"
+              styles={{ label: { color: "#6d6d6d" } }}
+              onChange={(value) => setFilter({ ...filter, company: value })}
+            />
             <TextInput
               radius={8}
               size={inputSize}

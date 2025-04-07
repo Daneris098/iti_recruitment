@@ -25,6 +25,10 @@
   width: 5px;
 }
 
+.scrollbar2::-webkit-scrollbar {
+ display: none;
+}
+
 .mantine-Stepper-stepIcon[data-progress] {
   background: #228be6 !important;
   color: white ;

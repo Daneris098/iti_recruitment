@@ -1,6 +1,7 @@
 import { ApplicantStatus, Applicants } from "@modules/Applicants/types";
 
 export const filterVal: ApplicantStatus = {
+    company: [],
     applicantName: "",
     applicationDateFrom: "",
     applicationDateTo: "",
@@ -11,6 +12,7 @@ export const filterVal: ApplicantStatus = {
 }
 
 export const selectedVal: Applicants = {
+    id: "",
     Applicant_Name: "",
     Application_Date: "",
     Phone: "",

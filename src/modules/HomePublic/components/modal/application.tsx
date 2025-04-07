@@ -11,7 +11,7 @@ import Oath from "@modules/HomePublic/components/Oath"
 import { cn } from "@src/lib/utils";
 import { PhotoRef, Step } from '@modules/HomePublic/types';
 import { useRef, useState } from 'react';
-import { IconCaretDownFilled } from '@tabler/icons-react';
+import { IconCaretDownFilled, IconX } from '@tabler/icons-react';
 import "@modules/HomePublic/styles/index.css"
 
 export default function index() {
@@ -51,14 +51,23 @@ export default function index() {
     return (
         <>
             <Modal radius="lg" size='80%' opened={applicationFormModal} centered onClose={() => setApplicationFormModal(false)}
-                title={(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}
+                withCloseButton={false}
                 className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
                 styles={{
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }} >
-                <div className='h-full m-auto w-[95%] flex flex-col gap-3 overflow-y-auto '>
-                    {activeStepper != Step.Oath && (<Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />)}
+                <div className='h-full m-auto w-[95%] flex flex-col gap-3 '>
+
+                    <div className='top-0 z-50 sticky bg-white'>
+                        <div className='flex justify-between'>
+                            <p className='text-[#559CDA] text-[22px] font-bold py-2'>{(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}</p>
+                            <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { () => setApplicationFormModal(false) }} />
+                        </div>
+                        {activeStepper != Step.Oath && (<Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />)}
+                    </div>
+
+
 
                     {activeStepper != Step.Preview && activeStepper != Step.Oath && (<div className='w-[80%] m-auto pb-12 hidden sm:block'>
                         <Stepper />

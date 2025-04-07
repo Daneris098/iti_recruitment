@@ -79,6 +79,19 @@ export default function DrawerFilter() {
             </Flex>
           </Flex>
 
+          <MultiSelect
+            value={filter.company}
+            size={inputSize}
+            label="Company"
+            placeholder={filter.company.length > 0 ? '' : "Company"}
+            radius={8}
+            data={["Company 1", "Company 2", "Company 3"]}
+            rightSection={<IconCaretDownFilled size='18' />}
+            className="border-none w-full text-sm"
+            styles={{ label: { color: "#6d6d6d" } }}
+            onChange={(value) => setFilter({ ...filter, company: value })}
+          />  
+          
           {isArchived && (
             <>
               {/* Archived */}
@@ -131,14 +144,13 @@ export default function DrawerFilter() {
                 value={filter.department}
                 onChange={(event) => { setFilter({ ...filter, department: `${event.currentTarget.value}` }) }}
               />
-
               <MultiSelect
                 radius={8}
                 size={inputSize}
                 className="border-none w-full text-[16px] poppins"
                 label="Status"
                 placeholder="Select Status"
-                styles={{
+                styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
@@ -155,15 +167,15 @@ export default function DrawerFilter() {
                     gap: "4px",
                     padding: "4px",
                   },
-                }}
+                })}
                 // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
                 // value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
-                nothingFound="No options"
-                withinPortal
+                nothingFoundMessage="No options"
+                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span> {/* Custom dropdown icon */}
@@ -171,6 +183,7 @@ export default function DrawerFilter() {
                   </span>
                 }
               />
+
             </>
           )}
           {/*End of Archived */}
@@ -244,9 +257,9 @@ export default function DrawerFilter() {
                 radius={8}
                 size={inputSize}
                 className="border-none w-full text-[16px] poppins"
-                label="Remarks"
-                placeholder="Type Remarks"
-                styles={{
+                label="Status"
+                placeholder="Select Status"
+                styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
@@ -263,15 +276,15 @@ export default function DrawerFilter() {
                     gap: "4px",
                     padding: "4px",
                   },
-                }}
-
+                })}
+                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={remarksFilterOptions}
                 // value={filter.status}
-                onChange={(values) => setFilter({ ...filter, remarks: values })}
+                onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
-                nothingFound="No options"
-                withinPortal
+                nothingFoundMessage="No options"
+                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span> {/* Custom dropdown icon */}
@@ -287,7 +300,7 @@ export default function DrawerFilter() {
                 className="border-none w-full text-[16px] poppins"
                 label="Status"
                 placeholder="Select Status"
-                styles={{
+                styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
@@ -304,15 +317,15 @@ export default function DrawerFilter() {
                     gap: "4px",
                     padding: "4px",
                   },
-                }}
+                })}
                 // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
-                value={filter.status}
+                // value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
-                nothingFound="No options"
-                withinPortal
+                nothingFoundMessage="No options"
+                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span> {/* Custom dropdown icon */}
