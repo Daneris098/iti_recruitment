@@ -1,18 +1,18 @@
 import { Button, Divider } from "@mantine/core";
 import { IconChecklist } from "@tabler/icons-react";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
-import MyDocument from "@modules/Offers/components/documents/PDF"
+import PDFDocument from "@modules/Offers/components/documents/PDF"
 import { PDFViewer } from "@react-pdf/renderer";
 import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated";
-
-interface JobGeneratedAlertProps {
+import { PDFProps } from "@modules/Applicants/types";
+interface JobGeneratedAlertProps extends Partial<PDFProps>{
     onClose: () => void;
     title: string | null;
 }
 
-export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertProps) {
+export default function JobGeneratedAlert({ title, onClose, Applicant_Name, Position, Department, Remarks }: JobGeneratedAlertProps) {
 
     // zustand store.
     const {
@@ -88,22 +88,11 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                 */}
                 <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)} header={title === "Offered" ? "Generate Offer" : "Job Offer"}>
                     <PDFViewer width="100%" height="710" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
-                        <MyDocument
-                            Name={null}
-                            Position={null}
-                            Department={null}
-                            Remarks={null}
-                            Salary_Monthly={null}
-                            Salary_Yearly={null}
-                            Note_Salary={null}
-                            Merit_Increase={null}
-                            Description_VL={null}
-                            Description_SL={null}
-                            Description_BL={null}
-                            Benefit_Paternity={null}
-                            Benefit_Maternity={null}
-                            Description_Transpo={null}
-                            Acknowledgement={null}
+                        <PDFDocument
+                            Applicant_Name={Applicant_Name}
+                            Position={Position}
+                            Department={Department}
+                            Remarks={Remarks}
                         />
                     </PDFViewer>
                     <div className="py-9 flex justify-center space-x-9">
@@ -138,7 +127,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
             </div>
 
             <div>
-                <JobGeneratedModal isOpen={isUpdateSuccessful} onClose={() => setIsUpdateSuccessful(false)}>
+                <JobGeneratedModal isOpen={isUpdateSuccessful}>
                     <UpdateApplicantSucessful onClose={() => setIsUpdateSuccessful(false)} />
                 </JobGeneratedModal>
             </div>

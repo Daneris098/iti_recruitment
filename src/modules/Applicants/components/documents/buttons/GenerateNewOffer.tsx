@@ -1,4 +1,4 @@
-{/*Generate new offer button.*/}
+{/*Generate new offer button.*/ }
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
 import { IconChevronDown, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Applicants/store"
@@ -229,12 +229,12 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
                 {/* Submit Button */}
                 <div className="flex justify-between pt-4">
-                    <Button onClick={onClose} className="bg-transparent text-[#559CDA] px-6 py-3 rounded-lg border-[#559CDA] font-medium text-[15px]">
+                    <Button onClick={onClose} className="bg-transparent text-[#559CDA] px-6 py-2 rounded-lg border-[#559CDA] font-medium text-[15px]">
                         Cancel
                     </Button>
                     <Button
                         onClick={() => setIsModalOpen(true)} // Open modal on click
-                        className="custom-gradient text-white px-6 py-3 rounded-lg font-medium text-[15px]"
+                        className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[15px]"
                     >
                         {"Generate Offer".toUpperCase()}
                     </Button>
@@ -243,8 +243,8 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             </form>
 
             <div>
-                <JobGeneratedModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <JobGeneratedAlert onClose={onClose} title={""}/>
+                <JobGeneratedModal isOpen={isModalOpen} >
+                    <JobGeneratedAlert onClose={onClose} title={""} />
                 </JobGeneratedModal>
             </div>
         </div>

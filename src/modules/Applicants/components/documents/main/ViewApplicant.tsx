@@ -32,14 +32,10 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
         "Initial Interview": "bg-[#559CDA]",
     }
 
-
-
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
     const {
         isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered
     } = useCloseModal();
-
-    // const [isOffered, setIsOffered] = useState(false); // Set the Offered Modal to True upon triggering
 
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
 
@@ -278,27 +274,14 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
             <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
                 <PDFViewer width="100%" height="891" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                     <MyDocument
-                        Name={Applicant_Name}
+                        Applicant_Name={Applicant_Name}
                         Position={Position}
-                        Department=""
                         Remarks={Status}
-                        Salary_Monthly=""
-                        Salary_Yearly=""
-                        Note_Salary=""
-                        Merit_Increase=""
-                        Description_VL=""
-                        Description_SL=""
-                        Description_BL=""
-                        Benefit_Paternity=""
-                        Benefit_Maternity=""
-                        Description_Transpo=""
-                        Acknowledgement=""
                     />
                 </PDFViewer>
             </ViewPDF>
         </div>
     )
 }
-
 // Applicant Profile Modal
 // This modal will appear when you clicked a record in Applicants table.

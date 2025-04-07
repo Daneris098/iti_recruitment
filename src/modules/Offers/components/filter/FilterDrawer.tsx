@@ -1,6 +1,6 @@
 import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import { FilterStore } from '@modules/Offers/components/store'
+import { FilterStore } from '@src/modules/Offers/store'
 import { useDateRangeStore, useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
 import { useEffect } from "react";
 import { filterVal } from "@modules/Offers/values";
@@ -154,23 +154,21 @@ export default function DrawerFilter() {
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
-                    flexWrap: "nowrap", // Prevents wrapping
-                    overflowX: "auto", // Enables horizontal scrolling
-                    maxHeight: "40px", // Keeps input height fixed
-                    scrollbarWidth: "thin", // Makes scrollbar less intrusive
+                    flexWrap: "nowrap", 
+                    overflowX: "auto", 
+                    maxHeight: "40px", 
+                    scrollbarWidth: "thin", 
                   },
                   values: {
                     display: "flex",
-                    flexWrap: "nowrap", // Prevents multi-line chips
-                    overflowX: "auto", // Allows horizontal scrolling
-                    maxWidth: "100%", // Ensures it fits within the input
+                    flexWrap: "nowrap", 
+                    overflowX: "auto", 
+                    maxWidth: "100%", 
                     gap: "4px",
                     padding: "4px",
                   },
                 })}
-                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
-                // value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
@@ -256,16 +254,16 @@ export default function DrawerFilter() {
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
-                    flexWrap: "nowrap", // Prevents wrapping
-                    overflowX: "auto", // Enables horizontal scrolling
-                    maxHeight: "40px", // Keeps input height fixed
-                    scrollbarWidth: "thin", // Makes scrollbar less intrusive
+                    flexWrap: "nowrap", 
+                    overflowX: "auto", 
+                    maxHeight: "40px", 
+                    scrollbarWidth: "thin", 
                   },
                   values: {
                     display: "flex",
-                    flexWrap: "nowrap", // Prevents multi-line chips
-                    overflowX: "auto", // Allows horizontal scrolling
-                    maxWidth: "100%", // Ensures it fits within the input
+                    flexWrap: "nowrap",
+                    overflowX: "auto", 
+                    maxWidth: "100%", 
                     gap: "4px",
                     padding: "4px",
                   },
@@ -297,31 +295,29 @@ export default function DrawerFilter() {
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
-                    flexWrap: "nowrap", // Prevents wrapping
-                    overflowX: "auto", // Enables horizontal scrolling
-                    maxHeight: "40px", // Keeps input height fixed
-                    scrollbarWidth: "thin", // Makes scrollbar less intrusive
+                    flexWrap: "nowrap", 
+                    overflowX: "auto", 
+                    maxHeight: "40px", 
+                    scrollbarWidth: "thin", 
                   },
                   values: {
                     display: "flex",
-                    flexWrap: "nowrap", // Prevents multi-line chips
-                    overflowX: "auto", // Allows horizontal scrolling
-                    maxWidth: "100%", // Ensures it fits within the input
+                    flexWrap: "nowrap", 
+                    overflowX: "auto", 
+                    maxWidth: "100%", 
                     gap: "4px",
                     padding: "4px",
                   },
                 })}
-                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
                 value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
                 nothingFoundMessage="No options"
-                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
-                  <span> {/* Custom dropdown icon */}
+                  <span>
                     <IconCaretDownFilled size={18} stroke={2} />
                   </span>
                 }

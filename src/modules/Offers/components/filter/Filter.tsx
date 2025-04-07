@@ -2,7 +2,7 @@ import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { useEffect } from "react";
-import { FilterStore } from '@modules/Offers/components/store'
+import { FilterStore } from '@src/modules/Offers/store'
 import { useDateRangeStore, useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
 
 export default function Filter() {

@@ -1,32 +1,8 @@
-import { AllJobOffersFilterType, OfferType } from '@modules/Offers/components/types';
-
-// export const filterVal: AllJobOffersFilterType = {
-//     id: "",
-//     applicantName: "",
-//     dateFrom: "",
-//     dateTo: "",
-//     dateLastUpdatedFrom: "",
-//     dateLastUpdatedTo: "",
-//     remarks: ""
-// }
-
-// export const filterVal: AllJobOffersFilterType = {
-//   id: "",
-//   applicantName: "",
-//   dateFrom: "",
-//   dateTo: "",
-//   dateLastUpdatedFrom: "",
-//   dateLastUpdatedTo: "",
-//   remarks: ""
-// }
+import { AllJobOffersFilterType, OfferType } from '@src/modules/Offers/types';
 
 export const filterVal: AllJobOffersFilterType = {
   id: "",
   applicantName: "",
-  // dateFrom: null,
-  // dateTo: null,
-  // dateLastUpdatedFrom: null,
-  // dateLastUpdatedTo: null,
   remarks: [],
   status: [],
   department: "",
@@ -40,5 +16,3 @@ export const selectedDataVal: OfferType = {
   Accepted: "",
   Archived: ""
 };
-
-2

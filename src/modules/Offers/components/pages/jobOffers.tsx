@@ -7,10 +7,11 @@ import { DataTable } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import { PDFViewer } from "@react-pdf/renderer";
-import MyDocument from "@modules/Offers/components/documents/PDF";
+import PDFDocument from "@modules/Offers/components/documents/PDF";
 import { IconArrowsUp, IconArrowsUpDown, IconFileCheck, IconFileX } from "@tabler/icons-react";
-import { useJobOfferStore, useSortStore, usePaginationStore, FilterStore } from "@src/modules/Offers/components/store";
+import { useJobOfferStore, useSortStore, usePaginationStore, FilterStore } from "@src/modules/Offers/store";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
+import { PDFProps } from "@modules/Offers/types"
 
 
 export default function index() {
@@ -23,7 +24,7 @@ export default function index() {
         loadCandidates();
     }, [loadCandidates]);
 
-    const [selectedRow, setSelectedRow] = useState<Record<string, any> | null>(null);
+    const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
 
     const handleRowClick = (row: any) => {
         setSelectedRow(row);
@@ -54,7 +55,7 @@ export default function index() {
             );
         }
 
-        if (col.accessor === "Attachments" ) {
+        if (col.accessor === "Attachments") {
             const isPending = row.Status?.toLowerCase() === "pending";
             const Icon = isPending ? IconFileX : IconFileCheck;
             const cursorClass = isPending ? "cursor-not-allowed opacity-50" : "cursor-pointer";
@@ -168,22 +169,8 @@ export default function index() {
             <PDFModal isOpen={!!selectedRow} onClose={() => setSelectedRow(null)} header="Generate Job Offer">
                 {selectedRow && (
                     <PDFViewer width="100%" height="891" style={{ border: "1px solid #ccc", borderRadius: "8px" }}>
-                        <MyDocument
-                            Name=''
-                            Position=''
-                            Department=''
-                            Remarks=''
-                            Salary_Monthly=''
-                            Salary_Yearly=''
-                            Note_Salary=''
-                            Merit_Increase=''
-                            Description_VL=''
-                            Description_SL=''
-                            Description_BL=''
-                            Benefit_Paternity=''
-                            Benefit_Maternity=''
-                            Description_Transpo=''
-                            Acknowledgement=''
+                        <PDFDocument
+                            {...selectedRow}
                         />
                     </PDFViewer>
                 )}

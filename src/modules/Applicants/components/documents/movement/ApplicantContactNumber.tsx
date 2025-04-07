@@ -65,7 +65,7 @@ export default function ApplicantContactNumber({ onClose, updateSelectedStatus }
             </div>
 
             <div>
-                <JobGeneratedModal isOpen={isAddtoCalendar} onClose={() => setIsAddtoCalendar(false)}>
+                <JobGeneratedModal isOpen={isAddtoCalendar} >
                     <ScheduleInterviewAlert onClose={() => setIsAddtoCalendar(false)} />
                 </JobGeneratedModal>
             </div>

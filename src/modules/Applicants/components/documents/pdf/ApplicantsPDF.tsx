@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import header from '@src/assets/intellismart-header.png';
+import { PDFProps } from '@modules/Applicants/types'
 
 const styles = StyleSheet.create({  // General styles for Generative PDF
   page: {
@@ -90,28 +91,9 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 });
 
 
-
-interface MyDocumentProps {
-  Name: null | string;
-  Position: string;
-  Department: null | string;
-  Remarks: null | string;
-  Salary_Monthly: null | string;
-  Salary_Yearly: null | string;
-  Note_Salary: null | string;
-  Merit_Increase: null | string;
-  Description_VL: null | string;
-  Description_SL: null | string;
-  Description_BL: null | string;
-  Benefit_Paternity: null | string;
-  Benefit_Maternity: null | string;
-  Description_Transpo: null | string;
-  Acknowledgement: null | string;
-}
-
 // Create Document Component
-const MyDocument: React.FC<MyDocumentProps> = ({
-  Name,
+const PDFDocument: React.FC<Partial<PDFProps>> = ({
+  Applicant_Name,
   Position,
   Department,
   Remarks,
@@ -159,7 +141,7 @@ const MyDocument: React.FC<MyDocumentProps> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Name</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Name ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{Applicant_Name ?? "No Data"}</Text>
             </View>
 
             {/* Position and Rank */}
@@ -346,4 +328,4 @@ const MyDocument: React.FC<MyDocumentProps> = ({
   );
 };
 
-export default MyDocument;
+export default PDFDocument;
