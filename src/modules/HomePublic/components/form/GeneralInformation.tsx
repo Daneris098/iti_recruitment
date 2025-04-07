@@ -150,7 +150,7 @@ export default function index() {
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Suffix(Jr. Sr. etc.)" />
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                <div className="flex flex-col sm:flex-row gap-4 items-end relative  ">
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Present Address <span className="text-[#A8A8A8] absolute">(Write N/A if not applicable)</span></p>} placeholder="Unit no." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.street")} key={form.key('personalInformation.presentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
@@ -204,8 +204,8 @@ export default function index() {
                     />
                     {/* <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" /> */}
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <div className={cn("w-[100%]", isMobile && "w-[25%]")}>
+                <div className="flex flex-col sm:flex-row gap-4 items-end relative">
+                    <div className={cn("w-[100%]", isMobile && "w-[25%]  bg-green-400")}>
                         <Checkbox
                             label="Same as Present Address"
                             classNames={{ label: 'poppins' }}
