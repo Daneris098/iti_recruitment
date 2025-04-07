@@ -1,11 +1,11 @@
-import { FilterType, VacancyType } from "@modules/Vacancies/types";
+import { FilterType, VacancyType, selectedApplicant } from "@modules/Vacancies/types";
 
 export const selectedDataVal: VacancyType = {
   id: 0,
   position: "",
   workplace: "",
   department: "",
-  company:"",
+  company: "",
   branch: "",
   positionLevel: "",
   hiringManager: "",
@@ -26,7 +26,7 @@ export const selectedDataVal: VacancyType = {
   status: "",
   vacancyDuration: {
     start: "",
-    end:"",
+    end: "",
     from: ""
   },
   mustHaveSkills: "",
@@ -39,6 +39,7 @@ export const filterVal: FilterType = {
   postedDate: null,
   jobTitle: '',
   vacancy: [],
+  company: [],
   interviewer: [],
   status: [],
   department: [],
@@ -47,3 +48,13 @@ export const filterVal: FilterType = {
   experienceLevel: [],
 }
 
+export const selectedApplicantInitial: selectedApplicant = {
+  Applicant_Name: '',
+  Email: '',
+  Position: '',
+  Skills: '',
+  Status: '',
+  Remarks: '',
+  Phone: '',
+  Application_Date: ''
+}

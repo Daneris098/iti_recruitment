@@ -1,15 +1,15 @@
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconCaretDownFilled } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled } from "@tabler/icons-react";
 import { TextInput, Select } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
 import { title, description, Company } from '@modules/OrganizationSettings/types';
 
 const PAGE_SIZE = 15;
 const initialData: Company[] = [
-    { id: 1, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 2, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 3, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'active', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { id: 1, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { id: 2, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    { id: 3, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
 ];
 
 const DataTableComp = forwardRef((_, ref) => {
@@ -60,7 +60,7 @@ const DataTableComp = forwardRef((_, ref) => {
             location: '',
             area: '',
             description: '',
-            status: 'active',
+            status: 'ACTIVE',
             division: '',
             department: '',
             departmentHead: '',
@@ -138,18 +138,28 @@ const DataTableComp = forwardRef((_, ref) => {
             {
                 accessor: 'status', title: 'Status', sortable: true,
                 render: (data: any) => editMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["active", "inactive"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={editableData[data.id]?.status || data.status}
-                    />
+                    <div className='flex'>
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={editableData[data.id]?.status || data.status}
+                        />
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                            setEditMode(updatedEditMode);
+                            setEditableData(updatedEditableData);
+                            setNewRows(updatedNewRows);
+                        }} />
+                    </div>
                 ) :
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
@@ -166,18 +176,28 @@ const DataTableComp = forwardRef((_, ref) => {
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
                 field === 'status' && editMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["active", "inactive"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={editableData[data.id]?.status || data.status}
-                    />
+                    <div className='flex'>
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={editableData[data.id]?.status || data.status}
+                        />
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                            setEditMode(updatedEditMode);
+                            setEditableData(updatedEditableData);
+                            setNewRows(updatedNewRows);
+                        }} />
+                    </div>
                 ) : (
                     <TextInput
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -207,18 +227,28 @@ const DataTableComp = forwardRef((_, ref) => {
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
                 field === 'status' && editMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["active", "inactive"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={editableData[data.id]?.status || data.status}
-                    />
+                    <div className='flex'>
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={editableData[data.id]?.status || data.status}
+                        />
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                            setEditMode(updatedEditMode);
+                            setEditableData(updatedEditableData);
+                            setNewRows(updatedNewRows);
+                        }} />
+                    </div>
                 ) : (
                     <TextInput
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -247,23 +277,34 @@ const DataTableComp = forwardRef((_, ref) => {
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
                 field === 'status' && editMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["active", "inactive"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={editableData[data.id]?.status || data.status}
-                    />
+                    <div className='flex'>
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={editableData[data.id]?.status || data.status}
+                        />
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                            setEditMode(updatedEditMode);
+                            setEditableData(updatedEditableData);
+                            setNewRows(updatedNewRows);
+                        }} />
+                    </div>
+
                 ) : (
                     <TextInput
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                            value={(editableData as any)[data.id]?.[field] || data[field]}
-                            onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
+                        value={(editableData as any)[data.id]?.[field] || data[field]}
+                        onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
                     />
                 )
             ) :
@@ -287,23 +328,33 @@ const DataTableComp = forwardRef((_, ref) => {
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
                 field === 'status' && editMode[data.id] ? (
-                    <Select
-                        radius={8}
-                        data={["active", "inactive"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={editableData[data.id]?.status || data.status}
-                    />
+                    <div className='flex'>
+                        <Select
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={editableData[data.id]?.status || data.status}
+                        />
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                            setEditMode(updatedEditMode);
+                            setEditableData(updatedEditableData);
+                            setNewRows(updatedNewRows);
+                        }} />
+                    </div>
                 ) : (
                     <TextInput
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                            value={(editableData as any)[data.id]?.[field] || data[field]}
-                            onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
+                        value={(editableData as any)[data.id]?.[field] || data[field]}
+                        onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
                     />
                 )
             ) :
@@ -327,23 +378,33 @@ const DataTableComp = forwardRef((_, ref) => {
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
                 field === 'status' && editMode[data.id] ? (
-                    <Select
-                        classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                        radius={8}
-                        data={["active", "inactive"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(data.id, 'status', val)
-                        }}
-                        defaultValue={editableData[data.id]?.status || data.status}
-                    />
+                    <div className='flex'>
+                        <Select
+                            classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                            radius={8}
+                            data={["ACTIVE", "INACTIVE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={(val: any) => {
+                                handleEditChange(data.id, 'status', val)
+                            }}
+                            defaultValue={editableData[data.id]?.status || data.status}
+                        />
+                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                            setEditMode(updatedEditMode);
+                            setEditableData(updatedEditableData);
+                            setNewRows(updatedNewRows);
+                        }} />
+                    </div>
                 ) : (
                     <TextInput
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                            value={(editableData as any)[data.id]?.[field] || data[field]}
-                            onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
+                        value={(editableData as any)[data.id]?.[field] || data[field]}
+                        onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
                     />
                 )
             ) :

@@ -158,7 +158,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
           <div className="flex justify-between items-center">
             <h2 className="text-[22px] font-semibold text-[#559CDA]">
               {/* Update Applicant Status */}
-              {selectedStatus === "Transferred" || selectedStatus === "Transfer Employee" ? "Transfer Applicant" : "Update Applicant Status"}
+              {selectedStatus === "Transferred" ? "Transfer Applicant" : "Update Applicant Status"}
             </h2>
             <IconX
               onClick={() => {
@@ -379,7 +379,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
       </JobGeneratedModal>
 
       {/* This modal will be called when the selected status is equivalent to "For Interview" and the "Schedule Interview button has been clicked." */}
-      <ApplicantUnreachable isOpen={isScheduleInterview} >
+      <ApplicantUnreachable isOpen={isScheduleInterview}>
         <ScheduleInterview onClose={() => {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 

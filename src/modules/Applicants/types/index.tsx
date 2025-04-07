@@ -1,4 +1,5 @@
 export interface ApplicantStatus {
+    company: string[];
     applicantName: string;
     applicationDateFrom: string | null;
     applicationDateTo: string | null;
@@ -15,7 +16,7 @@ export interface Applicants {
     Phone: string;
     Email: string;
     Position: string;
-    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transfer Employee" | "Transferred";
+    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred";
 }
 
 export interface FilterState {

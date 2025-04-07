@@ -3,7 +3,6 @@ import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/
 import header from '@src/assets/intellismart-header.png';
 import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
 import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'
-import { PDFProps } from "@modules/Offers/types"
 
 // Register the Poppins font
 Font.register({
@@ -101,8 +100,29 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
   },
 });
 
-const PDFDocument: React.FC<Partial<PDFProps>> = ({
-  Applicant_Name,
+
+
+interface MyDocumentProps {
+  Name: string;
+  Position: string;
+  Department: string;
+  Remarks: string;
+  Salary_Monthly: string;
+  Salary_Yearly: string;
+  Note_Salary: string;
+  Merit_Increase: string;
+  Description_VL: string;
+  Description_SL: string;
+  Description_BL: string;
+  Benefit_Paternity: string;
+  Benefit_Maternity: string;
+  Description_Transpo: string;
+  Acknowledgement: string;
+}
+
+// Create Document Component
+const MyDocument: React.FC<MyDocumentProps> = ({ 
+  Name,               
   Position,
   Department,
   Remarks,
@@ -149,7 +169,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Name</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Applicant_Name ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{Name ?? "No Data"}</Text>
             </View>
 
             {/* Position and Rank */}
@@ -336,4 +356,4 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
   );
 };
 
-export default PDFDocument;
+export default MyDocument;

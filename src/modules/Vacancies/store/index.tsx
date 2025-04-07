@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState } from "@modules/Vacancies/types";
-import { filterVal, selectedDataVal } from "@src/modules/Vacancies/values";
+import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant } from "@modules/Vacancies/types";
+import { filterVal, selectedDataVal, selectedApplicantInitial } from "@src/modules/Vacancies/values";
 
 
 export const VacancyStore = create<VacancyState>((set) => ({
@@ -8,7 +8,7 @@ export const VacancyStore = create<VacancyState>((set) => ({
   applicationFormModal: false,
   alert: '',
   action: '',
-  
+
   setAction: (action: string) => set({ action: action }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
@@ -30,8 +30,12 @@ export const FilterStore = create<FilterState>((set) => ({
 export const ApplicantStore = create<ApplicantState>((set) => ({
   selectedData: selectedDataVal,
   loading: false,
+  isViewApplicant: false,
+  selectedApplicant: selectedApplicantInitial,
 
-  setLoading: (loading:boolean) => set({ loading: loading }),
+  setSelectedApplicant: (selectedApplicant: selectedApplicant) => set({ selectedApplicant: selectedApplicant }),
+  setIsViewApplicant: (isViewApplicant: boolean) => set({ isViewApplicant: isViewApplicant }),
+  setLoading: (loading: boolean) => set({ loading: loading }),
   setSelectedData: (selected_data: VacancyType) => set({ selectedData: selected_data }),
 }));
 
@@ -43,10 +47,10 @@ export const DataTableStore = create<DataTableState>((set) => ({
   sortStatus: { columnAccessor: 'createdAt', direction: 'desc' },
 
   setSearch: (search: string) => set({ search: search }),
-  setTotalRecords: (total:number) => set({ totalRecords: total }),
-  setPage: (page:number) => set({ page }),
-  setPageSize: (size:number) => set({ pageSize: size }),
-  setSortStatus: (status:any) => set({ sortStatus: status }),
+  setTotalRecords: (total: number) => set({ totalRecords: total }),
+  setPage: (page: number) => set({ page }),
+  setPageSize: (size: number) => set({ pageSize: size }),
+  setSortStatus: (status: any) => set({ sortStatus: status }),
 }));
 
 interface DateRangeState {

@@ -9,7 +9,6 @@ export interface VacancyState {
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedVacancy: (selectedData: VacancyType) => void;
 }
-
 export type FilterState = {
   filter: FilterType;
   isFiltered: boolean;
@@ -26,6 +25,7 @@ export interface FilterType {
   dateFrom?: string;
   dateTo?: string;
   postedDate: string | null;
+  company: string[];
   vacancy: string[];
   interviewer: string[];
   department: string[];
@@ -91,7 +91,11 @@ export interface FetchExpensesParams {
 export interface ApplicantState {
   selectedData: VacancyType,
   loading: boolean,
+  isViewApplicant: boolean,
+  selectedApplicant: selectedApplicant,
 
+  setSelectedApplicant: (setSelectedApplicant: any) => void;
+  setIsViewApplicant: (isViewApplicant: boolean) => void;
   setSelectedData: (action: VacancyType) => void;
   setLoading: (loading: boolean) => void;
 }
@@ -125,4 +129,15 @@ export enum AlertType {
   closeVacancy = 'closeVacancy',
   closeSuccessfully = 'closeSuccessfully',
   updateSuccessfully = 'updateSuccessfully',
+}
+
+export interface selectedApplicant {
+  Applicant_Name: string,
+  Position: string,
+  Status: string,
+  Email: string,
+  Phone: string,
+  Skills: string,
+  Remarks: string,
+  Application_Date: string
 }

@@ -3,6 +3,7 @@ import '@modules/Applicants/styles/index.css'
 
 interface ModalProps {
     isOpen: boolean;
+    onClose?: () => void;
     children: React.ReactNode;
 }
 

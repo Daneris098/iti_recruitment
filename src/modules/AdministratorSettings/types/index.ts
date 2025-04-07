@@ -38,6 +38,7 @@ export const columns = {
     { accessor: 'lastname', title: 'Lastname', sortable: true },
     { accessor: 'firstname', title: 'Firstname', sortable: true },
     { accessor: 'email', title: 'Email', sortable: true },
+    { accessor: 'status', title: 'Status', sortable: true },
   ],
 };
 

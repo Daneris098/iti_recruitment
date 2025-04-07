@@ -1,7 +1,7 @@
 import '@mantine/tiptap/styles.css';
 import { useEffect, useRef, useState } from "react";
 import { Modal, Divider, Button, Select, TextInput, MultiSelect, Flex, Popover, Text } from '@mantine/core';
-import { IconCalendarMonth, IconCaretDownFilled } from '@tabler/icons-react';
+import { IconCalendarMonth, IconCaretDownFilled, IconX } from '@tabler/icons-react';
 import { useEditor } from '@tiptap/react';
 import { useForm } from '@mantine/form';
 import { DatePicker } from '@mantine/dates';
@@ -155,354 +155,376 @@ export default function index() {
 
 
     return (
-        <Modal size={'80%'} opened={action != ''} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} title={ActionTitle[action as keyof typeof ActionTitle]}
+        <Modal radius="lg" size={'80%'} opened={action != ''} withCloseButton={false} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }}
+            className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
+
             styles={{
-                header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
+                header: { width: '95%' },
                 title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                body: { padding: '0' }
             }} >
-            <div className='m-auto w-[95%] poppins text-[#6D6D6D] '>
+            <div className='m-auto w-full poppins text-[#6D6D6D] h-[85vh]'>
 
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
-                <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5'>
-                    <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
-                    <Select key={form.key('company')} {...form.getInputProps("company")} label="Company" placeholder={"Select Company"} radius={8} data={["Cloud Innovations Ltd.", "Business Solutions Inc.", "Tech Innovations Inc.", "Innovate Solutions Ltd.", "Data Insights Corp.", "Creative Marketing Agency"]}
-                        rightSection={<IconCaretDownFilled size='18' />} className="border-none w-full text-sm" classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }} size='lg'
-                    />
-
-                    <div className='flex flex-col lg:flex-row gap-4  w-full'>
-                        <Select
-                            {...form.getInputProps("branch")}
-                            key={form.key('branch')}
-                            label="Branch"
-                            placeholder={"Select Branch"}
-                            radius={8}
-                            data={["Remote Team", "San Francisco", "New Yorks"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                        <Select
-                            {...form.getInputProps("division")}
-                            key={form.key('division')}
-                            label="Division"
-                            placeholder={"Select Division"}
-                            radius={8}
-                            data={["Software Engineer", "Web Developer", "Mobile Developer", "QA", "Analytics"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm "
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
+                <div className='px-10 top-0 z-50 sticky bg-white pt-4 h-[10%]'>
+                    <div className='flex justify-between'>
+                        <p className='text-[#559CDA] text-[22px] font-bold py-2'>{ActionTitle[action as keyof typeof ActionTitle]}</p>
+                        <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} />
                     </div>
+                    <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
+                </div>
 
-                    <div className='flex gap-4  w-full flex-col sm:flex-row'>
-                        <Select
-                            {...form.getInputProps("department")}
-                            key={form.key('department')}
-                            label="Department"
-                            placeholder={"Select Department"}
-                            radius={8}
-                            data={["Business"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                        <Select
-                            {...form.getInputProps("section")}
-                            key={form.key('section')}
-                            label="Section"
-                            placeholder={"Select Section"}
-                            radius={8}
-                            data={["Network Management", "Content Creation", "Business Analysis"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                    </div>
+                <div className='px-10 h-[84%] overflow-y-auto scrollbar2'>
 
-                    <div className='flex gap-4  w-full flex-col sm:flex-row'>
-                        <Select
-                            {...form.getInputProps("employmentType")}
-                            key={form.key('employmentType')}
-                            label="Employment Type"
-                            placeholder={"Select Employment Type"}
-                            radius={8}
-                            data={["Full-time", "Part-time"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
+                    <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5  w-full'>
+                        <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
+                        <Select key={form.key('company')} {...form.getInputProps("company")} label="Company" placeholder={"Select Company"} radius={8} data={["Cloud Innovations Ltd.", "Business Solutions Inc.", "Tech Innovations Inc.", "Innovate Solutions Ltd.", "Data Insights Corp.", "Creative Marketing Agency"]}
+                            rightSection={<IconCaretDownFilled size='18' />} className="border-none w-full text-sm" classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }} size='lg'
                         />
-                        <Select
-                            {...form.getInputProps("workplaceType")}
-                            key={form.key('workplaceType')}
-                            label="Workplace Type"
-                            placeholder={"Select Workplace Type"}
-                            radius={8}
-                            data={["Remote", "On-site"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                    </div>
 
-                    <div className='flex gap-4 flex-col sm:flex-row'>
-                        <Select
-                            {...form.getInputProps("vacancyType")}
-                            key={form.key('vacancyType')}
-                            label="Vacancy Type"
-                            placeholder={"Select Vacancy Type"}
-                            radius={8}
-                            data={["External", "Internal"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                        <Select
-                            {...form.getInputProps("experienceLevel")}
-                            key={form.key('experienceLevel')}
-                            label="Experience Level"
-                            placeholder={"Select Experience Level"}
-                            radius={8}
-                            data={["Entry-level", "Mid-level", "Senior"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            size='lg'
-                        />
-                    </div>
-
-                    <div className='flex gap-4 items-end'>
-                        <div className='w-1/2'>
-                            <Flex
-                                direction="row"
-                                justify="space-between"
-                                gap={12}
-                                className="w-full items-end"
-                            >
-                                <Popover opened={opened} position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
-                                    <Popover.Target>
-                                        <TextInput
-                                            radius="md"
-                                            size={'lg'}
-                                            readOnly
-                                            label="Vacancy Duration"
-                                            placeholder="Start Date"
-                                            className="w-full cursor-default"
-                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
-                                            rightSection={<IconCalendarMonth />}
-                                            styles={{ label: { color: "#6d6d6d" } }}
-                                            {...form.getInputProps("duration.start")}
-                                            onClick={() => {
-                                                setOpened((o) => !o)
-                                                setOpened2((o) => o ? false : o)
-                                            }}
-                                        />
-                                    </Popover.Target>
-                                    <Popover.Dropdown className="w-full">
-                                        <DatePicker
-                                            firstDayOfWeek={0}
-                                            numberOfColumns={2}
-                                            type="range"
-                                            value={vacancyDuration}
-                                            onChange={(e) => {
-                                                if (e[0] != null)
-                                                    form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
-                                                if (e[1] != null)
-                                                    form.setFieldValue('duration.end', DateTimeUtils.dayWithDate(`${e[1]?.toString()}`))
-                                                setVacancyDuration(e)
-                                            }}
-                                        />
-                                    </Popover.Dropdown>
-                                </Popover>
-                                <Popover opened={opened2} position="bottom" shadow="md">
-                                    <Popover.Target>
-                                        <TextInput
-                                            radius="md"
-                                            size={'lg'}
-                                            readOnly
-                                            label={""}
-                                            placeholder="End Date"
-                                            rightSection={<IconCalendarMonth />}
-                                            className="w-full"
-                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
-                                            styles={{ label: { color: "#6d6d6d" } }}
-                                            {...form.getInputProps("duration.end")}
-                                            onClick={() => {
-                                                setOpened((o) => o ? false : o)
-                                                setOpened2((o) => !o)
-                                            }}
-                                        />
-                                    </Popover.Target>
-                                    <Popover.Dropdown>
-                                        <DatePicker
-                                            numberOfColumns={2}
-                                            type="range"
-                                            value={vacancyDuration}
-                                            onChange={(e) => {
-                                                if (e[0] != null)
-                                                    form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
-                                                if (e[1] != null)
-                                                    form.setFieldValue('duration.end', DateTimeUtils.dayWithDate(`${e[1]?.toString()}`))
-                                                setVacancyDuration(e)
-                                            }}
-                                        />
-                                    </Popover.Dropdown>
-                                </Popover>
-                            </Flex>
+                        <div className='flex flex-col lg:flex-row gap-4  w-full'>
+                            <Select
+                                {...form.getInputProps("branch")}
+                                key={form.key('branch')}
+                                label="Branch"
+                                placeholder={"Select Branch"}
+                                radius={8}
+                                data={["Remote Team", "San Francisco", "New Yorks"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                            <Select
+                                {...form.getInputProps("division")}
+                                key={form.key('division')}
+                                label="Division"
+                                placeholder={"Select Division"}
+                                radius={8}
+                                data={["Software Engineer", "Web Developer", "Mobile Developer", "QA", "Analytics"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm "
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
                         </div>
-                        <TextInput className='w-1/2 text-[#6D6D6D]' key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
-                    </div>
 
-                    <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
-                    <div className={`border ${form.errors.jobDescription ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
-                        <RichTextEditor editor={editor}>
-                            <RichTextEditor.Toolbar sticky>
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Bold />
-                                    <RichTextEditor.Italic />
-                                    <RichTextEditor.Underline />
-                                    <RichTextEditor.Strikethrough />
-                                    <RichTextEditor.ClearFormatting />
-                                    <RichTextEditor.Highlight />
-                                    <RichTextEditor.Code />
-                                </RichTextEditor.ControlsGroup>
+                        <div className='flex gap-4  w-full flex-col sm:flex-row'>
+                            <Select
+                                {...form.getInputProps("department")}
+                                key={form.key('department')}
+                                label="Department"
+                                placeholder={"Select Department"}
+                                radius={8}
+                                data={["Business"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                            <Select
+                                {...form.getInputProps("section")}
+                                key={form.key('section')}
+                                label="Section"
+                                placeholder={"Select Section"}
+                                radius={8}
+                                data={["Network Management", "Content Creation", "Business Analysis"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                        </div>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.H1 />
-                                    <RichTextEditor.H2 />
-                                    <RichTextEditor.H3 />
-                                    <RichTextEditor.H4 />
-                                </RichTextEditor.ControlsGroup>
+                        <div className='flex gap-4  w-full flex-col sm:flex-row'>
+                            <Select
+                                {...form.getInputProps("employmentType")}
+                                key={form.key('employmentType')}
+                                label="Employment Type"
+                                placeholder={"Select Employment Type"}
+                                radius={8}
+                                data={["Full-time", "Part-time"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                            <Select
+                                {...form.getInputProps("workplaceType")}
+                                key={form.key('workplaceType')}
+                                label="Workplace Type"
+                                placeholder={"Select Workplace Type"}
+                                radius={8}
+                                data={["Remote", "On-site"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                        </div>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Blockquote />
-                                    <RichTextEditor.Hr />
-                                    <RichTextEditor.BulletList />
-                                    <RichTextEditor.OrderedList />
-                                    <RichTextEditor.Subscript />
-                                    <RichTextEditor.Superscript />
-                                </RichTextEditor.ControlsGroup>
+                        <div className='flex gap-4 flex-col sm:flex-row'>
+                            <Select
+                                {...form.getInputProps("vacancyType")}
+                                key={form.key('vacancyType')}
+                                label="Vacancy Type"
+                                placeholder={"Select Vacancy Type"}
+                                radius={8}
+                                data={["External", "Internal"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                            <Select
+                                {...form.getInputProps("experienceLevel")}
+                                key={form.key('experienceLevel')}
+                                label="Experience Level"
+                                placeholder={"Select Experience Level"}
+                                radius={8}
+                                data={["Entry-level", "Mid-level", "Senior"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                size='lg'
+                            />
+                        </div>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Link />
-                                    <RichTextEditor.Unlink />
-                                </RichTextEditor.ControlsGroup>
+                        <div className='flex gap-4 items-end'>
+                            <div className='w-1/2'>
+                                <Flex
+                                    direction="row"
+                                    justify="space-between"
+                                    gap={12}
+                                    className="w-full items-end"
+                                >
+                                    <Popover opened={opened} position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
+                                        <Popover.Target>
+                                            <TextInput
+                                                radius="md"
+                                                size={'lg'}
+                                                readOnly
+                                                label="Vacancy Duration"
+                                                placeholder="Start Date"
+                                                className="w-full cursor-default"
+                                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
+                                                rightSection={<IconCalendarMonth />}
+                                                styles={{ label: { color: "#6d6d6d" } }}
+                                                {...form.getInputProps("duration.start")}
+                                                onClick={() => {
+                                                    setOpened((o) => !o)
+                                                    setOpened2((o) => o ? false : o)
+                                                }}
+                                            />
+                                        </Popover.Target>
+                                        <Popover.Dropdown className="w-full">
+                                            <DatePicker
+                                                firstDayOfWeek={0}
+                                                numberOfColumns={2}
+                                                type="range"
+                                                value={vacancyDuration}
+                                                onChange={(e) => {
+                                                    if (e[0] != null)
+                                                        form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
+                                                    if (e[1] != null)
+                                                        form.setFieldValue('duration.end', DateTimeUtils.dayWithDate(`${e[1]?.toString()}`))
+                                                    setVacancyDuration(e)
+                                                }}
+                                            />
+                                        </Popover.Dropdown>
+                                    </Popover>
+                                    <Popover opened={opened2} position="bottom" shadow="md">
+                                        <Popover.Target>
+                                            <TextInput
+                                                radius="md"
+                                                size={'lg'}
+                                                readOnly
+                                                label={""}
+                                                placeholder="End Date"
+                                                rightSection={<IconCalendarMonth />}
+                                                className="w-full"
+                                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
+                                                styles={{ label: { color: "#6d6d6d" } }}
+                                                {...form.getInputProps("duration.end")}
+                                                onClick={() => {
+                                                    setOpened((o) => o ? false : o)
+                                                    setOpened2((o) => !o)
+                                                }}
+                                            />
+                                        </Popover.Target>
+                                        <Popover.Dropdown>
+                                            <DatePicker
+                                                numberOfColumns={2}
+                                                type="range"
+                                                value={vacancyDuration}
+                                                onChange={(e) => {
+                                                    if (e[0] != null)
+                                                        form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
+                                                    if (e[1] != null)
+                                                        form.setFieldValue('duration.end', DateTimeUtils.dayWithDate(`${e[1]?.toString()}`))
+                                                    setVacancyDuration(e)
+                                                }}
+                                            />
+                                        </Popover.Dropdown>
+                                    </Popover>
+                                </Flex>
+                            </div>
+                            <TextInput className='w-1/2 text-[#6D6D6D]' key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
+                        </div>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.AlignLeft />
-                                    <RichTextEditor.AlignCenter />
-                                    <RichTextEditor.AlignJustify />
-                                    <RichTextEditor.AlignRight />
-                                </RichTextEditor.ControlsGroup>
+                        <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
+                        <div className={`border ${form.errors.jobDescription ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
+                            <RichTextEditor editor={editor}>
+                                <RichTextEditor.Toolbar sticky>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Bold />
+                                        <RichTextEditor.Italic />
+                                        <RichTextEditor.Underline />
+                                        <RichTextEditor.Strikethrough />
+                                        <RichTextEditor.ClearFormatting />
+                                        <RichTextEditor.Highlight />
+                                        <RichTextEditor.Code />
+                                    </RichTextEditor.ControlsGroup>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Undo />
-                                    <RichTextEditor.Redo />
-                                </RichTextEditor.ControlsGroup>
-                            </RichTextEditor.Toolbar>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.H1 />
+                                        <RichTextEditor.H2 />
+                                        <RichTextEditor.H3 />
+                                        <RichTextEditor.H4 />
+                                    </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.Content className={`border ${form.errors.jobDescription ? 'text-red-500' : ''}`} />
-                        </RichTextEditor>
-                        {form.errors.jobDescription && (
-                            <Text className='absolute' color="red" size="sm">
-                                {form.errors.jobDescription}
-                            </Text>
-                        )}
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Blockquote />
+                                        <RichTextEditor.Hr />
+                                        <RichTextEditor.BulletList />
+                                        <RichTextEditor.OrderedList />
+                                        <RichTextEditor.Subscript />
+                                        <RichTextEditor.Superscript />
+                                    </RichTextEditor.ControlsGroup>
 
-                    </div>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Link />
+                                        <RichTextEditor.Unlink />
+                                    </RichTextEditor.ControlsGroup>
 
-                    <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
-                        {...form.getInputProps("mustHaveSkills")}
-                        key={form.key('mustHaveSkills')}
-                        classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]', pill: 'poppins text-[#6D6D6D]' }}
-                        className='w-full'
-                        placeholder="Type keyword to set required skills."
-                        data={[]}
-                        searchable
-                        value={mustHaveSkills}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                    />
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.AlignLeft />
+                                        <RichTextEditor.AlignCenter />
+                                        <RichTextEditor.AlignJustify />
+                                        <RichTextEditor.AlignRight />
+                                    </RichTextEditor.ControlsGroup>
 
-                    <p className='text-[#6D6D6D] text-lg'>Qualification</p>
-                    <div className={`border ${form.errors.qualification ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
-                        <RichTextEditor editor={editor2}>
-                            <RichTextEditor.Toolbar sticky>
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Bold />
-                                    <RichTextEditor.Italic />
-                                    <RichTextEditor.Underline />
-                                    <RichTextEditor.Strikethrough />
-                                    <RichTextEditor.ClearFormatting />
-                                    <RichTextEditor.Highlight />
-                                    <RichTextEditor.Code />
-                                </RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Undo />
+                                        <RichTextEditor.Redo />
+                                    </RichTextEditor.ControlsGroup>
+                                </RichTextEditor.Toolbar>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.H1 />
-                                    <RichTextEditor.H2 />
-                                    <RichTextEditor.H3 />
-                                    <RichTextEditor.H4 />
-                                </RichTextEditor.ControlsGroup>
+                                <RichTextEditor.Content className={`border ${form.errors.jobDescription ? 'text-red-500' : ''}`} />
+                            </RichTextEditor>
+                            {form.errors.jobDescription && (
+                                <Text className='absolute' color="red" size="sm">
+                                    {form.errors.jobDescription}
+                                </Text>
+                            )}
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Blockquote />
-                                    <RichTextEditor.Hr />
-                                    <RichTextEditor.BulletList />
-                                    <RichTextEditor.OrderedList />
-                                    <RichTextEditor.Subscript />
-                                    <RichTextEditor.Superscript />
-                                </RichTextEditor.ControlsGroup>
+                        </div>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Link />
-                                    <RichTextEditor.Unlink />
-                                </RichTextEditor.ControlsGroup>
+                        <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
+                            {...form.getInputProps("mustHaveSkills")}
+                            key={form.key('mustHaveSkills')}
+                            classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]', pill: 'poppins text-[#6D6D6D]' }}
+                            className='w-full'
+                            placeholder="Type keyword to set required skills."
+                            data={[]}
+                            searchable
+                            value={mustHaveSkills}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                        />
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.AlignLeft />
-                                    <RichTextEditor.AlignCenter />
-                                    <RichTextEditor.AlignJustify />
-                                    <RichTextEditor.AlignRight />
-                                </RichTextEditor.ControlsGroup>
+                        <p className='text-[#6D6D6D] text-lg'>Qualification</p>
+                        <div className={`border ${form.errors.qualification ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
+                            <RichTextEditor editor={editor2}>
+                                <RichTextEditor.Toolbar sticky>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Bold />
+                                        <RichTextEditor.Italic />
+                                        <RichTextEditor.Underline />
+                                        <RichTextEditor.Strikethrough />
+                                        <RichTextEditor.ClearFormatting />
+                                        <RichTextEditor.Highlight />
+                                        <RichTextEditor.Code />
+                                    </RichTextEditor.ControlsGroup>
 
-                                <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Undo />
-                                    <RichTextEditor.Redo />
-                                </RichTextEditor.ControlsGroup>
-                            </RichTextEditor.Toolbar>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.H1 />
+                                        <RichTextEditor.H2 />
+                                        <RichTextEditor.H3 />
+                                        <RichTextEditor.H4 />
+                                    </RichTextEditor.ControlsGroup>
 
-                            <RichTextEditor.Content className={`border ${form.errors.jobDescription ? 'text-red-500' : ''}`} />
-                        </RichTextEditor>
-                        {form.errors.qualification && (
-                            <Text className='absolute' color="red" size="sm">
-                                {form.errors.qualification}
-                            </Text>
-                        )}
-                    </div>
-                    <Button
-                        type="submit"
-                        className="br-gradient border-none text-white w-[10%] self-end"
-                        variant="transparent"
-                        radius={10}
-                    >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}</Button>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Blockquote />
+                                        <RichTextEditor.Hr />
+                                        <RichTextEditor.BulletList />
+                                        <RichTextEditor.OrderedList />
+                                        <RichTextEditor.Subscript />
+                                        <RichTextEditor.Superscript />
+                                    </RichTextEditor.ControlsGroup>
 
-                </form>
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Link />
+                                        <RichTextEditor.Unlink />
+                                    </RichTextEditor.ControlsGroup>
+
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.AlignLeft />
+                                        <RichTextEditor.AlignCenter />
+                                        <RichTextEditor.AlignJustify />
+                                        <RichTextEditor.AlignRight />
+                                    </RichTextEditor.ControlsGroup>
+
+                                    <RichTextEditor.ControlsGroup>
+                                        <RichTextEditor.Undo />
+                                        <RichTextEditor.Redo />
+                                    </RichTextEditor.ControlsGroup>
+                                </RichTextEditor.Toolbar>
+
+                                <RichTextEditor.Content className={`border ${form.errors.jobDescription ? 'text-red-500' : ''}`} />
+                            </RichTextEditor>
+                            {form.errors.qualification && (
+                                <Text className='absolute' color="red" size="sm">
+                                    {form.errors.qualification}
+                                </Text>
+                            )}
+                        </div>
+
+                    </form>
+
+
+                </div>
+
+                <div className='h-[5%] flex justify-end z-40 px-10 py-1'>
+                    {/* <div className='w-full '> */}
+                        <Button
+                            type="submit"
+                            className=" br-gradient border-none text-white w-[10%] "
+                            variant="transparent"
+                            radius={10}
+                        >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}
+                        </Button>
+                    {/* </div> */}
+                </div>
+
             </div>
         </Modal>
     )
