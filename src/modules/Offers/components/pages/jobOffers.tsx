@@ -169,22 +169,8 @@ export default function index() {
             <PDFModal isOpen={!!selectedRow} onClose={() => setSelectedRow(null)} header="Generate Job Offer">
                 {selectedRow && (
                     <PDFViewer width="100%" height="891" style={{ border: "1px solid #ccc", borderRadius: "8px" }}>
-                        <MyDocument
-                            Name=''
-                            Position=''
-                            Department=''
-                            Remarks=''
-                            Salary_Monthly=''
-                            Salary_Yearly=''
-                            Note_Salary=''
-                            Merit_Increase=''
-                            Description_VL=''
-                            Description_SL=''
-                            Description_BL=''
-                            Benefit_Paternity=''
-                            Benefit_Maternity=''
-                            Description_Transpo=''
-                            Acknowledgement=''
+                        <PDFDocument
+                        {...selectedRow}
                         />
                     </PDFViewer>
                 )}

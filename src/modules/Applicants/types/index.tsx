@@ -16,7 +16,7 @@ export interface Applicants {
     Phone: string;
     Email: string;
     Position: string;
-    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred";
+    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred" | "Transfer Employee";
 }
 
 export interface FilterState {

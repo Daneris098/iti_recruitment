@@ -12,11 +12,11 @@ import TransferPosition from "@src/modules/Applicants/components/documents/butto
 import { useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
 import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer"
 import ApplicantModal from "../../modal/dropdownOfferedModal";
-import ViewPDF from "@modules/Offers/components/modal/pdfModal"
-import MyDocument from "@modules/Offers/components/documents/PDF"
+import ViewPDF from "@modules/Applicants/components/modal/pdfModal"
+import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
 import { PDFViewer } from "@react-pdf/renderer";
 
-export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date, IsJobOffer }: ViewApplicantsProps) {
+export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date, IsJobOffer, Acknowledgement, Department }: ViewApplicantsProps) {
 
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
@@ -271,24 +271,15 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
             </div>
 
             {/* PDF */}
-            <ViewPDF  isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
+            <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
                 <PDFViewer width="100%" height="891" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
-                    <MyDocument
-                        Name={Applicant_Name}
+                    <PDFDocument
+                        Applicant_Name={Applicant_Name}
                         Position={Position}
-                        Department=''
-                        Remarks={Status}
-                        Salary_Monthly=''
-                        Salary_Yearly=''
-                        Note_Salary=''
-                        Merit_Increase=''
-                        Description_VL=''
-                        Description_SL=''
-                        Description_BL=''
-                        Benefit_Paternity=''
-                        Benefit_Maternity=''
-                        Description_Transpo=''
-                        Acknowledgement=''
+                        Remarks={Remarks}
+                        Acknowledgement={Acknowledgement}
+                        Department={Department}
+                        
                     />
                 </PDFViewer>
             </ViewPDF>

@@ -129,7 +129,7 @@ export default function Filter() {
                   : null
               )
             )}
-
+            {filter.company.length > 0 && renderSinglePill('Interviewer', filter.company.join(' , '))}
           </div>
         </div>
       )}
