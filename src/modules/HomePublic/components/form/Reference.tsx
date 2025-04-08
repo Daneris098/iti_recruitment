@@ -102,6 +102,7 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 label={`Character Reference ${index + 1}`}
                                 placeholder="Full Name"
+                                withAsterisk
                             />
                             <TextInput
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -148,6 +149,7 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 label={`Employment Reference ${index + 1}`}
                                 placeholder="Full Name"
+                                withAsterisk
                             />
                             <TextInput
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}

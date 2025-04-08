@@ -270,17 +270,18 @@ export default function index() {
 
                         <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                         <div className="flex flex-col sm:flex-row gap-4 items-end relative">
-                            <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.nameOfSchool`)} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
-                            <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.educationalLevel`)} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
+                            <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.nameOfSchool`)} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
+                            <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.educationalLevel`)} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
                             {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEducationBackground(item.id) }} />)}
                         </div>
 
                         <div className="flex flex-col items-end sm:flex-row gap-4">
-                            <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`educationBackground.${index}.course`)} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
+                            <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`educationBackground.${index}.course`)} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
                             <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
 
 
                                 <YearPickerInput
+                                    withAsterisk
                                     {...form.getInputProps(`educationBackground.${index}.yearsAttended.from`)}
                                     w={isMobile ? '100%' : '100%'}
                                     label="Years Attended"

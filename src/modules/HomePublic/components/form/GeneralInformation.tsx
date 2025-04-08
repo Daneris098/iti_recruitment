@@ -19,13 +19,12 @@ export default function index() {
         initialValues: applicationForm.generalInformation,
         validate: {
             firstChoice: (value: string) => value === null || value === '' ? "First choice is required" : null,
-            secondChoice: (value: string) => value === null || value === '' ? "Second choice is required" : null,
             desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
             startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
             personalInformation: {
                 fullname: {
-                    firstName: (value: string) => !value.trim()  ? "First name is required" : null,
+                    firstName: (value: string) => !value.trim() ? "First name is required" : null,
                     middleName: (value: string) => !value.trim() ? "(Write N/A if not applicable)" : null,
                     lastName: (value: string) => !value.trim() ? "Last name is required" : null,
                     suffix: (value: string) => !value.trim() ? "(Write N/A if not applicable)" : null,
@@ -58,7 +57,7 @@ export default function index() {
                 religion: (value: string) => value.length === 0 ? "Religion is required" : null,
                 age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
                 gender: (value: string) => value.length === 0 ? "Gender is required" : null,
-                height: (value: number | null) => value  === null ? "Height is required" : null,
+                height: (value: number | null) => value === null ? "Height is required" : null,
                 weight: (value: number | null) => value === null ? "Weight is required" : null,
                 civilStatus: (value: string) => value.length === 0 ? "Civil Status is required" : null,
                 mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
@@ -80,13 +79,30 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
+    useEffect(() => {
+        const dateOfBirth = form.getValues().personalInformation.dateOfBirth;
+
+        const birthDate = new Date(dateOfBirth);
+        let age = new Date().getFullYear() - birthDate.getFullYear();
+        const monthDifference = new Date().getMonth() - birthDate.getMonth();
+
+        // Adjust if the birthday hasn't occurred yet this year
+        if (monthDifference < 0 || (monthDifference === 0 && new Date().getDate() < birthDate.getDate())) {
+            age--;
+        }
+        form.setFieldValue('personalInformation.age', age);
+        // form.setValues({ ...form.getValues(), personalInformation: { ...form.getValues().personalInformation, age: age } });
+        // setApplicationForm({ ...applicationForm, generalInformation: { ...applicationForm.generalInformation, personalInformation: { ...applicationForm.generalInformation.personalInformation, age: age } } });
+    }, [form.getValues().personalInformation.dateOfBirth]);
+
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
-            <div className="text-[#6D6D6D] flex flex-col gap-4">
+            <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                <div className="flex flex-col sm:flex-row gap-4 items-end ">
                     <Select
+                        withAsterisk
                         {...form.getInputProps("firstChoice")}
                         w={isMobile ? '25%' : '100%'}
                         label="Position Applying for - First Choice"
@@ -114,7 +130,7 @@ export default function index() {
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <NumberInput hideControls min={1} {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
+                    <NumberInput withAsterisk hideControls min={1} {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
                     <Popover
                         position="bottom"
                         shadow="md"
@@ -123,6 +139,7 @@ export default function index() {
                     >
                         <Popover.Target>
                             <TextInput
+                                withAsterisk
                                 {...form.getInputProps("startDateAvailability")}
                                 key={form.key('startDateAvailability')}
                                 radius='md' w={isMobile ? '25%' : '100%'}
@@ -144,14 +161,14 @@ export default function index() {
                 <p className="font-bold">Personal Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Full Name <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Last Name" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Last Name" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="First Name" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Middle Name" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Suffix(Jr. Sr. etc.)" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative  ">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Present Address <span className="text-[#A8A8A8] absolute">(Write N/A if not applicable)</span></p>} placeholder="Unit no." />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute">(Write N/A if not applicable)</span></p>} placeholder="Unit no." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.street")} key={form.key('personalInformation.presentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.subdivision")} key={form.key('personalInformation.presentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
@@ -222,7 +239,7 @@ export default function index() {
                                 }
                             }}
                         />
-                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
+                        <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
                     </div>
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
@@ -288,6 +305,7 @@ export default function index() {
                     >
                         <Popover.Target>
                             <TextInput
+                                withAsterisk
                                 {...form.getInputProps("personalInformation.dateOfBirth")}
                                 key={form.key('personalInformation.dateOfBirth')}
                                 radius='md' w={isMobile ? '25%' : '100%'}
@@ -305,11 +323,11 @@ export default function index() {
                         </Popover.Dropdown>
                     </Popover>
 
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.placeOfBirth")} radius='md' w={isMobile ? '25%' : '100%'} label="Place of birth" placeholder="Place of birth" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.age")} radius='md' w={isMobile ? '25%' : '100%'} label="Age" placeholder="Age" />
-                    {/* <TextInput classNames={{ input: 'poppins' }} {...form.getInputProps("personalInformation.gender")} radius='md' w={isMobile ? '25%' : '100%'} label="Gender" placeholder="Gender" /> */}
+                    <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.placeOfBirth")} radius='md' w={isMobile ? '25%' : '100%'} label="Place of birth" placeholder="Place of birth" />
+                    <TextInput disabled classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key('personalInformation.age')} {...form.getInputProps("personalInformation.age")} radius='md' w={isMobile ? '25%' : '100%'} label="Age" placeholder="Age" />
 
                     <Select
+                        withAsterisk
                         key={form.key('personalInformation.gender')}
                         {...form.getInputProps("personalInformation.gender")}
                         w={isMobile ? '25%' : '100%'}
@@ -326,17 +344,17 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
-                    <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
+                    <NumberInput hideControls withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
+                    <NumberInput hideControls withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
+                    <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
+                    <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
                 </div>
 
 
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>
 

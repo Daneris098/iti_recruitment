@@ -53,29 +53,30 @@ export default function index() {
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }} >
-                <div className='h-[85vh] flex flex-col gap-3 '>
+                <div className='h-[85vh] flex flex-col gap-3 py-3'>
 
+                    {/* header */}
                     <div className='top-0 z-50 sticky bg-white m-auto w-[95%]'>
                         <div className='flex justify-between'>
                             <p className='text-[#559CDA] text-[22px] font-bold py-2'>{(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}</p>
                             <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setApplicationFormModal(false); }} />
                         </div>
-                        {activeStepper != Step.Oath && (<Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />)}
+                        <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                     </div>
-
-
 
                     {activeStepper != Step.Preview && activeStepper != Step.Oath && (<div className='w-[80%] m-auto pb-12 hidden sm:block'>
                         <Stepper />
                     </div>)}
 
+                    {/* body */}
                     <div className='w-full px-8 h-[80%] overflow-y-auto scrollbar2'>
                         {currentStepComponent}
                     </div>
 
                     <LoadingOverlay visible={submitLoading} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
 
-                    <div className='px-8 flex justify-end'>
+                    {/* footer */}
+                    <div className='px-8 py-3 flex justify-end'>
 
 
                         <div className={cn('flex gap-2 self-end w-[100%] sm:w-[25%] ', (activeStepper === Step.GeneralInformation) && 'sm:w-[10%]', (activeStepper === Step.Oath) && 'sm:w-[100%] justify-between')}>
