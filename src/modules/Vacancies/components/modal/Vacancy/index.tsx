@@ -163,9 +163,11 @@ export default function index() {
                 title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 body: { padding: '0' }
             }} >
-            <div className='m-auto w-full poppins text-[#6D6D6D] h-[85vh]'>
 
-                <div className='px-10 top-0 z-50 sticky bg-white pt-4 h-[10%]'>
+            <div className='poppins h-[85vh] flex flex-col gap-3 py-3 text-[#6D6D6D]'>
+
+                {/* header */}
+                <div className='px-10 top-0 z-50 sticky  pt-4'>
                     <div className='flex justify-between'>
                         <p className='text-[#559CDA] text-[22px] font-bold py-2'>{ActionTitle[action as keyof typeof ActionTitle]}</p>
                         <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} />
@@ -173,7 +175,8 @@ export default function index() {
                     <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                 </div>
 
-                <div className='px-10 h-[84%] overflow-y-auto scrollbar2'>
+                {/* body */}
+                <div className='px-10 h-[80%] overflow-y-auto scrollbar2'>
 
                     <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5  w-full'>
                         <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
@@ -377,10 +380,10 @@ export default function index() {
                                     </Popover>
                                 </Flex>
                             </div>
-                            <TextInput className='w-1/2 text-[#6D6D6D]' key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
+                            <TextInput className='w-1/2 text-[#6D6D6D]' classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
                         </div>
-
-                        <p className='text-[#6D6D6D] text-lg ' >Job Description</p>
+                        <p className='poppins text-[#6D6D6D] p-1 m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label text-lg'>Job Description</p>
+                        {/* <p className='text-[#6D6D6D] ' >Job Description</p> */}
                         <div className={`border ${form.errors.jobDescription ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
                             <RichTextEditor editor={editor}>
                                 <RichTextEditor.Toolbar sticky>
@@ -438,7 +441,7 @@ export default function index() {
 
                         </div>
 
-                        <MultiSelect radius='md' size="lg" label="Must have Skills" ref={myRef}
+                        <MultiSelect radius='md' size="lg" label="Must-have Skills" ref={myRef}
                             {...form.getInputProps("mustHaveSkills")}
                             key={form.key('mustHaveSkills')}
                             classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]', pill: 'poppins text-[#6D6D6D]' }}
@@ -451,7 +454,7 @@ export default function index() {
                             onKeyDown={handleKeyDown}
                         />
 
-                        <p className='text-[#6D6D6D] text-lg'>Qualification</p>
+                        <p className='poppins text-[#6D6D6D] p-1 m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label text-lg'>Qualification</p>
                         <div className={`border ${form.errors.qualification ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
                             <RichTextEditor editor={editor2}>
                                 <RichTextEditor.Toolbar sticky>
@@ -513,15 +516,17 @@ export default function index() {
 
                 </div>
 
-                <div className='h-[5%] flex justify-end z-40 px-10 py-1'>
+                {/* footer */}
+                <div className='flex justify-end z-40 px-10 items-center  py-3 '>
                     {/* <div className='w-full '> */}
-                        <Button
-                            type="submit"
-                            className=" br-gradient border-none text-white w-[10%] "
-                            variant="transparent"
-                            radius={10}
-                        >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}
-                        </Button>
+                    <Button
+                        color='white'
+                        type="submit"
+                        className=" br-gradient2 border-none w-[10%] "
+                        variant="transparent"
+                        radius={10}
+                    >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}
+                    </Button>
                     {/* </div> */}
                 </div>
 

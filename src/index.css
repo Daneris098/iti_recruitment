@@ -30,6 +30,21 @@
   );
 }
 
+.br-gradient2 {
+  background-image: linear-gradient(
+    to right,
+    #559cda,
+    #7badff,
+    #ffb58d,
+    #ed8028
+  );
+}
+
+.br-gradient2:hover {
+  background-color: rgb(85, 156, 218); /* Change to blue on hover */
+  background-image: none; /* Remove the gradient on hover */
+}
+
 button.mantine-Pagination-control[data-active="true"] {
   @apply bg-[#559CDA] text-white;
 }

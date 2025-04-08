@@ -98,14 +98,17 @@ const Organization = forwardRef((_, ref) => {
                     <Divider size={3} color="#ebe5e5" />
                 </div>
                 <div className="flex flex-col">
-                    {accountSetupForm.organization.companyList.map((company, index) =>
-                        <div className="flex items-end gap-6 flex-col sm:flex-row relative ">
-                            <TextInput withAsterisk {...form.getInputProps(`companyList.${index}.code`)} classNames={{ input: 'poppins text-[#6D6D6D] ' }} radius={"md"} size="md" label="Company Code" placeholder="First Name" className="w-full sm:w-1/2" />
-                            <TextInput withAsterisk {...form.getInputProps(`companyList.${index}.name`)} classNames={{ input: 'poppins text-[#6D6D6D] ' }} radius={"md"} size="md" label="Company Name" placeholder="Last Name" className="w-full sm:w-1/2" />
-                            {index != 0 && (<IconCircleMinus size={35} className="cursor-pointer absolute right-[-3%]" onClick={() => { removeFieldCompany(company.id) }} />)}
-                        </div>
-                    )}
-                    <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={() => { addFieldCompany() }}><IconCirclePlus size={20} />Add Company</p>
+                    <div className="flex flex-col gap-4">
+                        {accountSetupForm.organization.companyList.map((company, index) =>
+                            <div className="flex items-end gap-6 flex-col sm:flex-row relative ">
+                                <TextInput withAsterisk {...form.getInputProps(`companyList.${index}.code`)} classNames={{ input: 'poppins text-[#6D6D6D] ' }} radius={"md"} size="md" label="Company Code" placeholder="First Name" className="w-full sm:w-1/2" />
+                                <TextInput withAsterisk {...form.getInputProps(`companyList.${index}.name`)} classNames={{ input: 'poppins text-[#6D6D6D] ' }} radius={"md"} size="md" label="Company Name" placeholder="Last Name" className="w-full sm:w-1/2" />
+                                {index != 0 && (<IconCircleMinus size={35} className="cursor-pointer absolute right-[-3%]" onClick={() => { removeFieldCompany(company.id) }} />)}
+                            </div>
+                        )}
+                    </div>
+
+                    <p className="mt-6 w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-2" onClick={() => { addFieldCompany() }}><IconCirclePlus size={20} />Add Company</p>
                 </div>
 
                 <div className="flex flex-col gap-2">
