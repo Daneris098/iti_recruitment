@@ -1,4 +1,4 @@
-import { IconCaretDownFilled, IconCirclePlus, IconPencil, IconTrashFilled } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCirclePlus, IconCircleX, IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { DataTable } from "mantine-datatable";
 import { ApplicationSourceStore } from "@modules/HiringSettings/store"
@@ -26,9 +26,15 @@ const ApplicationSource = forwardRef((_, ref) => {
             },
             {
                 accessor: 'lastModified', title: ('Last Modified'), sortable: true,
-                render: (data: any) => (
-                    <p>{data.lastModified}</p>
-                )
+                render: (data: any) => applicationEditMode[data.id] ?
+                    <TextInput
+                        disabled
+                        className="w-full cursor-default"
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                        value={applicationEditableData[data.id]?.lastModified || data.lastModified}
+                    />
+                    : <p>{data.lastModified}</p>
             },
             {
                 accessor: 'status', title: 'Status', sortable: true,
@@ -47,15 +53,16 @@ const ApplicationSource = forwardRef((_, ref) => {
                             }}
                             defaultValue={applicationEditableData[data.id]?.status || data.status}
                         />
-
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedApplicationEditMode = Object.fromEntries(Object.entries(applicationEditMode).filter(([key]) => key != data.id));
                             const updatedInterviewStagesEditableData = Object.fromEntries(Object.entries(applicationEditableData).filter(([key]) => key != data.id));
                             const updatedApplicationNewRow = applicationNewRow.filter((row) => row.id !== data.id);
                             setApplicationEditMode(updatedApplicationEditMode);
                             setApplicationEditableData(updatedInterviewStagesEditableData);
                             setApplcationNewRow(updatedApplicationNewRow);
-                        }} />
+                        }}>
+                            {applicationSources.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
 
                     </div>
                 ) :
@@ -70,11 +77,16 @@ const ApplicationSource = forwardRef((_, ref) => {
         ];
 
     const addNewRow = () => {
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
         const newRow: applicationSource = {
             id: Math.max(...applicationSources.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
             sourceName: '',
             status: 'ACTIVE',
-            lastModified: '',
+            lastModified: currentDate,
         };
         setApplcationNewRow(prev => [...prev, newRow]);
         setApplicationEditMode(prev => ({ ...prev, [newRow.id]: true }));

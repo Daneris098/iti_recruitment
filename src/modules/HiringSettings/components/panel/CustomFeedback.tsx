@@ -1,6 +1,6 @@
-import { useState, forwardRef, useImperativeHandle } from 'react';
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCancel, IconCircleX } from "@tabler/icons-react";
 import { TextInput } from '@mantine/core';
 import { FeedbackStore } from '@modules/HiringSettings/store';
 import { feedback } from '@modules/HiringSettings/types';
@@ -16,8 +16,9 @@ const CustomFeedback = forwardRef((_, ref) => {
     const [hiringEditableData, setHiringEditableData] = useState<{ [key: number]: Partial<feedback> }>({});
     const [hiringNewRows, setHiringNewRows] = useState<feedback[]>([]);
 
+    type FeedbackMode = "applicantFeedback" | "hiringFeedback";
 
-    const toggleEditMode = (id: number, mode: string) => {
+    const toggleEditMode = (id: number, mode: FeedbackMode) => {
         if (mode === 'applicantFeedback') {
             // Toggle the edit mode for the specific id
             setApplicantEditMode(prevEditMode => ({
@@ -148,6 +149,10 @@ const CustomFeedback = forwardRef((_, ref) => {
         }
     }));
 
+    useEffect(() => {
+        console.log('applicantFeedback: ', applicantFeedback)
+    }, [])
+
     const columns: any = {
         applicantFeedback: [
             {
@@ -160,25 +165,33 @@ const CustomFeedback = forwardRef((_, ref) => {
                         </div>
                     </div>
                 ), sortable: false,
-                render: (data: any) => applicantEditMode[data.id] ? (
-                    <TextInput
-                        value={applicantEditableData[data.id]?.feedback || data.feedback}
-                        onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'applicantFeedback')}
-                        rightSection={<IconTrashFilled className='cursor-pointer' onClick={() => {
-                            const updatedEditMode = Object.fromEntries(Object.entries(applicantEditMode).filter(([key]) => key != data.id));
-                            const updatedApplicantEditableData = Object.fromEntries(Object.entries(applicantEditableData).filter(([key]) => key != data.id));
-                            const updatedNewRows = applicantNewRows.filter((row) => row.id !== data.id);
-                            setApplicantEditableData(updatedApplicantEditableData);
-                            setApplicantEditMode(updatedEditMode);
-                            setApplicantNewRows(updatedNewRows);
-                        }} />}
-                    />
-                ) : <div className='flex justify-between'>
-                    <p>{data.feedback}</p>
-                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.id, 'applicantFeedback')}>
-                        {applicantEditMode[data.id] ? '' : <IconPencil />}
-                    </div>
-                </div>,
+                render: (data: any) => applicantEditMode[data.id] ?
+                    (
+                        <TextInput
+                            className='w-full'
+                            value={applicantEditableData[data.id]?.feedback || data.feedback}
+                            onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'applicantFeedback')}
+                            rightSection={
+                                <div onClick={() => {
+                                    const updatedEditMode = Object.fromEntries(Object.entries(applicantEditMode).filter(([key]) => key != data.id));
+                                    const updatedApplicantEditableData = Object.fromEntries(Object.entries(applicantEditableData).filter(([key]) => key != data.id));
+                                    const updatedNewRows = applicantNewRows.filter((row) => row.id !== data.id);
+                                    setApplicantEditableData(updatedApplicantEditableData);
+                                    setApplicantEditMode(updatedEditMode);
+                                    setApplicantNewRows(updatedNewRows);
+                                }}>
+                                    {applicantFeedback.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                                </div>
+                            }
+                        />
+                    )
+                    :
+                    <div className='flex justify-between w-full '>
+                        <p>{data.feedback}</p>
+                        <div className="cursor-pointer" onClick={() => toggleEditMode(data.id, 'applicantFeedback')}>
+                            <IconPencil />
+                        </div>
+                    </div>,
             },
         ],
         hiringFeedback: [
@@ -196,14 +209,18 @@ const CustomFeedback = forwardRef((_, ref) => {
                     <TextInput
                         value={hiringEditableData[data.id]?.feedback || data.feedback}
                         onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'hiringFeedback')}
-                        rightSection={<IconTrashFilled className='cursor-pointer' onClick={() => {
-                            const updatedHiringEditMode = Object.fromEntries(Object.entries(hiringEditMode).filter(([key]) => key != data.id));
-                            const updatedHiringEditableData = Object.fromEntries(Object.entries(hiringEditableData).filter(([key]) => key != data.id));
-                            const updatedHiringNewRows = hiringNewRows.filter((row) => row.id !== data.id);
-                            setHiringEditMode(updatedHiringEditMode);
-                            setHiringEditableData(updatedHiringEditableData);
-                            setHiringNewRows (updatedHiringNewRows);
-                        }} />}
+                        rightSection={
+                            <div onClick={() => {
+                                const updatedHiringEditMode = Object.fromEntries(Object.entries(hiringEditMode).filter(([key]) => key != data.id));
+                                const updatedHiringEditableData = Object.fromEntries(Object.entries(hiringEditableData).filter(([key]) => key != data.id));
+                                const updatedHiringNewRows = hiringNewRows.filter((row) => row.id !== data.id);
+                                setHiringEditMode(updatedHiringEditMode);
+                                setHiringEditableData(updatedHiringEditableData);
+                                setHiringNewRows(updatedHiringNewRows);
+                            }}>
+                                {hiringFeedback.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                            </div>
+                        }
                     />
                 ) : <div className='flex justify-between'>
                     <p>{data.feedback}</p>
@@ -222,7 +239,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                 <p className="text-[#6D6D6D]">This section allows you to add custom feedback from both the hiring team (after every interview) and the applicant (upon receiving a job offer). If no feedback is provided by the applicant, select "No Response."</p>
             </div>
             <div className='flex justify-start gap-[15%] h-[78%]'>
-                <div className='w-[30%] '>
+                <div className='w-[30%]'>
                     <DataTable
                         styles={{
                             header: {

@@ -1,6 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
 import { TextInput, Select } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
 import { title, description, Company } from '@modules/OrganizationSettings/types';
@@ -19,6 +19,16 @@ const DataTableComp = forwardRef((_, ref) => {
     const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
     const [editableData, setEditableData] = useState<{ [key: string]: Partial<Company> }>({});
     const [newRows, setNewRows] = useState<Company[]>([]);
+
+    const departmentTitles: { [key: string]: string } = {
+        code: 'Code',
+        name: 'Name',
+        departmentHead: 'Department Head',
+        division: 'Division',
+        description: 'Description',
+        status: 'Status'
+    };
+
     const toggleEditMode = (id: number) => {
         // Toggle the edit mode for the specific code
         setEditMode(prevEditMode => ({
@@ -151,14 +161,17 @@ const DataTableComp = forwardRef((_, ref) => {
                             }}
                             defaultValue={editableData[data.id]?.status || data.status}
                         />
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
                             const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
                             const updatedNewRows = newRows.filter((row) => row.id !== data.id);
                             setEditMode(updatedEditMode);
                             setEditableData(updatedEditableData);
                             setNewRows(updatedNewRows);
-                        }} />
+                        }}>
+                            {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
+
                     </div>
                 ) :
                     <div className='flex justify-between'>
@@ -189,14 +202,16 @@ const DataTableComp = forwardRef((_, ref) => {
                             }}
                             defaultValue={editableData[data.id]?.status || data.status}
                         />
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
                             const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
                             const updatedNewRows = newRows.filter((row) => row.id !== data.id);
                             setEditMode(updatedEditMode);
                             setEditableData(updatedEditableData);
                             setNewRows(updatedNewRows);
-                        }} />
+                        }} >
+                            {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
                     </div>
                 ) : (
                     <TextInput
@@ -240,14 +255,16 @@ const DataTableComp = forwardRef((_, ref) => {
                             }}
                             defaultValue={editableData[data.id]?.status || data.status}
                         />
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
                             const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
                             const updatedNewRows = newRows.filter((row) => row.id !== data.id);
                             setEditMode(updatedEditMode);
                             setEditableData(updatedEditableData);
                             setNewRows(updatedNewRows);
-                        }} />
+                        }}>
+                            {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
                     </div>
                 ) : (
                     <TextInput
@@ -271,6 +288,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     }
                 </>,
         })),
+
         division: [
             'code', 'name', 'description', 'status'
         ].map((field: any) => ({
@@ -290,14 +308,16 @@ const DataTableComp = forwardRef((_, ref) => {
                             }}
                             defaultValue={editableData[data.id]?.status || data.status}
                         />
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
                             const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
                             const updatedNewRows = newRows.filter((row) => row.id !== data.id);
                             setEditMode(updatedEditMode);
                             setEditableData(updatedEditableData);
                             setNewRows(updatedNewRows);
-                        }} />
+                        }}>
+                            {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
                     </div>
 
                 ) : (
@@ -322,6 +342,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     }
                 </>,
         })),
+
         positionLevel: [
             'code', 'name', 'description', 'status'
         ].map((field: any) => ({
@@ -341,14 +362,18 @@ const DataTableComp = forwardRef((_, ref) => {
                             }}
                             defaultValue={editableData[data.id]?.status || data.status}
                         />
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
                             const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
                             const updatedNewRows = newRows.filter((row) => row.id !== data.id);
                             setEditMode(updatedEditMode);
                             setEditableData(updatedEditableData);
                             setNewRows(updatedNewRows);
-                        }} />
+                        }}>
+                            {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
+
                     </div>
                 ) : (
                     <TextInput
@@ -372,56 +397,64 @@ const DataTableComp = forwardRef((_, ref) => {
                     }
                 </>,
         })),
+
         departments: [
             'code', 'name', 'departmentHead', 'division', 'description', 'status'
-        ].map((field: any) => ({
-            accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
-            render: (data: any) => editMode[data.id] ? (
-                field === 'status' && editMode[data.id] ? (
-                    <div className='flex'>
-                        <Select
-                            classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
-                            radius={8}
-                            data={["ACTIVE", "INACTIVE"]}
-                            rightSection={<IconCaretDownFilled size='18' />}
-                            className="border-none w-full text-sm"
-                            styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(val: any) => {
-                                handleEditChange(data.id, 'status', val)
-                            }}
-                            defaultValue={editableData[data.id]?.status || data.status}
-                        />
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
-                            const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
-                            const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
-                            const updatedNewRows = newRows.filter((row) => row.id !== data.id);
-                            setEditMode(updatedEditMode);
-                            setEditableData(updatedEditableData);
-                            setNewRows(updatedNewRows);
-                        }} />
-                    </div>
-                ) : (
-                    <TextInput
-                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                        value={(editableData as any)[data.id]?.[field] || data[field]}
-                        onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
-                    />
-                )
-            ) :
-                <>
-                    {field != 'status' ? (
-                        <p>{data[field]}</p>) :
-                        (
-                            <div className='flex justify-between'>
-                                <p>{data[field]}</p>
-                                <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
-                                    {editMode[data.id] ? '' : <IconPencil />}
-                                </div>
+        ].map((field: any) => {
+            const title = departmentTitles[field] || (field.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + field.replace(/([A-Z])/g, ' $1').slice(1));
+            return {
+                accessor: field,
+                title: title,
+                sortable: true,
+                render: (data: any) => editMode[data.id] ? (
+                    field === 'status' && editMode[data.id] ? (
+                        <div className='flex'>
+                            <Select
+                                classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
+                                radius={8}
+                                data={["ACTIVE", "INACTIVE"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none w-full text-sm"
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                onChange={(val: any) => {
+                                    handleEditChange(data.id, 'status', val)
+                                }}
+                                defaultValue={editableData[data.id]?.status || data.status}
+                            />
+                            <div className='cursor-pointer mt-1 ml-1' onClick={() => {
+                                const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
+                                const updatedEditableData = Object.fromEntries(Object.entries(editableData).filter(([key]) => key != data.id));
+                                const updatedNewRows = newRows.filter((row) => row.id !== data.id);
+                                setEditMode(updatedEditMode);
+                                setEditableData(updatedEditableData);
+                                setNewRows(updatedNewRows);
+                            }}>
+                                {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
                             </div>
-                        )
-                    }
-                </>,
-        })),
+                        </div>
+                    ) : (
+                        <TextInput
+                            classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                            value={(editableData as any)[data.id]?.[field] || data[field]}
+                            onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
+                        />
+                    )
+                ) :
+                    <>
+                        {field != 'status' ? (
+                            <p>{data[field]}</p>) :
+                            (
+                                <div className='flex justify-between'>
+                                    <p>{data[field]}</p>
+                                    <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
+                                        {editMode[data.id] ? '' : <IconPencil />}
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </>,
+            }
+        }),
     };
 
 

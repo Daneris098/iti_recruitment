@@ -1,4 +1,4 @@
-import { IconCaretDownFilled, IconCirclePlus, IconPencil, IconTrashFilled } from "@tabler/icons-react";
+import { IconCaretDownFilled, IconCirclePlus, IconCircleX, IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { InteviewStagesStore } from "@modules/HiringSettings/store"
 import { useState, forwardRef, useImperativeHandle } from "react";
 import { interviewStage } from "@modules/HiringSettings/types"
@@ -26,9 +26,15 @@ const InterviewStage = forwardRef((_, ref) => {
             },
             {
                 accessor: 'lastModified', title: ('Last Modified'), sortable: true,
-                render: (data: any) => (
-                    <p>{data.lastModified}</p>
-                )
+                render: (data: any) => interviewStagesEditMode[data.id] ?
+                    <TextInput
+                        disabled
+                        className="w-full cursor-default"
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                        value={interviewStagesEditableData[data.id]?.lastModified || data.lastModified}
+                    />
+                    : <p>{data.lastModified}</p>
             },
             {
                 accessor: 'status', title: 'Status', sortable: true,
@@ -46,16 +52,16 @@ const InterviewStage = forwardRef((_, ref) => {
                             }}
                             defaultValue={interviewStagesEditableData[data.id]?.status || data.status}
                         />
-
-                        <IconTrashFilled className='cursor-pointer mt-1 ml-1' onClick={() => {
+                        <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedInterviewStagesEditMode = Object.fromEntries(Object.entries(interviewStagesEditMode).filter(([key]) => key != data.id));
                             const updatedInterviewStagesEditableData = Object.fromEntries(Object.entries(interviewStagesEditableData).filter(([key]) => key != data.id));
                             const updatedInterviewStagesNewRows = interviewStagesNewRows.filter((row) => row.id !== data.id);
                             setInterviewStagesEditMode(updatedInterviewStagesEditMode);
                             setInterviewStagesEditableData(updatedInterviewStagesEditableData);
                             setInterviewStagesNewRows(updatedInterviewStagesNewRows);
-                        }} />
-
+                        }}>
+                            {interviewStage.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
+                        </div>
                     </div>
                 ) :
                     <div className='flex justify-between'>
@@ -69,17 +75,23 @@ const InterviewStage = forwardRef((_, ref) => {
         ];
 
     const addNewRow = () => {
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        }); // Format: Feb 17, 2025
+
         const newRow: interviewStage = {
-            id: Math.max(...interviewStage.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), // Automatically generate a new id
+            id: Math.max(...interviewStage.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)),
             stageName: '',
             status: 'ACTIVE',
-            lastModified: '',
+            lastModified: currentDate,
         };
+
         setInterviewStagesNewRows(prev => [...prev, newRow]);
         setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
         setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
     };
-
 
     const handleEditChange = (
         id: number,
