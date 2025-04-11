@@ -2,19 +2,15 @@ import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { useEffect } from "react";
-import { FilterStore } from "@modules/Applicants/store"
+import { FilterStore, useDateUpdatedRangeStore, useApplicationDateStore } from '@modules/Applicants/store';
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
-  // date formatting
-  // const formatDate = (date: string | Date) => {
-  //   if (!date) return ''; // Handle cases where date is undefined or empty
-  //   return new Date(date).toLocaleDateString('en-US', {
-  //     year: 'numeric',
-  //     month: 'long',
-  //     day: 'numeric'
-  //   });
-  // };
+  const { dateUpdated: dateUpdatedRange } = useDateUpdatedRangeStore();
+  const { applicationDateValue: applicationDateRange } = useApplicationDateStore();
+
+  const { } = useApplicationDateStore();
+
   useEffect(() => {
     if (filter) {
       setIsFiltered(false)
@@ -48,6 +44,21 @@ export default function Filter() {
     );
   };
 
+  const renderPills = (label: any, items: any) => {
+    return (
+      <div className="flex flex-row items-center  gap-2" >
+        <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
+        <div className="flex  h-full items-center space-x-1">
+          {items.map((item: string, index: number) => (
+            <div className="">
+              <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold" >{item}</Pill>
+            </div>
+          ))}
+        </div>
+        <Text size="xl" c="#eeeeee">|</Text>
+      </div>
+    );
+  };
 
   const toCamelCase = (str: string): string => {
     return str
@@ -57,31 +68,17 @@ export default function Filter() {
       .replace(/\s+/g, '');
   };
 
-  // const removeFilter = (label: string, item: any) => {
-  //   let updatedFilter = { ...filter };
-  //   const camelCaseLabel = toCamelCase(label);
-  //   const filterValue = (updatedFilter as any)[camelCaseLabel];
-
-  //   // If it's an array, filter the item out
-  //   if (Array.isArray(filterValue)) {
-  //     (updatedFilter as any)[camelCaseLabel] = filterValue.filter((i: string) => i !== item);
-  //   }
-
-  //   else if (typeof filterValue === 'string' && filterValue === item) {
-  //     (updatedFilter as any)[camelCaseLabel] = '';  // Reset the string value
-  //   }
-  //   setFilter(updatedFilter);
-  // };
-
   const removeFilter = (label: string, item: any) => {
     const updatedFilter = { ...filter };
     const camelCaseLabel = toCamelCase(label);
+    const currentValue = (updatedFilter as any)[camelCaseLabel];
 
-    if ((updatedFilter as any)[camelCaseLabel] === item) {
-      (updatedFilter as any)[camelCaseLabel] = ''; // Reset field
+    if (Array.isArray(currentValue)) {
+      (updatedFilter as any)[camelCaseLabel] = currentValue.filter((val: any) => val !== item);
+    } else if (currentValue === item) {
+      (updatedFilter as any)[camelCaseLabel] = '';
     }
-
-    setFilter({ ...updatedFilter }); // Ensure state triggers a re-render
+    setFilter(updatedFilter);
   };
 
   const iconSize: MantineSize = useMatches({
@@ -94,10 +91,19 @@ export default function Filter() {
     xl: "25"
   });
 
+  const renderDateRangePills = (range: [Date | null, Date | null], label: string) => {
+    return range.map((date, index) =>
+      date ? renderSinglePill(
+        `${label} ${index === 0 ? 'From' : 'To'}`,
+        date.toDateString()
+      ) : null
+    );
+  };
+
   return (
     <div className="w-full rounded-lg flex flex-row justify-between items-center bg-white h-fit border-2 border-black-600">
 
-      <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-52 ">
+      <div className="h-full items-center gap-2 bg-[#D9D9D9] rounded-l-lg flex p-2 justify-center w-64 ">
         <ListFilter size={ListFilterSize} color="#6d6d6d" />
         <Text fw={600} visibleFrom="md" className="text-xs 2xl:text-[14px] text-[#6D6D6D]">
           FILTERS APPLIED
@@ -105,16 +111,18 @@ export default function Filter() {
       </div>
 
       {isFiltered && (
-        <div className="scrollbar flex flex-wrap h-full w-full overflow-hidden px-4 gap-2 sm:overflow-x-hidden sm:hover:overflow-y-auto p-1">
+        <div className="flex w-full max-h-[39px] overflow-hidden">
+          <div className="scrollbar flex flex-wrap gap-2 px-4 py-1 w-full max-h-fit overflow-y-auto">
 
-          {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
-          {filter.applicationDateFrom && renderSinglePill('Application Date From', filter.applicationDateFrom)}
-          {filter.applicationDateTo && renderSinglePill('Application Date To', filter.applicationDateTo)}
-          {filter.dateLastUpdatedFrom && renderSinglePill('Date Last Updated From', filter.dateLastUpdatedFrom)}
-          {filter.dateLastUpdatedTo && renderSinglePill('Date Last Updated To', filter.dateLastUpdatedTo)}
-          {filter.position && renderSinglePill('position', filter.position)}
-          {filter.status && renderSinglePill('status', filter.status)}
+            {filter.company && filter.company.length > 0 && renderPills('Company', filter.company)}
+            {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
 
+            {renderDateRangePills(applicationDateRange, 'Date')}
+            {renderDateRangePills(dateUpdatedRange, 'Updated')}
+
+            {filter.position && filter.position.length > 0 && renderPills('Position', filter.position)}
+            {filter.status && filter.status.length > 0 && renderPills('Status', filter.status)}
+          </div>
         </div>
       )}
 

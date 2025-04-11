@@ -10,32 +10,41 @@ export const useDateRangeStore = create<DateRangeState>((set) => ({
   setValue: (newValue) => set({ value: newValue }),
 }));
 interface JobOfferDateRangeState {
-  value: [Date | null, Date | null];
-  setValue: (newValue: [Date | null, Date | null]) => void;
+  Offervalue: [Date | null, Date | null];
+  setOfferValue: (newValue: [Date | null, Date | null]) => void;
 }
 
 export const useJobOfferDateRangeStore = create<JobOfferDateRangeState>((set) => ({
-  value: [null, null],
-  setValue: (newValue) => set({ value: newValue }),
+  Offervalue: [null, null],
+  setOfferValue: (newValue) => set({ Offervalue: newValue }),
 }));
 
 interface GeneratedOffer {
-  value: [Date | null, Date | null];
-  setValue: (newValue: [Date | null, Date | null]) => void;
+  generatedOfferValue: [Date | null, Date | null];
+  setGeneratedOfferValue: (newValue: [Date | null, Date | null]) => void;
 }
 
 export const useGeneratedOfferStore = create<GeneratedOffer>((set) => ({
-  value: [null, null],
-  setValue: (newValue) => set({ value: newValue }),
+  generatedOfferValue: [null, null],
+  setGeneratedOfferValue: (newValue) => set({ generatedOfferValue: newValue }),
 }));
-
-
 interface Archived {
-  value: [Date | null, Date | null];
-  setValue: (newValue: [Date | null, Date | null]) => void;
+  archivedValue: [Date | null, Date | null];
+  setArchivedValue: (newValue: [Date | null, Date | null]) => void;
 }
 
 export const useArchivedStore = create<Archived>((set) => ({
-  value: [null, null],
-  setValue: (newValue) => set({ value: newValue }),
+  archivedValue: [null, null],
+  setArchivedValue: (newValue) => set({ archivedValue: newValue }),
 }));
+
+interface DateUpdatedState {
+  dateUpdatedValue: [Date | null, Date | null];
+  setDateUpdatedValue: (newValue: [Date | null, Date | null]) => void;
+}
+
+export const useDateUpdatedStore = create<DateUpdatedState>((set) => ({
+  dateUpdatedValue: [null, null],
+  setDateUpdatedValue: (newValue) => set({ dateUpdatedValue: newValue }),
+}));
+

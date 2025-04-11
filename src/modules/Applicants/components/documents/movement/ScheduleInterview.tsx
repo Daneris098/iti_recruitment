@@ -6,13 +6,9 @@ import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/Ad
 import ScheduleInterviewModal from "@modules/Applicants/components/modal/scheduleInterview";
 interface ApplicantNotReachableProps {
     onClose: () => void;
-
 }
 
 export default function ApplicantNotReachable({ onClose }: ApplicantNotReachableProps) {
-
-
-
     const {
         isApplicantUnreachableArchive, setIsApplicantUnreachableArchive,
         isScheduleInterview, setIsScheduleInterview,

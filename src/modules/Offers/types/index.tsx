@@ -24,7 +24,7 @@ export interface FilterState {
   isFiltered: boolean;
   modal: boolean;
   alert: string;
-  activeTab: string | null;
+  activeTab: TabKey;
 
   setAlert: (alert: string) => void;
   setModal: (modal: boolean) => void;
@@ -40,9 +40,9 @@ export interface AllJobOffersFilterType {
   status: string[];
   interviewer: string;
   company: string[];
-  department: string ;
+  department: string;
   vacancy: string;
-  id: string;
+  filterId: string;
   applicantName: string;
   dateFrom: string | null;
   dateTo: string | null;
@@ -68,3 +68,19 @@ export interface PDFProps {
   Description_Transpo: string;
   Acknowledgement: string;
 }
+
+export interface Row {
+    Status: string;
+    Attachments: string | null;
+}
+
+export type TabKey = "Pending" | "Accepted" | "All_offers" | "Archived";
+
+export type JobOfferRecord = Partial<PDFProps> & {
+  Status: "Pending" | "Accepted" | "Archived" | string;
+  id?: string;
+  Date_Generated?: string;
+  Date_Last_Updated?: string;
+  Attachments: string | null;
+};
+

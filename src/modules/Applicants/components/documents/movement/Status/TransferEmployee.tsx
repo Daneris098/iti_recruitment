@@ -15,11 +15,6 @@ export default function TransferEmployee({ Name, onClose, Status }: TransferEmpl
     const { isTransferEmployeePosition, setIsTransferEmployeePosition } = useCloseModal();
     return (
         <div className="px-5 py-5 overflow-y-auto h-screen pb-24">
-            {/* <div>
-                <IconX
-                    onClick={onClose}
-                />
-            </div> */}
             <div className="flex justify-between items-center">
                 <h2 className="text-[22px] font-semibold text-[#559CDA]">
                     Transfer Employee
@@ -34,11 +29,12 @@ export default function TransferEmployee({ Name, onClose, Status }: TransferEmpl
                 <h3 className="font-medium text-[#6D6D6D] text-[15px] pt-1 poppins pb-1">
                     Employee Name <span className="text-[#F14336]">*</span>
                 </h3>
-                <p className=" justify-between 
-            poppins relative flex items-center w-full h-[56px] px-4 bg-[#6D6D6D50] 
-            border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-[#6D6D6D50]
-            hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]
-            ">{Name}
+                <p className=" 
+                        justify-between 
+                        poppins relative flex items-center w-full h-[56px] px-4 bg-[#6D6D6D50] 
+                        border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-[#6D6D6D50]
+                        hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]">
+                    {Name}
                     <span><IconCaretDownFilled size={16} /></span></p>
             </div>
 
@@ -57,10 +53,6 @@ export default function TransferEmployee({ Name, onClose, Status }: TransferEmpl
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pt-4 poppins pb-1">
                         Access Number <span className="text-[#F14336]">*</span>
                     </h3>
-                    {/* <TextInput
-                        className="w-full h-[56px] rounded-[8px] py-2 poppins font-semibold"
-                        placeholder="Enter Access Number"
-                    /> */}
                     <p className="border-[#6D6D6D99] text-[16px] border-2 py-2 h-[56px] font-medium poppins text-[#6D6D6D99] px-2 rounded-[8px] flex justify-between items-center">
                         Enter Access Number
                     </p>

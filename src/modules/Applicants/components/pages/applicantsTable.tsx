@@ -1,15 +1,14 @@
-import { AppShell, Pagination } from "@mantine/core";
-import Filter from "@src/modules/Applicants/components/filter/Filter";
+import { Pagination } from "@mantine/core";
+import { useLocation } from "react-router-dom";
 import { DataTable } from "mantine-datatable";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import { useEffect, useMemo, useState } from "react";
-import { useApplicantStore, useCloseModal, usePaginationStore } from "@modules/Applicants/store";
-import { useSortStore } from "@modules/Applicants/store"
-import { IconArrowsUp, IconArrowsUpDown } from "@tabler/icons-react";
+import { useApplicantStore, useCloseModal, usePaginationStore, useSortStore } from "@modules/Applicants/store";
+import Filter from "@src/modules/Applicants/components/filter/Filter";
+import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer"
 import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
 import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant"
-import { useLocation } from "react-router-dom";
+
 
 export default function index() {
 
@@ -28,15 +27,21 @@ export default function index() {
 
   //initializing applicant, sort and pagination store
   const { records, loadApplicants } = useApplicantStore(); // for records
-  const { sortedRecords, setSort, setRecords, columnAccessor, direction } = useSortStore(); // for sorting
+  const { sortedRecords, setSort, setRecords } = useSortStore(); // for sorting
   const { page, pageSize, setPage } = usePaginationStore(); // for pagination
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null); // For Document model
-  const {isViewApplicant, setIsViewApplicant} = useCloseModal(); // For handling the state of view applicant modal.
+  const { isViewApplicant, setIsViewApplicant } = useCloseModal(); // For handling the state of view applicant modal.
+  const [loadTime, setLoadTime] = useState<number | null>(null);
 
   // for json fetching of applicants record from values/response
   useEffect(() => {
-    loadApplicants();
-  }, []);
+    const startTime = performance.now();
+
+    loadApplicants(); // Load your data
+
+    const endTime = performance.now();
+    setLoadTime((endTime - startTime) / 1000); // Convert to seconds
+  }, [loadApplicants]);
 
   // intially load the records from useApplicationStore().
   // The record rendering will conditionally render the displayed status depending on the 
@@ -98,15 +103,6 @@ export default function index() {
       // If the Column from the JSON Object is clickable, then access its column accessor.
       if (col.sortable) {
 
-        // Set the value of isActiveColumn to true if the columnAccessor (from store) 
-        // matches the current column.accessor from Defined Columns.
-        const isActiveColumn = col.accessor === columnAccessor;
-        const icon = isActiveColumn && direction === "asc" ? (  // Ternary operation to avoid deep nested if else.
-          <IconArrowsUp size={14}/>  // if Ascending
-        ) : (
-          <IconArrowsUpDown size={14} /> // Descending
-        );
-
         // If the column header is set to sortable then allow the sorting function to go through.
         // Also this enables the Arrow Icon from DataTable to properly change depending on the
         // Ascending or Descending state of the column. In other words, for sorting animation.
@@ -116,7 +112,7 @@ export default function index() {
             onClick={() => setSort(col.accessor, sortedRecords)}
           >
             {col.title}
-            {icon}
+            {/* {icon} */}
           </span>
         );
       } else {
@@ -129,70 +125,64 @@ export default function index() {
 
   // main
   return (
-
     // Container
-    <AppShell className="p-4 h-full relative">
-      <div className="flex flex-col h-full bg-white rounded-md shadow-md p-6">
+    <div className="rounded-md h-full flex flex-col gap-5 p-6 bg-white relative">
 
-        {/* Header */}
-        <h1 className="text-[#559CDA] text-[22px] font-semibold mb-1poppins">
-          {headerText}
-        </h1>
+      {/* Header */}
+      <h1 className="text-[#559CDA] text-2xl font-bold poppins ml-2">
+        {headerText}
+      </h1>
 
-        {/* Filter Component */}
-        <FilterDrawer />
-        <Filter />
+      {/* Filter Component */}
+      <FilterDrawer />
+      <Filter />
 
-        {/* Table Wrapper (Grows to Fill Space) */}
-        <div className="flex-grow overflow-auto poppins">
-          <DataTable
-            columns={extendedColumn}
-            records={paginatedRecords}
-            sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}
-            onRowClick={({ record }) => handleRowClick(record)}
-            rowClassName={() => "cursor-pointer text-[#6D6D6D]"} // Add hover effect
-          />
-        </div>
-
-        {/* Pagination and Footer (Sticky at Bottom) */}
-        <div className="flex justify-between items-center mt-auto pt-2">
-          {/* Record count */}
-          <p className="job-offers-table text-sm">
-            {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
-              page * pageSize,
-              records.length
-            )} of ${records.length} entries`}
-          </p>
-
-          {/* Pagination */}
-          <Pagination
-            value={page}
-            onChange={setPage}
-            total={Math.ceil(records.length / pageSize)}
-            siblings={1}
-            size="sm"
-          />
-        </div>
-
-        {/* View Applicant Modal */}
-        {/* <ApplicantModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}> */}
-        <ApplicantModal isOpen={isViewApplicant}>
-          <ViewApplicant
-            Applicant_Name={selectedApplicant?.Applicant_Name}
-            Position={selectedApplicant?.Position}
-            Status={selectedApplicant?.Status}
-            Email={selectedApplicant?.Email}
-            Phone={selectedApplicant?.Phone}
-            Skills={selectedApplicant?.Skills}
-            Remarks={selectedApplicant?.Remarks}
-            Application_Date={selectedApplicant?.Application_Date}
-            IsJobOffer={selectedApplicant?.isJobOffer}
-            onClose={() => setIsViewApplicant(false)}
-          />
-        </ApplicantModal>
-
+      {/* Table Wrapper (Grows to Fill Space) */}
+      <div className="flex-grow overflow-auto poppins">
+        <DataTable
+          columns={extendedColumn}
+          records={paginatedRecords}
+          onRowClick={({ record }) => handleRowClick(record)}
+          rowClassName={() => "cursor-pointer text-[#6D6D6D]"} // Add hover effect
+        />
       </div>
-    </AppShell>
 
+      {/* Pagination and Footer (Sticky at Bottom) */}
+      <div className="flex justify-between items-center p-2.5">
+        {/* Record count */}
+        <p className="job-offers-table text-sm">
+          {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
+            page * pageSize,
+            records.length
+          )} of ${records.length} entries`}
+          {loadTime !== null && ` found in (${loadTime.toFixed(3)}) seconds`}
+        </p>
+
+        {/* Pagination */}
+        <Pagination
+          value={page}
+          onChange={setPage}
+          total={Math.ceil(records.length / pageSize)}
+          siblings={1}
+          size="sm"
+        />
+      </div>
+
+      {/* View Applicant Modal */}
+      <ApplicantModal isOpen={isViewApplicant}>
+        <ViewApplicant
+          Applicant_Name={selectedApplicant?.Applicant_Name}
+          Position={selectedApplicant?.Position}
+          Status={selectedApplicant?.Status}
+          Email={selectedApplicant?.Email}
+          Phone={selectedApplicant?.Phone}
+          Skills={selectedApplicant?.Skills}
+          Remarks={selectedApplicant?.Remarks}
+          Application_Date={selectedApplicant?.Application_Date}
+          IsJobOffer={selectedApplicant?.isJobOffer}
+          onClose={() => setIsViewApplicant(false)}
+        />
+      </ApplicantModal>
+    </div>
   );
 }

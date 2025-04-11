@@ -1,29 +1,16 @@
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
-import DatePicker from "@modules/Applicants/components/picker/DatePicker"
-import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 import { useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
-
+import DatePicker from "@modules/Applicants/components/picker/DatePicker"
+import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 
 export default function ForInterview() {
 
-
-    const {
-        fullName, setFullName,
-        getInterviewer, setInterviewer,
-    } = useDropDownOfferedStore();
-
+    const { fullName, setFullName, getInterviewer, setInterviewer } = useDropDownOfferedStore();
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
-
     const [selectedTime, setSelectedTime] = useState("");
-
-    const interviewerCombobox = useCombobox({
-        onDropdownClose: () => interviewerCombobox.resetSelectedOption(),
-    })
-
-
-    // These are just a hardcoded information. This will be removed during the integration with the backend.
+    const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption(), })
     const Interviewer = ["HR Kristia", "HR Andrea", "HR Jera"];
 
     return (

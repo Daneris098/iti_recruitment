@@ -1,13 +1,14 @@
 import { Button, Divider } from "@mantine/core";
 import { IconChecklist } from "@tabler/icons-react";
-import ViewPDF from "@modules/Offers/components/modal/pdfModal"
-import MyDocument from "@modules/Offers/components/documents/PDF"
+import { PDFProps } from "@modules/Applicants/types";
 import { PDFViewer } from "@react-pdf/renderer";
 import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
+import ViewPDF from "@modules/Offers/components/modal/pdfModal"
+import MyDocument from "@modules/Offers/components/documents/PDF"
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated";
-import { PDFProps } from "@modules/Applicants/types";
-interface JobGeneratedAlertProps extends Partial<PDFProps>{
+
+interface JobGeneratedAlertProps extends Partial<PDFProps> {
     onClose: () => void;
     title: string | null;
 }
