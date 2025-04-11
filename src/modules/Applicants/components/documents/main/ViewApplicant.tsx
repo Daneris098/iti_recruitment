@@ -1,22 +1,23 @@
 import { Button, Divider, Tabs } from "@mantine/core";
 import { IconFileUpload, IconX } from "@tabler/icons-react";
-import profileImage from '@src/assets/jane.png'
+import { useState } from "react";
+import { useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
+import { PDFViewer } from "@react-pdf/renderer";
+import profileImage from '@src/assets/jane.png';
 import PersonalDetails from "@src/modules/Applicants/components/documents/tabs/PersonalDetails";
 import TransferDetails from "@modules/Applicants/components/documents/tabs/TransferDetails";
 import ApplicationMovement from "@src/modules/Applicants/components/documents/tabs/ApplicationMovement";
 import UpdateStatus from "@src/modules/Applicants/components/documents/buttons/UpdateStatus";
 import UpdateStatusModal from "@modules/Applicants/components/modal/updateStatus";
-import { useState } from "react";
 import TransferPositionModal from "@src/modules/Applicants/components/modal/transferPositionModal";
-import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition"
-import { useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
-import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer"
-import ApplicantModal from "../../modal/dropdownOfferedModal";
-import ViewPDF from "@modules/Offers/components/modal/pdfModal"
-import MyDocument from "@modules/Offers/components/documents/PDF"
-import { PDFViewer } from "@react-pdf/renderer";
+import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
+import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer";
+import ApplicantModal from "@modules/Applicants/components/modal/dropdownOfferedModal"
+import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
+import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
 
-export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date, IsJobOffer }: ViewApplicantsProps) {
+
+export default function ViewApplicant({ Applicant_Name, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date, IsJobOffer, Acknowledgement, Department }: ViewApplicantsProps) {
 
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
@@ -33,12 +34,8 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
     }
 
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
-    const {
-        isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered
-    } = useCloseModal();
-
+    const { isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered } = useCloseModal();
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
-
     const [isTransferPosition, setIsTransferPosition] = useState(false) // Set the Transferred Modal to True upon triggering
 
     // Excluding these three status types to the current status field.
@@ -271,24 +268,15 @@ export default function ViewApplicant({ Applicant_Name, Position, Status, Email,
             </div>
 
             {/* PDF */}
-            <ViewPDF  isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
+            <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)}>
                 <PDFViewer width="100%" height="891" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
-                    <MyDocument
-                        Name={Applicant_Name}
+                    <PDFDocument
+                        Applicant_Name={Applicant_Name}
                         Position={Position}
-                        Department=''
-                        Remarks={Status}
-                        Salary_Monthly=''
-                        Salary_Yearly=''
-                        Note_Salary=''
-                        Merit_Increase=''
-                        Description_VL=''
-                        Description_SL=''
-                        Description_BL=''
-                        Benefit_Paternity=''
-                        Benefit_Maternity=''
-                        Description_Transpo=''
-                        Acknowledgement=''
+                        Remarks={Remarks}
+                        Acknowledgement={Acknowledgement}
+                        Department={Department}
+
                     />
                 </PDFViewer>
             </ViewPDF>

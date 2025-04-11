@@ -3,14 +3,15 @@ import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { useEffect } from "react";
 import { FilterStore } from '@src/modules/Offers/store'
-import { useDateRangeStore, useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
+import { useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore, useDateUpdatedStore } from "@shared/hooks/useDateRange";
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
-  const { value: dateRangeValue } = useDateRangeStore();
-  const { value: jobOfferDateValue } = useJobOfferDateRangeStore();
-  const { value: generatedOfferValue } = useGeneratedOfferStore();
-  const { value: archiveValue } = useArchivedStore();
+  const { Offervalue: jobOfferDateValue } = useJobOfferDateRangeStore();
+  const { generatedOfferValue: generatedOfferValue } = useGeneratedOfferStore();
+  const { archivedValue: archiveValue } = useArchivedStore();
+  const { dateUpdatedValue: dateUpdatedValue } = useDateUpdatedStore();
+
   useEffect(() => {
     const hasActiveFilters = Object.values(filter).some(value => value !== '' && value !== null);
     setIsFiltered(hasActiveFilters);
@@ -54,8 +55,7 @@ export default function Filter() {
       </div>
     );
   };
-
-
+  
   const toCamelCase = (str: string): string => {
     return str
       .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
@@ -64,27 +64,29 @@ export default function Filter() {
       .replace(/\s+/g, '');
   };
 
-  const removeFilter = (label: string, item: any, index?: number) => {
+  const removeFilter = (label: string, item: any) => {
     const updatedFilter = { ...filter };
     const camelCaseLabel = toCamelCase(label);
+    const currentValue = (updatedFilter as any)[camelCaseLabel];
 
-    if (label === 'ID') {
-      updatedFilter.id = '';
+    if (Array.isArray(currentValue)) {
+      (updatedFilter as any)[camelCaseLabel] = currentValue.filter((val: any) => val !== item);
+    } else if (currentValue === item) {
+      delete (updatedFilter as any)[camelCaseLabel];
     }
-    else if (dateRangeValue) {
-      updatedFilter.dateRange = [...(updatedFilter.dateRange || [null, null])];
-      updatedFilter.dateRange[index!] = null;
+    else if (label === 'ID') {
+      updatedFilter.filterId = ''
     }
-    // Handle single-value filters
-    else if (typeof (updatedFilter as any)[camelCaseLabel] === 'string') {
-      (updatedFilter as any)[camelCaseLabel] = '';
-    }
-    // Handle array-based filters (like status, remarks)
-    else if (Array.isArray((updatedFilter as any)[camelCaseLabel])) {
-      (updatedFilter as any)[camelCaseLabel] = (updatedFilter as any)[camelCaseLabel].filter((val: any) => val !== item);
-    }
-
     setFilter(updatedFilter);
+  };
+
+  const renderDateRangePills = (range: [Date | null, Date | null], label: string) => {
+    return range.map((date, index) =>
+      date ? renderSinglePill(
+        `${label} ${index === 0 ? 'From' : 'To'}`,
+        date.toDateString()
+      ) : null
+    );
   };
 
   const iconSize: MantineSize = useMatches({
@@ -98,9 +100,9 @@ export default function Filter() {
   });
 
   return (
-    <div className="w-full rounded-lg  flex flex-row justify-between items-center bg-white h-full border-2 border-black-600">
+    <div className="w-full rounded-lg flex flex-row justify-between items-center bg-white h-full border-2 border-black-600">
       {/* Fixed Left Section */}
-      <div className="h-full flex items-center gap-2 bg-[#D9D9D9] rounded-l-lg p-2 justify-center w-52">
+      <div className="h-[44px] flex items-center gap-2 bg-[#D9D9D9] rounded-l-lg p-2 justify-center w-64">
         <ListFilter size={ListFilterSize} color="#6d6d6d" />
         <Text fw={600} visibleFrom="md" className="text-xs 2xl:text-[14px] text-[#6D6D6D]">
           FILTERS APPLIED
@@ -111,25 +113,17 @@ export default function Filter() {
       {isFiltered && (
         <div className="flex w-full max-h-[39px] overflow-hidden">
           <div className="scrollbar flex flex-wrap gap-2 px-4 py-1 w-full max-h-fit overflow-y-auto">
-            {filter.id && renderSinglePill('ID', filter.id)}
+            {filter.filterId && renderSinglePill('ID', filter.filterId)}
+            {filter.company && filter.company.length > 0 && renderPills('Company', filter.company)}
             {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
             {filter.status && filter.status.length > 0 && renderPills('Status', filter.status)}
+            {filter.remarks && filter.remarks.length > 0 && renderPills('Remarks', filter.remarks)}
             {filter.department && renderSinglePill('Department', filter.department)}
             {filter.interviewer && renderSinglePill('Interviewer', filter.interviewer)}
-
-            {/* Date Range Pills */}
-            {[dateRangeValue, jobOfferDateValue, generatedOfferValue, archiveValue].map((range, i) =>
-              range.map((date, index) =>
-                date
-                  ? renderSinglePill(
-                    ['Date', 'Job Offer Date', 'Generated Offer Date', 'Archived Date'][i] +
-                    (index === 0 ? ' From' : ' To'),
-                    date.toDateString()
-                  )
-                  : null
-              )
-            )}
-
+            {renderDateRangePills(dateUpdatedValue, 'Generated')}
+            {renderDateRangePills(jobOfferDateValue, 'Updated')}
+            {renderDateRangePills(generatedOfferValue, 'Generated')}
+            {renderDateRangePills(archiveValue, 'Archive')}
           </div>
         </div>
       )}
@@ -144,7 +138,5 @@ export default function Filter() {
         </ActionIcon>
       </div>
     </div>
-
-
   );
 }

@@ -17,35 +17,15 @@ export default function OfferedStatus() {
     const departments = ["Finance", "IT", "HR", "Operations"];
     const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
 
-
-    // Independent Combobox hooks
-    const departmentCombobox = useCombobox({
-        onDropdownClose: () => departmentCombobox.resetSelectedOption(),
-    });
-
-    const salaryComboBox = useCombobox({
-        onDropdownClose: () => salaryComboBox.resetSelectedOption(),
-    })
-
-    const interviewerCombobox = useCombobox({
-        onDropdownClose: () => interviewerCombobox.resetSelectedOption(),
-    })
-
-    const combobox = useCombobox({
-        onDropdownClose: () => combobox.resetSelectedOption(),
-    });
-
-    // Independent Combobox hooks
+    const departmentCombobox = useCombobox({ onDropdownClose: () => departmentCombobox.resetSelectedOption(), });
+    const salaryComboBox = useCombobox({ onDropdownClose: () => salaryComboBox.resetSelectedOption(), })
+    const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption(), })
+    const combobox = useCombobox({ onDropdownClose: () => combobox.resetSelectedOption(), });
     const positionCombobox = useCombobox();
-
-    // To activate the comboBox of feedbacks field.
-    const feedbacksComboBox = useCombobox({
-        onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
-    })
+    const feedbacksComboBox = useCombobox({ onDropdownClose: () => feedbacksComboBox.resetSelectedOption(), })
 
     return (
         <div>
-
             {/* Applicant Full Name */}
             <div className="pt-4">
                 <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">

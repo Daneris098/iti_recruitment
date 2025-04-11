@@ -7,8 +7,9 @@ export const filterVal: ApplicantStatus = {
     applicationDateTo: "",
     dateLastUpdatedFrom: "",
     dateLastUpdatedTo: "",
-    position: "",
-    status: "",
+    applicationDateValue: "",
+    position: [],
+    status: [],
 }
 
 export const selectedVal: Applicants = {

@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import applicantsRecord from '@modules/Applicants/values/response/applicants.json';
 import { sortBy } from "lodash";
-import { Applicants, ApplicantStatus, FilterState } from '@modules/Applicants/types';
+import { Applicants, ApplicantStatus, FilterState, PDFProps } from '@modules/Applicants/types';
 import { filterVal, selectedVal } from '@modules/Applicants/values';
+import applicantsRecord from '@modules/Applicants/values/response/applicants.json';
 
 // for fetching the json from values folder
 interface Applicant {
@@ -85,7 +85,7 @@ interface PaginationState {
 
 export const usePaginationStore = create<PaginationState>((set, get) => ({
   page: 1,
-  pageSize: 30,
+  pageSize: 10,
 
   setPage: (page) => set({ page }),
   setPageSize: (size) => set({ pageSize: size }),
@@ -99,25 +99,6 @@ export const usePaginationStore = create<PaginationState>((set, get) => ({
 }));
 // end of pagination store
 
-// // For Filter
-// export const FilterStore = create<FilterState>((set) => ({
-//   selectedData: selectedVal,
-//   filterDrawer: false,
-//   filter: filterVal,
-//   clearFilter: false,
-//   isFiltered: false,
-//   modal: false,
-//   alert: '',
-
-//   setAlert: (alert: string) => set({ alert: alert }),
-//   setModal: (modal: boolean) => set({ modal: modal }),
-//   // setClearFilter: (filter: ApplicantStatus) => set({ filter: filter }),
-//    setClearFilter: (clearFilter: boolean) => set({ clearFilter: clearFilter }),
-//   setSelelectedVal: (selectedData: Applicants) => set({ selectedData: selectedData }),
-//   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
-//   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
-//   setFilter: (filter: ApplicantStatus) => set({ filter: filter }),
-// }))
 export const FilterStore = create<FilterState>((set) => ({
   selectedData: selectedVal,
   filterDrawer: false,
@@ -311,7 +292,7 @@ interface CloseModal {
 
   isGenerateNewOffer: boolean;
   setIsGenerateNewOffer: (isOffered: boolean) => void;
-  
+
   isTransferEmployee: boolean;
   setIsTransferEmployee: (isOpen: boolean) => void;
 
@@ -422,7 +403,7 @@ export const useCloseUpdateStatusModal = create<CloseUpdateStatusModal>((set) =>
 }))
 // end of closing modal
 
-export interface ViewApplicantsProps {
+export interface ViewApplicantsProps extends Partial<PDFProps> {
   Applicant_Name: string;
   Position: string;
   Status: string;
@@ -449,49 +430,6 @@ export const useStatusStore = create<StatusState>((set) => ({
 }))
 // end for updating the selected status in update status modal
 
-
-// for proper displaying of status choices from drop drown
-// Define status options
-// export type StatusDropDown =
-//   | "Applied"
-//   | "For Interview"
-//   | "Offered"
-//   | "Hired"
-//   | "For Transfer"
-//   | "Transferred"
-//   | "Archived";
-
-// type StatusOption = "For Interview" | "Offered" | "Hired" | "Archived" | "Transferred";
-
-// interface DropDownStatusStore {
-//   dropdownSelectedStatus: StatusDropDown;
-//   availableStatuses: StatusOption[];
-//   setDropDownSelectedStatus: (status: StatusDropDown) => void;
-// }
-
-// // Status options mapping
-// const statusOptions: Record<StatusDropDown, StatusOption[]> = {
-//   Applied: ["For Interview", "Offered", "Archived"],
-//   "For Interview": ["Offered", "Archived"],
-//   Offered: ["Hired", "Archived"],
-//   Hired: [],
-//   "For Transfer": ["Transferred", "Archived"],
-//   Transferred: [],
-//   Archived: [],
-// };
-
-// // Zustand Store
-// export const useDropDownStatusStore = create<DropDownStatusStore>((set) => ({
-//   dropdownSelectedStatus: "Applied",
-//   availableStatuses: [...statusOptions["Applied"]], // ✅ FIX: Creating a new array instance
-
-//   setDropDownSelectedStatus: (status) => {
-//     set(() => ({
-//       dropdownSelectedStatus: status,
-//       availableStatuses: [...statusOptions[status]], // ✅ FIX: Ensuring a new array instance
-//     }));
-//   },
-// }));
 
 // Type definitions
 export const statusOptions = {
@@ -606,3 +544,24 @@ export const useDatePickerStore = create<DatePickerState>((set) => ({
   isOpen: false,
   setIsOpen: (open) => set({ isOpen: open }),
 }));
+
+
+interface ApplicationDateRangeState {
+  applicationDateValue: [Date | null, Date | null];
+  setApplicationDateValue: (newValue: [Date | null, Date | null]) => void;
+}
+
+export const useApplicationDateStore = create<ApplicationDateRangeState>((set) => ({
+  applicationDateValue: [null, null],
+  setApplicationDateValue: (newValue) => set({ applicationDateValue: newValue })
+}))
+
+interface DateUpdatedRangeState {
+  dateUpdated: [Date | null, Date | null];
+  setDateUpdated: (newValue: [Date | null, Date | null]) => void;
+}
+
+export const useDateUpdatedRangeStore = create<DateUpdatedRangeState>((set) => ({
+  dateUpdated: [null, null],
+  setDateUpdated: (newValue) => set({ dateUpdated: newValue })
+}))

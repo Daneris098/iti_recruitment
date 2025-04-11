@@ -28,12 +28,11 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
         ...filterColumns.filter(col => col.accessor !== 'Status'), // All columns except Status
         {
             accessor: 'Remarks',
-            title: <span className='job-offers-table'>Comments</span>,
+            title: <span className='job-offers-table font-bold text-[14px]'>Comments</span>,
             render: () => <span>{Remarks}</span>,
         },
         ...filterColumns.filter(col => col.accessor === 'Status') // Move Status to the end
     ];
-
 
     return (
         <div className="pt-1">
@@ -44,7 +43,6 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
                         sorted: <span></span>,  // Empty element to remove default icon
                         unsorted: <span></span>,
                     }}
-                    className="p-0"
                 />
             </div>
         </div>

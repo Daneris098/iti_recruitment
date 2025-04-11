@@ -13,6 +13,7 @@ export const filterVal: AllJobOffersFilterType = {
   department: "",
   interviewer: "",
   vacancy: "",
+  dateRange: [null, null]
 }
 
 export const selectedDataVal: OfferType = {

@@ -1,59 +1,116 @@
-import { useState } from "react";
-import { Popover, TextInput, Text } from "@mantine/core";
+//--- Mantine Modules
+import { Popover, Flex, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { IconCalendar } from "@tabler/icons-react";
+import { IconCalendarMonth } from "@tabler/icons-react";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { useEffect, useState } from "react";
+interface DateRangeProps {
+  value: [Date | null, Date | null];
+  setValue: (newValue: [Date | null, Date | null]) => void;
+  fLabel: string;
+  lLabel: string;
+  fPlaceholder: string;
+  lPlaceholder: string;
+  isColumn?: boolean;
+  isMobile?: boolean;
+  gapValue?: number
+  size?: string
+}
 
-interface DateRangeFilerProps {
-    label: string;
-    value: string | null;
-    onChange: (date: string | null) => void;
-    placeholder: string;
-};
+export const DateRange = ({
+  fLabel,
+  lLabel,
+  fPlaceholder,
+  lPlaceholder,
+  value,
+  setValue,
+  isColumn = false,
+  isMobile = false,
+  gapValue,
+  size
+}: DateRangeProps) => {
 
-const DateRangeFilter: React.FC<DateRangeFilerProps> = ({ label, value, onChange, placeholder }) => {
   const [opened, setOpened] = useState(false);
-  const selectedDate = value ? new Date(value) : null;
+  const [opened2, setOpened2] = useState(false);
+
+  useEffect(() => {
+    if (value[0] != null && value[1] != null) {
+      setOpened(false)
+    }
+  }, [value])
 
   return (
-    <div>
-      <Text fw={500} fz={12} c="#6d6d6d">{label}</Text>
-      <Popover
-        opened={opened}
-        onClose={() => setOpened(false)}
-        position="bottom"
-        withArrow
-        transitionProps={{ transition: "fade" }}
-      >
+    <Flex
+      direction={`${isColumn ? "column" : "row"}`}
+      justify="space-between"
+      gap={(gapValue ?? 0)}
+      className="w-full items-end"
+    >
+      <Popover opened={opened} position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
         <Popover.Target>
           <TextInput
-            value={selectedDate ? selectedDate.toDateString() : ""}
-            readOnly
-            placeholder={placeholder}
-            rightSection={
-              <div
-                style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
-                onClick={() => setOpened((o) => !o)}
-              >
-                <IconCalendar size={18} color="#6d6d6d" />
-              </div>
+            value={
+              value[0] === null
+                ? ""
+                : DateTimeUtils.dayWithDate(`${value[0]?.toString()}`)
             }
-            radius={8}
-            className="border-none w-full text-sm"
-            styles={{ input: { cursor: "pointer" } }}
+            radius="md"
+            size={size ?? 'xs'}
+            readOnly
+            label={fLabel}
+            placeholder={fPlaceholder}
+            className="w-full cursor-default"
+            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
+            rightSection={<IconCalendarMonth />}
+            styles={{ label: { color: "#6d6d6d" } }}
+            onClick={() => {
+              setOpened((o) => !o)
+              setOpened2((o) => o ? false : o)
+            }}
+          />
+        </Popover.Target>
+        <Popover.Dropdown className="w-full">
+          <DatePicker
+            firstDayOfWeek={0}
+            numberOfColumns={isMobile ? 1 : 2}
+            type="range"
+            value={value}
+            onChange={setValue}
+          />
+        </Popover.Dropdown>
+      </Popover>
+      <Popover opened={opened2} position="bottom" shadow="md">
+        <Popover.Target>
+          <TextInput
+            value={
+              value[1] === null
+                ? ""
+                : DateTimeUtils.dayWithDate(`${value[1]?.toString()}`)
+            }
+            radius="md"
+            size={size ?? 'xs'}
+            readOnly
+            label={lLabel}
+            placeholder={lPlaceholder}
+            rightSection={<IconCalendarMonth />}
+            className="w-full"
+            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
+            styles={{ label: { color: "#6d6d6d" } }}
+            onClick={() => {
+              setOpened((o) => o ? false : o)
+              setOpened2((o) => !o)
+            }}
           />
         </Popover.Target>
         <Popover.Dropdown>
           <DatePicker
-            value={selectedDate}
-            onChange={(date) => {
-              onChange(date ? date.toISOString() : null);
-              setOpened(false);
-            }}
+            numberOfColumns={isMobile ? 1 : 2}
+            type="range"
+            value={value}
+            onChange={setValue}
           />
         </Popover.Dropdown>
       </Popover>
-    </div>
+    </Flex>
   );
 };
-
-export default DateRangeFilter;

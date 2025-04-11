@@ -1,20 +1,19 @@
 import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { FilterStore } from '@src/modules/Offers/store'
-import { useDateRangeStore, useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
+import { useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore, useDateUpdatedStore } from "@shared/hooks/useDateRange";
 import { useEffect } from "react";
 import { filterVal } from "@modules/Offers/values";
-// import DateRangeFilter from "@src/modules/Offers/components/filter/DateRangeFilter";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { DateRange } from "@modules/Offers/components/filter/DateRange";
 
 
 export default function DrawerFilter() {
   const { filterDrawer, setFilterDrawer, filter, activeTab, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
-  const { value, setValue } = useDateRangeStore();
-  const { value: jobOfferValue, setValue: setJobOfferValue } = useJobOfferDateRangeStore();
-  const { value: filterValue, setValue: setFilterValue } = useGeneratedOfferStore();
-  const { value: archiveValue, setValue: setArchiveValue } = useArchivedStore();
+  const { dateUpdatedValue, setDateUpdatedValue } = useDateUpdatedStore();
+  const { Offervalue: jobOfferValue, setOfferValue: setJobOfferValue } = useJobOfferDateRangeStore();
+  const { generatedOfferValue: filterValue, setGeneratedOfferValue: setFilterValue } = useGeneratedOfferStore();
+  const { archivedValue: archiveValue, setArchivedValue: setArchiveValue } = useArchivedStore();
 
   const currentDate = new Date();
   const dateTomorrow = new Date(currentDate);
@@ -27,7 +26,7 @@ export default function DrawerFilter() {
 
   const isArchived = activeTab === "Archived"
   const isJobOffers = activeTab === "All_offers"
-  const isGenerated = activeTab === "Generated"
+  const isGenerated = activeTab === "Pending"
   const isAccepted = activeTab === "Accepted"
 
   useEffect(() => {
@@ -61,7 +60,6 @@ export default function DrawerFilter() {
 
 
   useEffect(() => {
-    // Reset filter values when conditions change
     setFilterValue([null, null]);
   }, [isGenerated, isAccepted, isArchived]);
 
@@ -93,6 +91,8 @@ export default function DrawerFilter() {
             </Flex>
           </Flex>
 
+          <Divider size={2} color="#6d6d6d50" className="w-full" />
+
           <MultiSelect
             value={filter.company}
             size={inputSize}
@@ -104,8 +104,8 @@ export default function DrawerFilter() {
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
             onChange={(value) => setFilter({ ...filter, company: value })}
-          />  
-          
+          />
+
           {isArchived && (
             <>
               {/* Archived */}
@@ -126,8 +126,8 @@ export default function DrawerFilter() {
               <DateRange
                 gapValue={12}
                 size="md"
-                value={value}
-                setValue={setValue}
+                value={archiveValue}
+                setValue={setArchiveValue}
                 fLabel="From"
                 lLabel="To"
                 fPlaceholder="Start Date"
@@ -166,35 +166,34 @@ export default function DrawerFilter() {
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
-                    flexWrap: "nowrap", 
-                    overflowX: "auto", 
-                    maxHeight: "40px", 
-                    scrollbarWidth: "thin", 
+                    flexWrap: "nowrap",
+                    overflowX: "auto",
+                    maxHeight: "40px",
+                    scrollbarWidth: "thin",
                   },
                   values: {
                     display: "flex",
-                    flexWrap: "nowrap", 
-                    overflowX: "auto", 
-                    maxWidth: "100%", 
+                    flexWrap: "nowrap",
+                    overflowX: "auto",
+                    maxWidth: "100%",
                     gap: "4px",
                     padding: "4px",
                   },
                 })}
-                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
+
                 data={statusFilterOptions}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
                 nothingFoundMessage="No options"
-                // withinPortal
+
                 maxDropdownHeight={90}
                 rightSection={
-                  <span> {/* Custom dropdown icon */}
+                  <span>
                     <IconCaretDownFilled size={18} stroke={2} />
                   </span>
                 }
               />
-
             </>
           )}
           {/*End of Archived */}
@@ -211,8 +210,8 @@ export default function DrawerFilter() {
                 label="ID"
                 placeholder="Type ID"
                 styles={{ label: { color: "#6d6d6d" } }}
-                value={filter.id}
-                onChange={(event) => { setFilter({ ...filter, id: `${event.currentTarget.value}` }) }}
+                value={filter.filterId}
+                onChange={(event) => { setFilter({ ...filter, filterId: `${event.currentTarget.value}` }) }}
               />
 
               <Divider size={0.5} color="#edeeed" className="w-full" />
@@ -233,8 +232,8 @@ export default function DrawerFilter() {
               <DateRange
                 gapValue={12}
                 size="md"
-                value={value}
-                setValue={setValue}
+                value={dateUpdatedValue}
+                setValue={setDateUpdatedValue}
                 fLabel="From"
                 lLabel="To"
                 fPlaceholder="Start Date"
@@ -262,37 +261,34 @@ export default function DrawerFilter() {
                 radius={8}
                 size={inputSize}
                 className="border-none w-full text-[16px] poppins"
-                label="Status"
-                placeholder="Select Status"
+                label="Remarks"
+                placeholder="Select Remarks"
                 styles={() => ({
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
-                    flexWrap: "nowrap", 
-                    overflowX: "auto", 
-                    maxHeight: "40px", 
-                    scrollbarWidth: "thin", 
+                    flexWrap: "nowrap",
+                    overflowX: "auto",
+                    maxHeight: "40px",
+                    scrollbarWidth: "thin",
                   },
                   values: {
                     display: "flex",
                     flexWrap: "nowrap",
-                    overflowX: "auto", 
-                    maxWidth: "100%", 
+                    overflowX: "auto",
+                    maxWidth: "100%",
                     gap: "4px",
                     padding: "4px",
                   },
                 })}
-                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={remarksFilterOptions}
-                // value={filter.status}
-                onChange={(values) => setFilter({ ...filter, status: values })}
+                onChange={(values) => setFilter({ ...filter, remarks: values })}
                 searchable
                 clearable
                 nothingFoundMessage="No options"
-                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
-                  <span> {/* Custom dropdown icon */}
+                  <span>
                     <IconCaretDownFilled size={18} stroke={2} />
                   </span>
                 }
@@ -309,28 +305,25 @@ export default function DrawerFilter() {
                   label: { color: "#6d6d6d" },
                   input: {
                     display: "flex",
-                    flexWrap: "nowrap", 
-                    overflowX: "auto", 
-                    maxHeight: "40px", 
-                    scrollbarWidth: "thin", 
+                    flexWrap: "nowrap",
+                    overflowX: "auto",
+                    maxHeight: "40px",
+                    scrollbarWidth: "thin",
                   },
                   values: {
                     display: "flex",
-                    flexWrap: "nowrap", 
-                    overflowX: "auto", 
-                    maxWidth: "100%", 
+                    flexWrap: "nowrap",
+                    overflowX: "auto",
+                    maxWidth: "100%",
                     gap: "4px",
                     padding: "4px",
                   },
                 })}
-                // data={["Pending", "Generated", "Accepted", "Archived", "Rejected"]}
                 data={statusFilterOptions}
-                // value={filter.status}
                 onChange={(values) => setFilter({ ...filter, status: values })}
                 searchable
                 clearable
                 nothingFoundMessage="No options"
-                // withinPortal
                 maxDropdownHeight={90}
                 rightSection={
                   <span>
@@ -351,8 +344,8 @@ export default function DrawerFilter() {
                 label="ID"
                 placeholder="Type ID"
                 styles={{ label: { color: "#6d6d6d" } }}
-                value={filter.id}
-                onChange={(event) => { setFilter({ ...filter, id: `${event.currentTarget.value}` }) }}
+                value={filter.filterId}
+                onChange={(event) => { setFilter({ ...filter, filterId: `${event.currentTarget.value}` }) }}
               />
 
               <Divider size={0.5} color="#edeeed" className="w-full" />

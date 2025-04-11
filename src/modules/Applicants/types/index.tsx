@@ -5,8 +5,9 @@ export interface ApplicantStatus {
     applicationDateTo: string | null;
     dateLastUpdatedFrom: string | null;
     dateLastUpdatedTo: string | null;
-    position: string;
-    status: string;
+    applicationDateValue: string | null;
+    position: string[];
+    status: string[];
 }
 
 export interface Applicants {
@@ -16,7 +17,7 @@ export interface Applicants {
     Phone: string;
     Email: string;
     Position: string;
-    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred";
+    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred" | "Transfer Employee";
 }
 
 export interface FilterState {
@@ -53,4 +54,10 @@ export interface PDFProps {
     Benefit_Maternity: string;
     Description_Transpo: string;
     Acknowledgement: string;
-  }
+}
+
+export type StatusType = "Offered" | "Archived" | "For Interview" | "Applied";
+
+export type HandleStatusClickTypes = {
+    StatusClick: StatusType
+}

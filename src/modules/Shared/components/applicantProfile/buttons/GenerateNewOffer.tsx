@@ -3,7 +3,7 @@ import { Button, Combobox, Divider, Modal, Textarea, TextInput, useCombobox } fr
 import { IconChevronDown, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Shared/components/applicantProfile/store"
 import JobGeneratedAlert from "@modules/Shared/components/applicantProfile/alerts/JobGeneratedAlert"
-import { useCloseModal } from "@modules/Applicants/store"
+import { useCloseModal } from  "@modules/Shared/components/applicantProfile/store"
 interface DropDownOfferedProps {
     onClose: () => void;
     ApplicantName: string;

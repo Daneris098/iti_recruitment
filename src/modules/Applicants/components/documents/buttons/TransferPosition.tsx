@@ -14,10 +14,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
     const positions = ["HR Specialist", "Engineer", "Doctor"];
     const [isTransferred, setIsTransferred] = useState(false);
     const positionCombobox = useCombobox();
-    const {
-        position, setPosition,
-        comments, setComments
-    } = useDropDownOfferedStore();
+    const { position, setPosition, comments, setComments } = useDropDownOfferedStore();
 
     return (
         <div className="p-9">
@@ -99,13 +96,13 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             {/* Submit Button */}
             <div className="flex justify-between pt-4">
 
-                <Button className="bg-transparent text-[#559CDA] px-6 py-3 rounded-lg border-[#559CDA] font-medium text-[14px] poppins"
+                <Button className="bg-transparent text-[#559CDA] px-6 py-2 rounded-lg border-[#559CDA] font-medium text-[14px] poppins"
                     onClick={onClose}>
                     Cancel
                 </Button>
 
                 <Button
-                    className="custom-gradient text-white px-6 py-3 rounded-lg font-medium text-[14px] poppins"
+                    className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[14px] poppins"
                     onClick={() => {
                         setIsTransferred(true); // Open success modal first
                         setTimeout(() => onClose(), 1000); // Delay closing the transfer modal
