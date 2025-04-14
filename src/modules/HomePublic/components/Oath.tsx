@@ -1,4 +1,4 @@
-import { Divider, Radio } from "@mantine/core";
+import { Radio } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";

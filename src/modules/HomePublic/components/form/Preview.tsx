@@ -37,7 +37,7 @@ export default function index() {
 
                     <div className="flex flex-col h-full  sm:w-[20%] p-2 gap-6 ">
                         <img src={applicationForm.photo ?? ""} alt="Profile Picture" className="w-[90%] h-auto object-cover rounded-lg" />
-                        <p className="text-[#0078EB] text-2xl">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
+                        <p className="text-[#0078EB] text-2xl font-bold">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
                         <p>{applicationForm.generalInformation.firstChoice}</p>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
                             <p className="text-[#6D6D6D]">Email</p>

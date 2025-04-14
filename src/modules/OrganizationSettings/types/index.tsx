@@ -100,4 +100,5 @@ export type Company = {
   department: string;
   departmentHead: string;
   isNewField?: boolean;
+  touched?: boolean;
 };

@@ -1,7 +1,7 @@
 import { AccountSetupStore } from "@modules/AccountSetup/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { CircleAlert, CircleCheckBig, HelpCircle } from "lucide-react";
+import { CircleCheckBig, HelpCircle } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "@modules/AccountSetup/types";
 import { IconX } from "@tabler/icons-react";

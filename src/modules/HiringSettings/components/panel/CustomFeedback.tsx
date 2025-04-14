@@ -1,6 +1,6 @@
 import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCancel, IconCircleX } from "@tabler/icons-react";
+import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
 import { TextInput } from '@mantine/core';
 import { FeedbackStore } from '@modules/HiringSettings/store';
 import { feedback } from '@modules/HiringSettings/types';
