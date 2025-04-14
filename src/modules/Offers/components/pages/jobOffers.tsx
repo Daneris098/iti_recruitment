@@ -114,7 +114,7 @@ export default function index() {
                     defaultValue="All_offers">
                     <Tabs.List>
                         {TABS.map((tab) => (
-                            <Tabs.Tab key={tab.value} value={tab.value}>
+                            <Tabs.Tab key={tab.value} value={tab.value} className='font-medium text-[#5E6670] text-base'>
                                 {tab.label}
                             </Tabs.Tab>
                         ))}
