@@ -61,3 +61,5 @@ export type StatusType = "Offered" | "Archived" | "For Interview" | "Applied";
 export type HandleStatusClickTypes = {
     StatusClick: StatusType
 }
+
+export type ApplicantStatusType =  'applied' | 'for interview' | 'hired' | 'offered' | 'for transfer' | 'archived' | 'transferred' | 'assessment' | 'initial interview' | 'final interview'
