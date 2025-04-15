@@ -1,9 +1,9 @@
 import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable, DataTableRowExpansionProps } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
-import { TextInput, Select } from '@mantine/core';
+import { TextInput, Select, Stack } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
-import { title, description, Company, AlertType } from '@modules/OrganizationSettings/types';
+import { title, description, Company, AlertType, panel } from '@modules/OrganizationSettings/types';
 
 const PAGE_SIZE = 15;
 const initialData: Company[] = [
@@ -25,7 +25,8 @@ const initialData: Company[] = [
 ];
 
 const DataTableComp = forwardRef((_, ref) => {
-    const { activePanel, setAlert } = OrganizationSettingsStore();
+    const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+    const { activePanel, setAlert, setValidationMessage } = OrganizationSettingsStore();
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Company[]>(initialData.slice(0, PAGE_SIZE));
     const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
@@ -82,6 +83,7 @@ const DataTableComp = forwardRef((_, ref) => {
     };
 
     const addNewRow = () => {
+        setSelectedRowId(null)
         if (newRows.length > 0) {
             return
         }
@@ -106,10 +108,12 @@ const DataTableComp = forwardRef((_, ref) => {
         setEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
     };
 
-    const saveAll = () => {
+    const saveAll = async () => {
         if (!checkEditIsValid()) {
             return
         }
+        setSelectedRowId(null);
+        // await new Promise(resolve => setTimeout(resolve, 100));
         setRecords(prevRecords => [...prevRecords, ...newRows].map(record => editableData[record.id] ? { ...record, ...editableData[record.id] } : record));
         setNewRows([]);
         setEditMode({});
@@ -123,10 +127,10 @@ const DataTableComp = forwardRef((_, ref) => {
         return !Object.entries(editableData).some(([key, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
-                console.log('value: ', value)
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
-                    alert(`Invalid: "${field}" is empty in entry ID ${data.id || key}`);
-                    return true; // triggers "some" to return true, which we invert
+                    setValidationMessage(`${field} is empty`);
+                    setAlert(AlertType.validation)
+                    return true;
                 }
                 return false;
             })
@@ -135,6 +139,7 @@ const DataTableComp = forwardRef((_, ref) => {
 
 
     const cancelAll = () => {
+        setSelectedRowId(null);
         setEditMode({});
         setEditableData({});
         setNewRows([]);
@@ -191,7 +196,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(val: any) => {handleEditChange(data.id, 'status', val)}}
+                            onChange={(val: any) => { handleEditChange(data.id, 'status', val) }}
                             defaultValue={editableData[data.id]?.status || data.status}
                             error={editableData[data.id]?.touched && (editableData[data.id]?.status ?? '').trim() === '' ? 'Required' : undefined}
                             onBlur={() => { handleEditChange(data.id, 'touched', true); }}
@@ -213,9 +218,13 @@ const DataTableComp = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => {
+                            if (!checkEditIsValid()) {
+                                return
+                            }
+                            setSelectedRowId(data.id)
+                            setExpandedRowIds([data.id])
                             toggleEditMode(data.id)
                             setNewRows([]);
-                            setExpandedRowIds([data.id])
                         }}>
                             {<IconPencil />}
                         </div>
@@ -228,7 +237,7 @@ const DataTableComp = forwardRef((_, ref) => {
         ].map((field: any) => ({
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
-                field === 'status' && editMode[data.id] ? (
+                field === 'status' && editMode[data.id] && data.isNewField ? (
                     <div className='flex'>
                         <Select
                             radius={8}
@@ -237,9 +246,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             className="border-none w-full text-sm"
                             classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(val: any) => {
-                                handleEditChange(data.id, 'status', val)
-                            }}
+                            onChange={(val: any) => { handleEditChange(data.id, 'status', val) }}
                             defaultValue={editableData[data.id]?.status || data.status}
                         />
                         <div className='cursor-pointer mt-1 ml-1' onClick={() => {
@@ -253,12 +260,30 @@ const DataTableComp = forwardRef((_, ref) => {
                             {records.some((item) => item.id === data.id) ? <IconCircleX className='cursor-pointer' /> : <IconTrashFilled className='cursor-pointer' />}
                         </div>
                     </div>
+                ) : data.isNewField ? (
+                    <>
+                        <TextInput
+                            className='relative'
+                            classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                            value={(editableData as any)[data.id]?.[field] || data[field]}
+                            onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
+                            error={editableData[data.id]?.touched && ((editableData as any)[data.id][field] ?? '').trim() === '' ? 'Required' : undefined}
+                            onBlur={() => { handleEditChange(data.id, 'touched', true); }}
+                        />
+                    </>
                 ) : (
-                    <TextInput
-                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                        value={(editableData as any)[data.id]?.[field] || data[field]}
-                        onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
-                    />
+                    <div className='flex justify-between'>
+                        <p>{data[field]}</p>
+                        {field === 'status' && <div className="cursor-pointer" onClick={() => {
+                            if (!checkEditIsValid()) { return }
+                            setSelectedRowId(data.id)
+                            setExpandedRowIds([data.id])
+                            toggleEditMode(data.id)
+                            setNewRows([]);
+                        }}>
+                            {<IconPencil />}
+                        </div>}
+                    </div>
                 )
             ) :
                 <>
@@ -267,8 +292,16 @@ const DataTableComp = forwardRef((_, ref) => {
                         (
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
-                                <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
-                                    {editMode[data.id] ? '' : <IconPencil />}
+                                <div className="cursor-pointer" onClick={() => {
+                                    if (!checkEditIsValid()) {
+                                        return
+                                    }
+                                    setSelectedRowId(data.id)
+                                    setExpandedRowIds([data.id])
+                                    toggleEditMode(data.id)
+                                    setNewRows([]);
+                                }}>
+                                    {<IconPencil />}
                                 </div>
                             </div>
                         )
@@ -497,8 +530,17 @@ const DataTableComp = forwardRef((_, ref) => {
         }),
     };
 
+    useEffect(() => {
+        console.log('editableData: ', editableData)
+    }, [editableData])
+
     const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
     const rowExpansion2: any = {
+        collapseProps: {
+            transitionDuration: 500,
+            animateOpacity: true,
+            transitionTimingFunction: 'ease-out',
+        },
         trigger: 'never',
         allowMultiple: false,
         expanded: {
@@ -509,68 +551,95 @@ const DataTableComp = forwardRef((_, ref) => {
         content: ({ record: { name, id, code, status } }: any) => {
             // console.log('editableData[id]: ', editableData[id]);
             return (
-                <div className='flex w-full gap-2 relative'>
-                    <TextInput
-                        className="w-1/3"
-                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                        value={editableData[id]?.code ?? ''} // fallback to empty string instead of undefined
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            handleEditChange(id, 'code', e.target.value)
-                        }
-                        error={
-                            (editableData[id]?.code ?? '').trim() === ''
-                                ? 'Required'
-                                : undefined
-                        }
-                    />
+                <>
+                    {activePanel === panel.companyList ? (
+                        <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                            <TextInput
+                                className="w-1/3"
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.code ?? ''} // fallback to empty string instead of undefined
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(id, 'code', e.target.value)}
+                                error={(editableData[id]?.code ?? '').trim() === '' ? 'Required' : undefined}
+                            />
 
-                    <TextInput
-                        className=' w-1/3'
-                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                        value={editableData[id]?.name}
-                        onChange={(e: any) => handleEditChange(id, 'name', e.target.value)}
-                        error={
-                            (editableData[id]?.name ?? '').trim() === ''
-                                ? 'Required'
-                                : undefined
-                        }
+                            <TextInput
+                                className=' w-1/3'
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.name}
+                                onChange={(e: any) => handleEditChange(id, 'name', e.target.value)}
+                                error={(editableData[id]?.name ?? '').trim() === '' ? 'Required' : undefined}
+                            />
+                            <Select
+                                radius={8}
+                                data={["ACTIVE", "INACTIVE"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none text-sm w-1/3"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                onChange={(val: any) => { handleEditChange(id, 'status', val) }}
+                                error={(editableData[id]?.status ?? '').trim() === '' ? 'Required' : undefined}
+                                defaultValue={editableData[id]?.status || status}
+                            />
+                        </div>
+                    ) : (
+                        <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                            <TextInput
+                                className="w-[14%]"
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.code ?? ''} // fallback to empty string instead of undefined
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(id, 'code', e.target.value)}
+                                error={(editableData[id]?.code ?? '').trim() === '' ? 'Required' : undefined}
+                            />
 
-                    />
-                    <Select
-                        radius={8}
-                        data={["ACTIVE", "INACTIVE"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none text-sm w-1/3"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={(val: any) => {
-                            handleEditChange(id, 'status', val)
-                        }}
-                        error={
-                            (editableData[id]?.status ?? '').trim() === ''
-                                ? 'Required'
-                                : undefined
-                        }
 
-                        defaultValue={editableData[id]?.status || status}
-                    />
-                </div>
+                            <TextInput
+                                className="w-[14%]"
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.name}
+                                onChange={(e: any) => handleEditChange(id, 'name', e.target.value)}
+                                error={(editableData[id]?.name ?? '').trim() === '' ? 'Required' : undefined}
+                            />
+
+                            <TextInput
+                                className="w-[19%]"
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.location}
+                                onChange={(e: any) => handleEditChange(id, 'location', e.target.value)}
+                                error={(editableData[id]?.location ?? '').trim() === '' ? 'Required' : undefined}
+                            />
+                            <TextInput
+                                className="w-[14%]"
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.area ?? ''}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(id, 'area', e.target.value)}
+                                error={(editableData[id]?.area ?? '').trim() === '' ? 'Required' : undefined}
+                            />
+
+                            <TextInput
+                                className="w-[20%]"
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                value={editableData[id]?.description}
+                                onChange={(e: any) => handleEditChange(id, 'description', e.target.value)}
+                                error={(editableData[id]?.description ?? '').trim() === '' ? 'Required' : undefined}
+                            />
+                            <Select
+                                radius={8}
+                                data={["ACTIVE", "INACTIVE"]}
+                                rightSection={<IconCaretDownFilled size='18' />}
+                                className="border-none text-sm w-[16%]"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                styles={{ label: { color: "#6d6d6d" } }}
+                                onChange={(val: any) => { handleEditChange(id, 'status', val) }}
+                                error={(editableData[id]?.status ?? '').trim() === '' ? 'Required' : undefined}
+                                defaultValue={editableData[id]?.status || status}
+                            />
+
+                        </div>
+                    )}
+                </>
             )
         },
     };
-
-    useEffect(() => {
-        // console.log('editableData: ', editableData);
-        // const fieldsToCheck = ['code', 'name', 'status'];
-        // Object.entries(editableData).forEach(([key, data]) => {
-        //     fieldsToCheck.forEach((field) => {
-        //         const value = (data as any)[field];
-        //         if (typeof value === 'string' && value.trim() === '') {
-        //             alert(`Invalid: "${field}" is empty in entry ID ${data.id || key}`);
-        //         }
-        //     });
-        // });
-    }, [editableData])
 
 
     return (
@@ -591,6 +660,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         color: "rgba(0, 0, 0, 0.6)",
                     },
                 }}
+                rowClassName={(row) => row.id === selectedRowId ? "bg-[#DEECFF]" : ""}
                 paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
                 withTableBorder
                 records={[...newRows, ...records]}

@@ -4,7 +4,9 @@ export interface OrganizationSettingsState {
   activePanel: string;
   action: string,
   reroute: boolean,
+  validationMessage: string,
 
+  setValidationMessage: (validationMessage: string) => void;
   setReroute: (reroute: boolean) => void;
   setAction: (action: string) => void;
   setActivePanel: (activePanel: string) => void;
@@ -16,6 +18,7 @@ export enum AlertType {
   saved = 'saved',
   cancel = 'Cancel',
   cancellled = 'Cancelled',
+  validation = 'Validation'
 }
 
 export enum title {
