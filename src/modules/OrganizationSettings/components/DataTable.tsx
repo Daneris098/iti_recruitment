@@ -1,9 +1,9 @@
-import { useState, forwardRef, useImperativeHandle } from 'react';
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable, DataTableRowExpansionProps } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
 import { TextInput, Select } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
-import { title, description, Company } from '@modules/OrganizationSettings/types';
+import { title, description, Company, AlertType } from '@modules/OrganizationSettings/types';
 
 const PAGE_SIZE = 15;
 const initialData: Company[] = [
@@ -25,7 +25,7 @@ const initialData: Company[] = [
 ];
 
 const DataTableComp = forwardRef((_, ref) => {
-    const { activePanel } = OrganizationSettingsStore();
+    const { activePanel, setAlert } = OrganizationSettingsStore();
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Company[]>(initialData.slice(0, PAGE_SIZE));
     const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
@@ -42,7 +42,7 @@ const DataTableComp = forwardRef((_, ref) => {
     };
 
     const toggleEditMode = (id: number) => {
-        // Toggle the edit mode for the specific code
+        // Toggle the edit mode for the specific row
         setEditMode(prevEditMode => ({
             ...prevEditMode,
             [id]: !prevEditMode[id],
@@ -55,10 +55,18 @@ const DataTableComp = forwardRef((_, ref) => {
                 newRows.find(item => item.id === id);
 
             if (rowData) {
-                setEditableData(prevEditableData => ({
-                    ...prevEditableData,
-                    [id]: { ...rowData },
-                }));
+                setEditableData(prevEditableData => {
+                    if (prevEditableData[id]) {
+                        // rowData already exists in editableData, skip updating
+                        return prevEditableData;
+                    }
+
+                    return {
+                        ...prevEditableData,
+                        [id]: { ...rowData },
+                    };
+                });
+
             }
         }
     };
@@ -99,29 +107,32 @@ const DataTableComp = forwardRef((_, ref) => {
     };
 
     const saveAll = () => {
-        let isValid = true;
-        Object.values(editableData).forEach(data => {
-            const trimmedName = data.name?.trim();
-            const trimmedCode = data.code?.trim();
-
-            // Validation check: Ensure name and code are not empty after trimming
-            if (!trimmedName || !trimmedCode) {
-                console.error('Validation failed: Name or Code is empty after trimming.');
-                isValid = false;
-            }
-        });
-
-        if (!isValid) {
-            // alert(isValid)
-            // return
-        };
-
+        if (!checkEditIsValid()) {
+            return
+        }
         setRecords(prevRecords => [...prevRecords, ...newRows].map(record => editableData[record.id] ? { ...record, ...editableData[record.id] } : record));
         setNewRows([]);
         setEditMode({});
         setEditableData({});
         setExpandedRowIds([])
+        setAlert(AlertType.saved);
     };
+
+    const checkEditIsValid = () => {
+        const fieldsToCheck = ['code', 'name', 'status'];
+        return !Object.entries(editableData).some(([key, data]) =>
+            fieldsToCheck.some(field => {
+                const value = (data as any)[field];
+                console.log('value: ', value)
+                if ((typeof value === 'string' && value.trim() === '') || value == null) {
+                    alert(`Invalid: "${field}" is empty in entry ID ${data.id || key}`);
+                    return true; // triggers "some" to return true, which we invert
+                }
+                return false;
+            })
+        );
+    };
+
 
     const cancelAll = () => {
         setEditMode({});
@@ -151,15 +162,8 @@ const DataTableComp = forwardRef((_, ref) => {
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={editableData[data.id]?.code || data.code}
                         onChange={(e: any) => handleEditChange(data.id, 'code', e.target.value)}
-                        error={
-                            editableData[data.id]?.touched && (editableData[data.id]?.code ?? '').trim() === ''
-                                ? 'Required'
-                                : undefined
-                        }
-                        onBlur={() => {
-                            // Mark field as touched
-                            handleEditChange(data.id, 'touched', true);
-                        }}
+                        error={editableData[data.id]?.touched && (editableData[data.id]?.code ?? '').trim() === '' ? 'Required' : undefined}
+                        onBlur={() => { handleEditChange(data.id, 'touched', true); }}
                     />
 
                 ) : data.code,
@@ -171,9 +175,10 @@ const DataTableComp = forwardRef((_, ref) => {
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={editableData[data.id]?.name || data.name}
                         onChange={(e: any) => handleEditChange(data.id, 'name', e.target.value)}
+                        error={editableData[data.id]?.touched && (editableData[data.id]?.name ?? '').trim() === '' ? 'Required' : undefined}
+                        onBlur={() => { handleEditChange(data.id, 'touched', true); }}
                     />
-                ) :
-                    <p>{data.name}</p>
+                ) : data.name,
             },
             {
                 accessor: 'status', title: 'Status', sortable: true,
@@ -186,10 +191,11 @@ const DataTableComp = forwardRef((_, ref) => {
                             className="border-none w-full text-sm"
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
-                            onChange={(val: any) => {
-                                handleEditChange(data.id, 'status', val)
-                            }}
+                            onChange={(val: any) => {handleEditChange(data.id, 'status', val)}}
                             defaultValue={editableData[data.id]?.status || data.status}
+                            error={editableData[data.id]?.touched && (editableData[data.id]?.status ?? '').trim() === '' ? 'Required' : undefined}
+                            onBlur={() => { handleEditChange(data.id, 'touched', true); }}
+
                         />
                         <div className='cursor-pointer mt-1 ml-1' onClick={() => {
                             const updatedEditMode = Object.fromEntries(Object.entries(editMode).filter(([key]) => key != data.id));
@@ -499,9 +505,9 @@ const DataTableComp = forwardRef((_, ref) => {
             recordIds: expandedRowIds,
             onRecordIdsChange: setExpandedRowIds,
         },
-        expandable: ({ record: { isNewField } }: any) => { console.log(isNewField); return (!isNewField) },
+        expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
         content: ({ record: { name, id, code, status } }: any) => {
-            console.log('editableData[id]: ', editableData[id]);
+            // console.log('editableData[id]: ', editableData[id]);
             return (
                 <div className='flex w-full gap-2 relative'>
                     <TextInput
@@ -521,7 +527,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     <TextInput
                         className=' w-1/3'
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                        value={editableData[id]?.name || name}
+                        value={editableData[id]?.name}
                         onChange={(e: any) => handleEditChange(id, 'name', e.target.value)}
                         error={
                             (editableData[id]?.name ?? '').trim() === ''
@@ -552,6 +558,19 @@ const DataTableComp = forwardRef((_, ref) => {
             )
         },
     };
+
+    useEffect(() => {
+        // console.log('editableData: ', editableData);
+        // const fieldsToCheck = ['code', 'name', 'status'];
+        // Object.entries(editableData).forEach(([key, data]) => {
+        //     fieldsToCheck.forEach((field) => {
+        //         const value = (data as any)[field];
+        //         if (typeof value === 'string' && value.trim() === '') {
+        //             alert(`Invalid: "${field}" is empty in entry ID ${data.id || key}`);
+        //         }
+        //     });
+        // });
+    }, [editableData])
 
 
     return (
