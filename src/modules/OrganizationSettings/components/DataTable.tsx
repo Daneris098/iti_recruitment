@@ -487,7 +487,7 @@ const DataTableComp = forwardRef((_, ref) => {
         ].map((field: any) => ({
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
-                field === 'status' && editMode[data.id] ? (
+                field === 'status' && editMode[data.id] && data.isNewField ? (
                     <div className='flex'>
                         <Select
                             radius={8}
@@ -514,22 +514,52 @@ const DataTableComp = forwardRef((_, ref) => {
                         </div>
 
                     </div>
+                ) : data.isNewField ? (
+                    <>
+                        {/* new field view */}
+                        <TextInput
+                            className='relative'
+                            classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                            value={(editableData as any)[data.id]?.[field] || data[field]}
+                            onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
+                            error={editableData[data.id]?.touched && ((editableData as any)[data.id][field] ?? '').trim() === '' ? 'Required' : undefined}
+                            onBlur={() => { handleEditChange(data.id, 'touched', true); }}
+                        />
+                    </>
                 ) : (
-                    <TextInput
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        value={(editableData as any)[data.id]?.[field] || data[field]}
-                        onChange={(e: any) => handleEditChange(data.id, field, e.target.value)}
-                    />
+                    // selected row to edit view
+                    <div className='flex justify-between'>
+                        <p>{data[field]}</p>
+                        {field === 'status' && <div className="cursor-pointer" onClick={() => {
+                            if (!checkEditIsValid()) { return }
+                            setSelectedRowId(data.id)
+                            setExpandedRowIds([data.id])
+                            toggleEditMode(data.id)
+                            setNewRows([]);
+                        }}>
+                            {<IconPencil />}
+                        </div>}
+                    </div>
                 )
             ) :
                 <>
                     {field != 'status' ? (
+                        //  initial views non status field
                         <p>{data[field]}</p>) :
+                        //  initial views status field
                         (
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
-                                <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
-                                    {editMode[data.id] ? '' : <IconPencil />}
+                                <div className="cursor-pointer" onClick={() => {
+                                    if (!checkEditIsValid()) {
+                                        return
+                                    }
+                                    setSelectedRowId(data.id)
+                                    setExpandedRowIds([data.id])
+                                    toggleEditMode(data.id)
+                                    setNewRows([]);
+                                }}>
+                                    {<IconPencil />}
                                 </div>
                             </div>
                         )
@@ -794,9 +824,49 @@ const DataTableComp = forwardRef((_, ref) => {
 
                         </div>
                     ) :
-                        (<div>
+                        activePanel === panel.positionLevel ? (
+                            <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                                <TextInput
+                                    className="w-[20%]"
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    value={editableData[id]?.code ?? ''}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(id, 'code', e.target.value)}
+                                    error={(editableData[id]?.code ?? '').trim() === '' ? 'Required' : undefined}
+                                />
 
-                        </div>)}
+                                <TextInput
+                                    className="w-[23%]"
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    value={editableData[id]?.name}
+                                    onChange={(e: any) => handleEditChange(id, 'name', e.target.value)}
+                                    error={(editableData[id]?.name ?? '').trim() === '' ? 'Required' : undefined}
+                                />
+
+                                <TextInput
+                                    className="w-[32%]"
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    value={editableData[id]?.description}
+                                    onChange={(e: any) => handleEditChange(id, 'description', e.target.value)}
+                                    error={(editableData[id]?.description ?? '').trim() === '' ? 'Required' : undefined}
+                                />
+
+                                <Select
+                                    radius={8}
+                                    data={["ACTIVE", "INACTIVE"]}
+                                    rightSection={<IconCaretDownFilled size='18' />}
+                                    className="border-none text-sm w-[23%]"
+                                    classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                    styles={{ label: { color: "#6d6d6d" } }}
+                                    onChange={(val: any) => { handleEditChange(id, 'status', val) }}
+                                    error={(editableData[id]?.status ?? '').trim() === '' ? 'Required' : undefined}
+                                    defaultValue={editableData[id]?.status || status}
+                                />
+
+                            </div>
+                        ) :
+                            (<div>
+
+                            </div>)}
                 </>
             )
         },
