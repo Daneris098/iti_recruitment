@@ -238,6 +238,7 @@ const DataTableComp = forwardRef((_, ref) => {
             accessor: field, title: field.charAt(0).toUpperCase() + field.slice(1), sortable: true,
             render: (data: any) => editMode[data.id] ? (
                 field === 'status' && editMode[data.id] && data.isNewField ? (
+                    // new field status view
                     <div className='flex'>
                         <Select
                             radius={8}
@@ -262,6 +263,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     </div>
                 ) : data.isNewField ? (
                     <>
+                        {/* new field view */}
                         <TextInput
                             className='relative'
                             classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -272,6 +274,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         />
                     </>
                 ) : (
+                    // selected row to edit view
                     <div className='flex justify-between'>
                         <p>{data[field]}</p>
                         {field === 'status' && <div className="cursor-pointer" onClick={() => {
@@ -288,7 +291,9 @@ const DataTableComp = forwardRef((_, ref) => {
             ) :
                 <>
                     {field != 'status' ? (
+                        //  initial views non status field
                         <p>{data[field]}</p>) :
+                        //  initial views status field
                         (
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
