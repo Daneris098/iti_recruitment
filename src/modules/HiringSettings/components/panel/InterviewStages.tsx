@@ -170,6 +170,7 @@ const InterviewStage = forwardRef((_, ref) => {
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
         setInterviewStagesEditableData({});
+        setSelectedRowId(null);
         setExpandedRowIds([])
         SetOperation(Operation.noOperation)
     };
@@ -178,6 +179,7 @@ const InterviewStage = forwardRef((_, ref) => {
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
         setInterviewStagesEditableData({});
+        setSelectedRowId(null);
         setExpandedRowIds([])
         SetOperation(Operation.noOperation)
     };
@@ -193,11 +195,6 @@ const InterviewStage = forwardRef((_, ref) => {
 
     const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
     const rowExpansion1: any = {
-        collapseProps: {
-            transitionDuration: 500,
-            animateOpacity: true,
-            transitionTimingFunction: 'ease-out',
-        },
         trigger: 'never',
         allowMultiple: false,
         expanded: {
@@ -208,7 +205,7 @@ const InterviewStage = forwardRef((_, ref) => {
         content: ({ record: { name, id, code, status, lastModified } }: any) => {
             // console.log('editableData[id]: ', editableData[id]);
             return (
-                <div className=' flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                <div className=' flex gap-2 relative'>
                     <TextInput
                         className="w-full"
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -267,10 +264,10 @@ const InterviewStage = forwardRef((_, ref) => {
                         color: "rgba(0, 0, 0, 0.6)",
                     },
                 }}
-                rowClassName={(row) => row.id === selectedRowId ? "bg-[#DEECFF]" : ""}
                 withTableBorder
                 records={[...interviewStage, ...interviewStagesNewRows]}
                 columns={columns}
+                rowClassName={(row) => row.id === selectedRowId ? "bg-[#DEECFF]" : ""}
                 rowExpansion={rowExpansion1}
             />
         </div>

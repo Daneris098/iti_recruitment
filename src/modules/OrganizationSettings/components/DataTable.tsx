@@ -115,12 +115,12 @@ const DataTableComp = forwardRef((_, ref) => {
         if (!checkEditIsValid()) {
             return
         }
-        setSelectedRowId(null);
         // await new Promise(resolve => setTimeout(resolve, 100));
         setRecords(prevRecords => [...prevRecords, ...newRows].map(record => editableData[record.id] ? { ...record, ...editableData[record.id] } : record));
         setNewRows([]);
         setEditMode({});
         setEditableData({});
+        setSelectedRowId(null);
         setExpandedRowIds([])
         setAlert(AlertType.saved);
         SetOperation(Operation.noOperation)
@@ -128,10 +128,10 @@ const DataTableComp = forwardRef((_, ref) => {
     
     
     const cancelAll = () => {
-        setSelectedRowId(null);
         setEditMode({});
         setEditableData({});
         setNewRows([]);
+        setSelectedRowId(null);
         setExpandedRowIds([])
         SetOperation(Operation.noOperation)
     };
@@ -700,11 +700,6 @@ const DataTableComp = forwardRef((_, ref) => {
 
     const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
     const rowExpansion2: any = {
-        collapseProps: {
-            transitionDuration: 500,
-            animateOpacity: true,
-            transitionTimingFunction: 'ease-out',
-        },
         trigger: 'never',
         allowMultiple: false,
         expanded: {
@@ -717,7 +712,7 @@ const DataTableComp = forwardRef((_, ref) => {
             return (
                 <>
                     {activePanel === panel.companyList ? (
-                        <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                        <div className='flex gap-2 relative bg-[#DEECFF] '>
                             <TextInput
                                 className="w-1/3"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -746,7 +741,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             />
                         </div>
                     ) : activePanel === panel.branch ? (
-                        <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                        <div className='flex gap-2 relative bg-[#DEECFF] '>
                             <TextInput
                                 className="w-[14%]"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -798,7 +793,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             />
                         </div>
                     ) : activePanel === panel.section ? (
-                        <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                        <div className='flex gap-2 relative bg-[#DEECFF]  '>
                             <TextInput
                                 className="w-[14%]"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -851,7 +846,7 @@ const DataTableComp = forwardRef((_, ref) => {
 
                         </div>
                     ) : activePanel === panel.division ? (
-                        <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                        <div className='flex gap-2 relative bg-[#DEECFF]  '>
                             <TextInput
                                 className="w-[20%]"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -893,7 +888,7 @@ const DataTableComp = forwardRef((_, ref) => {
                         </div>
                     ) :
                         activePanel === panel.positionLevel ? (
-                            <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                            <div className='flex gap-2 relative bg-[#DEECFF] '>
                                 <TextInput
                                     className="w-[20%]"
                                     classNames={{ input: 'poppins text-[#6D6D6D]' }}
@@ -933,7 +928,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             </div>
                         ) :
                             activePanel === panel.departments ? (
-                                <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                                <div className='flex gap-2 relative bg-[#DEECFF]  '>
                                     <TextInput
                                         className="w-[14%]"
                                         classNames={{ input: 'poppins text-[#6D6D6D]' }}

@@ -38,6 +38,7 @@ export type applicationSource = {
   id: number;
   sourceName: string;
   status: string;
+  fieldStatus? : string;
   lastModified: string;
 };
 
@@ -45,6 +46,7 @@ export type interviewer = {
   id: number;
   name: string;
   status: string;
+  fieldStatus? : string;
   lastModified: string;
 };
 

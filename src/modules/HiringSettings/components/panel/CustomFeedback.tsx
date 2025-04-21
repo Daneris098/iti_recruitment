@@ -305,11 +305,6 @@ const CustomFeedback = forwardRef((_, ref) => {
 
     
     const rowExpansion1: any = {
-        collapseProps: {
-            transitionDuration: 500,
-            animateOpacity: true,
-            transitionTimingFunction: 'ease-out',
-        },
         trigger: 'never',
         allowMultiple: false,
         expanded: {
@@ -333,11 +328,6 @@ const CustomFeedback = forwardRef((_, ref) => {
         },
     };
     const rowExpansion2: any = {
-        collapseProps: {
-            transitionDuration: 500,
-            animateOpacity: true,
-            transitionTimingFunction: 'ease-out',
-        },
         trigger: 'never',
         allowMultiple: false,
         expanded: {
@@ -348,7 +338,7 @@ const CustomFeedback = forwardRef((_, ref) => {
         content: ({ record: { name, id, code, status } }: any) => {
             // console.log('editableData[id]: ', editableData[id]);
             return (
-                <div className='flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                <div className='flex gap-2 relative bg-[#DEECFF]'>
                     <TextInput
                         className="w-full"
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
