@@ -1,24 +1,27 @@
 import { IconCaretDownFilled, IconCirclePlus, IconCircleX, IconPencil, IconTrashFilled } from "@tabler/icons-react";
-import { InteviewStagesStore } from "@modules/HiringSettings/store"
+import { InteviewStagesStore, HiringSettingsStore } from "@modules/HiringSettings/store"
 import { useState, forwardRef, useImperativeHandle } from "react";
-import { interviewStage } from "@modules/HiringSettings/types"
+import { AlertType, interviewStage, Operation } from "@modules/HiringSettings/types"
 import { DataTable } from "mantine-datatable";
 import { Select, TextInput } from "@mantine/core";
 
 
 const InterviewStage = forwardRef((_, ref) => {
-    const { interviewStage, setInterviewStage } = InteviewStagesStore()
+    const { interviewStage, setInterviewStage } = InteviewStagesStore();
+    const { setValidationMessage, setAlert } = HiringSettingsStore();
     const [interviewStagesEditMode, setInterviewStagesEditMode] = useState<{ [key: number]: boolean }>({});
     const [interviewStagesEditableData, setInterviewStagesEditableData] = useState<{ [key: number]: Partial<interviewStage> }>({});
     const [interviewStagesNewRows, setInterviewStagesNewRows] = useState<interviewStage[]>([]);
-
+    const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
+    const [operation, SetOperation] = useState(Operation.noOperation)
+ 
     const columns: any =
         [
             {
-                accessor: 'feedback', title: ('Stage Name'), sortable: true,
-                render: (data: any) => interviewStagesEditMode[data.id] ? (
+                accessor: 'stageName', title: ('Stage Name'), sortable: true,
+                render: (data: any) => interviewStagesEditMode[data.id] && data.fieldStatus === 'new' ? (
                     <TextInput
-                        value={interviewStagesEditableData[data.id]?.stageName || data.feedback}
+                        value={interviewStagesEditableData[data.id]?.stageName || data.stageName}
                         onChange={(e: any) => handleEditChange(data.id, 'stageName', e.target.value)}
                     />
                 ) :
@@ -26,7 +29,7 @@ const InterviewStage = forwardRef((_, ref) => {
             },
             {
                 accessor: 'lastModified', title: ('Last Modified'), sortable: true,
-                render: (data: any) => interviewStagesEditMode[data.id] ?
+                render: (data: any) => interviewStagesEditMode[data.id] && data.fieldStatus === 'new' ?
                     <TextInput
                         disabled
                         className="w-full cursor-default"
@@ -38,7 +41,7 @@ const InterviewStage = forwardRef((_, ref) => {
             },
             {
                 accessor: 'status', title: 'Status', sortable: true,
-                render: (data: any) => interviewStagesEditMode[data.id] ? (
+                render: (data: any) => interviewStagesEditMode[data.id] && data.fieldStatus === 'new' ? (
                     <div className="flex ">
                         <Select
                             radius={8}
@@ -66,15 +69,42 @@ const InterviewStage = forwardRef((_, ref) => {
                 ) :
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
-                        <div className="cursor-pointer" onClick={() => toggleEditMode(data.id)}>
-                            {interviewStagesEditMode[data.id] ? '' : <IconPencil />}
+                        <div className="cursor-pointer" onClick={() => {
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
+                            setSelectedRowId(data.id)
+                            setExpandedRowIds([data.id])
+                            toggleEditMode(data.id)
+                            setInterviewStagesNewRows([]);
+                        }}>
+                            <IconPencil />
                         </div>
                     </div>
                 ,
             },
         ];
 
+    const checkEditIsValid = () => {
+        const fieldsToCheck = ['stageName'];
+        return !Object.entries(interviewStagesEditableData).some(([key, data]) =>
+            fieldsToCheck.some(field => {
+                const value = (data as any)[field];
+                console.log('value: ', value)
+                if ((typeof value === 'string' && value.trim() === '') || value == null) {
+                    setValidationMessage(`${field} is empty`);
+                    setAlert(AlertType.validation)
+                    return true;
+                }
+                return false;
+            })
+        )
+    };
+    
     const addNewRow = () => {
+        if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.add)) {
+            return
+        }
         const currentDate = new Date().toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
@@ -85,12 +115,14 @@ const InterviewStage = forwardRef((_, ref) => {
             id: Math.max(...interviewStage.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)),
             stageName: '',
             status: 'ACTIVE',
+            fieldStatus: 'new',
             lastModified: currentDate,
         };
 
         setInterviewStagesNewRows(prev => [...prev, newRow]);
         setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
         setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        SetOperation(Operation.add)
     };
 
     const handleEditChange = (
@@ -109,6 +141,7 @@ const InterviewStage = forwardRef((_, ref) => {
     };
 
     const toggleEditMode = (id: number) => {
+        SetOperation(Operation.edit)
         setInterviewStagesEditMode(prevEditMode => ({
             ...prevEditMode,
             [id]: !prevEditMode[id],
@@ -128,20 +161,25 @@ const InterviewStage = forwardRef((_, ref) => {
     };
 
     const saveAll = () => {
-        const result = [...interviewStage, ...interviewStagesNewRows].map((record) =>
-            interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record
-        );
+        const result = [...interviewStage, ...interviewStagesNewRows].map((record) => {
+            const merged = interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record;
+            const { fieldStatus, ...rest } = merged;  
+            return rest;
+        });
         setInterviewStage(result);
-
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
         setInterviewStagesEditableData({});
+        setExpandedRowIds([])
+        SetOperation(Operation.noOperation)
     };
 
     const cancelAll = () => {
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
         setInterviewStagesEditableData({});
+        setExpandedRowIds([])
+        SetOperation(Operation.noOperation)
     };
 
     useImperativeHandle(ref, () => ({
@@ -153,6 +191,54 @@ const InterviewStage = forwardRef((_, ref) => {
         }
     }));
 
+    const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
+    const rowExpansion1: any = {
+        collapseProps: {
+            transitionDuration: 500,
+            animateOpacity: true,
+            transitionTimingFunction: 'ease-out',
+        },
+        trigger: 'never',
+        allowMultiple: false,
+        expanded: {
+            recordIds: expandedRowIds,
+            onRecordIdsChange: setExpandedRowIds,
+        },
+        expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
+        content: ({ record: { name, id, code, status, lastModified } }: any) => {
+            // console.log('editableData[id]: ', editableData[id]);
+            return (
+                <div className=' flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
+                    <TextInput
+                        className="w-full"
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                        value={interviewStagesEditableData[id]?.stageName ?? ''} // fallback to empty string instead of undefined
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleEditChange(id, 'stageName', e.target.value)}
+                        error={(interviewStagesEditableData[id]?.stageName ?? '').trim() === '' ? 'Required' : undefined}
+                    />
+                    <TextInput
+                        disabled
+                        className="w-full cursor-default"
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                        value={interviewStagesEditableData[id]?.lastModified || lastModified}
+                    />
+                    <Select
+                        radius={8}
+                        data={["ACTIVE", "INACTIVE"]}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1" }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                        onChange={(val: any) => {
+                            handleEditChange(id, 'status', val)
+                        }}
+                        defaultValue={interviewStagesEditableData[id]?.status || status}
+                    />
+                </div>
+            )
+        },
+    };
 
 
     return (
@@ -181,9 +267,11 @@ const InterviewStage = forwardRef((_, ref) => {
                         color: "rgba(0, 0, 0, 0.6)",
                     },
                 }}
+                rowClassName={(row) => row.id === selectedRowId ? "bg-[#DEECFF]" : ""}
                 withTableBorder
                 records={[...interviewStage, ...interviewStagesNewRows]}
                 columns={columns}
+                rowExpansion={rowExpansion1}
             />
         </div>
     )

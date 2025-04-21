@@ -14,15 +14,23 @@ export interface DataTableRefs {
   jobOfferTemplate?: React.RefObject<DataTableRef>;
 }
 
+export enum Operation {
+  add = 'add',
+  edit = 'edit',
+  noOperation = 'null',
+}
+
 export type feedback = {
   id: number;
   feedback: string;
+  fieldStatus?: string;
 };
 
 export type interviewStage = {
   id: number;
   stageName: string;
   status: string;
+  fieldStatus?: string;
   lastModified: string;
 };
 
@@ -43,7 +51,9 @@ export type interviewer = {
 export interface HiringSettingsState {
   alert: string;
   activePanel: panel;
+  validationMessage: string,
 
+  setValidationMessage: (validationMessage: string) => void;
   setActivePanel: (activePanel: panel) => void;
   setAlert: (alert: string) => void;
 }
@@ -95,6 +105,7 @@ export enum AlertType {
   saved = 'saved',
   cancel = 'Cancel',
   cancellled = 'Cancelled',
+  validation = 'Validation'
 }
 
 export enum title {

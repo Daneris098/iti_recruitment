@@ -8,11 +8,12 @@ import { IconX } from "@tabler/icons-react";
 
 
 export default function AlertModals({ dataTableRef }: { dataTableRef: DataTableRefs }) {
-    const { setAlert, alert, activePanel } = HiringSettingsStore();
+    const { setAlert, alert, activePanel, validationMessage } = HiringSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
         [AlertType.cancellled]: true,
         [AlertType.saved]: true,
+        [AlertType.validation]: true,
     };
 
     useEffect(() => {
@@ -119,6 +120,36 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: DataTableR
                     </div>
                 </div>
             </Modal>
+
+
+            <Modal
+                opened={alert === AlertType.validation}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <div className="flex flex-col gap-3">
+                    <div className="flex justify-between">
+                        <p className="text-2xl text-[#559CDA] font-semibold">
+                            Validation
+                        </p>
+                        <IconX size={30} className="text-[#6D6D6D]" onClick={() => setAlert("")} />
+                    </div>
+                    <Divider size="xs" color="#6D6D6D" />
+                </div>
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <CircleAlert color="#559cda" size={70} strokeWidth={1} />
+                    <Text className="text-xl font-bold">
+                        {validationMessage}
+                    </Text>
+                </div>
+            </Modal>
+
         </>
     );
 }

@@ -1,31 +1,31 @@
 import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
-import { DataTable, DataTableRowExpansionProps } from 'mantine-datatable';
+import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
 import { TextInput, Select, Stack } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
-import { title, description, Company, AlertType, panel } from '@modules/OrganizationSettings/types';
-import { divide } from 'lodash';
-
-const PAGE_SIZE = 15;
-const initialData: Company[] = [
-    { id: 1, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 2, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 3, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 4, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 5, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 6, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 7, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 8, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 9, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 10, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 11, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 12, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 13, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 14, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-    { id: 15, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
-];
+import { title, description, Company, AlertType, panel, Operation } from '@modules/OrganizationSettings/types';
 
 const DataTableComp = forwardRef((_, ref) => {
+        
+    const PAGE_SIZE = 15;
+    const initialData: Company[] = [
+        { id: 1, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 2, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 3, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 4, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 5, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 6, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 7, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 8, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 9, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 10, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 11, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 12, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 13, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 14, name: 'Alice', code: 'insys002', location: 'Caloocan City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+        { id: 15, name: 'Bob', code: 'insys003', location: 'Manila City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
+    ];
+
     const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
     const { activePanel, setAlert, setValidationMessage } = OrganizationSettingsStore();
     const [page, setPage] = useState(1);
@@ -33,7 +33,7 @@ const DataTableComp = forwardRef((_, ref) => {
     const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
     const [editableData, setEditableData] = useState<{ [key: string]: Partial<Company> }>({});
     const [newRows, setNewRows] = useState<Company[]>([]);
-
+    const [operation, SetOperation] = useState(Operation.noOperation)
     const departmentTitles: { [key: string]: string } = {
         code: 'Code',
         name: 'Name',
@@ -44,6 +44,7 @@ const DataTableComp = forwardRef((_, ref) => {
     };
 
     const toggleEditMode = (id: number) => {
+        SetOperation(Operation.edit)
         // Toggle the edit mode for the specific row
         setEditMode(prevEditMode => ({
             ...prevEditMode,
@@ -84,10 +85,10 @@ const DataTableComp = forwardRef((_, ref) => {
     };
 
     const addNewRow = () => {
-        setSelectedRowId(null)
-        if (newRows.length > 0) {
+        if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.add)) {
             return
         }
+        setSelectedRowId(null)
         const uniqueId = + (Math.floor(Math.random() * 100001 + 1))
         const newRow: Company = {
             id: uniqueId,
@@ -107,6 +108,7 @@ const DataTableComp = forwardRef((_, ref) => {
         setNewRows(prev => [...prev, newRow]);
         setEditMode(prev => ({ ...prev, [newRow.id]: true }));
         setEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        SetOperation(Operation.add)
     };
 
     const saveAll = async () => {
@@ -121,16 +123,52 @@ const DataTableComp = forwardRef((_, ref) => {
         setEditableData({});
         setExpandedRowIds([])
         setAlert(AlertType.saved);
+        SetOperation(Operation.noOperation)
+    };
+    
+    
+    const cancelAll = () => {
+        setSelectedRowId(null);
+        setEditMode({});
+        setEditableData({});
+        setNewRows([]);
+        setExpandedRowIds([])
+        SetOperation(Operation.noOperation)
     };
 
+    useEffect(() => {
+        // console.log('newRows: ', newRows)
+    }, [newRows])
+
     const checkEditIsValid = () => {
-        const fieldsToCheck = ['code', 'name', 'status'];
+        const fieldsToCheck = {
+            companyList: ['code', 'name', 'status'],
+            branch: ['code', 'name', 'location', 'area', 'description', 'status'],
+            section: ['code', 'name', 'division', 'department', 'description', 'status'],
+            division: ['code', 'name', 'description', 'status'],
+            positionLevel: ['code', 'name', 'description', 'status'],
+            departments: ['code', 'name', 'departmentHead', 'division', 'description', 'status'],
+        };
+
+        const fieldLabels: Record<string, string> = {
+            code: 'Code',
+            name: 'Name',
+            status: 'Status',
+            location: 'Location',
+            area: 'Area',
+            description: 'Description',
+            division: 'Division',
+            department: 'Department',
+            departmentHead: 'Department Head',
+        };
+
         return !Object.entries(editableData).some(([key, data]) =>
-            fieldsToCheck.some(field => {
+            (fieldsToCheck as any)[activePanel].some((field: string) => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
-                    setValidationMessage(`${field} is empty`);
-                    setAlert(AlertType.validation)
+                    const label = fieldLabels[field] || field; // fallback to raw key if not found
+                    setValidationMessage(`${label} is empty`);
+                    setAlert(AlertType.validation);
                     return true;
                 }
                 return false;
@@ -139,13 +177,7 @@ const DataTableComp = forwardRef((_, ref) => {
     };
 
 
-    const cancelAll = () => {
-        setSelectedRowId(null);
-        setEditMode({});
-        setEditableData({});
-        setNewRows([]);
-        setExpandedRowIds([])
-    };
+
 
     useImperativeHandle(ref, () => ({
         saveAll: () => {
@@ -219,7 +251,7 @@ const DataTableComp = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => {
-                            if (!checkEditIsValid()) {
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
                                 return
                             }
                             setSelectedRowId(data.id)
@@ -279,7 +311,9 @@ const DataTableComp = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data[field]}</p>
                         {field === 'status' && <div className="cursor-pointer" onClick={() => {
-                            if (!checkEditIsValid()) { return }
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
                             setSelectedRowId(data.id)
                             setExpandedRowIds([data.id])
                             toggleEditMode(data.id)
@@ -299,7 +333,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
                                 <div className="cursor-pointer" onClick={() => {
-                                    if (!checkEditIsValid()) {
+                                    if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
                                         return
                                     }
                                     setSelectedRowId(data.id)
@@ -362,7 +396,9 @@ const DataTableComp = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data[field]}</p>
                         {field === 'status' && <div className="cursor-pointer" onClick={() => {
-                            if (!checkEditIsValid()) { return }
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
                             setSelectedRowId(data.id)
                             setExpandedRowIds([data.id])
                             toggleEditMode(data.id)
@@ -382,7 +418,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
                                 <div className="cursor-pointer" onClick={() => {
-                                    if (!checkEditIsValid()) {
+                                    if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
                                         return
                                     }
                                     setSelectedRowId(data.id)
@@ -446,7 +482,9 @@ const DataTableComp = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data[field]}</p>
                         {field === 'status' && <div className="cursor-pointer" onClick={() => {
-                            if (!checkEditIsValid()) { return }
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
                             setSelectedRowId(data.id)
                             setExpandedRowIds([data.id])
                             toggleEditMode(data.id)
@@ -466,7 +504,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
                                 <div className="cursor-pointer" onClick={() => {
-                                    if (!checkEditIsValid()) {
+                                    if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
                                         return
                                     }
                                     setSelectedRowId(data.id)
@@ -531,7 +569,9 @@ const DataTableComp = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data[field]}</p>
                         {field === 'status' && <div className="cursor-pointer" onClick={() => {
-                            if (!checkEditIsValid()) { return }
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
                             setSelectedRowId(data.id)
                             setExpandedRowIds([data.id])
                             toggleEditMode(data.id)
@@ -551,7 +591,7 @@ const DataTableComp = forwardRef((_, ref) => {
                             <div className='flex justify-between'>
                                 <p>{data[field]}</p>
                                 <div className="cursor-pointer" onClick={() => {
-                                    if (!checkEditIsValid()) {
+                                    if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
                                         return
                                     }
                                     setSelectedRowId(data.id)
@@ -618,7 +658,9 @@ const DataTableComp = forwardRef((_, ref) => {
                         <div className='flex justify-between'>
                             <p>{data[field]}</p>
                             {field === 'status' && <div className="cursor-pointer" onClick={() => {
-                                if (!checkEditIsValid()) { return }
+                                if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                    return
+                                }
                                 setSelectedRowId(data.id)
                                 setExpandedRowIds([data.id])
                                 toggleEditMode(data.id)
@@ -638,7 +680,7 @@ const DataTableComp = forwardRef((_, ref) => {
                                 <div className='flex justify-between'>
                                     <p>{data[field]}</p>
                                     <div className="cursor-pointer" onClick={() => {
-                                        if (!checkEditIsValid()) {
+                                        if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
                                             return
                                         }
                                         setSelectedRowId(data.id)
@@ -655,10 +697,6 @@ const DataTableComp = forwardRef((_, ref) => {
             }
         }),
     };
-
-    useEffect(() => {
-        console.log('editableData: ', editableData)
-    }, [editableData])
 
     const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
     const rowExpansion2: any = {
@@ -948,7 +986,7 @@ const DataTableComp = forwardRef((_, ref) => {
 
                                 </div>
                             ) :
-                                (<></>)}
+                        (<></>)}
                 </>
             )
         },

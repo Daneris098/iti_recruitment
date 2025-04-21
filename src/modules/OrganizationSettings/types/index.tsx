@@ -13,6 +13,11 @@ export interface OrganizationSettingsState {
   setAlert: (alert: string) => void;
 }
 
+export enum Operation {
+    add = 'add',
+    edit = 'edit',
+    noOperation = 'null',
+}
 
 export enum AlertType {
   saved = 'saved',
