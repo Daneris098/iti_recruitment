@@ -1,45 +1,30 @@
 // This is for displaying the applicants records in main table.
+
+const statusBgClasses: Record<string, string> = {
+  applied: 'bg-[#559CDA]',
+  'for interview': 'bg-[#ED8028]',
+  hired: 'bg-[#5A9D27]',
+  offered: 'bg-[#FEC001]',
+  'for transfer': 'bg-[#9B51E0]',
+  archived: 'bg-[#FF554A]',
+  transferred: 'bg-[#6D6D6D]',
+  assessment: 'bg-[#ED8028]',
+  'initial interview': 'bg-[#559CDA]',
+  'final interview': 'bg-[#FEC001]',
+};
+
+const baseStatusClass = 'text-white rounded-xl p-1 inline-block w-[132px] text-center font-medium';
+
+const getStatusClass = (status: string) => {
+  const normalized = status.toLowerCase();
+  const bgClass = statusBgClasses[normalized] ?? 'bg-gray-200 text-teal-500 rounded-md my-1';
+  return `${baseStatusClass} ${bgClass}`;
+};
+
 const checkStatus = (status: string) => {
-  const statusType = status.toLowerCase();
-
-  let baseClass = 'text-white rounded-xl  p-1 inline-block w-[132px] text-center font-medium';
-  let bgColor = '';
-
-  switch (statusType) {
-    case 'applied':
-      bgColor = 'bg-[#559CDA]';
-      break;
-    case 'for interview':
-      bgColor = 'bg-[#ED8028]';
-      break;
-    case 'hired':
-      bgColor = 'bg-[#5A9D27]';
-      break;
-    case 'offered':
-      bgColor = 'bg-[#FEC001]';
-      break;
-    case 'for transfer':
-      bgColor = 'bg-[#9B51E0]';
-      break;
-    case 'archived':
-      bgColor = 'bg-[#FF554A]';
-      break;
-    case 'transferred':
-      bgColor = 'bg-[#6D6D6D]';
-      break;
-    case 'assessment':
-      bgColor = 'bg-[#ED8028]';
-      break;
-    case 'initial interview':
-      bgColor = 'bg-[#559CDA]';
-      break;
-    case 'final interview':
-      bgColor = 'bg-[#FEC001]';
-      break;
-  }
-
-  return <span className={`${baseClass} ${bgColor}`}>{status}</span>
-}
+  const className = getStatusClass(status);
+  return <span className={className}>{status}</span>;
+};
 
 const applicantsColumns = [
   {
