@@ -2,156 +2,148 @@ import '@modules/Offers/styles/index.css'
 import Filter from "@modules/Offers/components/filter/Filter";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
-import { AppShell, Pagination, Tabs } from "@mantine/core";
+import { Pagination, Tabs } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import { PDFViewer } from "@react-pdf/renderer";
-import PDFDocument from "@modules/Offers/components/documents/PDF";
-import { IconArrowsUp, IconArrowsUpDown, IconFileCheck, IconFileX } from "@tabler/icons-react";
+
+import { IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useJobOfferStore, useSortStore, usePaginationStore, FilterStore } from "@src/modules/Offers/store";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
-import { PDFProps } from "@modules/Offers/types"
-
+import { TabKey, PDFProps, JobOfferRecord, Row } from "@modules/Offers/types"
+import PDFDocument from "@modules/Offers/components/documents/PDF";
 
 export default function index() {
+
+    //#region STATE & STORE
     const { activeTab, setActiveTab } = FilterStore();
     const { page, pageSize, setPage, getPaginatedRecords } = usePaginationStore();
     const { records, loadCandidates } = useJobOfferStore();
-    const { sortedRecords, setSort, columnAccessor, direction } = useSortStore();
+    const { sortedRecords, setSort } = useSortStore();
+    const paginatedRecords = getPaginatedRecords(sortedRecords.length > 0 ? sortedRecords : records);
 
+    const [loadTime, setLoadTime] = useState<number | null>(null);
+    const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
+    //#endregion
+
+    // HOOKS
     useEffect(() => {
+        const startTime = performance.now();
         loadCandidates();
+        const endTime = performance.now();
+        setLoadTime((endTime - startTime) / 1000);
     }, [loadCandidates]);
 
-    const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
+    // #region CONSTANTS
+    enum TABSKey {
+        AllOffers = "All_offers",
+        Pending = "Pending",
+        Accepted = "Accepted",
+        Archived = "Archived"
+    }
 
-    const handleRowClick = (row: any) => {
+    const TABS = [
+        { value: TABSKey.AllOffers, label: "All Job Offers" },
+        { value: TABSKey.Pending, label: "Pending" },
+        { value: TABSKey.Accepted, label: "Accepted" },
+        { value: TABSKey.Archived, label: "Archived" },
+    ]
+
+    const columnSets: Record<TabKey, string[]> = {
+        Pending: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status"],
+        Accepted: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Attachments"],
+        All_offers: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Attachments"],
+        Archived: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Remarks", "Attachments"],
+    };
+    //#endregion
+
+    //#region FUNCTIONS
+    const handleRowClick = (row: Partial<PDFProps>) => {
         setSelectedRow(row);
     };
 
-    const TABS = [
-        { value: "All_offers", label: "All Job Offers" },
-        { value: "Pending", label: "Pending" },
-        { value: "Accepted", label: "Accepted" },
-        { value: "Archived", label: "Archived" },
-    ];
-
-    const filterRecords = (tab: string, records: any[]) => {
-        if (tab === "Pending") return records.filter(record => record.Status === "Pending");
-        if (tab === "Archived") return records.filter(record => record.Status === "Archived");
-        if (tab === "Accepted") return records.filter(record => record.Status === "Accepted");
-        return records;
+    const filterRecords = (tab: TabKey, records: JobOfferRecord[]) => {
+        if (tab === "All_offers") return records
+        return records.filter(record => record.Status === tab);
     };
 
-    const paginatedRecords = getPaginatedRecords(sortedRecords.length > 0 ? sortedRecords : records);
-
-    const renderCell = (col: any, row: any) => {
-        if (col.accessor === "Status") {
-            return (
-                <span onClick={() => handleRowClick(row)} className="cursor-pointer">
-                    {checkStatus(row.Status)}
-                </span>
-            );
-        }
-
+    const renderCell = (col: { accessor: string }, row: Row) => {
         if (col.accessor === "Attachments") {
-            const isPending = row.Status?.toLowerCase() === "pending";
+            if (!row.Attachments) return null;
+            const isPending = row.Status?.toLowerCase() === 'pending';
             const Icon = isPending ? IconFileX : IconFileCheck;
-            const cursorClass = isPending ? "cursor-not-allowed opacity-50" : "cursor-pointer";
 
             return (
-                <span
-                    className={`flex justify-center ${cursorClass}`}
-                    onClick={!isPending ? () => handleRowClick(row) : undefined}
-                >
-                    {row.Attachments ? <Icon className="text-gray-600 w-[34px] h-[34px] stroke-1" /> : null}
+                <span className="flex justify-center mr-5">
+                    <Icon className="text-gray-600 w-[34px] h-[34px] stroke-1" />
                 </span>
             );
         }
 
-        return (
-            <span onClick={() => handleRowClick(row)} className="cursor-pointer">
-                {row[col.accessor]}
-            </span>
-        );
+        let content = col.accessor === "Status" ? checkStatus(row.Status) : row[col.accessor as keyof Row];
+
+        return <span className={`flex items-center ${col.accessor === 'Status' ? 'flex items-center justify-center' : ''}`}
+        >{content}
+        </span>
     };
 
-    const [loadTime, setLoadTime] = useState<number | null>(null);
+    const getFilteredColumns = (tab: TabKey) => {
+        if (!Object.hasOwn(columnSets, tab)) return [];
 
-    useEffect(() => {
-        const startTime = performance.now();
+        return jobOfferColumns.filter(col => columnSets[tab as TabKey]?.includes(col.accessor));
+    }
 
-        loadCandidates(); // Load your data
-
-        const endTime = performance.now();
-        setLoadTime((endTime - startTime) / 1000); // Convert to seconds
-    }, [loadCandidates]);
-
-    const getFilteredColumns = (tab: string) => {
-        const columnSets: Record<string, string[]> = {
-            Pending: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status"],
-            Accepted: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Attachments"],
-            All_offers: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Attachments"],
-            Archived: ["id", "Applicant_Name", "Date_Generated", "Date_Last_Updated", "Status", "Remarks", "Attachments"],
-        };
-
-        return jobOfferColumns.filter(col => columnSets[tab]?.includes(col.accessor));
-    };
     const enhancedColumns = getFilteredColumns(activeTab!).map((col) => ({
         ...col,
         title: col.sortable ? (
-            <span
-                className="job-offers-table cursor-pointer flex justify-between items-center poppins font-medium text-[14px] w-full"
-                onClick={() => setSort(col.accessor, records)}
-            >
+            <span onClick={() => setSort(col.accessor, records)}>
                 {col.title}
-                {col.accessor === columnAccessor && direction === "asc" ? (
-                    <IconArrowsUp size={14} />
-                ) : (
-                    <IconArrowsUpDown size={14} />
-                )}
             </span>
         ) : col.title,
-        render: (row: any) => renderCell(col, row),
+        render: (row: JobOfferRecord) => renderCell(col, row),
     }));
+    //#endregion
+
     return (
-        <AppShell className="p-4 h-full relative">
+        <div className='h-full relative'>
             <div className="flex flex-col h-full bg-white rounded-md shadow-md p-6 overflow-hidden poppins">
                 <Tabs
                     value={activeTab}
                     onChange={setActiveTab}
-                    defaultValue="All_offers"
-                    className="flex flex-col max-h-[900px] min-h-[400px]"
-                >
+                    defaultValue="All_offers">
                     <Tabs.List>
                         {TABS.map((tab) => (
-                            <Tabs.Tab key={tab.value} value={tab.value}>
+                            <Tabs.Tab key={tab.value} value={tab.value} className='font-medium text-[#5E6670] text-base'>
                                 {tab.label}
                             </Tabs.Tab>
                         ))}
                     </Tabs.List>
 
-                    <div className="py-3">
+                    <div className="py-6">
                         <FilterDrawer />
                         <Filter />
                     </div>
 
-                    <div className="flex-1 flex overflow-hidden poppins">
-                        {TABS.map((tab) => (
-                            <Tabs.Panel key={tab.value} value={tab.value} className="flex flex-1 overflow-hidden poppins">
-                                <div className="flex-grow overflow-auto">
-                                    <DataTable
-                                        className="poppins text-[#6D6D6D] font-normal text-[16px]"
-                                        columns={enhancedColumns}
-                                        records={filterRecords(activeTab!, paginatedRecords)}
-                                        sortIcons={{ sorted: <span></span>, unsorted: <span></span> }}
-                                        highlightOnHover
-                                    />
-                                </div>
-                            </Tabs.Panel>
-                        ))}
-                    </div>
+                    {TABS.map((tab) => (
+                        <Tabs.Panel key={tab.value} value={tab.value} >
+                            <DataTable
+                                className="poppins text-[#6D6D6D] font-normal text-[16px]"
+                                columns={enhancedColumns}
+                                records={filterRecords(activeTab!, paginatedRecords)}
+                                highlightOnHover
+                                onRowClick={({ record }) => {
+                                    const isPending = record.Status?.toLowerCase() === 'pending';
+                                    if (!isPending) {
+                                        handleRowClick(record);
+                                    }
+                                }}
+                                rowClassName={({ Status }) =>
+                                    Status?.toLowerCase() === 'pending' ? 'cursor-not-allowed' : 'cursor-pointer'
+                                }
+                            />
+                        </Tabs.Panel>
+                    ))}
                 </Tabs>
 
                 <div className="flex justify-between items-center mt-auto pt-2">
@@ -169,26 +161,13 @@ export default function index() {
             <PDFModal isOpen={!!selectedRow} onClose={() => setSelectedRow(null)} header="Generate Job Offer">
                 {selectedRow && (
                     <PDFViewer width="100%" height="891" style={{ border: "1px solid #ccc", borderRadius: "8px" }}>
-                        <MyDocument
-                            Name=''
-                            Position=''
-                            Department=''
-                            Remarks=''
-                            Salary_Monthly=''
-                            Salary_Yearly=''
-                            Note_Salary=''
-                            Merit_Increase=''
-                            Description_VL=''
-                            Description_SL=''
-                            Description_BL=''
-                            Benefit_Paternity=''
-                            Benefit_Maternity=''
-                            Description_Transpo=''
-                            Acknowledgement=''
+                        <PDFDocument
+                            {...selectedRow}
                         />
                     </PDFViewer>
                 )}
             </PDFModal>
-        </AppShell>
+
+        </div>
     );
 }

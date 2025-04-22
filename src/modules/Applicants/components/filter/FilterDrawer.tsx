@@ -1,26 +1,22 @@
 import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { FilterStore } from '@modules/Applicants/store'
+import { FilterStore, useDateUpdatedRangeStore, useApplicationDateStore } from '@modules/Applicants/store'
 import { useEffect } from "react";
 import { filterVal } from "@modules/Applicants/values";
-import DateRangeFilter from "@modules/Applicants/components/filter/DateRangeFilter";
+import { DateRange } from "@modules/Applicants/components/filter/DateRangeFilter";
+
 
 export default function DrawerFilter() {
   const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
   const currentDate = new Date();
   const dateTomorrow = new Date(currentDate);
-  dateTomorrow.setDate(currentDate.getDate() + 1)
+  const statusFilterOptions = ["Pending", "Generated", "Accepted", "Archived", "Rejected"];
+  const positionOptions = ["HR Admin", "Web Developer", "Tech Support"];
+  const { dateUpdated, setDateUpdated } = useDateUpdatedRangeStore();
+  const { applicationDateValue, setApplicationDateValue } = useApplicationDateStore();
 
-  // date formatting
-  // const formatDate = (date: string | Date) => {
-  //   if (!date) return ''; // Handle cases where date is undefined or empty
-  //   return new Date(date).toLocaleDateString('en-US', { 
-  //     year: 'numeric', 
-  //     month: 'long', 
-  //     day: 'numeric' 
-  //   });
-  // };
-  
+
+  dateTomorrow.setDate(currentDate.getDate() + 1)
   const clear = () => {
     setFilter(filterVal)
     setIsFiltered(false)
@@ -80,8 +76,8 @@ export default function DrawerFilter() {
             </Flex>
           </Flex>
           <>
-          
-            <Divider size={2} color="#6d6d6d" className="w-full" />
+
+            <Divider size={2} color="#6d6d6d50" className="w-full" />
             <MultiSelect
               value={filter.company}
               size={inputSize}
@@ -94,73 +90,125 @@ export default function DrawerFilter() {
               styles={{ label: { color: "#6d6d6d" } }}
               onChange={(value) => setFilter({ ...filter, company: value })}
             />
+
             <TextInput
               radius={8}
               size={inputSize}
               className="border-none w-full text-sm"
               label="Applicant Name"
+              placeholder="Type Applicant Name"
               styles={{ label: { color: "#6d6d6d" } }}
               value={filter.applicantName}
               onChange={(event) => { setFilter({ ...filter, applicantName: `${event.currentTarget.value}` }) }}
             />
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
-            <Text fw={500} fz={12} c="#6d6d6d">Application Date Range</Text>
+            <Text fw={500} fz={16} c="#6d6d6d">Application Date Range</Text>
 
-            <DateRangeFilter
-              label="From"
-              value={filter.applicationDateFrom}
-              onChange={(date) => setFilter({ ...filter, applicationDateFrom: date })}
-              placeholder={currentDate.toDateString()}
+            <DateRange
+              gapValue={12}
+              size="md"
+              value={dateUpdated}
+              setValue={setDateUpdated}
+              fLabel="From"
+              lLabel="To"
+              fPlaceholder="Start Date"
+              lPlaceholder="End Date"
+              isColumn
             />
-
-            <DateRangeFilter
-              label="To"
-              value={filter.applicationDateTo}
-              onChange={(date) => setFilter({ ...filter, applicationDateTo: date })}
-              placeholder={currentDate.toDateString()}
-            />
-
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
-            <Text fw={500} fz={12} c="#6d6d6d">Date Last Updated Range</Text>
+            <Text fw={500} fz={16} c="#6d6d6d">Date Last Updated Range</Text>
 
-            <DateRangeFilter
-              label="From"
-              value={filter.dateLastUpdatedFrom}
-              onChange={(date) => setFilter({ ...filter, dateLastUpdatedFrom: date })}
-              placeholder={currentDate.toDateString()}
+            <DateRange
+              gapValue={12}
+              size="md"
+              value={applicationDateValue}
+              setValue={setApplicationDateValue}
+              fLabel="From"
+              lLabel="To"
+              fPlaceholder="Start Date"
+              lPlaceholder="End Date"
+              isColumn
             />
 
-            <DateRangeFilter
-              label="To"
-              value={filter.dateLastUpdatedTo}
-              onChange={(date) => setFilter({ ...filter, dateLastUpdatedTo: date })}
-              placeholder={currentDate.toDateString()}
-            />
-
-            <TextInput
+            <MultiSelect
               radius={8}
               size={inputSize}
-              className="border-none w-full text-sm"
+              className="border-none w-full text-[16px] poppins"
               label="Position"
-              styles={{ label: { color: "#6d6d6d" } }}
-              value={filter.position}
-              onChange={(event) => { setFilter({ ...filter, position: `${event.currentTarget.value}` }) }}
+              placeholder="Select Position"
+              styles={() => ({
+                label: { color: "#6d6d6d" },
+                input: {
+                  display: "flex",
+                  flexWrap: "nowrap",
+                  overflowX: "auto",
+                  maxHeight: "40px",
+                  scrollbarWidth: "thin",
+                },
+                values: {
+                  display: "flex",
+                  flexWrap: "nowrap",
+                  overflowX: "auto",
+                  maxWidth: "100%",
+                  gap: "4px",
+                  padding: "4px",
+                },
+              })}
+
+              data={positionOptions}
+              onChange={(values) => setFilter({ ...filter, position: values })}
+              searchable
+              clearable
+              nothingFoundMessage="No options"
+              maxDropdownHeight={90}
+              rightSection={
+                <span>
+                  <IconCaretDownFilled size={18} stroke={2} />
+                </span>
+              }
             />
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
 
-            <TextInput
+            <MultiSelect
               radius={8}
               size={inputSize}
-              className="border-none w-full text-sm"
+              className="border-none w-full text-[16px] poppins"
               label="Status"
-              styles={{ label: { color: "#6d6d6d" } }}
-              value={filter.status}
-              onChange={(event) => { setFilter({ ...filter, status: `${event.currentTarget.value}` }) }}
-            />
+              placeholder="Select Status"
+              styles={() => ({
+                label: { color: "#6d6d6d" },
+                input: {
+                  display: "flex",
+                  flexWrap: "nowrap",
+                  overflowX: "auto",
+                  maxHeight: "40px",
+                  scrollbarWidth: "thin",
+                },
+                values: {
+                  display: "flex",
+                  flexWrap: "nowrap",
+                  overflowX: "auto",
+                  maxWidth: "100%",
+                  gap: "4px",
+                  padding: "4px",
+                },
+              })}
 
+              data={statusFilterOptions}
+              onChange={(values) => setFilter({ ...filter, status: values })}
+              searchable
+              clearable
+              nothingFoundMessage="No options"
+              maxDropdownHeight={90}
+              rightSection={
+                <span>
+                  <IconCaretDownFilled size={18} stroke={2} />
+                </span>
+              }
+            />
           </>
 
         </div>

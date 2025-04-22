@@ -1,8 +1,6 @@
 import { Button, Combobox, Menu, Textarea, TextInput, useCombobox } from "@mantine/core";
 import { useDropDownOfferedStore, useFeedbacksStore } from "@src/modules/Applicants/store";
 import { IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
-
-
 interface DropDrowOfferedProps {
     Status: string;
     onClose: () => void;
@@ -10,35 +8,25 @@ interface DropDrowOfferedProps {
 
 export default function ApplicantUnreachableArchived({ Status }: DropDrowOfferedProps) {
 
-    const feedbacksComboBox = useCombobox({
-        onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
-    })
-    const feedbacks = ["Inactive", "Not Qualified", "Budget Constraint", "Add Feedback"]; // Default feedbacks (For Feedbacks DropDown)
-    const {
-        feedback, setFeedback,
-    } = useFeedbacksStore();  // Use Zustand
-
-    const {
-        setStatus,
-        comments, setComments
-    } = useDropDownOfferedStore();
+    const feedbacksComboBox = useCombobox({ onDropdownClose: () => feedbacksComboBox.resetSelectedOption(), })
+    const feedbacks = ["Inactive", "Not Qualified", "Budget Constraint", "Add Feedback"];
+    const { feedback, setFeedback } = useFeedbacksStore();
+    const { setStatus, comments, setComments } = useDropDownOfferedStore();
 
     return (
         <div className="p-9">
-
             <div>
                 <h3 className="font-medium text-[#6D6D6D] text-[15px] mb-[-10px] pb-3 poppins">
                     Status <span className="text-[#F14336] poppins">*</span>
                 </h3>
-
                 <div>
                     <Menu withinPortal={false}>
                         <Menu.Target>
                             <Button
                                 className="
-                                                    relative flex items-center w-[540px] h-[56px] px-4
-                                                    bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D]
-                                                    hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] poppins"
+                                relative flex items-center w-[540px] h-[56px] px-4
+                                bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D]
+                                hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] poppins"
                             >
                                 <span className="text-left font-medium text-[#6D6D6D99] ">{Status}</span>
                                 <IconCaretDownFilled size={16} className="absolute right-4" />
@@ -107,7 +95,6 @@ export default function ApplicantUnreachableArchived({ Status }: DropDrowOffered
                     }}
                 />
             </div>
-
         </div>
     )
 }

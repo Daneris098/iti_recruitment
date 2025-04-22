@@ -16,7 +16,6 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
     const positions = ["HR Specialist", "Engineer", "Doctor"];
     const departments = ["Finance", "IT", "HR", "Operations"];
     const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
-
     const {
         getSalaryTypes, setSalaryTypes,
         amount, setAmount,
@@ -55,7 +54,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                 </div>
                 <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
             </div>
-
+ 
             {/* Form */}
             <form
                 // onSubmit={handleSubmit} 

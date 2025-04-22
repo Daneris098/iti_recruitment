@@ -1,12 +1,11 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
-import { Divider, Textarea } from "@mantine/core";
-import { Menu, Button } from "@mantine/core";
+import { Divider, Textarea, Menu, Button } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
+import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore } from "@modules/Applicants/store"
+import { useStatusStore } from "@src/modules/Applicants/store";
+import { HandleStatusClickTypes, StatusType } from "@modules/Applicants/types"
 import StatusUpdatedModal from "@modules/Applicants/components/modal/jobGenerated";
 import StatusUpdatedAlert from "@src/modules/Applicants/components/alerts/StatusUpdated";
-import { useDropDownOfferedStore } from "@modules/Applicants/store"
-import { useStatusStore } from "@src/modules/Applicants/store";
-import { useCloseModal } from "@modules/Applicants/store";
 import ArchivedStatus from "@modules/Applicants/components/documents/movement/Status/Archived";
 import OfferedStatus from "@modules/Applicants/components/documents/movement/Status/Offered";
 import HiredStatus from "@modules/Applicants/components/documents/movement/Status/Hired";
@@ -18,8 +17,9 @@ import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/Ad
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
 import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
-import TransferEmployee from "@modules/Applicants/components/documents/movement/Status/TransferEmployee"
-import TransferEmployeeModal from "@modules/Applicants/components/modal/transferEmployee"
+import TransferApplicantLoader from "@modules/Applicants/components/documents/movement/TransferApplicants";
+import { useMovementArchive } from "@modules/Applicants/hooks/useApplicant"
+
 interface UpdateStatusProps {
   Status: string;
   onClose: () => void;
@@ -27,33 +27,32 @@ interface UpdateStatusProps {
   Name: string;
 }
 
-export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProps) {
+export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
+  // const { mutate } = useMovementArchive()
   const { selectedStatus, setSelectedStatus } = useStatusStore();
+  const { comments, setComments } = useDropDownOfferedStore();
   const {
-    comments, setComments
-  } = useDropDownOfferedStore();
-
-  const {
-    isDefaultUpdated, setIsDefaultUpdated,
-    isOffered, setIsOffered,
     setIsModalOpen,
-    setIsUpdateStatusButtonModalOpen,
-    isFeedbackSent, setIsFeedbackSent,
     isScheduleInterview,
     setIsScheduleInterview,
-    isDropdownOpen, setIsDropdownOpen,
-    setIsContactApplicant, isContactApplicant,
     setIsViewApplicant,
     setIsAddtoCalendar,
-    isTransferEmployee, setIsTransferEmployee
+    setIsGenerateNewOffer,
+    isOffered, setIsOffered,
+    isDefaultUpdated, setIsDefaultUpdated,
+    setIsUpdateStatusButtonModalOpen,
+    isFeedbackSent, setIsFeedbackSent,
+    isDropdownOpen, setIsDropdownOpen,
+    setIsContactApplicant, isContactApplicant,
+    isForTransfer, setisForTransfer,
   } = useCloseModal();
 
-  const handleStatusClick = (status: "Offered" | "Archived" | "Hired" | "For Interview" | "Transfer Employee") => {
-    setSelectedStatus(status);
+  const applicantId = useApplicantIdStore((state) => state.id);
+  const handleStatusClick = (status: HandleStatusClickTypes) => {
+    setSelectedStatus(status.StatusClick);
     setIsModalOpen(true);
   };
-
 
   // For Interview 
   const handleDropdownToggle = (event: React.MouseEvent) => {
@@ -64,9 +63,20 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
   let handleClick = () => { }; // Default empty function
   let buttonText = "Update" // Default button text
 
+  const { mutateAsync } = useMovementArchive();
   if (selectedStatus === "Archived") {
+
     buttonText = "Save Feedback";
-    handleClick = () => {
+    handleClick = async () => {
+      await mutateAsync({
+        applicantId,
+        queryParams: {
+          HiringTeamFeedback: "Hiring Feedback",
+          ApplicantFeedback: "Applicant Feedback",
+          Order: 1,
+          Comment: "Comment",
+        },
+      });
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
       setIsFeedbackSent(true); // Set to true to show the feedback sent alert
 
@@ -79,7 +89,10 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
         setIsFeedbackSent(false);
         setIsUpdateStatusButtonModalOpen(false);
         setIsViewApplicant(false);
-        setSelectedStatus(null)
+        setSelectedStatus(null);
+        setIsGenerateNewOffer(false);
+        setIsOffered(false);
+        setIsModalOpen(false);
       }, 1000);
     };
   }
@@ -132,7 +145,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
 
   const statusTransitions: Record<ApplicantStatus, readonly ApplicantStatus[]> = {
     [ApplicantStatus.Applied]: [ApplicantStatus.ForInterview, ApplicantStatus.Offered, ApplicantStatus.Archived],
-    [ApplicantStatus.FinalInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived], 
+    [ApplicantStatus.FinalInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
     [ApplicantStatus.InitialInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
     [ApplicantStatus.ForInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
     [ApplicantStatus.Assessment]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
@@ -143,10 +156,11 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
     [ApplicantStatus.Archived]: [],
   };
 
-   let availableStatuses: readonly string[] =
+  let availableStatuses = (
     Object.keys(statusTransitions).includes(Status)
-      ? statusTransitions[Status as ApplicantStatus]
-      : [];
+      ? (statusTransitions[Status as ApplicantStatus] as StatusType[])
+      : []
+  );
 
   return (
     // Container
@@ -164,6 +178,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
               onClick={() => {
                 setIsUpdateStatusButtonModalOpen(false);
                 setSelectedStatus(null);
+                setIsModalOpen(false);
               }}
               className="w-[15px] h-[15px] cursor-pointer" />
           </div>
@@ -203,12 +218,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
                   {availableStatuses.length > 0 ? (
                     availableStatuses.map((status) => (
                       <Menu.Item key={status}
-                        onClick={() => {
-                          handleStatusClick(status as "For Interview" | "Offered" | "Archived" | "Hired" | "Transfer Employee")
-                          if (status === "Transferred") {
-                            setIsTransferEmployee(true);
-                          }
-                        }}
+                        onClick={() => handleStatusClick({ StatusClick: status })}
                       >
                         {status}
                       </Menu.Item>
@@ -266,21 +276,15 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
 
           {/* Transferred Status */}
           <>
-            {selectedStatus === "Transferred" && (
+            {selectedStatus === "Transferred" && !isForTransfer && (
               <TransferredStatus />
+            )}
+
+            {isForTransfer && (
+              <TransferApplicantLoader onClose={onClose} />
             )}
           </>
           {/* End of Transferred Status */}
-
-          {/* Transferred Status */}
-          {/* <> */}
-          {/* {selectedStatus === "Transfer Employee" && ( 
-            <TransferEmployee
-              Name={Name}
-            />
-             )} */}
-          {/* </> */}
-          {/* End of Transferred Status
 
           {/* Comment and suggestion text input */}
           {/* If the selected Status is "Hired" then do not show the comment and suggestion text input */}
@@ -307,7 +311,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
             <div className="flex justify-between pt-6">
               <Button onClick={() => {
                 setIsUpdateStatusButtonModalOpen(false);
-                setIsUpdateStatusButtonModalOpen(false);
+                setIsModalOpen(false);
               }}
                 className="bg-transparent text-[#559CDA] px-6 py-1 rounded-lg border-[#559CDA] font-medium text-[14px] poppins">
                 Cancel
@@ -316,7 +320,7 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
               {/* Button with Dropdown Icon */}
               <div className="relative">
                 <Button
-                  onClick={handleClick} // Triggers modal (Schedule Interview)
+                  onClick={handleClick}
                   className="custom-gradient text-white px-6 py-1 rounded-lg font-medium text-[14px] poppins"
                 >
                   {buttonText.toUpperCase()}
@@ -337,7 +341,6 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
                       onClick={() => {
                         setIsContactApplicant(true)
                       }}
-
                     >
                       Add to Calendar
                     </Button>
@@ -397,16 +400,11 @@ export default function UpdateStatus({ onClose, Status, Name }: UpdateStatusProp
         />
       </ApplicantUnreachable>
 
-      <TransferEmployeeModal isOpen={isTransferEmployee} onClose={() => setIsTransferEmployee(false)}>
-        <TransferEmployee
-          onClose={() => {
-            setIsTransferEmployee(false)
-            setSelectedStatus(null);
-          }}
-          Name={Name}
-          Status={Status}
+      <ApplicantUnreachable isOpen={isForTransfer} >
+        <TransferApplicantLoader
+          onClose={() => setisForTransfer(false)}
         />
-      </TransferEmployeeModal>
+      </ApplicantUnreachable>
     </div >
   );
 }

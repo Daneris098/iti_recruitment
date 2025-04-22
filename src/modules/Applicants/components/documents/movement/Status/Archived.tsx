@@ -1,26 +1,15 @@
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { useFeedbacksStore } from "@src/modules/Applicants/store";
 import { IconCaretDownFilled, IconCirclePlus, IconCloudUpload } from "@tabler/icons-react";
-
 import { ViewApplicantsProps } from "@modules/Applicants/store"
 
-export default function ArchivedStatus({ Status } : Pick<ViewApplicantsProps, "Status">) {
+export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "Status">) {
 
-    const feedbacksComboBox = useCombobox({
-        onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
-    })
-
-    const applicantFeedbackComboBox = useCombobox({
-        onDropdownClose: () => applicantFeedbackComboBox.resetSelectedOption(),
-    })
-
-    const feedbacks = ["Inactive", "Not Qualified", "Budget Constraint", "Add Feedback"]; // Default feedbacks (For Feedbacks DropDown)
+    const feedbacksComboBox = useCombobox({ onDropdownClose: () => feedbacksComboBox.resetSelectedOption(), })
+    const applicantFeedbackComboBox = useCombobox({ onDropdownClose: () => applicantFeedbackComboBox.resetSelectedOption(), })
+    const feedbacks = ["Inactive", "Not Qualified", "Budget Constraint", "Add Feedback"];
     const applicantsFeedbacks = ["Salary Mismatch", "Better Offer", "No Response", "Add Applicant Feedback"];
-
-    const {
-        feedback, setFeedback,
-        applicantFeedback, setApplicantFeedback
-    } = useFeedbacksStore();  // Use Zustand
+    const { feedback, setFeedback, applicantFeedback, setApplicantFeedback } = useFeedbacksStore();
 
     // This is to check if the Status is either of these. If yes, then translate their status to for interview.
     // Also, to check if the current status if equivalent to For Interview.

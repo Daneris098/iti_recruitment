@@ -8,10 +8,7 @@ import TransferApplicants from "@modules/Applicants/components/documents/movemen
 export default function Transferred() {
 
     const { isForTransferLoader, setIsForTransferLoader } = useCloseModal();
-
     const { setSelectedStatus } = useStatusStore();
-
-
 
     return (
         <div className="p-1 w-full h-full">

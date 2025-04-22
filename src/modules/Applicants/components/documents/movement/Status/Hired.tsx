@@ -2,10 +2,6 @@ import CustomDatePicker from "@modules/Applicants/components/picker/DatePicker"
 import { IconCloudUpload } from "@tabler/icons-react";
 import { useState } from "react";
 
-// interface HiredProps {
-//     Status: string
-// }
-
 export default function Hired() {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     return (
