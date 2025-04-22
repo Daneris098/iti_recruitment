@@ -13,7 +13,7 @@ interface JobGeneratedAlertProps extends Partial<PDFProps> {
     title: string | null;
 }
 
-export default function JobGeneratedAlert({ title, onClose, Applicant_Name, Acknowledgement, Department, Remarks }: JobGeneratedAlertProps) {
+export default function JobGeneratedAlert({ title, onClose, applicantName, Acknowledgement, Department, Remarks }: JobGeneratedAlertProps) {
 
     // zustand store.
     const {
@@ -90,7 +90,7 @@ export default function JobGeneratedAlert({ title, onClose, Applicant_Name, Ackn
                 <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)} header={title === "Offered" ? "Generate Offer" : "Job Offer"}>
                     <PDFViewer width="100%" height="710" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                         <MyDocument
-                            Applicant_Name={Applicant_Name}
+                            Applicant_Name={applicantName}
                             Department={Department}
                             Remarks={Remarks}
                             Acknowledgement={Acknowledgement}

@@ -1,7 +1,7 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { useDropDownOfferedStore, useCloseModal } from "@modules/Applicants/store"
+import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore } from "@modules/Applicants/store"
 import { useStatusStore } from "@src/modules/Applicants/store";
 import { HandleStatusClickTypes, StatusType } from "@modules/Applicants/types"
 import StatusUpdatedModal from "@modules/Applicants/components/modal/jobGenerated";
@@ -18,6 +18,7 @@ import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated
 import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
 import TransferApplicantLoader from "@modules/Applicants/components/documents/movement/TransferApplicants";
+import { useMovementArchive } from "@modules/Applicants/hooks/useApplicant"
 
 interface UpdateStatusProps {
   Status: string;
@@ -28,6 +29,7 @@ interface UpdateStatusProps {
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
+  // const { mutate } = useMovementArchive()
   const { selectedStatus, setSelectedStatus } = useStatusStore();
   const { comments, setComments } = useDropDownOfferedStore();
   const {
@@ -46,6 +48,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     isForTransfer, setisForTransfer,
   } = useCloseModal();
 
+  const applicantId = useApplicantIdStore((state) => state.id);
   const handleStatusClick = (status: HandleStatusClickTypes) => {
     setSelectedStatus(status.StatusClick);
     setIsModalOpen(true);
@@ -60,9 +63,20 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   let handleClick = () => { }; // Default empty function
   let buttonText = "Update" // Default button text
 
+  const { mutateAsync } = useMovementArchive();
   if (selectedStatus === "Archived") {
+
     buttonText = "Save Feedback";
-    handleClick = () => {
+    handleClick = async () => {
+      await mutateAsync({
+        applicantId,
+        queryParams: {
+          HiringTeamFeedback: "Hiring Feedback",
+          ApplicantFeedback: "Applicant Feedback",
+          Order: 1,
+          Comment: "Comment",
+        },
+      });
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
       setIsFeedbackSent(true); // Set to true to show the feedback sent alert
 

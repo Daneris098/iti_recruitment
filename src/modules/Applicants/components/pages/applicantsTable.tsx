@@ -2,7 +2,8 @@ import { Pagination } from "@mantine/core";
 import { useLocation } from "react-router-dom";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
-import { useApplicantStore, useCloseModal, usePaginationStore, useSortStore } from "@modules/Applicants/store";
+import { useApplicants } from "@src/modules/Applicants/hooks/useApplicant"
+import { useApplicantStore, useCloseModal, usePaginationStore, useSortStore, useApplicantIdStore } from "@modules/Applicants/store";
 import Filter from "@src/modules/Applicants/components/filter/Filter";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer"
@@ -11,7 +12,6 @@ import ViewApplicant from "@src/modules/Applicants/components/documents/main/Vie
 
 
 export default function index() {
-
   // For conditionally rendering table header based on their corresponding route.
   const location = useLocation();
   const headerText = {
@@ -26,22 +26,30 @@ export default function index() {
   }[location.pathname] || ""
 
   //initializing applicant, sort and pagination store
-  const { records, loadApplicants } = useApplicantStore(); // for records
+  const { data: applicants, isLoading } = useApplicants();
+  const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+  const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
+  const records = useApplicantStore((s) => s.records)
   const { sortedRecords, setSort, setRecords } = useSortStore(); // for sorting
   const { page, pageSize, setPage } = usePaginationStore(); // for pagination
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null); // For Document model
   const { isViewApplicant, setIsViewApplicant } = useCloseModal(); // For handling the state of view applicant modal.
   const [loadTime, setLoadTime] = useState<number | null>(null);
+  const [startTime, setStartTime] = useState<number | null>(null);
 
-  // for json fetching of applicants record from values/response
+  //Load the applicants data from React-Query.
   useEffect(() => {
-    const startTime = performance.now();
+    if (isLoading && startTime === null) {
+      setStartTime(performance.now());
+    }
 
-    loadApplicants(); // Load your data
-
-    const endTime = performance.now();
-    setLoadTime((endTime - startTime) / 1000); // Convert to seconds
-  }, [loadApplicants]);
+    if (!isLoading && applicants && startTime !== null) {
+      setApplicantRecords(applicants);
+      const endTime = performance.now();
+      setLoadTime((endTime - startTime) / 1000);
+      setStartTime(null);
+    }
+  }, [isLoading, applicants, startTime, setApplicantRecords, setPage]);
 
   // intially load the records from useApplicationStore().
   // The record rendering will conditionally render the displayed status depending on the 
@@ -84,11 +92,13 @@ export default function index() {
   }, [sortedRecords, page, pageSize]);
 
   // For handling the state of row clicking of each record.
-  // This will make each rendered records clickable.
-  const handleRowClick = (applicant: any) => {
+  const handleRowClick = async (applicant: any) => {
     setSelectedApplicant(applicant);
+    setApplicantId(applicant.id);
     setIsViewApplicant(true);
-  }
+  };
+
+
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
@@ -96,7 +106,7 @@ export default function index() {
   const extendedColumn = applicantsColumns
 
     // Exclude Feedback Column from the JSON object
-    .filter((col) => col.accessor !== "Feedback")
+    .filter((col: any) => col.accessor !== "Feedback")
     .map((col) => {
       let updatedCol = { ...col };
 
@@ -121,7 +131,6 @@ export default function index() {
 
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
-
 
   // main
   return (
@@ -171,7 +180,7 @@ export default function index() {
       {/* View Applicant Modal */}
       <ApplicantModal isOpen={isViewApplicant}>
         <ViewApplicant
-          Applicant_Name={selectedApplicant?.Applicant_Name}
+          applicantName={selectedApplicant?.applicantName}
           Position={selectedApplicant?.Position}
           Status={selectedApplicant?.Status}
           Email={selectedApplicant?.Email}

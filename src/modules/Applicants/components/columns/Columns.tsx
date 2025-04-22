@@ -1,44 +1,49 @@
 // This is for displaying the applicants records in main table.
 const checkStatus = (status: string) => {
   const statusType = status.toLowerCase();
-  let className = 'text-teal-500 rounded-md p-1 bg-gray-200 my-1';
 
-  if (statusType === 'applied') {
-    className = 'text-white rounded-xl bg-[#559CDA] p-1 inline-block w-[132px] text-center font-medium';
+  let baseClass = 'text-white rounded-xl  p-1 inline-block w-[132px] text-center font-medium';
+  let bgColor = '';
+
+  switch (statusType) {
+    case 'applied':
+      bgColor = 'bg-[#559CDA]';
+      break;
+    case 'for interview':
+      bgColor = 'bg-[#ED8028]';
+      break;
+    case 'hired':
+      bgColor = 'bg-[#5A9D27]';
+      break;
+    case 'offered':
+      bgColor = 'bg-[#FEC001]';
+      break;
+    case 'for transfer':
+      bgColor = 'bg-[#9B51E0]';
+      break;
+    case 'archived':
+      bgColor = 'bg-[#FF554A]';
+      break;
+    case 'transferred':
+      bgColor = 'bg-[#6D6D6D]';
+      break;
+    case 'assessment':
+      bgColor = 'bg-[#ED8028]';
+      break;
+    case 'initial interview':
+      bgColor = 'bg-[#559CDA]';
+      break;
+    case 'final interview':
+      bgColor = 'bg-[#FEC001]';
+      break;
   }
-  else if (statusType === 'for interview') {
-    className = 'text-white rounded-xl bg-[#ED8028] p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'hired') {
-    className = 'text-white rounded-xl bg-[#5A9D27]  p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'offered') {
-    className = 'text-white rounded-xl bg-[#FEC001] p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'for transfer') {
-    className = 'text-white rounded-xl bg-[#9B51E0]  p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'archived') {
-    className = 'text-white rounded-xl bg-[#FF554A]  p-1 inline-block w-[132px] text-center font-medium ';
-  }
-  else if (statusType === 'transferred') {
-    className = 'text-white rounded-xl bg-[#6D6D6D]  p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'assessment') {
-    className = 'text-white rounded-xl bg-[#ED8028] p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'initial interview') {
-    className = 'text-white rounded-xl bg-[#559CDA]  p-1 inline-block w-[132px] text-center font-medium';
-  }
-  else if (statusType === 'final interview') {
-    className = 'text-white rounded-xl bg-[#FEC001]  p-1 inline-block w-[132px] text-center font-medium';
-  }
-  return <span className={className}>{status}</span>
+
+  return <span className={`${baseClass} ${bgColor}`}>{status}</span>
 }
 
 const applicantsColumns = [
   {
-    accessor: 'Applicant_Name',
+    accessor: 'applicantName',
     title:
       <span
         className="job-offers-table cursor-pointer font-bold text-[14px]">
@@ -47,7 +52,7 @@ const applicantsColumns = [
     sortable: true,
   },
   {
-    accessor: 'Application_Date',
+    accessor: 'applicationDate',
     title: <span className='job-offers-table font-bold text-[14px]'>Date Applied</span>,
     sortable: true,
   },
