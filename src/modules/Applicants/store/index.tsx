@@ -2,13 +2,12 @@ import { create } from 'zustand';
 import { sortBy } from "lodash";
 import { Applicants, ApplicantStatus, FilterState, PDFProps } from '@modules/Applicants/types';
 import { filterVal, selectedVal } from '@modules/Applicants/values';
-import applicantsRecord from '@modules/Applicants/values/response/applicants.json';
 
 // for fetching the json from values folder
 interface Applicant {
-  id: number;
-  Applicant_Name: string;
-  Application_Date: string;
+  id: any;
+  applicantName: string;
+  applicationDate: string;
   Phone: string;
   Email: string;
   Position: string;
@@ -18,22 +17,32 @@ interface Applicant {
 
 interface ApplicantStore {
   records: Applicant[];
-  loadApplicants: () => void;
+  setApplicantRecords: (rows: Applicant[]) => void;
   updateApplicantStatus: (id: string, newStatus: string) => void;
 }
 
 export const useApplicantStore = create<ApplicantStore>((set) => ({
   records: [],
-  loadApplicants: () => set({ records: applicantsRecord }),
-
-  updateApplicantStatus: (id: string, newStatus: string) =>
+  setApplicantRecords: (rows) => set({ records: rows }),
+  updateApplicantStatus: (id, newStatus) =>
     set((state) => ({
       records: state.records.map((applicant) =>
-        String(applicant.id) === id ? { ...applicant, Status: newStatus } : applicant
+        String(applicant.id) === id
+          ? { ...applicant, Status: newStatus }
+          : applicant
       ),
     })),
+}));
+
+interface ApplicantId {
+  id: number
+  setApplicantId: (id: number) => void
+}
+
+export const useApplicantIdStore = create<ApplicantId>((set) => ({
+  id: 0,
+  setApplicantId: (id) => set({ id }),
 }))
-// end of fetching the json from values folder
 
 // for sorting table
 interface SortState {
@@ -46,7 +55,7 @@ interface SortState {
 }
 
 export const useSortStore = create<SortState>((set, get) => ({
-  columnAccessor: "Applicant_Name",
+  columnAccessor: "applicantName",
   direction: "asc",
   sortedRecords: [],
 
@@ -85,7 +94,7 @@ interface PaginationState {
 
 export const usePaginationStore = create<PaginationState>((set, get) => ({
   page: 1,
-  pageSize: 10,
+  pageSize: 15,
 
   setPage: (page) => set({ page }),
   setPageSize: (size) => set({ pageSize: size }),
@@ -404,7 +413,7 @@ export const useCloseUpdateStatusModal = create<CloseUpdateStatusModal>((set) =>
 // end of closing modal
 
 export interface ViewApplicantsProps extends Partial<PDFProps> {
-  Applicant_Name: string;
+  applicantName: string;
   Position: string;
   Status: string;
   Email: string;

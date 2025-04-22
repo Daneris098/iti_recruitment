@@ -11,13 +11,24 @@ export interface ApplicantStatus {
 }
 
 export interface Applicants {
-    id: string;
-    Applicant_Name: string;
-    Application_Date: string;
+    id: number;
+    applicantName: string;
+    applicationDate: string;
     Phone: string;
     Email: string;
     Position: string;
-    Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred" | "Transfer Employee";
+    Status: string;
+    page: number;
+    pageSize: number;
+    total: number;
+    // Status: "" | "Offered" | "Archived" | "For Interview" | "Applied" | "Hired" | "For Transfer" | "Transferred" | "Transfer Employee";
+}
+
+export interface ApplicationMovements {
+    HiringTeamFeedback: string;
+    ApplicantFeedback: string;
+    Order: number;
+    Comment: string;
 }
 
 export interface FilterState {
@@ -39,7 +50,7 @@ export interface FilterState {
 }
 
 export interface PDFProps {
-    Applicant_Name: string;
+    applicantName: string;
     Position: string;
     Department: string;
     Remarks: string;
@@ -62,4 +73,89 @@ export type HandleStatusClickTypes = {
     StatusClick: StatusType
 }
 
-export type ApplicantStatusType =  'applied' | 'for interview' | 'hired' | 'offered' | 'for transfer' | 'archived' | 'transferred' | 'assessment' | 'initial interview' | 'final interview'
+// export interface ApplicantResponse {
+//     id: number;
+//     dateApplied: string;
+
+//     nameResponse: {
+//         firstName: string;
+//         lastName: string;
+//         middleName?: string;
+//         suffix?: string;
+//     };
+
+//     contact: {
+//         mobileNo: string;
+//         emailAddress: string;
+//         landLineNo?: string;
+//     };
+
+//     positionsApplied: {
+//         id: number;
+//         name: string;
+//         salary?: number;
+//         choice?: {
+//             id: number;
+//             name: string;
+//         };
+//         AvailableDateStart?: string;
+//     }[];
+
+//     applicationMovements: {
+//         status: {
+//             id: number;
+//             name: string;
+//         };
+//         dateMoved?: string;
+//         remarks?: string;
+//     }[];
+// }
+
+export interface ApplicantResponse {
+    items: {
+        id: number;
+        dateApplied: string;
+
+        nameResponse: {
+            firstName: string;
+            lastName: string;
+            middleName?: string;
+            suffix?: string;
+        };
+
+        contact: {
+            mobileNo: string;
+            emailAddress: string;
+            landLineNo?: string;
+        };
+
+        positionsApplied: {
+            id: number;
+            name: string;
+            salary?: number;
+            choice?: {
+                id: number;
+                name: string;
+            };
+            AvailableDateStart?: string;
+        }[];
+
+        applicationMovements: {
+            status: {
+                id: number;
+                name: string;
+            };
+            dateMoved?: string;
+            remarks?: string;
+        }[];
+    }[];
+}
+
+export interface ApplicantResponseById {
+    id: number;
+}
+
+export type ArchivePayload = {
+    applicantId: number;
+    queryParams: Record<string, any>
+}

@@ -28,7 +28,7 @@ const checkStatus = (status: string) => {
 
 const applicantsColumns = [
   {
-    accessor: 'Applicant_Name',
+    accessor: 'applicantName',
     title:
       <span
         className="job-offers-table cursor-pointer font-bold text-[14px]">
@@ -37,7 +37,7 @@ const applicantsColumns = [
     sortable: true,
   },
   {
-    accessor: 'Application_Date',
+    accessor: 'applicationDate',
     title: <span className='job-offers-table font-bold text-[14px]'>Date Applied</span>,
     sortable: true,
   },
