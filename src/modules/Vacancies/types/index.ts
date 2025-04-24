@@ -66,7 +66,7 @@ export interface VacancyType {
     end: string;
     from: string;
   }
-  mustHaveSkills: string;
+  mustHaveSkills: string[];
   qualification: string;
 };
 
@@ -101,12 +101,14 @@ export interface ApplicantState {
 }
 
 export interface DataTableState {
+  time: string,
   search: string,
   totalRecords: number;
   page: number;
   pageSize: number;
   sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
 
+  setTime: (time: string) => void;
   setSearch: (action: string) => void;
   setTotalRecords: (total: number) => void;
   setPage: (page: number) => void;

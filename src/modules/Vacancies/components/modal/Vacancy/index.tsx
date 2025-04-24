@@ -19,14 +19,17 @@ import { AlertType, ActionTitle, ActionButtonTitle } from '@modules/Vacancies/ty
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
 import { selectedDataVal } from '@src/modules/Vacancies/values';
 import { vacancyFormInitialData } from '@src/modules/HiringSettings/values';
+import axiosInstance from '@src/api';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function index() {
     const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy } = VacancyStore();
     const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
-    const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
+    const formRef = useRef<HTMLFormElement>(null);
     const [mustHaveSkills, setMustHaveSkills] = useState<string[]>([]);
     const [opened, setOpened] = useState(false);
     const [opened2, setOpened2] = useState(false);
+    const queryClient = useQueryClient();
     useEffect(() => {
         if (vacancyDuration[0] != null && vacancyDuration[1] != null) {
             setOpened(false)
@@ -55,7 +58,7 @@ export default function index() {
             },
             noOfOpenPosition: (value: number) => value <= 0 ? "Number of open position must be greater than 0" : null,
             jobDescription: (value: string) => value == "<p>Write Job Description Here</p>" || value === '<p></p>' || value == "" ? "Job Description is required" : null,
-            mustHaveSkills: (value: string) => value.length === 0 ? "Must have skills is required" : null,
+            mustHaveSkills: (value: string[]) => value.length === 0 ? "Must have skills is required" : null,
             qualification: (value: string) => value == "<p>Write Qualification here</p>" || value === '<p></p>' || value == "" ? "Qualification is required" : null,
         }
     });
@@ -76,7 +79,7 @@ export default function index() {
     };
 
     useEffect(() => {
-        form.setFieldValue('mustHaveSkills', mustHaveSkills.toString())
+        form.setFieldValue('mustHaveSkills', mustHaveSkills)
     }, [mustHaveSkills])
 
     const editor = useEditor({
@@ -114,7 +117,24 @@ export default function index() {
     });
 
     useEffect(() => {
+        if (selectedVacancy == selectedDataVal) {
+            return
+        }
+        const startDate = new Date(selectedVacancy.vacancyDuration.start);
+        const formattedDate = startDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
+        const endDate = new Date(selectedVacancy.vacancyDuration.end);
+        const formattedDate2 = endDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
 
+        // console.log('selectedVacancy.vacancyDuration.start: ', selectedVacancy.vacancyDuration.start)
+        // console.log('new Date(form.duration.start).toISOString(): ', new Date(selectedVacancy.vacancyDuration.start).toISOString())
         if (action == 'Edit') {
             form.setFieldValue('positionTitle', selectedVacancy.position)
             form.setFieldValue('company', selectedVacancy.company)
@@ -126,37 +146,243 @@ export default function index() {
             form.setFieldValue('workplaceType', selectedVacancy.workplace)
             form.setFieldValue('vacancyType', selectedVacancy.vacancyType)
             form.setFieldValue('experienceLevel', selectedVacancy.experienceLevel)
-            form.setFieldValue('duration.start', selectedVacancy.vacancyDuration.start)
-            form.setFieldValue('duration.end', selectedVacancy.vacancyDuration.end)
+            form.setFieldValue('duration.start', formattedDate)
+            form.setFieldValue('duration.end', formattedDate2)
             form.setFieldValue('noOfOpenPosition', selectedVacancy.quantity)
 
             form.setFieldValue('jobDescription', selectedVacancy.jobDescription)
-            form.setFieldValue('qualification', selectedVacancy.qualification)
+            form.setFieldValue('qualification', (selectedVacancy as any)?.qualifications?.[0]?.keyword ?? "")
 
             editor?.commands.setContent(selectedVacancy.jobDescription)
-            setMustHaveSkills(selectedVacancy.skills);
-            editor2?.commands.setContent(selectedVacancy.qualification)
+            setMustHaveSkills(selectedVacancy.skills.map((item: any) => {
+                return item.keyword;
+            }));
+            editor2?.commands.setContent((selectedVacancy as any)?.qualifications?.[0]?.keyword ?? "")
         }
         else {
             form.setValues(vacancyFormInitialData);
             editor?.commands.setContent("<p>Write Job Description Here</p>")
-            setMustHaveSkills(selectedVacancy.skills);
+            setMustHaveSkills(selectedVacancy.skills.map((item: any) => {
+                return item.keyword;
+            }));
             editor2?.commands.setContent("<p>Write Qualification here</p>")
         }
     }, [action, selectedVacancy])
 
-    const onSubmit = async () => {
+    const toPHISOString = (date: Date | string) => {
+        const d = new Date(date);
+        const offsetDate = new Date(d.getTime() - d.getTimezoneOffset() * 60000 + 8 * 60 * 60000);
+        return offsetDate.toISOString();
+    }
+
+
+    const onSubmit = async (form: any) => {
         formRef.current?.requestSubmit();
+
+        let mappedForm = {}
+        if (action == 'New') {
+            mappedForm = {
+                position: form.positionTitle,
+                company: {
+                    id: 1,
+                    name: form.company,
+                },
+                branch: {
+                    id: 1,
+                    name: form.branch,
+                },
+                division: {
+                    id: 1,
+                    name: form.division,
+                },
+                department: {
+                    id: 1,
+                    name: form.department,
+                },
+                section: {
+                    id: 1,
+                    name: form.section,
+                },
+                employmentType: {
+                    id: 1,
+                    name: form.employmentType,
+                },
+                workplaceType: {
+                    id: 1,
+                    name: form.workplaceType,
+                },
+                vacancyType: {
+                    id: 1,
+                    name: form.vacancyType,
+                },
+                experienceLevel: {
+                    id: 1,
+                    name: form.experienceLevel,
+                },
+                vacancyDuration: {
+                    dateStart: toPHISOString(form.duration.start),
+                    dateEnd: toPHISOString(form.duration.end),  
+                },
+                availableSlot: parseInt(form.noOfOpenPosition.replace(/[^\d]/g, '')) || 0,
+                jobDescription: form.jobDescription, // Remove HTML tags
+                skills: form.mustHaveSkills.map((skill: string) => ({
+                    id: 0,
+                    keyword: skill,
+                    isDeleted: false,
+                })),
+                qualifications: [
+                    {
+                        id: 0,
+                        keyword: form.qualification,
+                    },
+                ],
+            }
+        } else if (action == 'Edit') {
+            let updatedSkills: any[] = [];
+
+            // Create a Set for quick lookup of selected keywords
+            const selectedKeywordsSet = new Set(
+                form.mustHaveSkills.map((k: string) => k.toLowerCase())
+            );
+
+            // Go through all existing skills in the vacancy
+            (selectedVacancy as any).skills.forEach((skill: any) => {
+                const isStillSelected = selectedKeywordsSet.has(skill.keyword.toLowerCase());
+
+                updatedSkills.push({
+                    id: skill.id,
+                    keyword: skill.keyword,
+                    isDeleted: !isStillSelected,
+                });
+            });
+
+            // Handle any new skills that are in the form but not in the vacancy
+            form.mustHaveSkills.forEach((skillKeyword: string) => {
+                const alreadyExists = (selectedVacancy as any).skills.some(
+                    (skill: any) =>
+                        skill.keyword.toLowerCase() === skillKeyword.toLowerCase()
+                );
+
+                if (!alreadyExists) {
+                    updatedSkills.push({
+                        id: 0, // Or 'new' if you want
+                        keyword: skillKeyword,
+                        isDeleted: false,
+                    });
+                }
+            });
+            console.log('form.duration: ', form.duration)
+            mappedForm = {
+                id: selectedVacancy.id,
+                position: form.positionTitle,
+                company: {
+                    id: 1,
+                    name: form.company,
+                },
+                branch: {
+                    id: 1,
+                    name: form.branch,
+                },
+                division: {
+                    id: 1,
+                    name: form.division,
+                },
+                department: {
+                    id: 1,
+                    name: form.department,
+                },
+                section: {
+                    id: 1,
+                    name: form.section,
+                },
+                employmentType: {
+                    id: 1,
+                    name: form.employmentType,
+                },
+                workplaceType: {
+                    id: 1,
+                    name: form.workplaceType,
+                },
+                vacancyType: {
+                    id: 1,
+                    name: form.vacancyType,
+                },
+                experienceLevel: {
+                    id: 1,
+                    name: form.experienceLevel,
+                },
+                vacancyDuration: {
+                    dateStart: new Date(form.duration.start).toISOString(),
+                    dateEnd: new Date(form.duration.end).toISOString(),
+                },
+                availableSlot: form.noOfOpenPosition || 0,
+                jobDescription: form.jobDescription, 
+                skills: updatedSkills,
+                // skills: form.mustHaveSkills.map((skill: string) => ({
+                //     id: 0,
+                //     keyword: skill,
+                //     isDeleted: false,
+                // })),
+                qualifications: [
+                    {
+                        id: 1,
+                        keyword: form.qualification,
+                    },
+                ],
+            }
+        }
+        // console.log('action:', action);
+        console.log('mappedForm   : ', mappedForm)
+        // console.log('form: ', form)
+        submit(mappedForm)
         setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
         setAction('')
         setSelectedVacancy(selectedDataVal);
     };
 
 
+    const submit = async (payload: any) => {
+        console.log('payload: ', payload)
+        if (action == 'Add') {
+            await axiosInstance
+                .post("recruitment/vacancies", payload)
+                .then(async (response) => {
+                    console.log('response', response)
+                    // if (response.status === 200) {
+                    queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
+                    setAction('')
+                    setSelectedVacancy(selectedDataVal);
+                    form.reset();
+                    // }
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+                
+        }
+        else if (action == 'Edit') {
+            await axiosInstance
+                .post("recruitment/vacancies/" + selectedVacancy.id, payload)
+                .then(async (response) => {
+                    console.log('response', response)
+                    // if (response.status === 200) {
+                    queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
+                    setAction('')
+                    setSelectedVacancy(selectedDataVal);
+                    form.reset();
+                    // }
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        }
+        form.setValues(vacancyFormInitialData)
+        setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
+    }
 
     return (
         <Modal radius="lg" size={'80%'} opened={action != ''} withCloseButton={false} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }}
-            className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
+            className='text-[#559CDA] scrollbar ' classNames={{ content: 'scrollbar' }}
 
             styles={{
                 header: { width: '95%' },
@@ -176,7 +402,7 @@ export default function index() {
                 </div>
 
                 {/* body */}
-                <div className='px-10 h-[80%] overflow-y-auto scrollbar2'>
+                <div className='px-10 h-[80%] overflow-y-auto scrollbar2 relative'>
 
                     <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5  w-full'>
                         <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
@@ -322,6 +548,7 @@ export default function index() {
                                                 rightSection={<IconCalendarMonth />}
                                                 styles={{ label: { color: "#6d6d6d" } }}
                                                 {...form.getInputProps("duration.start")}
+                                                key={form.key('duration.start')}
                                                 onClick={() => {
                                                     setOpened((o) => !o)
                                                     setOpened2((o) => o ? false : o)
@@ -335,6 +562,7 @@ export default function index() {
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
+                                                    console.log('e: ',e)
                                                     if (e[0] != null)
                                                         form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
                                                     if (e[1] != null)
@@ -357,6 +585,7 @@ export default function index() {
                                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ' }}
                                                 styles={{ label: { color: "#6d6d6d" } }}
                                                 {...form.getInputProps("duration.end")}
+                                                key={form.key('duration.end')}
                                                 onClick={() => {
                                                     setOpened((o) => o ? false : o)
                                                     setOpened2((o) => !o)
@@ -518,16 +747,14 @@ export default function index() {
 
                 {/* footer */}
                 <div className='flex justify-end z-40 px-10 items-center  py-3 '>
-                    {/* <div className='w-full '> */}
                     <Button
+                        onClick={() => { formRef.current?.requestSubmit(); }}
                         color='white'
-                        type="submit"
                         className=" br-gradient2 border-none w-[10%] "
                         variant="transparent"
                         radius={10}
                     >{ActionButtonTitle[action as keyof typeof ActionButtonTitle]}
                     </Button>
-                    {/* </div> */}
                 </div>
 
             </div>

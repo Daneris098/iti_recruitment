@@ -3,7 +3,8 @@ import { DataTable } from 'mantine-datatable';
 import Vacancies from '@src/modules/Vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
-import { VacancyStore, ApplicantStore } from '../store';
+import { VacancyStore, ApplicantStore, DataTableStore } from '../store';
+import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
 
 enum StatusColor {
     Published = '#5A9D27',
@@ -15,16 +16,15 @@ export default function index() {
     const { setSelectedData } = ApplicantStore();
     const { setSelectedVacancy } = VacancyStore();
     const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
-    const [page, setPage] = useState(1);
-    const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
-        columnAccessor: "position", // Use a valid key from VacancyType
-        direction: "asc",
-    });
+    // const [page, setPage] = useState(1);
+    // const pageSize = 10;
+    // const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({ columnAccessor: "position", direction: "asc" });
+    const { isFetching, isError, error, data } = useVacancies();
+    const {totalRecords, page, pageSize, sortStatus,setPage, setPageSize, setSortStatus, time} = DataTableStore();
 
-    const pageSize = 10;
 
     useEffect(() => {
-        setVacancyRecords(Vacancies as VacancyType[]); // Type assertion
+        setVacancyRecords(Vacancies as VacancyType[]); // Type assertion    
     }, []);
 
     const sortedRecords = [...vacancyRecords].sort((a, b) => {
@@ -58,7 +58,11 @@ export default function index() {
             withTableBorder
             borderRadius="sm"
             highlightOnHover
-            records={paginatedRecords}
+            fetching={isFetching}
+            loaderType="dots"
+            loaderSize="lg"
+            loaderColor="blue"
+            loaderBackgroundBlur={1}
             columns={[
                 { accessor: 'position', title: 'Vacancy', textAlign: "left", sortable: true },
                 {
@@ -88,14 +92,22 @@ export default function index() {
                     ),
                 },
             ]}
-            paginationText={({ from, to, totalRecords }) =>`Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
-            totalRecords={vacancyRecords.length}
+            paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (${time}) seconds`}
+
+            // totalRecords={vacancyRecords.length}
+            // records={paginatedRecords}      
+
+            records={data}
+            totalRecords={totalRecords}
+
             recordsPerPage={pageSize}
             page={page}
             onPageChange={setPage}
             sortStatus={sortStatus}
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
-            onRowClick={(val) => {setSelectedVacancy(val.record)}}
+            onRowClick={(val) => {
+                setSelectedVacancy(val.record)
+            }}
         />
     );
 }

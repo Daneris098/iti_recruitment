@@ -4,20 +4,44 @@ import { selectedDataVal } from "@modules/Vacancies/values";
 import { AlertType } from "@modules/Vacancies/types";
 import "@modules/Vacancies/style.css"
 import { Pill } from "@mantine/core";
+import { IconX } from "@tabler/icons-react";
 
 export default function index() {
     const { selectedVacancy, action, setSelectedVacancy, setAlert, setAction } = VacancyStore();
+    
+    const formatToWord = (date: Date | string) => {
+        const d = new Date(date);
+        return d.toLocaleDateString('en-PH', {
+            timeZone: 'Asia/Manila', // Ensure it's using Philippine time
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+    };
 
+    
     return (
         <>
-            <Modal size={'80%'} opened={selectedVacancy != selectedDataVal && action == ''} centered onClose={() => setSelectedVacancy(selectedDataVal)} title={'Vacancy Details'}
+            <Modal radius="lg" size={'80%'} opened={selectedVacancy != selectedDataVal && action == ''}
+                withCloseButton={false} centered onClose={() => setSelectedVacancy(selectedDataVal)}
+                className='text-[#559CDA] scrollbar ' classNames={{ content: 'scrollbar' }}
                 styles={{
-                    header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
+                    header: { width: '95%' },
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                    body: { padding: '0' }
                 }}>
-                <div className='m-auto w-[95%] text-[#6D6D6D] flex flex-col'>
-                    <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
-                    <div className="flex flex-col gap-8">
+                <div className='poppins h-[85vh] flex flex-col gap-3 py-3 text-[#6D6D6D]'>
+                    {/* header */}
+                    <div className='px-10 top-0 z-50 sticky  pt-4'>
+                        <div className='flex justify-between'>
+                            <p className='text-[#559CDA] text-[22px] font-bold py-2'>Vacancy Details</p>
+                            <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setSelectedVacancy(selectedDataVal); }} />
+                        </div>
+                        <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
+                    </div>
+
+                    {/* body */}
+                    <div className=" flex flex-col gap-8 h-[80%] px-10 overflow-y-auto scrollbar2 relative">
 
                         <div className="flex">
                             <div className="w-[30%]">
@@ -74,33 +98,44 @@ export default function index() {
                         <div className="flex">
                             <div className="w-[30%]">
                                 <p>Vacancy Duration</p>
-                                <p className="font-bold">{`${new Date(selectedVacancy.vacancyDuration.start).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} - ${new Date(selectedVacancy.vacancyDuration.end).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`}</p>
+                                <p className="font-bold">{`${formatToWord(selectedVacancy.vacancyDuration.start)} - ${formatToWord(selectedVacancy.vacancyDuration.end)}`}</p>
                             </div>
                         </div>
                         <div>
                             <p>Job Description</p>
-                            <p className="font-bold">{selectedVacancy.jobDescription}</p>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: (selectedVacancy as any)?.jobDescription ?? "",
+                                }}
+                            />
                         </div>
                         <div>
                             <p>Must Have Skills</p>
                             <p className="font-bold">
                                 <Pill.Group>
-                                    {selectedVacancy.mustHaveSkills.split(',').map((item, index) => (
-                                        <Pill key={index}>
-                                            <p className="font-bold  text-[#6D6D6D] text-[16px]">{ item}</p>
-                                        </Pill>
-                                    ))}
+                                    {Array.isArray(selectedVacancy?.mustHaveSkills) &&
+                                        selectedVacancy.mustHaveSkills.map((item, index) => (
+                                            <Pill key={index}>
+                                                <p className="font-bold text-[#6D6D6D] text-[16px]">{(item as any).keyword}</p>
+                                            </Pill>
+                                        ))}
                                 </Pill.Group>
                             </p>
                         </div>
                         <div>
                             <p>Qualification</p>
-                            <p className="font-bold">{selectedVacancy.qualification}</p>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: (selectedVacancy as any)?.qualifications?.[0]?.keyword ?? "",
+                                }}
+                            />
                         </div>
-                        <div className="flex self-end w-2/6 gap-2">
-                            <Button variant="outline" className="w-1/2 self-end  rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>
-                            <Button className="w-1/2 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>
-                        </div>
+
+                    </div>
+                    {/* footer */}
+                    <div className="gap-2 flex justify-end z-40 px-10 items-center  py-3 ">
+                        <Button variant="outline" className="w-1/6 self-end  rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>
+                        <Button className="w-1/6 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>
                     </div>
                 </div>
             </Modal>

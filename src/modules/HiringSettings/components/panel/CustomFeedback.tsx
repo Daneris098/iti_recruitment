@@ -125,7 +125,7 @@ const CustomFeedback = forwardRef((_, ref) => {
         if (!checkEditIsValid()) {
             return
         }
-        setSelectedRowId(null);
+        setSelectedRowId2(null);
         const result = [...applicantFeedback, ...applicantNewRows].map((record) =>
             applicantEditableData[record.id] ? { ...record, ...applicantEditableData[record.id] } : record
         );

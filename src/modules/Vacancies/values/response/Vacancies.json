@@ -23,7 +23,7 @@
       "end": "2023-07-20",
       "from": "6 months"
     },
-    "mustHaveSkills": "JavaScript, React",
+    "mustHaveSkills": ["JavaScript", "React"],
     "qualification": "Bachelor's degree in a related field",
     "company": "Tech Innovations Inc.",
     "branch": "Main Office",
@@ -56,7 +56,7 @@
       "end": "2024-02-05",
       "from": "12 months"
     },
-    "mustHaveSkills": "Agile methodologies, Market research",
+    "mustHaveSkills": ["Agile methodologies", "Market research"],
     "qualification": "Master's degree in Business Administration",
     "company": "Innovate Solutions Ltd.",
     "branch": "New York",
@@ -89,7 +89,7 @@
       "end": "2023-09-15",
       "from": "6 months"
     },
-    "mustHaveSkills": "SQL, Python",
+    "mustHaveSkills": ["SQL", "Python"],
     "qualification": "Bachelor's degree in a related field",
     "company": "Data Insights Corp.",
     "branch": "San Francisco",
@@ -122,7 +122,7 @@
       "end": "2023-07-05",
       "from": "3 months"
     },
-    "mustHaveSkills": "SEO, Content creation",
+    "mustHaveSkills": ["SEO", "Content creation"],
     "qualification": "Bachelor's degree in Marketing or related field",
     "company": "Creative Marketing Agency",
     "branch": "Remote Team",
@@ -155,7 +155,7 @@
       "end": "2024-05-15",
       "from": "12 months"
     },
-    "mustHaveSkills": "Figma, Adobe XD",
+    "mustHaveSkills": ["Figma", "Adobe XD"],
     "qualification": "Bachelor's degree in Design or related field",
     "company": "Design Studio Co.",
     "branch": "Los Angeles",
@@ -188,7 +188,7 @@
       "end": "2023-12-05",
       "from": "6 months"
     },
-    "mustHaveSkills": "AWS, Docker",
+    "mustHaveSkills": ["AWS", "Docker"],
     "qualification": "Bachelor's degree in Computer Science or related field",
     "company": "Cloud Solutions Inc.",
     "branch": "Remote Team",
@@ -221,7 +221,7 @@
       "end": "2024-07-15",
       "from": "12 months"
     },
-    "mustHaveSkills": "CRM software, Cold calling",
+    "mustHaveSkills": ["CRM software", "Cold calling"],
     "qualification": "Bachelor's degree in Business or related field",
     "company": "Sales Dynamics Ltd.",
     "branch": "Chicago",
@@ -254,7 +254,7 @@
       "end": "2024-02-05",
       "from": "6 months"
     },
-    "mustHaveSkills": "SEO, Copywriting",
+    "mustHaveSkills": ["SEO", "Copywriting"],
     "qualification": "Bachelor's degree in English or related field",
     "company": "Content Creators Hub",
     "branch": "Remote Team",
@@ -287,7 +287,7 @@
       "end": "2024-09-15",
       "from": "12 months"
     },
-    "mustHaveSkills": "Network security, Troubleshooting",
+    "mustHaveSkills": ["Network security", "Troubleshooting"],
     "qualification": "Bachelor's degree in Information Technology or related field",
     "company": "Network Solutions Group",
     "branch": "Dallas",
@@ -310,7 +310,7 @@
     "skills": ["Recruitment", "Performance management", "Employee engagement"],
     "benefits": ["Health insurance", "Paid time off", "Professional development"],
     "desirable": ["Experience with HR software", "Knowledge of labor laws"],
-    "dateCreated": "2023-10-01",
+ "dateCreated": "2023-10-01",
     "datePublish": "2023-10-05",
     "interviewer": "Henry Silver",
     "quantity": 1,
@@ -320,7 +320,7 @@
       "end": "2024-10-05",
       "from": "12 months"
     },
-    "mustHaveSkills": "Recruitment, Performance management",
+    "mustHaveSkills": ["Recruitment", "Performance management"],
     "qualification": "Bachelor's degree in Human Resources or related field",
     "company": "People First Inc.",
     "branch": "Remote Team",
@@ -353,7 +353,7 @@
       "end": "2024-10-15",
       "from": "12 months"
     },
-    "mustHaveSkills": "Business process modeling, Data analysis",
+    "mustHaveSkills": ["Business process modeling", "Data analysis"],
     "qualification": "Bachelor's degree in Business Administration or related field",
     "company": "Business Solutions Inc.",
     "branch": "Remote Team",
@@ -386,7 +386,7 @@
       "end": "2024-04-25",
       "from": "6 months"
     },
-    "mustHaveSkills": "Adobe Creative Suite, Typography",
+    "mustHaveSkills": ["Adobe Creative Suite", "Typography"],
     "qualification": "Bachelor's degree in Graphic Design or related field",
     "company": "Visual Arts Co.",
     "branch": "Miami",
@@ -419,7 +419,7 @@
       "end": "2024-11-05",
       "from": "12 months"
     },
-    "mustHaveSkills": "Network security, Incident response",
+    "mustHaveSkills": ["Network security", "Incident response"],
     "qualification": "Bachelor's degree in Cybersecurity or related field",
     "company": "SecureTech Solutions",
     "branch": "Remote Team",
@@ -452,7 +452,7 @@
       "end": "2024-11-15",
       "from": "12 months"
     },
-    "mustHaveSkills": "Keyword research, On-page optimization",
+    "mustHaveSkills": ["Keyword research", "On-page optimization"],
     "qualification": "Bachelor's degree in Marketing or related field",
     "company": "SEO Masters Inc.",
     "branch": "Remote Team",
@@ -485,7 +485,7 @@
       "end": "2024-05-25",
       "from": "6 months"
     },
-    "mustHaveSkills": "Manual testing, Bug tracking",
+    "mustHaveSkills": ["Manual testing", "Bug tracking"],
     "qualification": "Bachelor's degree in Computer Science or related field",
     "company": "Quality Assurance Group",
     "branch": "Remote Team",
@@ -518,7 +518,7 @@
       "end": "2024-12-05",
       "from": "12 months"
     },
-    "mustHaveSkills": "Content creation, Analytics",
+    "mustHaveSkills": ["Content creation", "Analytics"],
     "qualification": "Bachelor's degree in Marketing or related field",
     "company": "Social Media Experts",
     "branch": "Remote Team",
@@ -551,7 +551,7 @@
       "end": "2024-12-15",
       "from": "12 months"
     },
-    "mustHaveSkills": "Database design, Performance tuning",
+    "mustHaveSkills": ["Database design", "Performance tuning"],
     "qualification": "Bachelor's degree in Information Technology or related field",
     "company": "Database Solutions Inc.",
     "branch": "Seattle",
@@ -584,7 +584,7 @@
       "end": "2024-12-25",
       "from": "12 months"
     },
-    "mustHaveSkills": "Content marketing, SEO",
+    "mustHaveSkills": ["Content marketing", "SEO"],
     "qualification": "Bachelor's degree in Marketing or related field",
     "company": "Content Strategy Group",
     "branch": "Remote Team",
@@ -617,7 +617,7 @@
       "end": "2025-01-05",
       "from": "12 months"
     },
-    "mustHaveSkills": "AWS, Azure",
+    "mustHaveSkills": ["AWS", "Azure"],
     "qualification": "Bachelor's degree in Computer Science or related field",
     "company": "Cloud Innovations Ltd.",
     "branch": "Remote Team",
@@ -650,7 +650,7 @@
       "end": "2024-07-15",
       "from": "6 months"
     },
-    "mustHaveSkills": "CRM software, Problem-solving",
+    "mustHaveSkills": ["CRM software", "Problem-solving"],
     "qualification": "Bachelor's degree in Business or related field",
     "company": "Customer Care Solutions",
     "branch": "Remote Team",

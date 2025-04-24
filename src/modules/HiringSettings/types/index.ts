@@ -85,7 +85,7 @@ export interface vacancyForm {
   }
   noOfOpenPosition: number;
   jobDescription: string;
-  mustHaveSkills: string;
+  mustHaveSkills: string[];
   qualification: string;
 }
 

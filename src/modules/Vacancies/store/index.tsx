@@ -40,12 +40,14 @@ export const ApplicantStore = create<ApplicantState>((set) => ({
 }));
 
 export const DataTableStore = create<DataTableState>((set) => ({
+  time: '',
   search: '',
   totalRecords: 0,
   page: 1,
   pageSize: 20,
-  sortStatus: { columnAccessor: 'createdAt', direction: 'desc' },
+  sortStatus: { columnAccessor: 'guid', direction: 'desc' },
 
+  setTime: (time: string) => set({ time: time }),
   setSearch: (search: string) => set({ search: search }),
   setTotalRecords: (total: number) => set({ totalRecords: total }),
   setPage: (page: number) => set({ page }),
