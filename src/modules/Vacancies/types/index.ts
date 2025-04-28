@@ -165,3 +165,11 @@ export enum Action {
   New = 'New',
   Null = 'null'
 }
+
+export enum Stage {
+  Applied = 'applied',
+  ForInterview = 'forInterview',
+  Offered = 'offered',
+  Hired = 'hired',
+  Archived = 'archived'
+}

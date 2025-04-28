@@ -17,6 +17,7 @@ export const useApplicants = () => {
             const startTime = performance.now();
             const res = await axiosInstance.get('recruitment/applicants', {
                 params: {
+                    pageSize,
                     page,
                     sortBy: sortStatus.columnAccessor,
                 },

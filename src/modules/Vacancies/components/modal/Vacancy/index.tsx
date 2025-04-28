@@ -117,9 +117,6 @@ export default function index() {
     });
 
     useEffect(() => {
-
-        console.log('action: ', action)
-
         if (selectedVacancy == selectedDataVal || action === Action.Null) {
             return
         }
