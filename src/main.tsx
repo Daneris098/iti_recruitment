@@ -9,7 +9,7 @@ import "@mantine/dates/styles.css";
 import "@src/index.css";
 import '@mantine/charts/styles.css';
 import { TailwindIndicator } from "@src/components/tailwind-indicator"
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -18,8 +18,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <MantineProvider theme={theme}>
       <React.Fragment>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <App /> 
           <TailwindIndicator />
+          <ReactQueryDevtools initialIsOpen={false } />
         </QueryClientProvider>
       </React.Fragment>
     </MantineProvider>

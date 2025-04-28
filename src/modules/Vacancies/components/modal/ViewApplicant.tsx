@@ -1,12 +1,13 @@
 import { Divider, Modal } from "@mantine/core";
-import { ApplicantStore } from "../../store";
+import { ApplicantStore, ViewApplicantsDataTableStore } from "../../store";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
-import { VacancyType } from "../../types";
+import { VacancyType, StageGroup, Candidate } from "../../types";
 import Vacancies from '@src/modules/Vacancies/values/response/Applicants.json';
 import { DataTable } from "mantine-datatable";
 import { Badge } from '@mantine/core';
 import "@modules/Vacancies/style.css"
+import { useApplicants } from "@modules/Vacancies/hooks/useApplicants";
 
 export default function index() {
     const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
@@ -18,10 +19,110 @@ export default function index() {
     });
 
     const pageSize = 10;
+    const { isFetching, isError, error, data } = useApplicants();
 
     useEffect(() => {
-        setVacancyRecords(Vacancies); // Type assertion
+        // initial val
+        // setVacancyRecords(Vacancies); // Type assertion
     }, []);
+
+    useEffect(() => {
+        const stageGroup: StageGroup = {
+            id: 1,
+            applied: [],
+            forInterview: [],
+            offered: [],
+            hired: [],
+            archived: [],
+        };
+
+        data?.forEach((item: any, index: number) => {
+            const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
+            const firstName: string = item.nameResponse.firstName ?? '';
+
+            const candidate: Candidate = {
+                name: firstName,
+                id: index + 1,
+                status: applicantStatus
+            };
+
+            switch (applicantStatus) {
+                case 'Applied':
+                    stageGroup.applied.push(candidate);
+                    break;
+                case 'For Interview':
+                    stageGroup.forInterview.push(candidate);
+                    break;
+                case 'Offered':
+                    stageGroup.offered.push(candidate);
+                    break;
+                case 'Hired':
+                    stageGroup.hired.push(candidate);
+                    break;
+                case 'Archived':
+                    stageGroup.archived.push(candidate);
+                    break;
+                default:
+                    console.warn(`Unknown status: ${applicantStatus}`);
+                    break;
+            }
+        });
+
+        // Find the maximum length of any stage
+        const maxLength = Math.max(
+            stageGroup.applied.length,
+            stageGroup.forInterview.length,
+            stageGroup.offered.length,
+            stageGroup.hired.length,
+            stageGroup.archived.length
+        );
+
+        // Fill the stages with null candidates to match the maximum length
+        const fillWithNullCandidates = (stage: Candidate[], length: number): Candidate[] => {
+            const fillCount = length - stage.length;
+            const nullCandidates = Array(fillCount).fill({ name: null, id: null, status: null });
+            return [...stage, ...nullCandidates];
+        };
+
+        stageGroup.applied = fillWithNullCandidates(stageGroup.applied, maxLength);
+        stageGroup.forInterview = fillWithNullCandidates(stageGroup.forInterview, maxLength);
+        stageGroup.offered = fillWithNullCandidates(stageGroup.offered, maxLength);
+        stageGroup.hired = fillWithNullCandidates(stageGroup.hired, maxLength);
+        stageGroup.archived = fillWithNullCandidates(stageGroup.archived, maxLength);
+
+        const stageGroups: StageGroup[] = [stageGroup];
+        const transformed = transformStageGroups(stageGroups);
+
+        // console.log('Vacancies: ', Vacancies)
+        // console.log('data: ', data)
+        // console.log('stageGroups:', stageGroups);
+        // console.log('transformed:', transformed);
+        
+        setVacancyRecords(transformed)
+
+    }, [selectedData])
+
+
+    const transformStageGroups = (stageGroups : any) => {
+        if (!Array.isArray(stageGroups) || stageGroups.length === 0) return [];
+
+        const group = stageGroups[0]; // Access the object with all stage arrays
+
+        const keys = ['applied', 'forInterview', 'offered', 'hired', 'archived'];
+        const length = group.applied.length; // assuming all arrays are the same length
+
+        const result = Array.from({ length }, (_, index) => {
+            const vacancy : any = { id: index + 1 };
+
+            keys.forEach(key => {
+                vacancy[key] = group[key]?.[index] ?? null;
+            });
+
+            return vacancy;
+        });
+
+        return result;
+    }
 
     const sortedRecords = [...vacancyRecords].sort((a, b) => {
         if (!sortStatus.columnAccessor) return 0;
@@ -63,7 +164,7 @@ export default function index() {
                         withRowBorders={false}
                         withTableBorder
                         borderRadius="sm"
-                        records={paginatedRecords}
+                        records={vacancyRecords}
                         paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
                         columns={[
                             {

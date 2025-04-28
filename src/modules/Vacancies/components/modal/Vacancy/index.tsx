@@ -15,7 +15,7 @@ import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
-import { AlertType, ActionTitle, ActionButtonTitle } from '@modules/Vacancies/types';
+import { AlertType, ActionTitle, ActionButtonTitle, Action } from '@modules/Vacancies/types';
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
 import { selectedDataVal } from '@src/modules/Vacancies/values';
 import { vacancyFormInitialData } from '@src/modules/HiringSettings/values';
@@ -117,7 +117,10 @@ export default function index() {
     });
 
     useEffect(() => {
-        if (selectedVacancy == selectedDataVal) {
+
+        console.log('action: ', action)
+
+        if (selectedVacancy == selectedDataVal || action === Action.Null) {
             return
         }
         const startDate = new Date(selectedVacancy.vacancyDuration.start);
@@ -133,8 +136,6 @@ export default function index() {
             day: 'numeric',
         });
 
-        // console.log('selectedVacancy.vacancyDuration.start: ', selectedVacancy.vacancyDuration.start)
-        // console.log('new Date(form.duration.start).toISOString(): ', new Date(selectedVacancy.vacancyDuration.start).toISOString())
         if (action == 'Edit') {
             form.setFieldValue('positionTitle', selectedVacancy.position)
             form.setFieldValue('company', selectedVacancy.company)
@@ -180,7 +181,7 @@ export default function index() {
         formRef.current?.requestSubmit();
 
         let mappedForm = {}
-        if (action == 'New') {
+        if (action == Action.New) {
             mappedForm = {
                 position: form.positionTitle,
                 company: {
@@ -237,7 +238,7 @@ export default function index() {
                     },
                 ],
             }
-        } else if (action == 'Edit') {
+        } else if (action == Action.Edit) {
             let updatedSkills: any[] = [];
 
             // Create a Set for quick lookup of selected keywords
@@ -271,7 +272,6 @@ export default function index() {
                     });
                 }
             });
-            console.log('form.duration: ', form.duration)
             mappedForm = {
                 id: selectedVacancy.id,
                 position: form.positionTitle,
@@ -318,11 +318,6 @@ export default function index() {
                 availableSlot: form.noOfOpenPosition || 0,
                 jobDescription: form.jobDescription, 
                 skills: updatedSkills,
-                // skills: form.mustHaveSkills.map((skill: string) => ({
-                //     id: 0,
-                //     keyword: skill,
-                //     isDeleted: false,
-                // })),
                 qualifications: [
                     {
                         id: 1,
@@ -331,57 +326,58 @@ export default function index() {
                 ],
             }
         }
-        // console.log('action:', action);
-        console.log('mappedForm   : ', mappedForm)
-        // console.log('form: ', form)
         submit(mappedForm)
-        setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
-        setAction('')
+        setAlert(action === Action.Edit ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
+        setAction(Action.Null)
         setSelectedVacancy(selectedDataVal);
     };
 
+    const resetVacancy = () => {
+        setAction(Action.Null);
+        setSelectedVacancy(selectedDataVal);
+        setMustHaveSkills([]);
+        form.reset();
+        form.setInitialValues(vacancyFormInitialData);
+        editor?.commands.setContent('<p>Write Qualification here</p>')
+        editor2?.commands.setContent('<p>Write Qualification here</p>')
+    }
 
     const submit = async (payload: any) => {
-        console.log('payload: ', payload)
-        if (action == 'Add') {
+        if (action == Action.New) {
             await axiosInstance
                 .post("recruitment/vacancies", payload)
                 .then(async (response) => {
-                    console.log('response', response)
-                    // if (response.status === 200) {
-                    queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
-                    setAction('')
-                    setSelectedVacancy(selectedDataVal);
-                    form.reset();
-                    // }
+                    if (response.status === 201) {   
+                        queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
+                        resetVacancy()
+                    }
                 })
                 .catch((error) => {
                     console.error(error)
                 })
                 
         }
-        else if (action == 'Edit') {
+        else if (action == Action.Edit) {
             await axiosInstance
                 .post("recruitment/vacancies/" + selectedVacancy.id, payload)
                 .then(async (response) => {
-                    console.log('response', response)
-                    // if (response.status === 200) {
-                    queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
-                    setAction('')
-                    setSelectedVacancy(selectedDataVal);
-                    form.reset();
-                    // }
+                    if (response.status === 201) {
+                        queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
+                        resetVacancy()
+                    }
                 })
                 .catch((error) => {
                     console.error(error)
                 })
         }
         form.setValues(vacancyFormInitialData)
-        setAlert(action === 'Edit' ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
+        setAlert(action === Action.Edit ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
     }
 
     return (
-        <Modal radius="lg" size={'80%'} opened={action != ''} withCloseButton={false} centered onClose={() => { setAction(''); setSelectedVacancy(selectedDataVal); }}
+        <Modal radius="lg" size={'80%'} opened={action != Action.Null} withCloseButton={false} centered onClose={() => {
+            resetVacancy()
+        }}
             className='text-[#559CDA] scrollbar ' classNames={{ content: 'scrollbar' }}
 
             styles={{
@@ -396,7 +392,7 @@ export default function index() {
                 <div className='px-10 top-0 z-50 sticky  pt-4'>
                     <div className='flex justify-between'>
                         <p className='text-[#559CDA] text-[22px] font-bold py-2'>{ActionTitle[action as keyof typeof ActionTitle]}</p>
-                        <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setAction(''); setSelectedVacancy(selectedDataVal); }} />
+                        <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { resetVacancy(); }} />
                     </div>
                     <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />
                 </div>

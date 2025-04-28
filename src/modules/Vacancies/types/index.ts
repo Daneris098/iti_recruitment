@@ -2,9 +2,9 @@ export interface VacancyState {
   selectedVacancy: VacancyType;
   applicationFormModal: boolean;
   alert: string;
-  action: string,
+  action: Action,
 
-  setAction: (action: string) => void;
+  setAction: (action: Action) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedVacancy: (selectedData: VacancyType) => void;
@@ -142,4 +142,26 @@ export interface selectedApplicant {
   Skills: string,
   Remarks: string,
   Application_Date: string
+}
+
+
+export interface Candidate {
+    name: string | null;
+    id: number | null;
+    status: string | null;
+}
+
+export interface StageGroup {
+    id: number;
+    applied: Candidate[];
+    forInterview: Candidate[];
+    offered: Candidate[];
+    hired: Candidate[];
+    archived: Candidate[];
+}
+
+export enum Action {
+  Edit = 'Edit',
+  New = 'New',
+  Null = 'null'
 }

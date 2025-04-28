@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant } from "@modules/Vacancies/types";
+import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant, Action } from "@modules/Vacancies/types";
 import { filterVal, selectedDataVal, selectedApplicantInitial } from "@src/modules/Vacancies/values";
 
 
@@ -7,9 +7,9 @@ export const VacancyStore = create<VacancyState>((set) => ({
   selectedVacancy: selectedDataVal,
   applicationFormModal: false,
   alert: '',
-  action: '',
+  action: Action.Null,
 
-  setAction: (action: string) => set({ action: action }),
+  setAction: (action: Action) => set({ action: action }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
   setSelectedVacancy: (selectedData: VacancyType) => set({ selectedVacancy: selectedData }),
@@ -40,6 +40,22 @@ export const ApplicantStore = create<ApplicantState>((set) => ({
 }));
 
 export const DataTableStore = create<DataTableState>((set) => ({
+  time: '',
+  search: '',
+  totalRecords: 0,
+  page: 1,
+  pageSize: 20,
+  sortStatus: { columnAccessor: 'guid', direction: 'desc' },
+
+  setTime: (time: string) => set({ time: time }),
+  setSearch: (search: string) => set({ search: search }),
+  setTotalRecords: (total: number) => set({ totalRecords: total }),
+  setPage: (page: number) => set({ page }),
+  setPageSize: (size: number) => set({ pageSize: size }),
+  setSortStatus: (status: any) => set({ sortStatus: status }),
+}));
+
+export const ViewApplicantsDataTableStore = create<DataTableState>((set) => ({
   time: '',
   search: '',
   totalRecords: 0,

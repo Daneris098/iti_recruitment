@@ -92,14 +92,13 @@ export default function index() {
                     ),
                 },
             ]}
-            paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (${time}) seconds`}
+            paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (${time}) seconds`}
 
             // totalRecords={vacancyRecords.length}
             // records={paginatedRecords}      
 
             records={data}
-            totalRecords={totalRecords}
-
+            totalRecords={data?.length}
             recordsPerPage={pageSize}
             page={page}
             onPageChange={setPage}

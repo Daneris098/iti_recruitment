@@ -1,7 +1,7 @@
 import { Button, Divider, Modal } from "@mantine/core";
 import { VacancyStore } from "@modules/Vacancies/store";
 import { selectedDataVal } from "@modules/Vacancies/values";
-import { AlertType } from "@modules/Vacancies/types";
+import { Action, AlertType } from "@modules/Vacancies/types";
 import "@modules/Vacancies/style.css"
 import { Pill } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
@@ -22,7 +22,7 @@ export default function index() {
     
     return (
         <>
-            <Modal radius="lg" size={'80%'} opened={selectedVacancy != selectedDataVal && action == ''}
+            <Modal radius="lg" size={'80%'} opened={selectedVacancy != selectedDataVal && action == Action.Null}
                 withCloseButton={false} centered onClose={() => setSelectedVacancy(selectedDataVal)}
                 className='text-[#559CDA] scrollbar ' classNames={{ content: 'scrollbar' }}
                 styles={{
@@ -134,7 +134,7 @@ export default function index() {
                     </div>
                     {/* footer */}
                     <div className="gap-2 flex justify-end z-40 px-10 items-center  py-3 ">
-                        <Button variant="outline" className="w-1/6 self-end  rounded-md" onClick={() => { setAction('Edit') }}>EDIT</Button>
+                        <Button variant="outline" className="w-1/6 self-end  rounded-md" onClick={() => { setAction(Action.Edit) }}>EDIT</Button>
                         <Button className="w-1/6 self-end br-gradient border-none rounded-md" onClick={() => { setSelectedVacancy(selectedDataVal); setAlert(AlertType.closeVacancy) }}>CLOSE VACANCY</Button>
                     </div>
                 </div>

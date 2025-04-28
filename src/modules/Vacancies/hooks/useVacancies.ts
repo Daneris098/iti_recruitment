@@ -18,16 +18,13 @@ export const useVacancies = () => {
             const res = await axiosInstance.get('recruitment/vacancies', {
                 params: {
                     page,
-                    limit: pageSize,
-                    search,
                     sortBy: sortStatus.columnAccessor,
-                    sortDirection: sortStatus.direction,
                 },
             });
 
             if (res.status === 200 && Array.isArray(res.data.items)) {
-                console.log('response: ',res)
-                setTotalRecords(res.data.total)
+                // console.log('response vacancies : ',res)
+                // setTotalRecords(res.data.total)
                 const mapped = res.data.items.map((item: any) => ({
                     ...item,
                     mustHaveSkills: item.skills,            
@@ -49,7 +46,7 @@ export const useVacancies = () => {
                     totalApplicant: item.availableSlot,
                     status: "Published",
                 }));
-                console.log('mappedOrigin : ', mapped)
+                // console.log('mappedOrigin : ', mapped)
                 const endTime = performance.now();
                 const executionTime = (endTime - startTime) / 1000;
                 setTime(executionTime.toFixed(3).toString());
