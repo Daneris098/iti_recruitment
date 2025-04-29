@@ -1,10 +1,11 @@
 import 'mantine-datatable/styles.layer.css';
 import { DataTable } from 'mantine-datatable';
-import Vacancies from '@src/modules/Vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
 import { VacancyStore, ApplicantStore, DataTableStore } from '../store';
 import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
+import { useQueryClient } from '@tanstack/react-query';
+import { selectedDataVal } from '../values';
 
 enum StatusColor {
     Published = '#5A9D27',
@@ -13,42 +14,22 @@ enum StatusColor {
 }
 
 export default function index() {
-    const { setSelectedData } = ApplicantStore();
+    const { page, pageSize, sortStatus, setPage, setSortStatus, time } = DataTableStore();
+    const { selectedData, setSelectedData } = ApplicantStore();
+    const { isFetching, data } = useVacancies();
     const { setSelectedVacancy } = VacancyStore();
-    const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
-    // const [page, setPage] = useState(1);
-    // const pageSize = 10;
-    // const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({ columnAccessor: "position", direction: "asc" });
-    const { isFetching, isError, error, data } = useVacancies();
-    const {totalRecords, page, pageSize, sortStatus,setPage, setPageSize, setSortStatus, time} = DataTableStore();
-
-
-    useEffect(() => {
-        setVacancyRecords(Vacancies as VacancyType[]); // Type assertion    
-    }, []);
-
-    const sortedRecords = [...vacancyRecords].sort((a, b) => {
-        if (!sortStatus.columnAccessor) return 0;
-        const valueA = a[sortStatus.columnAccessor as keyof VacancyType];
-        const valueB = b[sortStatus.columnAccessor as keyof VacancyType];
-
-        if (typeof valueA === 'string' && typeof valueB === 'string') {
-            return sortStatus.direction === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-        }
-
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-            return sortStatus.direction === 'asc' ? valueA - valueB : valueB - valueA;
-        }
-        return 0;
-    });
-
-    const paginatedRecords = sortedRecords.slice((page - 1) * pageSize, page * pageSize);
+    const queryClient = useQueryClient();
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
+    useEffect(() => {
+        if (selectedData != selectedDataVal) {
+            queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: 'active' });
+        }
+    }, [selectedData])
 
     return (
         <DataTable
@@ -86,17 +67,16 @@ export default function index() {
                     title: 'Action',
                     textAlign: "center",
                     render: (data) => (
-                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => { e.stopPropagation(); setSelectedData(data); }}>
+                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedData(data);
+                        }}>
                             View Applicants
                         </div>
                     ),
                 },
             ]}
             paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (${time}) seconds`}
-
-            // totalRecords={vacancyRecords.length}
-            // records={paginatedRecords}      
-
             records={data}
             totalRecords={data?.length}
             recordsPerPage={pageSize}

@@ -11,24 +11,26 @@ import { useApplicants } from "@modules/Vacancies/hooks/useApplicants";
 
 export default function index() {
     const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
-    const { counts, pageSize } = ViewApplicantsDataTableStore();
-    const [vacancyRecords, setVacancyRecords] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
         columnAccessor: "position", // Use a valid key from VacancyType
         direction: "asc",
     });
     const { data, isFetching } = useApplicants();
+    const { counts, pageSize } = ViewApplicantsDataTableStore();
+    const [appliedCount, setAppliedCount] = useState(0);
+    const [forInterviewCount, setForInterviewCount] = useState(0);
+    const [offeredCount, setOfferedCount] = useState(0);
+    const [hiredCount, setHiredCount] = useState(0);
+    const [archivedCount, setArchivedCount] = useState(0);
 
     useEffect(() => {
-        // initial val
-        // setVacancyRecords(Vacancies); // Type assertion
-    }, []);
-
-    useEffect(() => {
-        console.log('data: ', data)
-        // setVacancyRecords((data as any))
-    }, [selectedData])
+        setAppliedCount(counts['applied'] || 0);
+        setForInterviewCount(counts['forInterview'] || 0);
+        setOfferedCount(counts['offered'] || 0);
+        setHiredCount(counts['hired'] || 0);
+        setArchivedCount(counts['archived'] || 0);
+    }, [counts]);
 
     return (
         <>
@@ -66,7 +68,7 @@ export default function index() {
                                     title:
                                         <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem] applied">
                                             <p>Applied</p>
-                                            <Badge color="blue" >{counts['applied']}</Badge>
+                                            <Badge color="blue" >{appliedCount}</Badge>
                                         </div>
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.blue[3], background: 'rgb(222, 236, 255, 0.3)', fontWeight: 'normal' }),
                                 },
@@ -75,7 +77,7 @@ export default function index() {
                                     title:
                                         <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem]">
                                             <p>For Interview</p>
-                                            <Badge color="orange">{counts['forInterview']}</Badge>
+                                            <Badge color="orange">{forInterviewCount}</Badge>
                                         </div>
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.orange[6], background: 'rgb(255,216,182, 0.3)', fontWeight: 'normal' })
                                 },
@@ -83,7 +85,7 @@ export default function index() {
                                     accessor: 'offered', render: (data: any) => (<>{data.offered.name}</>), title:
                                         <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem]">
                                             <p>Offered</p>
-                                            <Badge color="yellow">{counts['offered']}</Badge>
+                                            <Badge color="yellow">{offeredCount}</Badge>
                                         </div>
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.yellow[6], background: 'rgb(255,240,192,0.3)', fontWeight: 'normal' })
                                 },
@@ -91,7 +93,7 @@ export default function index() {
                                     accessor: 'hired', render: (data: any) => (<>{data.hired.name}</>), title:
                                         <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem]">
                                             <p>Hired</p>
-                                            <Badge color="green">{counts['hired']}</Badge>
+                                            <Badge color="green">{hiredCount}</Badge>
                                         </div>
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.green[6], background: 'rgb(215,255,185, 0.3)', fontWeight: 'normal' })
                                 },
@@ -99,7 +101,7 @@ export default function index() {
                                     accessor: 'archived', render: (data: any) => (<>{data.archived.name}</>), title:
                                         <div className="flex gap-2 p-[0.5rem] rounded-[0.3rem]">
                                             <p>Archived</p>
-                                            <Badge color="red">{counts['archived']}</Badge>
+                                            <Badge color="red">{archivedCount}</Badge>
                                         </div>
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6], background: "rgb(255,203,199, 0.3)", fontWeight: 'normal' })
                                 },
@@ -128,6 +130,5 @@ export default function index() {
                 </div>
             </Modal>
         </>
-
     )
 }

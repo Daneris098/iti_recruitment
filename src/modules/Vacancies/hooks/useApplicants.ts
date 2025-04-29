@@ -1,17 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
-import { ViewApplicantsDataTableStore } from "@src/modules/Vacancies/store";
+import { ViewApplicantsDataTableStore, ApplicantStore } from "@src/modules/Vacancies/store";
 import { Candidate, StageGroup, VacancyType } from "@src/modules/Vacancies/types";
 export const useApplicants = () => {
     const {
-        search,
         page,
         pageSize,
         sortStatus,
-        setTotalRecords,
         setTime,
         setCounts
     } = ViewApplicantsDataTableStore();
+    const { selectedData } = ApplicantStore();
 
     const fetchData = async () => {
         try {
@@ -57,129 +56,125 @@ export const useApplicants = () => {
                 },
             });
 
-            // if (res.status === 200 && Array.isArray(res.data.items)) {
-                // console.log('response: ', res);
-                // setTotalRecords(res.data.total);
+            const stageGroup: StageGroup = {
+                id: 1,
+                applied: [],
+                forInterview: [],
+                offered: [],
+                archived: [],
+                hired: [],
+            };
 
-                // Data manipulation logic
-                const stageGroup: StageGroup = {
-                    id: 1,
-                    applied: [],
-                    forInterview: [],
-                    offered: [],
-                    archived: [],
-                    hired: [],
+            appliedResponse.data.items.forEach((item: any, index: number) => {
+                const positionAppliedId = item.positionsApplied[0].id;
+                const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
+                const firstName: string = item.nameResponse.firstName ?? '';
+                const candidate: Candidate = {
+                    name: firstName,
+                    id: index + 1,
+                    status: applicantStatus
                 };
-
-                appliedResponse.data.items.forEach((item: any, index: number) => {
-                    const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
-                    const firstName: string = item.nameResponse.firstName ?? '';
-
-                    const candidate: Candidate = {
-                        name: firstName,
-                        id: index + 1,
-                        status: applicantStatus
-                    };
+                if (positionAppliedId == selectedData.id) {
                     stageGroup.applied.push(candidate);
-                });
-                console.log('appliedResponse: ', appliedResponse)
+                }
+            });
 
-                forInterviewResponse.data.items.forEach((item: any, index: number) => {
-                    const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
-                    const firstName: string = item.nameResponse.firstName ?? '';
-
-                    const candidate: Candidate = {
-                        name: firstName,
-                        id: index + 1,
-                        status: applicantStatus
-                    };
-                    stageGroup.forInterview.push(candidate);
-                });
-                console.log('forInterviewResponse: ', forInterviewResponse)
-
-                offeredResponse.data.items.forEach((item: any, index: number) => {
-                    const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
-                    const firstName: string = item.nameResponse.firstName ?? '';
-
-                    const candidate: Candidate = {
-                        name: firstName,
-                        id: index + 1,
-                        status: applicantStatus
-                    };
-                    stageGroup.offered.push(candidate);
-                });
-                console.log('offeredResponse: ', offeredResponse)
-
-                hiredResponse.data.items.forEach((item: any, index: number) => {
-                    const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
-                    const firstName: string = item.nameResponse.firstName ?? '';
-
-                    const candidate: Candidate = {
-                        name: firstName,
-                        id: index + 1,
-                        status: applicantStatus
-                    };
-                    stageGroup.hired.push(candidate);
-                });
-                console.log('hiredResponse: ', hiredResponse)
-
-                archivedResponse.data.items.forEach((item: any, index: number) => {
-                    const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
-                    const firstName: string = item.nameResponse.firstName ?? '';
-
-                    const candidate: Candidate = {
-                        name: firstName,
-                        id: index + 1,
-                        status: applicantStatus
-                    };
-                    stageGroup.archived.push(candidate);
-                });
-                console.log('archivedResponse: ', archivedResponse)
-
-                // Find the maximum length of any stage
-                const maxLength = Math.max(
-                    stageGroup.applied.length,
-                    stageGroup.forInterview.length,
-                    stageGroup.offered.length,
-                    stageGroup.hired.length,
-                    stageGroup.archived.length
-                );
-
-                // Fill the stages with null candidates to match the maximum length
-                const fillWithNullCandidates = (stage: Candidate[], length: number): Candidate[] => {
-                    const fillCount = length - stage.length;
-                    const nullCandidates = Array(fillCount).fill({ name: null, id: null, status: null });
-                    return [...stage, ...nullCandidates];
+            forInterviewResponse.data.items.forEach((item: any, index: number) => {
+                const positionAppliedId = item.positionsApplied[0].id;
+                const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
+                const firstName: string = item.nameResponse.firstName ?? '';
+                const candidate: Candidate = {
+                    name: firstName,
+                    id: index + 1,
+                    status: applicantStatus
                 };
+                if (positionAppliedId == selectedData.id) {
+                    stageGroup.forInterview.push(candidate);
+                }
+            });
 
-                stageGroup.applied = fillWithNullCandidates(stageGroup.applied, maxLength);
-                stageGroup.forInterview = fillWithNullCandidates(stageGroup.forInterview, maxLength);
-                stageGroup.offered = fillWithNullCandidates(stageGroup.offered, maxLength);
-                stageGroup.hired = fillWithNullCandidates(stageGroup.hired, maxLength);
-                stageGroup.archived = fillWithNullCandidates(stageGroup.archived, maxLength);
+            offeredResponse.data.items.forEach((item: any, index: number) => {
+                const positionAppliedId = item.positionsApplied[0].id;
+                const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
+                const firstName: string = item.nameResponse.firstName ?? '';
+                const candidate: Candidate = {
+                    name: firstName,
+                    id: index + 1,
+                    status: applicantStatus
+                };
+                if (positionAppliedId == selectedData.id) {
+                    stageGroup.offered.push(candidate);
+                }
+            });
 
-                const stageGroups: StageGroup[] = [stageGroup];
-                const transformed = transformStageGroups(stageGroups);
+            hiredResponse.data.items.forEach((item: any, index: number) => {
+                const positionAppliedId = item.positionsApplied[0].id;
+                const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
+                const firstName: string = item.nameResponse.firstName ?? '';
+                const candidate: Candidate = {
+                    name: firstName,
+                    id: index + 1,
+                    status: applicantStatus
+                };
+                if (positionAppliedId == selectedData.id) {
+                    stageGroup.hired.push(candidate);
+                }
+            });
 
-                // Calculate counts of valid candidates in each stage
-                const stages = ['applied', 'archived', 'forInterview', 'hired', 'offered'];
-                const stageCounts = stages.reduce((acc, stage) => {
-                    const items = (stageGroup as any)[stage] || [];
-                    const validItems = items.filter((item: any) => item.name !== null && item.id !== null && item.status !== null);
-                    acc[stage] = validItems.length;
-                    return acc;
-                }, {} as { [key: string]: number });
+            archivedResponse.data.items.forEach((item: any, index: number) => {
+                const positionAppliedId = item.positionsApplied[0].id;
+                const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
+                const firstName: string = item.nameResponse.firstName ?? '';
+                const candidate: Candidate = {
+                    name: firstName,
+                    id: index + 1,
+                    status: applicantStatus
+                };
+                if (positionAppliedId == selectedData.id) {
+                    stageGroup.archived.push(candidate);
+                }
+            });
 
-                // Set the manipulated data
-                 setCounts(stageCounts);
-                // setVacancyRecords(transformed);
-                console.log('stageCounts: ', stageCounts)
-                return transformed; // Return the original data as well
-            // }
-            // else {
-            //     console.error("Unexpected response format:", res.data);
-            //     return [];
-            // }
+            // Find the maximum length of any stage
+            // const maxLength = Math.max(
+            //     stageGroup.applied.length,
+            //     stageGroup.forInterview.length,
+            //     stageGroup.offered.length,
+            //     stageGroup.hired.length,
+            //     stageGroup.archived.length
+            // );
+            
+            const maxLength = 10;
+            const fillWithNullCandidates = (stage: Candidate[], length: number): Candidate[] => {
+                const fillCount = length - stage.length;
+                const nullCandidates = Array(fillCount).fill({ id: null});
+                return [...stage, ...nullCandidates];
+            };
+
+            stageGroup.applied = fillWithNullCandidates(stageGroup.applied, maxLength);
+            stageGroup.forInterview = fillWithNullCandidates(stageGroup.forInterview, maxLength);
+            stageGroup.offered = fillWithNullCandidates(stageGroup.offered, maxLength);
+            stageGroup.hired = fillWithNullCandidates(stageGroup.hired, maxLength);
+            stageGroup.archived = fillWithNullCandidates(stageGroup.archived, maxLength);
+
+            const stageGroups: StageGroup[] = [stageGroup];
+            const transformed = transformStageGroups(stageGroups);
+            const stages = ['applied', 'archived', 'forInterview', 'hired', 'offered'];
+            const stageCounts = stages.reduce((acc, stage) => {
+                const items = (stageGroup as any)[stage];
+                const validItems = items.filter((item: any) => {
+                    return (
+                        item.id != null
+                    )
+                });
+                acc[stage] = validItems.length;
+                return acc;
+            }, {} as { [key: string]: number });
+            setCounts(stageCounts);
+            const endTime = performance.now();
+            const executionTime = (endTime - startTime) / 1000;
+            setTime(executionTime.toFixed(3).toString());
+            return transformed; 
         } catch (error: any) {
             console.error("Error fetching data:", error.response || error);
             throw error;
@@ -189,10 +184,9 @@ export const useApplicants = () => {
     const transformStageGroups = (stageGroups: any) => {
         if (!Array.isArray(stageGroups) || stageGroups.length === 0) return [];
 
-        const group = stageGroups[0]; // Access the object with all stage arrays
+        const group = stageGroups[0];
         const keys = ['applied', 'forInterview', 'offered', 'hired', 'archived'];
-        const length = group.applied.length; // assuming all arrays are the same length
-
+        const length = group.applied.length; 
         const result = Array.from({ length }, (_, index) => {
             const vacancy: any = { id: index + 1 };
 
@@ -207,8 +201,8 @@ export const useApplicants = () => {
     }
 
     return useQuery<VacancyType[]>({
-        queryKey: ["recruitment/applicants", { page, pageSize, sortStatus }],
+        queryKey: ["recruitment/applicants", { page, pageSize, sortStatus, selectedData }],
         queryFn: fetchData,
-        staleTime: 60 * 1000, // Data is fresh for 5 minutes
+        staleTime: 60 * 1000, 
     });
 };

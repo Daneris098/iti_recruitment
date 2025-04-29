@@ -4,11 +4,9 @@ import { DataTableStore } from "@src/modules/Vacancies/store";
 import { VacancyType } from "@src/modules/Vacancies/types";
 export const useVacancies = () => {
     const {
-        search,
         page,
         pageSize,
         sortStatus,
-        setTotalRecords,
         setTime
     } = DataTableStore();
 
@@ -23,8 +21,6 @@ export const useVacancies = () => {
             });
 
             if (res.status === 200 && Array.isArray(res.data.items)) {
-                // console.log('response vacancies : ',res)
-                // setTotalRecords(res.data.total)
                 const mapped = res.data.items.map((item: any) => ({
                     ...item,
                     mustHaveSkills: item.skills,            
@@ -46,7 +42,6 @@ export const useVacancies = () => {
                     totalApplicant: item.availableSlot,
                     status: "Published",
                 }));
-                // console.log('mappedOrigin : ', mapped)
                 const endTime = performance.now();
                 const executionTime = (endTime - startTime) / 1000;
                 setTime(executionTime.toFixed(3).toString());
