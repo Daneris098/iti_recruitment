@@ -115,6 +115,23 @@ export interface DataTableState {
   setPageSize: (size: number) => void;
   setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
 }
+export interface DataTableState2 {
+  time: string,
+  search: string,
+  totalRecords: number;
+  page: number;
+  pageSize: number;
+  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+  counts: { [key: string]: number };
+
+  setCounts: (counts: { [key: string]: number }) => void;
+  setTime: (time: string) => void;
+  setSearch: (action: string) => void;
+  setTotalRecords: (total: number) => void;
+  setPage: (page: number) => void;
+  setPageSize: (size: number) => void;
+  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
+}
 
 export enum ActionTitle {
   New = 'Add Vacancy',

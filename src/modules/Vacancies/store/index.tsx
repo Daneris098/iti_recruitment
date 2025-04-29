@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant, Action } from "@modules/Vacancies/types";
+import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant, Action, DataTableState2 } from "@modules/Vacancies/types";
 import { filterVal, selectedDataVal, selectedApplicantInitial } from "@src/modules/Vacancies/values";
 
 
@@ -55,14 +55,16 @@ export const DataTableStore = create<DataTableState>((set) => ({
   setSortStatus: (status: any) => set({ sortStatus: status }),
 }));
 
-export const ViewApplicantsDataTableStore = create<DataTableState>((set) => ({
+export const ViewApplicantsDataTableStore = create<DataTableState2>((set) => ({
   time: '',
   search: '',
   totalRecords: 0,
   page: 1,
   pageSize: 20,
   sortStatus: { columnAccessor: 'guid', direction: 'desc' },
+  counts  : {}, 
 
+  setCounts: (counts: { [key: string]: number }) => set({ counts }), 
   setTime: (time: string) => set({ time: time }),
   setSearch: (search: string) => set({ search: search }),
   setTotalRecords: (total: number) => set({ totalRecords: total }),
