@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCloseModal } from "@modules/Shared/components/applicantProfile/store"
 import { Divider, Modal, Tabs } from "@mantine/core";
 import { IconFileUpload, IconX } from "@tabler/icons-react";

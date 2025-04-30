@@ -36,10 +36,10 @@ export default function LandingPage() {
         <div className="hidden sm:block"></div>
       </div>
 
-      <div className="hidden sm:block h-full w-1/2 z-30 ">
+      <div className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center  h-full w-1/2 z-30 ">
         <img
-          src="person.png "
-          className="  object-fill h-full w-full z-20 ml-32 py-16"
+          src="person2.png "
+          className="  object-fill h-[80%]  z-20"
           alt="bg"
         />
       </div>

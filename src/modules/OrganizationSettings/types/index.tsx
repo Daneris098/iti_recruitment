@@ -4,18 +4,26 @@ export interface OrganizationSettingsState {
   activePanel: string;
   action: string,
   reroute: boolean,
+  validationMessage: string,
 
+  setValidationMessage: (validationMessage: string) => void;
   setReroute: (reroute: boolean) => void;
   setAction: (action: string) => void;
   setActivePanel: (activePanel: string) => void;
   setAlert: (alert: string) => void;
 }
 
+export enum Operation {
+    add = 'add',
+    edit = 'edit',
+    noOperation = 'null',
+}
 
 export enum AlertType {
   saved = 'saved',
   cancel = 'Cancel',
   cancellled = 'Cancelled',
+  validation = 'Validation'
 }
 
 export enum title {
@@ -100,4 +108,5 @@ export type Company = {
   department: string;
   departmentHead: string;
   isNewField?: boolean;
+  touched?: boolean;
 };

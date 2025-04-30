@@ -157,13 +157,13 @@ export default function index() {
                 <p className="font-bold">Family Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
                     <NumberInput classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={1} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother <span className="text-red-500">*</span> <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
                     <NumberInput classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={1}  {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />

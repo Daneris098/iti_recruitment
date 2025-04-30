@@ -2,9 +2,9 @@ export interface VacancyState {
   selectedVacancy: VacancyType;
   applicationFormModal: boolean;
   alert: string;
-  action: string,
+  action: Action,
 
-  setAction: (action: string) => void;
+  setAction: (action: Action) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedVacancy: (selectedData: VacancyType) => void;
@@ -66,7 +66,7 @@ export interface VacancyType {
     end: string;
     from: string;
   }
-  mustHaveSkills: string;
+  mustHaveSkills: string[];
   qualification: string;
 };
 
@@ -101,12 +101,31 @@ export interface ApplicantState {
 }
 
 export interface DataTableState {
+  time: string,
   search: string,
   totalRecords: number;
   page: number;
   pageSize: number;
   sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
 
+  setTime: (time: string) => void;
+  setSearch: (action: string) => void;
+  setTotalRecords: (total: number) => void;
+  setPage: (page: number) => void;
+  setPageSize: (size: number) => void;
+  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
+}
+export interface DataTableState2 {
+  time: string,
+  search: string,
+  totalRecords: number;
+  page: number;
+  pageSize: number;
+  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+  counts: { [key: string]: number };
+
+  setCounts: (counts: { [key: string]: number }) => void;
+  setTime: (time: string) => void;
   setSearch: (action: string) => void;
   setTotalRecords: (total: number) => void;
   setPage: (page: number) => void;
@@ -140,4 +159,34 @@ export interface selectedApplicant {
   Skills: string,
   Remarks: string,
   Application_Date: string
+}
+
+
+export interface Candidate {
+    name: string | null;
+    id: number | null;
+    status: string | null;
+}
+
+export interface StageGroup {
+    id: number;
+    applied: Candidate[];
+    forInterview: Candidate[];
+    offered: Candidate[];
+    hired: Candidate[];
+    archived: Candidate[];
+}
+
+export enum Action {
+  Edit = 'Edit',
+  New = 'New',
+  Null = 'null'
+}
+
+export enum Stage {
+  Applied = 'applied',
+  ForInterview = 'forInterview',
+  Offered = 'offered',
+  Hired = 'hired',
+  Archived = 'archived'
 }

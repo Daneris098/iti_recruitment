@@ -5,6 +5,7 @@ import { CircleAlert, CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "../../types";
 import { cn } from "@src/lib/utils";
+import { IconHelp } from "@tabler/icons-react";
 
 // Define auto-close behavior
 const AlertAutoClose: Record<AlertType, boolean> = {
@@ -118,7 +119,7 @@ export default function AlertModals() {
             >
                 <Divider size="xs" color="#6D6D6D" />
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleAlert color="#559cda" size={80} strokeWidth={1} />
+                    <IconHelp color="#559cda" size={80} strokeWidth={1} />
                     <Text className="text-xl font-bold text-center">
                         Are you sure you want to cancel your application?
                     </Text>

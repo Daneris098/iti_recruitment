@@ -5,7 +5,9 @@ import { applicantInitialData, hiringInitialData, PAGE_SIZE, interviewStagesInit
 export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
   alert: '',
   activePanel: panel.customFeedback,
+  validationMessage: '',
 
+  setValidationMessage: (validationMessage: string) => set({ validationMessage: validationMessage }),
   setActivePanel: (activePanel: panel) => set({ activePanel: activePanel }),
   setAlert: (alert: string) => set({ alert: alert }),
 }));
