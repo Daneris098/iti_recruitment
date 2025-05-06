@@ -11,7 +11,7 @@ import { useEffect } from "react";
 export const Settings = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("Current Route:", location.pathname);
+    // console.log("Current Route:", location.pathname);
   }, [location.pathname]); // Runs every time the route changes
   return (
     <Menu

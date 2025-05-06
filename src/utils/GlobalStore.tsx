@@ -1,12 +1,8 @@
 import { create } from "zustand";
 
 export interface user_details_type {
-  email: string
-  name: string
-  username: string
-  role: number[]
-  profile_pic_path: string
-  exp?: Number
+  UserId: string
+  Name: string
 };
 
 export interface GlobalState {
@@ -20,11 +16,8 @@ export interface GlobalState {
 }
 
 export const userDetailsValue = {
-  name: '',
-  email: '',
-  username: '',
-  role: [1],
-  profile_pic_path: ''
+  UserId: '',
+  Name: '',
 }
 
 export const GlobalStore = create<GlobalState>((set) => ({

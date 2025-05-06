@@ -29,6 +29,31 @@ export default function DrawerFilter() {
   }
 
   useEffect(() => {
+    console.log('filter: ', filter)
+  }, [filter])
+
+  useEffect(() => {
+    const formatDate = (date: Date) => {
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      return `${mm}${dd}${yyyy}`;
+    };
+
+    const updatedFilter = { ...filter };
+
+    if (value[0] != null) {
+      updatedFilter.dateFrom = formatDate(value[0]);
+    }
+
+    if (value[1] != null) {
+      updatedFilter.dateTo = formatDate(value[1]);
+    }
+
+    setFilter(updatedFilter);
+  }, [value]);
+
+  useEffect(() => {
     clear()
     return (
       setClearFilter(false)

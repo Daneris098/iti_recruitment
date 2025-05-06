@@ -2,20 +2,14 @@ import { useForm } from "@mantine/form";
 import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-// import axiosInstance from "@src/api";
-// import Swal from "sweetalert2";
 import loginBg from '@assets/loginBg.png';
+import axiosInstance from "@src/api/authApi";
 
 export default function Login() {
   const navigate = useNavigate();
-  // interface FormData {
-  //   username: string;
-  //   password: string;
-  // }
-
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { username: "admin", password: "12345678" },
+    initialValues: { username: "hrdotrecruitment", password: "SomePass123$%^" },
     validate: {
       username: (value: string) => {
         if (value.length <= 0) {
@@ -34,30 +28,26 @@ export default function Login() {
     },
   });
 
-  const onSubmit = async () => {
-    navigate("/accountSetup");
-    // const payload = {
-    //   username: params.username,
-    //   password: params.password,
-    // };
-    // await axiosInstance
-    //   .post("login", payload)
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       const { refreshToken, accessToken } = response.data;
-    //       sessionStorage.setItem("accessTokenFlash", accessToken);
-    //       document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
-    //       navigate("/dashboard");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     const message = error.response.data.message;
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Login failed",
-    //       text: message,
-    //     });
-    //   });
+  const onSubmit = async (formVal:any) => {
+    const payload = {
+      username: formVal.username,
+      password: formVal.password,
+    };
+    await axiosInstance
+      .post("auth/login", payload)
+      .then((response) => {
+        if (response.status === 200) {
+          const { refreshToken, accessToken } = response.data;
+          sessionStorage.setItem("accessTokenFlash", accessToken);
+          document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
+          console.log(sessionStorage.getItem('accessTokenFlash'))
+          navigate("/home");
+        }
+      })
+      .catch((error) => {
+        const message = error.response.data.errors[0].message;    
+        form.setErrors({ username: ' ', password: message});
+      });
   };
 
   return (

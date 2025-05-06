@@ -8,7 +8,7 @@ export default function App() {
   const observer = new MutationObserver(function () {
     if (location.href !== previousUrl) {
       previousUrl = location.href;
-      console.log(`URL changed to ${location.href}`);
+      // console.log(`URL changed to ${location.href}`);
     }
   });
   const config = { subtree: true, childList: true };

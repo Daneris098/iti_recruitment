@@ -1,35 +1,29 @@
-import { Button, Checkbox, Modal, Select, TextInput } from '@mantine/core';
-import {  useState } from "react";
+import { Button, Checkbox, Modal, PasswordInput, Select, TextInput } from '@mantine/core';
+import {  forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store";
-import { selectedDataInitialVal } from '@modules/AdministratorSettings/value';
+import { ResetCredentialFormVal, selectedDataInitialVal } from '@modules/AdministratorSettings/value';
 import avatar from "@assets/avatar.png";
 import { IconCaretDownFilled } from '@tabler/icons-react';
-import { AlertType } from '../../types';
+import { AlertType, ResetCredentialForm } from '../../types';
+import { useForm } from '@mantine/form';
+import { useQueryClient } from '@tanstack/react-query';
+import authApi from '@src/api/authApi';
 
-export default function index() {
-    const { setAlert, selectedUser, setSelectedUser } = AdministratorSettingsStore();
+const SelectedAccount = forwardRef((_, ref) => {
+
+    const { setAlert, selectedUser, setSelectedUser, setResetCredentials } = AdministratorSettingsStore();
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [isResetCredential, setIsResetCredential] = useState<boolean>(false)
     const [title, setTitle] = useState('View User Account')
+    const [isGenerated, setIsGenerated] = useState(true);
+    const formRef = useRef<HTMLFormElement>(null);
+    const queryClient = useQueryClient();
 
     const handleClose = () => {
         setSelectedUser(selectedDataInitialVal);
         setIsEdit(false);
         setIsResetCredential(false);
         setTitle('View User Account');
-    }
-
-    const handleSave = () => {
-        if (isEdit) {
-            setAlert(AlertType.editSuccess);
-        }
-        else if (isResetCredential) {
-            setAlert(AlertType.resetConfirmation);
-        }
-        else {
-            setAlert(AlertType.saved);
-        }
-        handleClose();
     }
 
     const handleReset = () => {
@@ -42,6 +36,145 @@ export default function index() {
         setTitle('Edit Account Status')
     }
 
+    useEffect(() => {
+        form.setFieldValue('username', selectedUser.username)
+        form.setFieldValue('email', selectedUser.email)
+    }, [selectedUser])
+
+    const form = useForm({  
+        mode: 'uncontrolled',
+        initialValues: ResetCredentialFormVal,
+        validate: {
+            email: (value: string) => value.length === 0 ? "Email is required" : null,
+            username: (value: string) => value.length === 0 ? "Username is required" : null,
+            password: (value: string) => {
+                if (value.length === 0) return "Password is required";
+                if (value.length < 8) return "Password must be at least 8 characters long";
+                if (!/[A-Z]/.test(value)) return "Password must contain at least one uppercase letter";
+                if (!/[a-z]/.test(value)) return "Password must contain at least one lowercase letter";
+                if (!/[0-9]/.test(value)) return "Password must contain at least one number";
+                if (!/[^A-Za-z0-9]/.test(value)) return "Password must contain at least one symbol";
+                return null;
+            },
+            rePassword: (value: string, values: { password: string }) => {
+                if (value.length === 0) return "Repassword is required";
+                if (value !== values.password) return "Passwords do not match";
+                return null;
+            },
+        }
+    });
+
+
+    useEffect(() => {
+        if (isGenerated) {
+            const newPassword = generatePassword();
+            form.setValues({
+                ...form.getValues(),
+                password: newPassword,
+                rePassword: newPassword,
+            });
+        } else {
+            form.setValues({
+                ...form.getValues(),
+                password: '',
+                rePassword: '',
+            });
+        }
+    }, [isGenerated]);
+
+    const generatePassword = (length = 8) => {
+        const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const lower = "abcdefghijklmnopqrstuvwxyz";
+        const number = "0123456789";
+        const symbol = "@";
+
+        const all = upper + lower + number + symbol;
+
+        let password = [
+            upper[Math.floor(Math.random() * upper.length)],
+            lower[Math.floor(Math.random() * lower.length)],
+            number[Math.floor(Math.random() * number.length)],
+            symbol[Math.floor(Math.random() * symbol.length)],
+        ];
+
+        for (let i = password.length; i < length; i++) {
+            password.push(all[Math.floor(Math.random() * all.length)]);
+        }
+
+        return password.sort(() => Math.random() - 0.5).join('');
+    };
+
+    const onSubmit = async (formValues: ResetCredentialForm) => {
+        const payload = {
+            ...formValues,
+            isGenerated
+        };
+        console.log('payload: ', payload)
+        await authApi
+            .post("/auth/" + selectedUser.id +"/reset-password", payload)
+            .then(() => {
+                queryClient.refetchQueries({ queryKey: ["auth/users"], type: 'active' });
+                handleClose()
+            })
+            .catch((error) => {
+                const message = error.response?.data?.errors?.[0]?.message || 'Something went wrong';
+                console.error(message);
+            });
+    };
+
+    const handleSave = () => {
+        if (isEdit) {
+            (async () => {
+                const payload = {
+                    username: selectedUser.username,
+                    isActive: selectedUser.status === 'Active' ? true : false
+                };
+                await authApi
+                    .post("/auth/" + selectedUser.id + "/update", payload)
+                    .then(() => {
+                        setAlert(AlertType.editSuccess);
+                        queryClient.refetchQueries({ queryKey: ["auth/users"], type: 'active' });
+                        handleClose()
+                    })
+                    .catch((error) => {
+                        const message = error.response?.data?.errors?.[0]?.message || 'Something went wrong';
+                        console.error(message);
+                    });
+            })();
+        }
+        else if (isResetCredential) {
+            form.validate();
+            setResetCredentials(form.getValues());
+            setAlert(AlertType.resetConfirmation);   
+        }
+        else {
+            setAlert(AlertType.saved);
+        }
+        // handleClose();
+    }
+
+    useEffect(() => {
+        if (isGenerated) {
+            const newPassword = generatePassword();
+            form.setValues({
+                ...form.getValues(),
+                password: newPassword,
+                rePassword: newPassword,
+            });
+        } else {
+            form.setValues({
+                ...form.getValues(),
+                password: '',
+                rePassword: '',
+            });
+        }
+    }, [isGenerated]);
+
+    useImperativeHandle(ref, () => ({
+        submit: () => {
+            formRef.current?.requestSubmit()
+        }
+    }));
 
     return (
         <Modal size={'60%'} opened={selectedUser != selectedDataInitialVal} centered onClose={() => { handleClose() }} title={title}
@@ -97,28 +230,27 @@ export default function index() {
                             </div>
                             ) :
                             (
-                                <div className='flex flex-col gap-5'>
-                                    <div className='flex gap-4 items-end'>
-                                        <TextInput label="Username" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
-                                        <TextInput label="Email" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5'>
+                                    <div className='flex flex-col gap-5'>
+                                        <div className='flex gap-4 items-end'>
+                                            <TextInput {...form.getInputProps("username")} key={form.key('username')} disabled label="Username" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                            <TextInput {...form.getInputProps("email")} key={form.key('email')} disabled label="Email" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
+                                        </div>
+                                        <div className='flex gap-4 items-end'>
+                                            <PasswordInput {...form.getInputProps("password")} key={form.key('password')} label="Enter Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></PasswordInput>
+                                            <PasswordInput {...form.getInputProps("rePassword")} key={form.key('rePassword')} label="Confirm Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></PasswordInput>
+                                        </div>
+                                        <div className='flex gap-4 items-end'>
+                                            <Checkbox
+                                                className="w-[50%]"
+                                                checked={isGenerated}
+                                                onChange={(event) => setIsGenerated(event.currentTarget.checked)}
+                                                label="Generate Password"
+                                            />  
+                                        </div>
                                     </div>
-                                    <div className='flex gap-4 items-end'>
-                                        <TextInput label="Enter Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
-                                        <TextInput label="Confirm Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
-                                    </div>
-                                    <div className='flex gap-4 items-end'>
-                                        <Checkbox
-                                            classNames={{ label:"text-[#6D6D6D] "}}
-                                            className='w-[50%]'
-                                            label="Generate Password"
-                                        />
-                                        <Checkbox
-                                            classNames={{ label: "text-[#6D6D6D] " }}
-                                            className='w-[50%]'
-                                            label="Must Change Password upon login"
-                                        />
-                                    </div>
-                                </div>)
+                                </form>
+                            )
                         }
                         {isEdit || isResetCredential ? (
                             <Button className='rounded-md w-[50%] br-gradient border-none poppins self-end ' radius={'md'} onClick={() => { handleSave() }}>SAVE CHANGES</Button>
@@ -133,4 +265,6 @@ export default function index() {
             </div>
         </Modal>
     )
-}
+})
+
+export default SelectedAccount;
