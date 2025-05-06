@@ -1,15 +1,15 @@
 import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus } from "@tabler/icons-react";
-import { useEffect, useState } from 'react';
-import { AdministratorSettingsStore, DialogStore } from '@modules/AdministratorSettings/store';
+import { useState } from 'react';
+import { AdministratorSettingsStore, DialogStore, DataTableStore } from '@modules/AdministratorSettings/store';
 import { title, description, user, columns } from '@modules/AdministratorSettings/types';
 import { useUser } from "@modules/AdministratorSettings/hooks/useUser";
 
 export default function index() {
-    const PAGE_SIZE = 15;
-    const { activePanel, setSelectedUser } = AdministratorSettingsStore()
+    const PAGE_SIZE = 10;
+    const {  activePanel, setSelectedUser } = AdministratorSettingsStore()
+    const { page, setPage, totalRecords } = DataTableStore()
     const { setAction } = DialogStore()
-    const [page, setPage] = useState(1);
     const { data } = useUser();
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof user; direction: 'asc' | 'desc' }>({
         columnAccessor: 'username',
@@ -42,7 +42,7 @@ export default function index() {
                 withTableBorder
                 records={data}
                 columns={(columns as any)[activePanel]}
-                totalRecords={data?.length}
+                totalRecords={totalRecords}
                 onRowClick={({ record }) => {
                     setSelectedUser(record)
                 }

@@ -8,7 +8,8 @@ export const useUser = () => {
         page,
         pageSize,
         sortStatus,
-        setTime
+        setTime,
+        setTotalRecords
     } = DataTableStore();
 
     const fetchData = async () => {
@@ -17,12 +18,14 @@ export const useUser = () => {
             const res = await axiosInstance.get('user-management/users', {
                 params: {
                     page,
+                    pageSize,
                     sortBy: sortStatus.columnAccessor,
                 },
             }); 
 
             if (res.status === 200 && Array.isArray(res.data.items)) {  
-                console.log('res.data.items: ', res.data.items  )
+                console.log('res.data.items: ', res.data.items)
+                setTotalRecords(res.data.total)
                 const mapped: user[] = res.data.items.map((item: any) => ({
                     id: item.userId,
                     username : item.username,
