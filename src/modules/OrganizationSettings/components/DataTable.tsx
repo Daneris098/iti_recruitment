@@ -1,7 +1,7 @@
-import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconCaretDownFilled, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
-import { TextInput, Select, Stack } from '@mantine/core';
+import { TextInput, Select } from '@mantine/core';
 import { OrganizationSettingsStore } from '../store';
 import { title, description, Company, AlertType, panel, Operation } from '@modules/OrganizationSettings/types';
 
@@ -158,7 +158,7 @@ const DataTableComp = forwardRef((_, ref) => {
             departmentHead: 'Department Head',
         };
 
-        return !Object.entries(editableData).some(([key, data]) =>
+        return !Object.entries(editableData).some(([data]) =>
             (fieldsToCheck as any)[activePanel].some((field: string) => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -703,7 +703,7 @@ const DataTableComp = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status } }: any) => {
+        content: ({ record: { id, status } }: any) => {
             return (
                 <>
                     {activePanel === panel.companyList ? (

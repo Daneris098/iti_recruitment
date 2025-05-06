@@ -1,7 +1,7 @@
-import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
+import { useState, forwardRef, useImperativeHandle } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCircleX, IconCaretDownFilled } from "@tabler/icons-react";
-import { Select, TextInput } from '@mantine/core';
+import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
+import { TextInput } from '@mantine/core';
 import { FeedbackStore, HiringSettingsStore } from '@modules/HiringSettings/store';
 import { AlertType, feedback, Operation } from '@modules/HiringSettings/types';
 
@@ -276,7 +276,7 @@ const CustomFeedback = forwardRef((_, ref) => {
 
     const checkEditIsValid = () => {
         const fieldsToCheck = ['feedback'];
-        return !Object.entries(applicantEditableData).some(([key, data]) =>
+        return !Object.entries(applicantEditableData).some(([data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -286,7 +286,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                 }
                 return false;
             })
-        ) && !Object.entries(hiringEditableData).some(([key, data]) =>
+        ) && !Object.entries(hiringEditableData).some(([data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -312,7 +312,7 @@ const CustomFeedback = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status } }: any) => {
+        content: ({ record: { id } }: any) => {
             return (
                 <div className=' flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
                     <TextInput
@@ -334,7 +334,7 @@ const CustomFeedback = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds2,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status } }: any) => {
+        content: ({ record: { id } }: any) => {
             return (
                 <div className='flex gap-2 relative bg-[#DEECFF]'>
                     <TextInput

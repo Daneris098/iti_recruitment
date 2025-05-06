@@ -2,7 +2,7 @@ import { Divider, Modal } from "@mantine/core";
 import { ApplicantStore, ViewApplicantsDataTableStore } from "../../store";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
-import { VacancyType, StageGroup, Candidate } from "../../types";
+import { VacancyType} from "../../types";
 // import Vacancies from '@src/modules/Vacancies/values/response/Applicants.json';
 import { DataTable } from "mantine-datatable";
 import { Badge } from '@mantine/core';

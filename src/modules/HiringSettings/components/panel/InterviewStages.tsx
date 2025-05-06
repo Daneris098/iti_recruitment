@@ -87,7 +87,7 @@ const InterviewStage = forwardRef((_, ref) => {
 
     const checkEditIsValid = () => {
         const fieldsToCheck = ['stageName'];
-        return !Object.entries(interviewStagesEditableData).some(([key, data]) =>
+        return !Object.entries(interviewStagesEditableData).some(([data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -160,6 +160,9 @@ const InterviewStage = forwardRef((_, ref) => {
     };
 
     const saveAll = () => {
+        if (!checkEditIsValid()) {
+            return
+        }
         const result = [...interviewStage, ...interviewStagesNewRows].map((record) => {
             const merged = interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record;
             const { fieldStatus, ...rest } = merged;  
@@ -201,7 +204,7 @@ const InterviewStage = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status, lastModified } }: any) => {
+        content: ({ record: { id, status, lastModified } }: any) => {
             return (
                 <div className=' flex gap-2 relative'>
                     <TextInput

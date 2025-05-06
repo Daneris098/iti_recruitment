@@ -1,10 +1,10 @@
 import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store";
-import { Button, Divider, Modal, Text } from "@mantine/core";
+import { Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { CircleAlert, CircleCheckBig } from "lucide-react";
+import { CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType } from "@modules/Login/types";
-import { IconX, IconHelpCircle } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 
 
 export default function AlertModals() {
