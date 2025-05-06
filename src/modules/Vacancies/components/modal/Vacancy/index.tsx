@@ -555,7 +555,6 @@ export default function index() {
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
-                                                    console.log('e: ',e)
                                                     if (e[0] != null)
                                                         form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
                                                     if (e[1] != null)

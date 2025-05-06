@@ -7,12 +7,8 @@ import {
 } from "@tabler/icons-react";
 import "@shared/layout/base/styles/navbar.css";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 export const Settings = () => {
   const navigate = useNavigate();
-  useEffect(() => {
-    // console.log("Current Route:", location.pathname);
-  }, [location.pathname]); // Runs every time the route changes
   return (
     <Menu
       shadow="md"

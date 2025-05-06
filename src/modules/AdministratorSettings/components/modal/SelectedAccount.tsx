@@ -109,7 +109,6 @@ const SelectedAccount = forwardRef((_, ref) => {
             ...formValues,
             isGenerated
         };
-        console.log('payload: ', payload)
         await authApi
             .post("/auth/" + selectedUser.id +"/reset-password", payload)
             .then(() => {
