@@ -28,10 +28,6 @@ interface UpdateStatusProps {
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
-  useEffect(() => {
-    console.log('Status: ', Status)
-  }, [Status])
-
   const { selectedStatus, setSelectedStatus } = useStatusStore();
   const {
     comments, setComments

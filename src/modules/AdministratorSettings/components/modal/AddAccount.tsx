@@ -83,7 +83,6 @@ export default function index() {
             ...formValues,
             isGenerated
         };
-        console.log('payload: ', payload)
         await axiosInstance
             .post("/auth/register", payload)
             .then(() => {

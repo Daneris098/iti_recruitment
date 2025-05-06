@@ -40,7 +40,6 @@ export default function Login() {
           const { refreshToken, accessToken } = response.data;
           sessionStorage.setItem("accessTokenFlash", accessToken);
           document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
-          console.log(sessionStorage.getItem('accessTokenFlash'))
           navigate("/home");
         }
       })

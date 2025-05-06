@@ -24,7 +24,6 @@ export const useUser = () => {
             }); 
 
             if (res.status === 200 && Array.isArray(res.data.items)) {  
-                console.log('res.data.items: ', res.data.items)
                 setTotalRecords(res.data.total)
                 const mapped: user[] = res.data.items.map((item: any) => ({
                     id: item.userId,

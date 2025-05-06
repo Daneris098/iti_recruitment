@@ -204,7 +204,6 @@ const ApplicationSource = forwardRef((_, ref) => {
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
         content: ({ record: { name, id, code, status, lastModified } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
             return (
                 <div className=' flex gap-2 relative'>
                     <TextInput

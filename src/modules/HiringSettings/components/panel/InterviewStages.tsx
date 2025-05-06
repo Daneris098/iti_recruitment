@@ -90,7 +90,6 @@ const InterviewStage = forwardRef((_, ref) => {
         return !Object.entries(interviewStagesEditableData).some(([key, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
-                console.log('value: ', value)
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
                     setValidationMessage(`${field} is empty`);
                     setAlert(AlertType.validation)
@@ -203,7 +202,6 @@ const InterviewStage = forwardRef((_, ref) => {
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
         content: ({ record: { name, id, code, status, lastModified } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
             return (
                 <div className=' flex gap-2 relative'>
                     <TextInput

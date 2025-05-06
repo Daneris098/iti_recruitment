@@ -87,10 +87,7 @@ const isAuthenticated = () => {
 
 // Authentication wrapper
 const RequireAuth: React.FC = () => {
-  // console.log('route')
   return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
-  // isAuthenticated();
-  // return <Outlet />;
 };
 
 // Redirect wrapper for public routes

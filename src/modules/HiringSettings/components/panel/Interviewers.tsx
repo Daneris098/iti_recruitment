@@ -89,7 +89,6 @@ const Interviewers = forwardRef((_, ref) => {
         return !Object.entries(interviewStagesEditableData).some(([key, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
-                console.log('value: ', value)
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
                     setValidationMessage(`${field} is empty`);
                     setAlert(AlertType.validation)

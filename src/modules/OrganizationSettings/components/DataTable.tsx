@@ -136,10 +136,6 @@ const DataTableComp = forwardRef((_, ref) => {
         SetOperation(Operation.noOperation)
     };
 
-    useEffect(() => {
-        // console.log('newRows: ', newRows)
-    }, [newRows])
-
     const checkEditIsValid = () => {
         const fieldsToCheck = {
             companyList: ['code', 'name', 'status'],
@@ -708,7 +704,6 @@ const DataTableComp = forwardRef((_, ref) => {
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
         content: ({ record: { name, id, code, status } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
             return (
                 <>
                     {activePanel === panel.companyList ? (

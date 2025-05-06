@@ -313,7 +313,6 @@ const CustomFeedback = forwardRef((_, ref) => {
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
         content: ({ record: { name, id, code, status } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
             return (
                 <div className=' flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
                     <TextInput
@@ -336,7 +335,6 @@ const CustomFeedback = forwardRef((_, ref) => {
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
         content: ({ record: { name, id, code, status } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
             return (
                 <div className='flex gap-2 relative bg-[#DEECFF]'>
                     <TextInput
