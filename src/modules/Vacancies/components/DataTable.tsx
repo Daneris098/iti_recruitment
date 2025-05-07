@@ -4,6 +4,9 @@ import Vacancies from '@src/modules/Vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
 import { VacancyStore, ApplicantStore } from '../store';
+// import { useApplicantIdStore, } from "@src/modules/Vacancies/store";
+// import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
+// import { useApplicantIdStore, } from "@modules/Applicants/store";
 
 enum StatusColor {
     Published = '#5A9D27',
@@ -12,7 +15,12 @@ enum StatusColor {
 }
 
 export default function index() {
-    const { setSelectedData } = ApplicantStore();
+    // const applicantId = useApplicantIdStore((state) => state.id);
+    // const { data: applicantsById } = useApplicantsById(applicantId)
+    // console.log(applicantId);
+
+    const { selectedData, setSelectedData } = ApplicantStore();
+
     const { setSelectedVacancy } = VacancyStore();
     const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
     const [page, setPage] = useState(1);
@@ -20,6 +28,8 @@ export default function index() {
         columnAccessor: "position", // Use a valid key from VacancyType
         direction: "asc",
     });
+
+    // const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 
     const pageSize = 10;
 
@@ -50,6 +60,11 @@ export default function index() {
     };
 
 
+    // const handleRowClick = async (applicant: any) => {
+    //     setApplicantId(applicant.id)
+    // }
+    console.log(selectedData)
+// debugger;
     return (
         <DataTable
             style={{
@@ -82,20 +97,22 @@ export default function index() {
                     title: 'Action',
                     textAlign: "center",
                     render: (data) => (
-                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => { e.stopPropagation(); setSelectedData(data); }}>
+                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => { e.stopPropagation(); setSelectedData(data); 
+                            // setApplicantId(data.id)
+                        }}>
                             View Applicants
                         </div>
                     ),
                 },
             ]}
-            paginationText={({ from, to, totalRecords }) =>`Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
+            paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
             totalRecords={vacancyRecords.length}
             recordsPerPage={pageSize}
             page={page}
             onPageChange={setPage}
             sortStatus={sortStatus}
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
-            onRowClick={(val) => {setSelectedVacancy(val.record)}}
+            onRowClick={(val) => { setSelectedVacancy(val.record) }}
         />
     );
 }

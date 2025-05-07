@@ -1,6 +1,6 @@
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { useDropDownOfferedStore } from "@modules/Applicants/store";
+import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
 import { useState } from "react";
 import TransferredPositionModal from "@modules/Applicants/components/modal/jobGenerated";
 import TransferredPosition from "@src/modules/Applicants/components/alerts/Transferred"
@@ -15,6 +15,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
     const [isTransferred, setIsTransferred] = useState(false);
     const positionCombobox = useCombobox();
     const { position, setPosition, comments, setComments } = useDropDownOfferedStore();
+    const { setIsTransferPosition } = useCloseModal();
 
     return (
         <div className="p-9">
@@ -97,7 +98,8 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             <div className="flex justify-between pt-4">
 
                 <Button className="bg-transparent text-[#559CDA] px-6 py-2 rounded-lg border-[#559CDA] font-medium text-[14px] poppins"
-                    onClick={onClose}>
+                    // onClick={onClose}>
+                    onClick={() => setIsTransferPosition(false)}>
                     Cancel
                 </Button>
 

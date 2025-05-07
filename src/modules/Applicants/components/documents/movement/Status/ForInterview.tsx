@@ -4,32 +4,72 @@ import { useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import DatePicker from "@modules/Applicants/components/picker/DatePicker"
 import TimePicker from "@modules/Applicants/components/picker/TimePicker";
+import interviewJSON from "@modules/Applicants/constants/json/interview.json";
 
 export default function ForInterview() {
 
-    const { fullName, setFullName, getInterviewer, setInterviewer } = useDropDownOfferedStore();
+    const { getInterviewer, setInterviewer, setInterviewerID, setInterviewStages, setInterviewStagesId, interviewStages } = useDropDownOfferedStore();
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState("");
     const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption(), })
-    const Interviewer = ["HR Kristia", "HR Andrea", "HR Jera"];
+    const interviewStagesComboBox = useCombobox({ onDropdownClose: () => interviewStagesComboBox.resetSelectedOption(), })
+    // const Interviewer = ["HR Kristia", "HR Andrea", "HR Jera"];
+
+    const interviewerOptions = interviewJSON[0].interviewer.map((interviewer) => ({
+        value: interviewer.id,
+        label: interviewer.name
+    }));
+
+    const interviewStagesOptions = interviewJSON[0].interviewStages.map((interviewStages) => ({
+        value: interviewStages.id,
+        label: interviewStages.name
+    }))
 
     return (
         <div>
-            {/*  Name */}
-            <div className="pt-4">
-                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
-                    Interview Stages <span className="text-[#F14336]">*</span>
+            <div>
+                <h3 className="font-medium text-[#6D6D6D] text-[15px] pt-4 poppins">
+                    Interview Stages <span className="text-[#F14336] poppins">*</span>
                 </h3>
-                <TextInput
-                    type="text"
-                    placeholder="Type Full Name"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    classNames={{
-                        input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
-                    }}
-                    required
-                />
+                <Combobox store={interviewStagesComboBox} withinPortal={false}>
+                    <Combobox.Target>
+                        <TextInput
+                            value={interviewStages}
+                            onChange={(e) => setInterviewStages(e.currentTarget.value)}
+                            // onFocus={() => interviewerCombobox.openDropdown()}
+                            onFocus={(e) => {
+                                if (document.activeElement === e.currentTarget) {
+                                    interviewStagesComboBox.openDropdown();
+                                }
+                            }}
+                            rightSection={<IconCaretDownFilled size={16} />}
+                            placeholder="Select Interviewer"
+                            classNames={{
+                                input: "poppins relative flex items-center w-wull h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                            }}
+                            required
+                        />
+                    </Combobox.Target>
+
+                    {interviewStagesOptions.length > 0 && (
+                        <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
+                            {interviewStagesOptions.map((interviewStages) => (
+                                <Combobox.Option
+                                    key={interviewStages.value}
+                                    value={interviewStages.label}
+                                    onClick={() => {
+                                        setInterviewStages(interviewStages.label);
+                                        setInterviewStagesId(interviewStages.value);
+                                        interviewStagesComboBox.closeDropdown();
+                                    }}
+                                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
+                                >
+                                    {interviewStages.label}
+                                </Combobox.Option>
+                            ))}
+                        </Combobox.Dropdown>
+                    )}
+                </Combobox>
             </div>
 
             <div className="flex gap-4 pt-4">
@@ -82,19 +122,20 @@ export default function ForInterview() {
                         />
                     </Combobox.Target>
 
-                    {Interviewer.length > 0 && (
+                    {interviewerOptions.length > 0 && (
                         <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                            {Interviewer.map((interview) => (
+                            {interviewerOptions.map((interview) => (
                                 <Combobox.Option
-                                    key={interview}
-                                    value={interview}
+                                    key={interview.value}
+                                    value={interview.label}
                                     onClick={() => {
-                                        setInterviewer(interview);
+                                        setInterviewer(interview.label);
+                                        setInterviewerID(interview.value);
                                         interviewerCombobox.closeDropdown();
                                     }}
                                     className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
                                 >
-                                    {interview}
+                                    {interview.label}
                                 </Combobox.Option>
                             ))}
                         </Combobox.Dropdown>

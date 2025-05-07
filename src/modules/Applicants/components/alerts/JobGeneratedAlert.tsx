@@ -2,18 +2,30 @@ import { Button, Divider } from "@mantine/core";
 import { IconChecklist } from "@tabler/icons-react";
 import { PDFProps } from "@modules/Applicants/types";
 import { PDFViewer } from "@react-pdf/renderer";
-import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
+import { useCloseModal, useStatusStore, useApplicantIdStore, useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated";
-
+import { usePOSTOffer } from "@modules/Applicants/hooks/useApplicant";
 interface JobGeneratedAlertProps extends Partial<PDFProps> {
     onClose: () => void;
     title: string | null;
 }
 
 export default function JobGeneratedAlert({ title, onClose, applicantName, Acknowledgement, Department, Remarks }: JobGeneratedAlertProps) {
+
+
+    const {
+        getSalaryTypes,
+        amount,
+        position,
+        department,
+        departmentId, positionId, paymentSchemeId, comments,
+    } = useDropDownOfferedStore();
+
+    const applicantId = useApplicantIdStore((state) => state.id);
+    const { mutateAsync } = usePOSTOffer();
 
     // zustand store.
     const {
@@ -45,6 +57,28 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
             onClose();
         }
     };
+
+    // For submitting Offered Application Movement.
+    const handleSubmit = async () => {
+        await mutateAsync({
+            applicantId,
+            queryParams: {
+                "Position.Id": positionId,
+                "Position.Name": position,
+                "Department.Id": departmentId,
+                "Department.Name": department,
+                "PaymentScheme.Id": paymentSchemeId,
+                "PaymentScheme.Name": getSalaryTypes,
+                "Salary": amount,
+                "Comment": comments,
+            }
+
+        });
+        setIsUpdateSuccessful(true);
+        setTimeout(() => {
+            handleCloseAll();
+        }, 1000)
+    }
 
     return (
         <div className="p-1">
@@ -105,6 +139,15 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
                             hover:bg-white hover:text-[#559CDA]"
                             onClick={() => {
                                 setIsOffered(false)
+                                // console.log("amount:", amount, "\n",
+                                //     "position:", position, "\n",
+                                //     "position ID", positionId, "\n",
+                                //     "department:", department, "\n",
+                                //     "department ID:", departmentId, "\n",
+                                //     "payment Scheme:", getSalaryTypes, "\n",
+                                //     "payment Scheme ID:", paymentSchemeId, "\n",
+                                //     "comment:", comments
+                                // )
                             }}
                         >
                             {"Edit Details".toUpperCase()}
@@ -112,13 +155,7 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
 
                         <Button
                             className="rounded-lg w-[198px] h-[42px] font-medium text-[15px] br-gradient border-0"
-                            onClick={() => {
-                                setIsUpdateSuccessful(true); // Show the success alert
-                                setIsViewPDF(false); // Close the PDF viewer
-                                setTimeout(() => {
-                                    handleCloseAll(); // Close everything after 2 seconds
-                                }, 1000);
-                            }}
+                            onClick={handleSubmit}
                         >
                             {"done".toUpperCase()}
                         </Button>

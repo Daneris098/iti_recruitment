@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCloseModal } from "@modules/Shared/components/applicantProfile/store"
 import { Divider, Modal, Tabs } from "@mantine/core";
 import { IconFileUpload, IconX } from "@tabler/icons-react";
@@ -11,6 +11,7 @@ import TransferPosition from "@src/modules/Shared/components/applicantProfile/bu
 import GenerateNewOffer from "@modules/Shared/components/applicantProfile/buttons/GenerateNewOffer"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { PDFViewer } from "@react-pdf/renderer";
+// import { useApplicantIdStore, } from "@src/modules/Vacancies/store";
 
 interface Applicant {
     Applicant_Name: string,
@@ -33,6 +34,8 @@ interface ViewApplicantsProps {
 export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApplicantsProps) {
     const { Applicant_Name, Email, Phone, Application_Date, Position, Remarks, Status, Skills } = applicant
 
+    // const applicantId = useApplicantIdStore((state) => state.id)
+    // console.log(applicantId)
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
         "Applied": "bg-[#559CDA]",
@@ -252,7 +255,7 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                     <div className="h-[80vh]">
                         <PDFViewer width="100%" height={"100%"} style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                             <MyDocument
-                                Name={Applicant_Name}
+                                Applicant_Name={Applicant_Name}
                                 Position={Position}
                                 Department=""
                                 Remarks=""

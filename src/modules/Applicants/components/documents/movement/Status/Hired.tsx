@@ -1,6 +1,7 @@
 import CustomDatePicker from "@modules/Applicants/components/picker/DatePicker"
-import { IconCloudUpload } from "@tabler/icons-react";
+// import { IconCloudUpload } from "@tabler/icons-react";
 import { useState } from "react";
+import DropZone from "@modules/Applicants/components/dropzone/Dropzone";
 
 export default function Hired() {
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -23,14 +24,14 @@ export default function Hired() {
                 <span className="text-[#F14336] poppins">*</span>
             </p>
 
-            <div className="bg-[#d5d5d599] h-[223px] w-[555px] poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center">
+            {/* <div className="bg-[#d5d5d599] h-[223px] w-[555px] poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center"> */}
                 {/* Upload Icon */}
-                <div className="flex justify-center">
+                {/* <div className="flex justify-center">
                     <IconCloudUpload className="text-[#559CDA]" size={70} stroke={1} />
-                </div>
+                </div> */}
 
 
-                <div className="flex flex-col justify-center items-center pt-4  space-y-1 text-center poppins">
+                {/* <div className="flex flex-col justify-center items-center pt-4  space-y-1 text-center poppins">
                     <p className="mb-2 font-semibold text-[15px] text-[#6D6D6D] poppins">
                         Drag & drop files or{" "}
                         <label
@@ -44,8 +45,9 @@ export default function Hired() {
                     <p className="text-[12px] text-[#6D6D6D] poppins">Max File Size: 25MB</p>
                     <p className="text-[12px] text-[#6D6D6D] poppins">File Upload Limit: 1</p>
 
-                </div>
-            </div>
+                </div> */}
+                <DropZone />
+            {/* </div> */}
         </div>
     )
 }

@@ -62,3 +62,12 @@ export const useDateRangeStore = create<DateRangeState>((set) => ({
   value: [null, null],
   setValue: (newValue) => set({ value: newValue }),
 }));
+
+interface ApplicantId {
+  id: number
+  setApplicantId: (id: number) => void
+}
+export const useApplicantIdStore = create<ApplicantId>((set) => ({
+  id: 0,
+  setApplicantId: (id) => set({ id }),
+}))

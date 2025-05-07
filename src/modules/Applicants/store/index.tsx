@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { sortBy } from "lodash";
-import { Applicants, ApplicantStatus, FilterState, PDFProps } from '@modules/Applicants/types';
+import { Applicants, ApplicantStatus, FilterState, PDFProps, FileUploadStore, FileUploadStoreHired } from '@modules/Applicants/types';
 import { filterVal, selectedVal } from '@modules/Applicants/values';
 
 // for fetching the json from values folder
@@ -8,11 +8,13 @@ interface Applicant {
   id: any;
   applicantName: string;
   applicationDate: string;
-  Phone: string;
-  Email: string;
-  Position: string;
-  Status: string;
-  Feedback?: string;
+  phone: string;
+  email: string;
+  position: string;
+  status: string;
+  feedback?: string;
+  movement: any;
+  comments: any;
 }
 
 interface ApplicantStore {
@@ -39,10 +41,10 @@ interface ApplicantId {
   setApplicantId: (id: number) => void
 }
 
-export const useApplicantIdStore = create<ApplicantId>((set) => ({
-  id: 0,
-  setApplicantId: (id) => set({ id }),
-}))
+// export const useApplicantIdStore = create<ApplicantId>((set) => ({
+//   id: 0,
+//   setApplicantId: (id) => set({ id }),
+// }))
 
 // for sorting table
 interface SortState {
@@ -94,15 +96,27 @@ interface PaginationState {
 
 export const usePaginationStore = create<PaginationState>((set, get) => ({
   page: 1,
-  pageSize: 15,
+  pageSize: 30,
 
   setPage: (page) => set({ page }),
   setPageSize: (size) => set({ pageSize: size }),
 
+  // getPaginatedRecords: (records) => {
+  //   const { page, pageSize } = get();
+  //   const startIndex = (page - 1) * pageSize;
+  //   const endIndex = startIndex + pageSize;
+  //   return records.slice(startIndex, endIndex);
+  // },
   getPaginatedRecords: (records) => {
     const { page, pageSize } = get();
+
+    if (pageSize === -1) {
+      // Return all records
+      return records;
+    }
+
     const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
+    const endIndex = Math.min(startIndex + pageSize, records.length);
     return records.slice(startIndex, endIndex);
   },
 }));
@@ -131,20 +145,45 @@ export const FilterStore = create<FilterState>((set) => ({
 interface useDropDownOfferedState {
   status: string;
   setStatus: (status: string) => void;
+
   getSalaryTypes: string;
   setSalaryTypes: (type: string) => void;
+
+  paymentSchemeId: number;
+  setPaymentSchemeId: (paymentSchemeId: number) => void;
+
   fullName: string;
   setFullName: (name: string) => void;
+
   amount: string;
   setAmount: (amount: string) => void;
+
   position: string;
   setPosition: (position: string) => void;
+
+  positionId: number;
+  setPositionId: (positionId: number) => void;
+
   department: string;
   setDepartment: (department: string) => void;
+
+  departmentId: number;
+  setDepartmentId: (departmentId: number) => void;
+
   comments: string;
   setComments: (comments: string) => void;
+
   getInterviewer: string;
   setInterviewer: (interviewer: string) => void;
+
+  interviewerId: number;
+  setInterviewerID: (interviewerId: number) => void;
+
+  interviewStages: string;
+  setInterviewStages: (interviewStages: string) => void;
+
+  interviewStagesId: number;
+  setInterviewStagesId: (interviewStagesId: number) => void;
 }
 
 export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => ({
@@ -153,6 +192,9 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
 
   getSalaryTypes: "",
   setSalaryTypes: (type) => set({ getSalaryTypes: type }),
+
+  paymentSchemeId: 0,
+  setPaymentSchemeId: (paymentSchemeId) => set({ paymentSchemeId }),
 
   fullName: "",
   setFullName: (name) => set({ fullName: name }),
@@ -163,14 +205,29 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   position: "",
   setPosition: (position) => set({ position }),
 
+  positionId: 0,
+  setPositionId: (positionId) => set({ positionId }),
+
   department: "",
   setDepartment: (department) => set({ department }),
+
+  departmentId: 0,
+  setDepartmentId: (departmentId) => set({ departmentId }),
 
   comments: "",
   setComments: (comments) => set({ comments }),
 
   getInterviewer: "",
   setInterviewer: (interviewer) => set({ getInterviewer: interviewer }),
+
+  interviewerId: 0,
+  setInterviewerID: (interviewerId) => set({ interviewerId }),
+
+  interviewStages: "",
+  setInterviewStages: (interviewStages) => set({ interviewStages }),
+
+  interviewStagesId: 0,
+  setInterviewStagesId: (interviewStagesId) => set({ interviewStagesId })
 
 }))
 // End of DropDownOffered modal
@@ -307,6 +364,12 @@ interface CloseModal {
 
   isTransferEmployeePosition: boolean;
   setIsTransferEmployeePosition: (isOpen: boolean) => void;
+
+  isForMultipleTransfer: boolean;
+  setIsForMultipleTransfer: (isMultipleTransfer: boolean) => void;
+
+  isTransferPosition: boolean;
+  setIsTransferPosition: (isTransferPosition: boolean) => void;
 }
 
 export const useCloseModal = create<CloseModal>((set) => ({
@@ -391,7 +454,13 @@ export const useCloseModal = create<CloseModal>((set) => ({
   isTransferEmployeePosition: false,
   setIsTransferEmployeePosition: (value) => set({ isTransferEmployeePosition: value }),
 
-  resetTransferState: () => set((state) => ({
+  isForMultipleTransfer: false,
+  setIsForMultipleTransfer: (value) => set({ isForMultipleTransfer: value }),
+
+  isTransferPosition: false,
+  setIsTransferPosition: (value) => set({ isTransferPosition: value }),
+
+resetTransferState: () => set((state) => ({
     ...state,  //  Keep existing state
     isForTransfer: false,
     transferred: false,
@@ -426,7 +495,7 @@ export interface ViewApplicantsProps extends Partial<PDFProps> {
 }
 
 // for updating the selected status in update status modal
-type StatusType = Applicants["Status"] | null;
+type StatusType = Applicants["status"] | null;
 
 interface StatusState {
   selectedStatus: StatusType;
@@ -574,3 +643,67 @@ export const useDateUpdatedRangeStore = create<DateUpdatedRangeState>((set) => (
   dateUpdated: [null, null],
   setDateUpdated: (newValue) => set({ dateUpdated: newValue })
 }))
+
+export const useFileUploadStore = create<FileUploadStore>((set, get) => ({
+  file: null,
+  setFile: (file: File) => set({ file }),
+  clearFile: () => set({ file: null }),
+  handleFileClick: () => {
+    const file = get().file;
+    if (file) {
+      const fileURL = URL.createObjectURL(file);
+      const isPDF = file.type === 'application/pdf';
+      if (isPDF) {
+        window.open(fileURL, '_blank');
+      } else {
+        const a = document.createElement('a');
+        a.href = fileURL;
+        a.download = file.name;
+        a.click();
+      }
+    }
+  },
+}));
+
+export const useFileUploadHiredStore = create<FileUploadStoreHired>((set, get) => ({
+  uploadHiredFile: null,
+  setFile: (uploadHiredFile: File) => set({ uploadHiredFile }),
+  clearFile: () => set({ uploadHiredFile: undefined }),
+  handleFileClick: () => {
+    const uploadHiredFile = get().uploadHiredFile;
+    if (uploadHiredFile) {
+      const fileURL = URL.createObjectURL(uploadHiredFile);
+      const isPDF = uploadHiredFile.type === 'application/pdf';
+      if (isPDF) {
+        window.open(fileURL, '_blank');
+      } else {
+        const a = document.createElement('a');
+        a.href = fileURL;
+        a.download = uploadHiredFile.name;
+        a.click();
+      }
+    }
+  },
+}));
+
+interface SelectedApplicantState {
+  selectedIds: number[];
+  setSelectedIds: (ids: number[]) => void;
+  clearSelectedIds: () => void;
+}
+
+export const useSelectedApplicantsStore = create<SelectedApplicantState>((set) => ({
+  selectedIds: [],
+  setSelectedIds: (ids) => set({ selectedIds: ids }),
+  clearSelectedIds: () => set({ selectedIds: [] }),
+}))
+
+export const useApplicantIdStore = create<ApplicantId>((set) => ({
+  id: 0,
+  setApplicantId: (id) => set({ id }),
+}))
+
+// export const useApplicantIdStore = create<ApplicantId>((set) => ({
+//   id: 0,
+//   setApplicantId: (id) => set({ id }),
+// }))

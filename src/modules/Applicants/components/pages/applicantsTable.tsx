@@ -1,50 +1,100 @@
-import { Pagination } from "@mantine/core";
-import { useLocation } from "react-router-dom";
+import { Divider } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
+import { IconArrowUpRight } from "@tabler/icons-react";
+import { Button, Modal, Pagination } from "@mantine/core";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useApplicants } from "@src/modules/Applicants/hooks/useApplicant"
-import { useApplicantStore, useCloseModal, usePaginationStore, useSortStore, useApplicantIdStore } from "@modules/Applicants/store";
-import Filter from "@src/modules/Applicants/components/filter/Filter";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
-import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer"
-import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
-import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant"
+import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
+import {
+  useCloseModal,
+  useSortStore,
+  useApplicantStore,
+  usePaginationStore,
+  useApplicantIdStore,
+  useSelectedApplicantsStore,
+  FilterStore
+} from "@modules/Applicants/store";
 
+import Filter from "@src/modules/Applicants/components/filter/Filter";
+import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
+import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
+import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
+import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
+import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 
 export default function index() {
-  // For conditionally rendering table header based on their corresponding route.
-  const location = useLocation();
-  const headerText = {
-    "/applied": "Applied",
-    "/interview": "For Interview",
-    "/applicants": "All Applicants",
-    "/offered": "Offered",
-    "/hired": "Hired",
-    "/transferee": "For Transfer",
-    "/transferred": "Transferred",
-    "/archive": "Archived"
-  }[location.pathname] || ""
 
-  //initializing applicant, sort and pagination store
-  const { data: applicants, isLoading } = useApplicants();
-  const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
-  const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
+  const { filter } = FilterStore();
+
+  const location = useLocation();
+  const { isForMultipleTransfer, setIsForMultipleTransfer } = useCloseModal();
+  const currentRoute = Object.values(ApplicantRoutes).find(
+    (route) => route.path === location.pathname
+  );
+  const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
+
+  const headerText = currentRoute?.label;
+  const isTransfereePath = currentRoute?.path === "/transferee";
+
+  //stores
+  const { setPage } = usePaginationStore();
   const records = useApplicantStore((s) => s.records)
-  const { sortedRecords, setSort, setRecords } = useSortStore(); // for sorting
-  const { page, pageSize, setPage } = usePaginationStore(); // for pagination
-  const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null); // For Document model
-  const { isViewApplicant, setIsViewApplicant } = useCloseModal(); // For handling the state of view applicant modal.
+  const { sortedRecords, setSort, setRecords } = useSortStore();
+  const { isViewApplicant, setIsViewApplicant } = useCloseModal();
+
+  const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+  
+  const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
+  const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
+
+  //local states
   const [loadTime, setLoadTime] = useState<number | null>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [hasCheckedFirstPage, setHasCheckedFirstPage] = useState(false);
+  const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
 
-  //Load the applicants data from React-Query.
+  // functions
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handlePageChange = (newPage: number) => {
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev);
+      params.set("page", String(newPage));
+      params.set("pageSize", String(pageSize));
+      return params;
+    });
+  };
+
+  const handleRowClick = async (applicant: any) => {
+    setSelectedApplicant(applicant);
+    setApplicantId(applicant.id);
+    setIsViewApplicant(true);
+  };
+
+  // memo
+  const { page, pageSize } = useMemo(() => {
+    return {
+      page: parseInt(searchParams.get("page") || "1"),
+      pageSize: parseInt(searchParams.get("pageSize") || "30"),
+    };
+  }, [searchParams]);
+
+  // const { data: applicants, isLoading } = useApplicants(page, pageSize);
+  const { data: applicants, isLoading } = useApplicants(page, pageSize, {
+    name: filter.applicantName,
+    company: filter.company,
+    status: filter.status
+  });
+  //hooks
   useEffect(() => {
     if (isLoading && startTime === null) {
       setStartTime(performance.now());
     }
-
     if (!isLoading && applicants && startTime !== null) {
-      setApplicantRecords(applicants);
+      const { applicants: applicantList } = applicants;
+      setApplicantRecords(applicantList); // this will populate your sortedRecords
+
+      setPage(page);
       const endTime = performance.now();
       setLoadTime((endTime - startTime) / 1000);
       setStartTime(null);
@@ -55,50 +105,62 @@ export default function index() {
   // The record rendering will conditionally render the displayed status depending on the 
   // route. For example, if the path is /applied, it will display all the applied status.
   useEffect(() => {
-    const statusFilters: Record<string, string | string[]> = {
-      "/applied": "Applied",
-      "/offered": "Offered",
-      "/interview": ["Assessment", "Initial Interview", "Final Interview"],
-      "/applicants": ["Hired", "Applied", "Offered", "For Transfer", "Archived", "For Interview"],
-      "/hired": "Hired",
-      "/transferee": "For Transfer",
-      "/transferred": "Transferred",
-      "/archive": "Archived",
-    };
+    const currentRoute = Object.values(ApplicantRoutes).find(
+      (route) => route.path === location.pathname
+    );
 
-    // Filtering the records based on the current tab.
-    // This will filter the records based on the status of the applicant.
-    let filteredRecords = records;
-    const filterCriteria = statusFilters[location.pathname];
+    const statusArray: string[] = Array.isArray(currentRoute?.status)
+      ? [...currentRoute.status]
+      : currentRoute?.status
+        ? [currentRoute.status]
+        : [];
 
-    if (filterCriteria) {
-      if (Array.isArray(filterCriteria)) {
-        filteredRecords = records.filter((applicant) => filterCriteria.includes(applicant.Status));
+    if (applicants && statusArray.length > 0) {
+      let filteredRecords = applicants.applicants.filter((applicant) => {
+        const status = applicant.status.toLowerCase();
+        return statusArray.some(
+          (statusFilter) => status === statusFilter.toLowerCase()
+        );
+      });
+
+      // Transform status to "Transferred" for display
+      if (statusArray.includes("Ready for Transfer")) {
+        filteredRecords = filteredRecords.map((applicant) => ({
+          ...applicant,
+          status: "Transferred",
+        }));
       }
-      else {
-        filteredRecords = records.filter((applicant) => applicant.Status === filterCriteria)
+
+      setRecords(filteredRecords);
+
+      if (!hasCheckedFirstPage && page === 1) {
+        const startIndex = (page - 1) * pageSize;
+        const firstPageRecords = filteredRecords.slice(
+          startIndex,
+          startIndex + pageSize
+        );
+
+        if (firstPageRecords.length === 0) {
+          setPage(page + 1);
+          setSearchParams((prev) => {
+            const params = new URLSearchParams(prev);
+            params.set("page", String(page + 1));
+            return params;
+          });
+        }
+
+        setHasCheckedFirstPage(true);
       }
     }
-
-    setRecords(filteredRecords);
-  }, [records, location.pathname, setRecords]);
-
-  // for making sure that the records will be divided into x number of records per page.
-  // also responsible for pagination display.
-  const paginatedRecords = useMemo(() => {
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return sortedRecords.slice(startIndex, endIndex);
-  }, [sortedRecords, page, pageSize]);
-
-  // For handling the state of row clicking of each record.
-  const handleRowClick = async (applicant: any) => {
-    setSelectedApplicant(applicant);
-    setApplicantId(applicant.id);
-    setIsViewApplicant(true);
-  };
-
-
+  }, [
+    location.pathname,
+    applicants,
+    page,
+    pageSize,
+    setRecords,
+    setPage,
+    setSearchParams,
+  ]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
@@ -106,7 +168,7 @@ export default function index() {
   const extendedColumn = applicantsColumns
 
     // Exclude Feedback Column from the JSON object
-    .filter((col: any) => col.accessor !== "Feedback")
+    .filter((col: any) => col.accessor !== "feedback" && col.accessor !== 'movement' && col.accessor !== "comments")
     .map((col) => {
       let updatedCol = { ...col };
 
@@ -122,7 +184,6 @@ export default function index() {
             onClick={() => setSort(col.accessor, sortedRecords)}
           >
             {col.title}
-            {/* {icon} */}
           </span>
         );
       } else {
@@ -138,8 +199,21 @@ export default function index() {
     <div className="rounded-md h-full flex flex-col gap-5 p-6 bg-white relative">
 
       {/* Header */}
-      <h1 className="text-[#559CDA] text-2xl font-bold poppins ml-2">
+      <h1 className="text-[#559CDA] text-2xl font-bold poppins ml-2 flex justify-between">
         {headerText}
+        {isTransfereePath && (
+          <Button
+            className="bg-[#559CDA] rounded-lg w-32 h-9 poppins font-semibold text-xs tracking-wide"
+            onClick={() => {
+              setIsForMultipleTransfer(true);
+            }}
+          >
+            <span className="mr-2">
+              <IconArrowUpRight size={20} stroke={2} />
+            </span>
+            TRANSFER
+          </Button>
+        )}
       </h1>
 
       {/* Filter Component */}
@@ -148,12 +222,31 @@ export default function index() {
 
       {/* Table Wrapper (Grows to Fill Space) */}
       <div className="flex-grow overflow-auto poppins">
-        <DataTable
-          columns={extendedColumn}
-          records={paginatedRecords}
-          onRowClick={({ record }) => handleRowClick(record)}
-          rowClassName={() => "cursor-pointer text-[#6D6D6D]"} // Add hover effect
-        />
+        {isTransfereePath && (
+          <DataTable
+            columns={extendedColumn}
+            records={sortedRecords}
+            // withrowselection="true"
+            selectedRecords={selectedRecords}
+            onSelectedRecordsChange={(records) => {
+              setSelectedRecords(records);
+              const ids = records.map((record) => record.id);
+              setSelectedIds(ids);
+            }}
+            onRowClick={({ record }) => handleRowClick(record)}
+            rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
+          />
+        )}
+
+        {!isTransfereePath && (
+          <DataTable
+            columns={extendedColumn}
+            records={sortedRecords}
+            onRowClick={({ record }) => handleRowClick(record)}
+            rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
+          />
+        )}
+
       </div>
 
       {/* Pagination and Footer (Sticky at Bottom) */}
@@ -163,15 +256,15 @@ export default function index() {
           {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
             page * pageSize,
             records.length
-          )} of ${records.length} entries`}
+          )} of ${applicants?.total} entries`}
           {loadTime !== null && ` found in (${loadTime.toFixed(3)}) seconds`}
         </p>
 
         {/* Pagination */}
         <Pagination
           value={page}
-          onChange={setPage}
-          total={Math.ceil(records.length / pageSize)}
+          onChange={handlePageChange}
+          total={Math.ceil(applicants?.total! / pageSize)}
           siblings={1}
           size="sm"
         />
@@ -181,17 +274,37 @@ export default function index() {
       <ApplicantModal isOpen={isViewApplicant}>
         <ViewApplicant
           applicantName={selectedApplicant?.applicantName}
-          Position={selectedApplicant?.Position}
-          Status={selectedApplicant?.Status}
-          Email={selectedApplicant?.Email}
-          Phone={selectedApplicant?.Phone}
-          Skills={selectedApplicant?.Skills}
-          Remarks={selectedApplicant?.Remarks}
-          Application_Date={selectedApplicant?.Application_Date}
+          Position={selectedApplicant?.position}
+          Status={selectedApplicant?.status}
+          Email={selectedApplicant?.email}
+          Phone={selectedApplicant?.phone}
+          Skills={selectedApplicant?.skills}
+          Remarks={selectedApplicant?.remarks}
+          Application_Date={selectedApplicant?.applicationDate}
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />
       </ApplicantModal>
+
+      <Modal
+        opened={isForMultipleTransfer}
+        onClose={() => setIsForMultipleTransfer(false)}
+        title={
+          <div className="text-[22px] font-semibold text-[#559CDA]">
+            Transfer Applicants
+          </div>
+        }
+        centered
+        size="lg"
+        overlayProps={{
+          opacity: 0.5,
+          blur: 1,
+        }}
+      >
+        <Divider size={2} color="#A8A8A899" className="w-full" />
+        <TransferredStatus />
+      </Modal>
+
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { Button, Divider, Tabs } from "@mantine/core";
 import { IconFileUpload, IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import { useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
+import { useApplicantIdStore, useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
 import { PDFViewer } from "@react-pdf/renderer";
 import profileImage from '@src/assets/jane.png';
 import PersonalDetails from "@src/modules/Applicants/components/documents/tabs/PersonalDetails";
@@ -15,9 +15,10 @@ import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/G
 import ApplicantModal from "@modules/Applicants/components/modal/dropdownOfferedModal"
 import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
 import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
+import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
 
 
-export default function ViewApplicant({ applicantName, Position, Status, Email, Phone, Skills, Remarks, onClose, Application_Date, IsJobOffer, Acknowledgement, Department }: ViewApplicantsProps) {
+export default function ViewApplicant({ applicantName, Position, Status, Email, Phone, Remarks, onClose, Application_Date, IsJobOffer, Acknowledgement, Department }: ViewApplicantsProps) {
 
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
@@ -31,17 +32,28 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
         "Assessment": "bg-[#ED8028]",
         "Final Interview": "bg-[#FEC001]",
         "Initial Interview": "bg-[#559CDA]",
+        // 'Ready for Transfer': 'bg-[#6D6D6D]',
     }
+    
+    const applicantId = useApplicantIdStore((state) => state.id);
+    const { data: applicantsById } = useApplicantsById(applicantId)
 
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
-    const { isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered } = useCloseModal();
+    const { isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered, isTransferPosition, setIsTransferPosition } = useCloseModal();
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
-    const [isTransferPosition, setIsTransferPosition] = useState(false) // Set the Transferred Modal to True upon triggering
+    // const [isTransferPosition, setIsTransferPosition] = useState(false) // Set the Transferred Modal to True upon triggering
 
     // Excluding these three status types to the current status field.
     const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(Status)
     const bgColorForInterview = forInterviewStatus ? "bg-[#ED8028]" : statusColors[Status] || "bg-[#559CDA]";
-    const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
+    // const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
+    const getDisplayStatus = () => {
+        if (forInterviewStatus) return "For Interview";
+        // if (Status === "Ready for Transfer") return "Transferred";
+        return Status;
+    };
+
+    const forInterviewDisplayText = getDisplayStatus();
 
     const onCloseAll = () => {
         setIsTransferPosition(false);
@@ -89,10 +101,11 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
                             {/* Changes background colors of the status based on the current status while maintaining the For Interview status and its proper styling*/}
                             <p className={`text-white rounded-[10px] text-[14px] w-[194px] h-[30px] flex items-center justify-center font-semibold ${bgColorForInterview}`}>
                                 {forInterviewDisplayText}
+                                {/* {getDisplayStatus} */}
                             </p>
 
                             {/* Hide the Update Status button if the current status is equivalent to either "Hired" or "Transferred" */}
-                            {Status !== 'Hired' && Status !== 'Transferred' && (
+                            {Status !== 'Hired' && Status !== 'Ready for Transfer' && (
 
                                 // If the current Status is equals to "Archived" then use cursor-disabled.
                                 <p className={`text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold 
@@ -123,13 +136,18 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
                     <div className="mt-8 text-[#6D6D6D] text-[12px] poppins">
                         <h1>Skills</h1>
                         <div className="flex gap-2 mt-2 flex-wrap">
-                            {Skills
-                                ? Skills.split(", ").map((skill, index) => (
-                                    <p key={index} className="flex rounded-[10px] text-[#6D6D6D] bg-[#D9D9D9] w-auto px-3 h-[21px] font-semibold text-[12px] items-center justify-center">
+                            {applicantsById?.generalInformation.skills?.length ? (
+                                applicantsById.generalInformation.skills.map((skill: string, index: number) => (
+                                    <p
+                                        key={index}
+                                        className="flex rounded-[10px] text-[#6D6D6D] bg-[#D9D9D9] w-auto px-3 h-[21px] font-semibold text-[12px] items-center justify-center"
+                                    >
                                         {skill}
                                     </p>
                                 ))
-                                : <p className="text-[#6D6D6D] poppins">No Skills Listed</p>} {/* Display this text when there are no skills */}
+                            ) : (
+                                <p className="text-[#6D6D6D] poppins">No Skills Listed</p>
+                            )}
                         </div>
                     </div>
 
@@ -161,7 +179,7 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
 
                         {/* IF status is equivalent to 'Archived' then no button should appear. */}
                         {/* {Status !== 'Archived' && ( */}
-                        {(IsJobOffer === 'Yes' && Status !== 'Archived') && (
+                        {(IsJobOffer === 'Yes' || Status !== 'Archived') && (
                             <Button className="text-white rounded-[10px] poppins bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer"
 
                                 onClick={() => {
@@ -202,7 +220,7 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
                                 { value: "application", label: "Application Movement" },
 
                                 //Spread operator is use to conditionally add new tab. When Status is equivalent to Transferred. Otherwise the preceding two tabs will render.
-                                ...(Status === 'Transferred') ? [{ value: "transfer_details", label: "Transfer Details" }] : []
+                                // ...(Status === 'Transferred') ? [{ value: "transfer_details", label: "Transfer Details" }] : []
                             ].map((tab) => (
                                 <Tabs.Tab
                                     key={tab.value}
@@ -216,17 +234,15 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
 
                         {/* Peronsal Details Tab */}
                         <Tabs.Panel value="personal">
-                            <PersonalDetails
-                                Position={Position}
-                            />
+                            <PersonalDetails />
                         </Tabs.Panel>
 
                         {/* Application movement Tab */}
                         <Tabs.Panel value="application">
                             <ApplicationMovement
-                                Applicant_Name={applicantName}
-                                Status={Status}
-                                Remarks={Remarks}
+                                applicantName={applicantName}
+                                status={Status}
+                                remarks={Remarks}
                             />
                         </Tabs.Panel>
 
@@ -257,7 +273,7 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
                 <TransferPositionModal isOpen={isTransferPosition} onClose={onCloseAll}>
                     <TransferPosition
                         Applicant_Name={applicantName}
-                        onClose={onCloseAll} />
+                        onClose={() => setIsTransferPosition(false)} />
                 </TransferPositionModal>
 
                 <ApplicantModal isOpen={isGenerateNewOffer}>

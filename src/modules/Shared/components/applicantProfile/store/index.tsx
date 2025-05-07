@@ -406,7 +406,7 @@ export interface ViewApplicantsProps {
 }
 
 // for updating the selected status in update status modal
-type StatusType = Applicants["Status"] | null;
+type StatusType = Applicants["status"] | null;
 
 interface StatusState {
   selectedStatus: StatusType;

@@ -1,48 +1,60 @@
-import { useApplicantStore } from "@modules/Applicants/store";
+import { useApplicantIdStore, useApplicantStore } from "@modules/Applicants/store";
 import { DataTable } from "mantine-datatable";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
+import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
 
 interface ViewApplicantsProps {
-    Applicant_Name: string;
-    Status: string;
-    Remarks: string;
-    Feedback?: string;
+    applicantName: string;
+    status: string;
+    remarks: string;
+    feedback?: string;
 }
-
-export default function ApplicationMovement({ Applicant_Name, Status, Remarks }: ViewApplicantsProps) {
+export default function ApplicationMovement({ applicantName, status,
+    // remarks
+}: ViewApplicantsProps) {
     const { records } = useApplicantStore();
+    const applicantId = useApplicantIdStore((state) => state.id);
+    const { data: applicantsById } = useApplicantsById(applicantId);
+    const setApplicationMovements = applicantsById?.applicationMovements?.movements || [];
+    const setCommentsMovement = applicantsById?.commentsByID || [];
+    const filteredRecords = records.filter(record => record.applicantName === applicantName);
 
-    // Filter records based on props (Applicant_Name & Status)
-    const filteredRecords = records.filter(record =>
-        record.Applicant_Name === Applicant_Name && record.Status === Status
+    const movementsRecords = filteredRecords.flatMap(record =>
+        Array.isArray(setApplicationMovements) && Array.isArray(setCommentsMovement)
+            ? setApplicationMovements.reverse().map((movement: any, index: number) => ({
+                ...record,
+                id: `${record.id}-${index}`,
+                movement: movement === "Ready for Transfer" ? "Transferred" : movement,
+                comments: setCommentsMovement[index] || null,
+            }))
+            : []
     );
 
-    // Filter columns to only include Application_Date, Status, and Remarks (Comments)
+    const allowedAccessors = ['applicationDate', 'movement', 'comments'];
+
+    if (status === 'Archived') {
+        allowedAccessors.push('feedback');
+    }
+
     const filterColumns = applicantsColumns.filter(col =>
-        ['Application_Date', 'Status'].includes(col.accessor) ||
-        (col.accessor === 'Feedback' && Status === 'Archived')
+        allowedAccessors.includes(col.accessor)
     );
 
-    // Add Comments column manually via props
     const columnsWithComments = [
-        ...filterColumns.filter(col => col.accessor !== 'Status'), // All columns except Status
-        {
-            accessor: 'Remarks',
-            title: <span className='job-offers-table font-bold text-[14px]'>Comments</span>,
-            render: () => <span>{Remarks}</span>,
-        },
-        ...filterColumns.filter(col => col.accessor === 'Status') // Move Status to the end
+        ...filterColumns.filter(col => col.accessor !== 'movement'),
+        ...filterColumns.filter(col => col.accessor === 'movement')
     ];
 
     return (
-        <div className="pt-1">
+        <div className="pt-1 pb-40 poppins">
             <div>
                 <DataTable columns={columnsWithComments}
-                    records={filteredRecords}
+                    records={movementsRecords}
                     sortIcons={{
-                        sorted: <span></span>,  // Empty element to remove default icon
+                        sorted: <span></span>,
                         unsorted: <span></span>,
                     }}
+                    className="poppins font-medium text-[#6D6D6D] text-[14px]"
                 />
             </div>
         </div>

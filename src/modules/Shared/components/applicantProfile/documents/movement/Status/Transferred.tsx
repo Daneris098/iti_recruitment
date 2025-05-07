@@ -59,7 +59,7 @@ export default function Transferred() {
             {/* This modal will be called when the selectedStatus === Transferred and the user agrees to transfer applicants to hrdotnet. */}
             <ForTransfer isOpen={isForTransferLoader} onClose={() => setIsForTransferLoader(false)}>
                 <TransferApplicants
-                    onClose={() => setIsForTransferLoader(false)}
+                    // onClose={() => setIsForTransferLoader(false)}
                 />
             </ForTransfer>
         </div>

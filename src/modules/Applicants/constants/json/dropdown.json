@@ -1,0 +1,34 @@
+[
+    {
+        "position": [
+            {
+                "id": 1,
+                "name": "Web Developer"
+            },
+            {
+                "id": 2,
+                "name": "Quality Assurance"
+            }
+        ],
+        "department": [
+            {
+                "id": 1,
+                "name": "Technical Department"
+            },
+            {
+                "id": 2,
+                "name": "Security Department"
+            }
+        ],
+        "paymentScheme": [
+            {
+                "id": 1,
+                "name": "Monthly"
+            },
+            {
+                "id": 2,
+                "name": "Bimonthly"
+            }
+        ]
+    }
+]

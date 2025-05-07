@@ -20,7 +20,7 @@ export default function TransferDetails() {
 
     return (
 
-        <div className="pt-2 overflow-auto pb-36">
+        <div className="pt-2 overflow-auto pb-52">
             {/* Header */}
             <div>
                 <h1 className="text-[#559CDA] text-[16px] font-bold">Job Information</h1>

@@ -14,7 +14,7 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
 
     // Filter records based on props (Applicant_Name & Status)
     const filteredRecords = records.filter(record =>
-        record.Applicant_Name === Applicant_Name && record.Status === Status
+        record.applicantName === Applicant_Name && record.status === Status
     );
 
     // Filter columns to only include Application_Date, Status, and Remarks (Comments)
@@ -25,13 +25,13 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
 
     // Add Comments column manually via props
     const columnsWithComments = [
-        ...filterColumns.filter(col => col.accessor !== 'Status'), // All columns except Status
+        ...filterColumns.filter(col => col.accessor !== 'status'), // All columns except Status
         {
             accessor: 'Remarks',
             title: <span className='job-offers-table'>Comments</span>,
             render: () => <span>{Remarks}</span>,
         },
-        ...filterColumns.filter(col => col.accessor === 'Status') // Move Status to the end
+        ...filterColumns.filter(col => col.accessor === 'status') // Move Status to the end
     ];
 
 

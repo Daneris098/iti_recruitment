@@ -1,0 +1,32 @@
+[
+    {
+        "interviewStages": [
+            {
+                "id": 1,
+                "name": "Initial Interview"
+            },
+            {
+                "id": 2,
+                "name": "Assessment"
+            },
+            {
+                "id": 3,
+                "name": "Final Interview"
+            }
+        ],
+        "interviewer": [
+            {
+                "id": 1,
+                "name": "Kristia Isabelle"
+            },
+            {
+                "id": 2,
+                "name": "Andrea"
+            },
+            {
+                "id": 3,
+                "name": "Jera"
+            }
+        ]
+    }
+]

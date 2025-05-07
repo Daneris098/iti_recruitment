@@ -1,192 +1,129 @@
-interface ViewApplicantsProps {
+import { useApplicantsById } from "@modules/Applicants/hooks/useApplicant";
+import { useApplicantIdStore } from "@src/modules/Applicants/store";
 
-    Position: string;
-}
+export default function PersonalDetails() {
 
-export default function PersonalDetails({ Position }: ViewApplicantsProps) {
+    const applicantId = useApplicantIdStore((state) => state.id);
+    const { data: applicantsById } = useApplicantsById(applicantId)
+
+    // const renderField = (label: any, value: any) => (
+    //     <div className="mt-4">
+    //         <h2 className="text-[#6D6D6D] text-[12px]">{label}</h2>
+    //         <p className="font-semibold text-[#6D6D6D] text-[14px]">{value ?? "N/A"}</p>
+    //     </div>
+    // )
+    const renderField = (label: any, value: any) => (
+        <div className="flex flex-col gap-1 min-h-[60px]"> {/* Adjust min-h as needed */}
+            <h2 className="text-[#6D6D6D] text-[12px]">{label}</h2>
+            <p className="font-semibold text-[#6D6D6D] text-[14px] break-words">{value ?? "N/A"}</p>
+        </div>
+    );
+
     return (
-        <div className="flex gap-8 pb-36">
+        <div className="flex gap-8 pb-40">
             {/* Left Column */}
             <div className="w-3/5">
-                <div className="pt-2">
-
+                {/* <div className="pt-2"> */}
+                <div>
                     {/* Left Column: First Section */}
-                    <div>
-                        <h2 className="text-[#6D6D6D] text-[12px]">Applying for (first choice):</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">{Position ?? "N/A"}</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Desired Salary</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">PHP 50,000</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Present Address</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">12 Catanduanes, Quezon City, 1105 Metro Manila</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Date of Birth</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">February 25, 2002</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Place of Birth</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Quezon City</p>
-
-                        <h2 className="font-semibold text-[#6D6D6D] text-[12px] mt-4">Civil Status</h2>
-                        <p className="text-[#6D6D6D] text-[12px]">Single</p>
-                    </div>
+                    {renderField("Applying for (first choice):", applicantsById?.generalInformation.firstChoice)}
+                    {renderField("Desired Salary", applicantsById?.generalInformation.desiredSalary)}
+                    {renderField("Present Address", applicantsById?.generalInformation.presentAddress)}
+                    {renderField("Date of Birth", applicantsById?.generalInformation.dateOfBirth)}
+                    {renderField("Place of Birth", applicantsById?.generalInformation.placeOfBirth)}
+                    {renderField("Civil Status", applicantsById?.generalInformation.civilStatus)}
 
                     {/* Left Column: Second Section */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Government ID Number(s)</h2>
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Government ID Number(s)</h2>
+                        {renderField("GSIS No.", applicantsById?.governmentIdInformation.gsisNo)}
+                        {renderField("SSS No.", applicantsById?.governmentIdInformation.sssNo)}
+                        {renderField("PagIbig No.", applicantsById?.governmentIdInformation.pagIbigNo)}
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">GSIS No.</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">SSS No.</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">PhilHealth No.</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Start Date</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2016</p>
+                        <h2 className="text-[#6D6D6D] text-[12px] mt-4"></h2>
+                        <p className="font-semibold text-[#6D6D6D] text-[14px]"></p>
                     </div>
-
 
                     {/* Left Column: Fourth Section */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Education</h2>
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Education</h2>
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">School Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">University of the East</p>
+                        {renderField("School Name", applicantsById?.education.primary.name)}
+                        {renderField("Course", applicantsById?.education.primary.course)}
+                        {renderField("Educational Level", applicantsById?.education.primary.educationalLevel)}
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Course</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Bachelor of Science in Computer Engineering</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Educational Level</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Bachelor's</p>
-
-                        <div className="flex gap-8 mt-6">
+                        {/* <div className="flex gap-8 mt-6"> */}
+                        <div className="flex gap-8">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">Start Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2016</p>
-
-
+                                {renderField("Start Date", applicantsById?.education.primary.startDate)}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">End Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2020</p>
+                                {renderField("End date", applicantsById?.education.primary.endDate)}
                             </div>
 
                         </div>
                     </div>
 
-
                     {/* Left Column: Third Section */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Employment Record</h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Employer Name </h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Niki Zefanya</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Location </h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Makati</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Position Held</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Microsoft Dev</p>
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold mb-3">Employment Record</h2>
+                        {renderField("Employer Name", applicantsById?.employmentRecord.firstEmployment.employerName)}
+                        {renderField("Location", applicantsById?.employmentRecord.firstEmployment.location)}
+                        {renderField("Position Held", applicantsById?.employmentRecord.firstEmployment.positionHeld)}
 
                         <div className="flex gap-8 mt-4">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">Start Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2016</p>
-
-
+                                {renderField("Start Date", applicantsById?.employmentRecord.secondEmployment.startDate)}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">End Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2020</p>
+                                {renderField("End Date", applicantsById?.employmentRecord.secondEmployment.endDate)}
                             </div>
-
                         </div>
 
-                        <h2 className="font-semibold text-[#6D6D6D] text-[14px] mt-4">Reason for Leaving</h2>
-                        <p className="text-[#6D6D6D] text-[12px]">Micromanagement. Software Engineer with 5+ years of experience in full-stack development, specializing in React and Node.js.</p>
+                        {renderField("Reason for Leaving", applicantsById?.employmentRecord.firstEmployment.reasonForLeaving)}
                     </div>
 
                     {/* Left Column: Fourth Section */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Family Background</h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Father's Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Juan Alfonso Aguinaldo</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Age</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">70</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Occupation</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Company Driver</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Sibling Name </h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> Juanito Dimagiba</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Occupation</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Company Driver</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
-
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Family Background</h2>
+                        {renderField("Father's Name", applicantsById?.familyBackground.father.name)}
+                        {renderField("Age", applicantsById?.familyBackground.father.age)}
+                        {renderField("Occupation", applicantsById?.familyBackground.father.occupation)}
+                        {renderField("Contact", applicantsById?.familyBackground.father.contact)}
+                        {renderField("Sibling Name", applicantsById?.familyBackground.siblings[0].age)}
+                        {renderField("Occupation", applicantsById?.familyBackground.siblings[0].occupation)}
+                        {renderField("Contact", applicantsById?.familyBackground.siblings[0].contact)}
                     </div>
 
                     {/* Left Column: Sixth Section */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Other Information</h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Special Technical Skills</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Welding and Machinery</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Convicted of a crime</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Once</p>
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Other Information</h2>
+                        {renderField("Special Technical Skills", applicantsById?.otherInformation.specialSkills.skill)}
+                        {renderField("Convicted of a crime", applicantsById?.otherInformation.conviction.answer)}
                     </div>
 
                     {/*  */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Character References </h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Full Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Mary Ann Santiago</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Company</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Intellismart</p>
-
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Position Held</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Microsoft Dev</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Character References</h2>
+                        {renderField("Full Name", applicantsById?.characterReference.firstReference.referrer)}
+                        {renderField("Company", applicantsById?.characterReference.firstReference.employerName)}
+                        {renderField("Position Held", applicantsById?.characterReference.firstReference.positionHeld)}
+                        {renderField("Contact Number", applicantsById?.characterReference.firstReference.contact)}
                     </div>
 
                     {/*  */}
                     <div>
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold">Employment References </h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Full Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Mary Ann Santiago</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Company</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Intellismart</p>
-
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Position Held</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Microsoft Dev</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Employment References </h2>
+                        {renderField("Full Name", applicantsById?.employmentReferences.info.referrer)}
+                        {renderField("Company", applicantsById?.employmentReferences.info.employerName)}
+                        {renderField("Position Held", applicantsById?.employmentReferences.info.positionHeld)}
+                        {renderField("Contact Number", applicantsById?.employmentReferences.info.contact)}
                     </div>
                 </div>
             </div>
@@ -194,213 +131,135 @@ export default function PersonalDetails({ Position }: ViewApplicantsProps) {
             {/* Right Column */}
             <div className="w-4/6 ">
                 <div className="">
-                    <h2 className="text-[#6D6D6D] text-[12px] ">Applying for (second choice):</h2>
-                    <p className="font-semibold text-[#6D6D6D] text-[14px]">Quality Assurance Tester</p>
-
-                    <h2 className="text-[#6D6D6D] text-[12px] mt-6">Availability to start</h2>
-                    <p className="font-semibold text-[#6D6D6D] text-[14px]">July 25, 2025</p>
-
-                    <h2 className="text-[#6D6D6D] text-[12px] mt-4">Permanent Address</h2>
-                    <p className="font-semibold text-[#6D6D6D] text-[14px]">12 Catanduanes, Quezon City, 1105 Metro Manila</p>
+                    {/* <h2 className="text-[#6D6D6D] text-[12px] ">Applying for (second choice):</h2> */}
+                    {renderField("Applying for (second choice): ", applicantsById?.generalInformation.secondChoice)}
+                    {renderField("Availability to start", applicantsById?.generalInformation.startAvailability)}
+                    {renderField("Permanent Address", applicantsById?.generalInformation.presentAddress)}
 
                     {/* Sub-Columns */}
-                    <div className="flex gap-8 mt-9">
+                    {/* <div className="flex gap-8 mt-9"> */}
+                    <div className="flex gap-8">
                         {/* Left Sub-Column */}
                         <div className="w-1/2">
-                            <h2 className="text-[#6D6D6D] text-[12px]">Age</h2>
-                            <p className="font-semibold text-[#6D6D6D] text-[14px]">26</p>
-
-                            <h2 className="text-[#6D6D6D] text-[12px] mt-6">Height</h2>
-                            <p className="font-semibold text-[#6D6D6D] text-[14px]">157cm</p>
-
+                            {renderField("Age", applicantsById?.generalInformation.age)}
+                            {renderField("Height", applicantsById?.generalInformation.height)}
                         </div>
 
                         {/* Right Sub-Column */}
                         <div className="w-1/2">
-                            <h2 className="text-[#6D6D6D] text-[12px]">Sex</h2>
-                            <p className="font-semibold text-[#6D6D6D] text-[14px]">Female</p>
-
-                            <h2 className="text-[#6D6D6D] text-[12px] mt-6">Weight</h2>
-                            <p className="font-semibold text-[#6D6D6D] text-[14px]">50 kg</p>
+                            {renderField("Sex", applicantsById?.generalInformation.gender)}
+                            {renderField("Weight", applicantsById?.generalInformation.weight)}
                         </div>
                     </div>
 
-                    <h2 className="font-semibold text-[#6D6D6D] text-[12px] mt-4">Religion</h2>
-                    <p className="text-[#6D6D6D] text-[12px]">Roman Catholic</p>
+                    {renderField("Religion", applicantsById?.generalInformation.religion)}
 
                     {/*  */}
-                    <div className="pt-10">
+                    {/* <div className="pt-10"> */}
+                    <div className="pt-12">
                         {/* Right Column: Second Section */}
-                        <h2 className="text-[#559CDA] text-[16px] mt-6 font-bold"></h2>
+                        <h2 className="text-[#559CDA] text-[16px] mt-5 font-bold"></h2>
+                        {renderField("PhilHealth No.", applicantsById?.governmentIdInformation.philhealthNo)}
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Pag-ibig No.</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
-
-                        <div className="flex gap-8 mt-5">
+                        {/* <div className="flex gap-8 mt-5"> */}
+                        <div className="flex gap-8">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">TIN ID</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
+                                {renderField("TIN ID", applicantsById?.governmentIdInformation.tinNo)}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">RTO Code</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
+                                {renderField("RTO Code", applicantsById?.governmentIdInformation.rdoCode)}
                             </div>
                         </div>
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Passport</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">123456789</p>
-
+                        {renderField("Passport", applicantsById?.governmentIdInformation.passport)}
                         <h2 className="text-[#6D6D6D] text-[12px] mt-4"></h2>
                         <p className="font-semibold text-[#6D6D6D] text-[14px]"></p>
-
                     </div>
 
                     {/* Right Column: Third Section */}
-                    <div className="pt-16 mt-7">
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold"></h2>
+                    {/* <div className="pt-16 mt-7"> */}
+                    <div className="pt-6">
+                        <h2 className="text-[#559CDA] text-[16px] mt-7 font-bold"></h2>
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">School Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">University of the East</p>
+                        {renderField("School Name", applicantsById?.education.primary.name)}
+                        {renderField("Course", applicantsById?.education.primary.course)}
+                        {renderField("Educational Level", applicantsById?.education.primary.educationalLevel)}
 
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Course</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Bachelor of Science in Computer Engineering</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Educational Level</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Bachelor's</p>
-
-                        <div className="flex gap-8 mt-6">
+                        {/* <div className="flex gap-8 mt-6"> */}
+                        <div className="flex gap-8">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">Start Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2016</p>
-
-
+                                {renderField("Start Date", applicantsById?.education.primary.startDate)}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">End Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2020</p>
+                                {renderField("End Date", applicantsById?.education.primary.endDate)}
                             </div>
-
                         </div>
                     </div>
 
                     {/* Right Column: Fourth Section */}
-                    <div className="pt-16">
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Employer Name </h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Niki Zefanya</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Location </h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Makati</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Position Held</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Microsoft Dev</p>
-
+                    {/* <div className="pt-16"> */}
+                    <div className="pt-14 mt-3">
+                        {renderField("Employer Name", applicantsById?.employmentRecord.secondEmployment.employerName)}
+                        {renderField("Location", applicantsById?.employmentRecord.secondEmployment.location)}
+                        {renderField("Position Held", applicantsById?.employmentRecord.secondEmployment.positionHeld)}
                         <div className="flex gap-8 mt-4">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">Start Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2016</p>
-
-
+                                {renderField("Start Date", applicantsById?.employmentRecord.secondEmployment.startDate)}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                <h2 className="text-[#6D6D6D] text-[12px]">End Date</h2>
-                                <p className="font-semibold text-[#6D6D6D] text-[14px]">Jan 2020</p>
+                                {renderField("End Date", applicantsById?.employmentRecord.secondEmployment.endDate)}
                             </div>
-
                         </div>
+                        {renderField("Reason For Leaving", applicantsById?.employmentRecord.secondEmployment.reasonForLeaving)}
+                    </div>
 
-                        <h2 className="font-semibold text-[#6D6D6D] text-[14px] mt-4">Reason for Leaving</h2>
-                        <p className="text-[#6D6D6D] text-[12px]">Micromanagement. Software Engineer with 5+ years of experience in full-stack development, specializing in React and Node.js.</p>
+                    {/*  */}
+                    {/* <div className="pt-12"> */}
+                    <div className="pt-16 mt-1">
+                        {renderField("Mother's Name", applicantsById?.familyBackground.mother.name)}
+                        {renderField("Age", applicantsById?.familyBackground.mother.age)}
+                        {renderField("Occupation", applicantsById?.familyBackground.mother.occupation)}
+                        {renderField("Contact", applicantsById?.familyBackground.mother.contact)}
+                        {renderField("Sibling Name", applicantsById?.familyBackground.siblings[1].age)}
+                        {renderField("Occupation", applicantsById?.familyBackground.siblings[1].occupation)}
+                        {renderField("Contact", applicantsById?.familyBackground.siblings[1].contact)}
+                    </div>
+
+                    {/* Right Column: Sixth Section */}
+                    {/* <div className="pt-10"> */}
+                    <div className="pt-8">
+                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold"></h2>
+                        {renderField("Hospitalized", applicantsById?.otherInformation.medicalHistory.answer)}
+                        {renderField("Family Employed within the company", applicantsById?.otherInformation.familyEmployed.answer)}
                     </div>
 
                     {/*  */}
                     <div className="pt-12">
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Mother's Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Juan Alfonso Aguinaldo</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Age</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">70</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Occupation</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Company Driver</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Sibling Name </h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> Juanito Dimagiba</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Occupation</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Company Driver</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
-
-                    </div>
-
-                    {/* Right Column: Sixth Section */}
-                    <div className="pt-10">
                         <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold"></h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Special Technical Skills</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Sewing and Knitting</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Convicted of a crime</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Twice</p>
-                    </div>
-
-
-
-                    {/*  */}
-                    <div className="pt-10">
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold"></h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Full Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Mary Ann Santiago</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Company</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Intellismart</p>
-
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Position Held</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Microsoft Dev</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
+                        {renderField("Full Name", applicantsById?.characterReference.secondReference.referrer)}
+                        {renderField("Company", applicantsById?.characterReference.secondReference.employerName)}
+                        {renderField("Position Held", applicantsById?.characterReference.secondReference.positionHeld)}
+                        {renderField("Contact Number", applicantsById?.characterReference.secondReference.contact)}
                     </div>
 
                     {/*  */}
                     <div className="pt-10">
-                        <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold"></h2>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Full Name</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Mary Ann Santiago</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Company</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Intellismart</p>
-
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Position Held</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]">Microsoft Dev</p>
-
-                        <h2 className="text-[#6D6D6D] text-[12px] mt-4">Contact Number</h2>
-                        <p className="font-semibold text-[#6D6D6D] text-[14px]"> +63 917 123 4567</p>
+                        <h2 className="text-[#559CDA] text-[16px] mt-5 font-bold"></h2>
+                        {renderField("Full Name", applicantsById?.characterReference.secondReference.referrer)}
+                        {renderField("Company", applicantsById?.characterReference.secondReference.employerName)}
+                        {renderField("Position Held", applicantsById?.characterReference.secondReference.positionHeld)}
+                        {renderField("Contact Number", applicantsById?.characterReference.secondReference.contact)}
                     </div>
                 </div>
-
-                {/* <div className="pt-12 ml-1 space-x-4">
-                    <Button className="bg-white text-[#559CDA] border-1 font-medium poppins text-[14px] border-[#559CDA] w-[127px] rounded-[10px] hover:text-[#559CDA] hover:bg-white">EDIT</Button>
-                    <Button className="br-gradient w-[127px] rounded-[10px] font-medium poppins text-[14px]">SUBMIT</Button>
-                </div> */}
             </div>
         </div>
     )

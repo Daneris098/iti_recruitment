@@ -87,7 +87,7 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                 <Modal size={'65%'} opened={isViewPDF} onClose={() => setIsViewPDF(false)} title={title === "Offered" ? "Generate Offer" : "Job Offer"}>
                     <PDFViewer width="100%" height="710" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                         <MyDocument
-                            Name=""
+                            Applicant_Name=""
                             Position=""
                             Department=""
                             Remarks=""
