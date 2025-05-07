@@ -7,7 +7,9 @@ import { IconCaretDownFilled } from '@tabler/icons-react';
 import { AlertType, ResetCredentialForm } from '../../types';
 import { useForm } from '@mantine/form';
 import { useQueryClient } from '@tanstack/react-query';
-import authApi from '@src/api/authApi';
+import { generatePassword } from "@src/utils/GeneratePassword"
+import { useUpdateUser } from "@modules/AdministratorSettings/hooks/useUpdateUser"
+import { useResetPassword } from "@modules/AdministratorSettings/hooks/useResetPassword"
 
 const SelectedAccount = forwardRef((_, ref) => {
 
@@ -18,6 +20,8 @@ const SelectedAccount = forwardRef((_, ref) => {
     const [isGenerated, setIsGenerated] = useState(true);
     const formRef = useRef<HTMLFormElement>(null);
     const queryClient = useQueryClient();
+    const { mutate: UpdateUser } = useUpdateUser();
+    const { mutate: ResetPassword } = useResetPassword();
 
     const handleClose = () => {
         setSelectedUser(selectedDataInitialVal);
@@ -82,63 +86,37 @@ const SelectedAccount = forwardRef((_, ref) => {
         }
     }, [isGenerated]);
 
-    const generatePassword = (length = 8) => {
-        const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const lower = "abcdefghijklmnopqrstuvwxyz";
-        const number = "0123456789";
-        const symbol = "@";
-
-        const all = upper + lower + number + symbol;
-
-        let password = [
-            upper[Math.floor(Math.random() * upper.length)],
-            lower[Math.floor(Math.random() * lower.length)],
-            number[Math.floor(Math.random() * number.length)],
-            symbol[Math.floor(Math.random() * symbol.length)],
-        ];
-
-        for (let i = password.length; i < length; i++) {
-            password.push(all[Math.floor(Math.random() * all.length)]);
-        }
-
-        return password.sort(() => Math.random() - 0.5).join('');
-    };
-
     const onSubmit = async (formValues: ResetCredentialForm) => {
-        const payload = {
-            ...formValues,
-            isGenerated
-        };
-        await authApi
-            .post("/auth/" + selectedUser.id +"/reset-password", payload)
-            .then(() => {
-                queryClient.refetchQueries({ queryKey: ["auth/users"], type: 'active' });
-                handleClose()
+        (async () => {
+            const userId = selectedUser.id;
+            ResetPassword({
+                userId,
+                formValues,
+                setAlert,
+                onSuccess: () => {
+                    setAlert(AlertType.editSuccess);
+                    queryClient.refetchQueries({ queryKey: ["auth/users"], type: 'active' });
+                    handleClose()
+                }
             })
-            .catch((error) => {
-                const message = error.response?.data?.errors?.[0]?.message || 'Something went wrong';
-                console.error(message);
-            });
+        })();
     };
 
     const handleSave = () => {
         if (isEdit) {
             (async () => {
-                const payload = {
-                    username: selectedUser.username,
-                    isActive: selectedUser.status === 'Active' ? true : false
-                };
-                await authApi
-                    .post("/auth/" + selectedUser.id + "/update", payload)
-                    .then(() => {
+                const userId = selectedUser.id;
+                const formValues = { username: selectedUser.username, isActive: selectedUser.status === 'Active' ? true : false };
+                UpdateUser({
+                    userId,
+                    formValues,
+                    setAlert,
+                    onSuccess: () => {
                         setAlert(AlertType.editSuccess);
                         queryClient.refetchQueries({ queryKey: ["auth/users"], type: 'active' });
                         handleClose()
-                    })
-                    .catch((error) => {
-                        const message = error.response?.data?.errors?.[0]?.message || 'Something went wrong';
-                        console.error(message);
-                    });
+                    }
+                })
             })();
         }
         else if (isResetCredential) {

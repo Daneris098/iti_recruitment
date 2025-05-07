@@ -10,7 +10,7 @@ export default function index() {
     const {  activePanel, setSelectedUser } = AdministratorSettingsStore()
     const { page, setPage, totalRecords } = DataTableStore()
     const { setAction } = DialogStore()
-    const { data } = useUser();
+    const { data, isFetching } = useUser();
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof user; direction: 'asc' | 'desc' }>({
         columnAccessor: 'username',
         direction: 'asc',
@@ -38,6 +38,11 @@ export default function index() {
                         color: "rgba(0, 0, 0, 0.6)",
                     },
                 }}
+                fetching={isFetching}
+                loaderType="dots"
+                loaderSize="lg"
+                loaderColor="blue"
+                loaderBackgroundBlur={1}
                 paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
                 withTableBorder
                 records={data}
