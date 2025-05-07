@@ -1,3 +1,8 @@
 .mantine-Tabs-list::before{
     border-style: none !important;
 }
+
+.details {
+  font-size: var(--mantine-font-size-sm);
+  background:green;
+}

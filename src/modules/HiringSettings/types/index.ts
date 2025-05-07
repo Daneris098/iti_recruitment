@@ -14,15 +14,23 @@ export interface DataTableRefs {
   jobOfferTemplate?: React.RefObject<DataTableRef>;
 }
 
+export enum Operation {
+  add = 'add',
+  edit = 'edit',
+  noOperation = 'null',
+}
+
 export type feedback = {
   id: number;
   feedback: string;
+  fieldStatus?: string;
 };
 
 export type interviewStage = {
   id: number;
   stageName: string;
   status: string;
+  fieldStatus?: string;
   lastModified: string;
 };
 
@@ -30,6 +38,7 @@ export type applicationSource = {
   id: number;
   sourceName: string;
   status: string;
+  fieldStatus? : string;
   lastModified: string;
 };
 
@@ -37,13 +46,16 @@ export type interviewer = {
   id: number;
   name: string;
   status: string;
+  fieldStatus? : string;
   lastModified: string;
 };
 
 export interface HiringSettingsState {
   alert: string;
   activePanel: panel;
+  validationMessage: string,
 
+  setValidationMessage: (validationMessage: string) => void;
   setActivePanel: (activePanel: panel) => void;
   setAlert: (alert: string) => void;
 }
@@ -73,7 +85,7 @@ export interface vacancyForm {
   }
   noOfOpenPosition: number;
   jobDescription: string;
-  mustHaveSkills: string;
+  mustHaveSkills: string[];
   qualification: string;
 }
 
@@ -95,6 +107,7 @@ export enum AlertType {
   saved = 'saved',
   cancel = 'Cancel',
   cancellled = 'Cancelled',
+  validation = 'Validation'
 }
 
 export enum title {

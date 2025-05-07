@@ -45,5 +45,5 @@ export const vacancyFormInitialData: vacancyForm = {
     noOfOpenPosition: 0,
     jobDescription: '',
     qualification: '',
-    mustHaveSkills: '',
+    mustHaveSkills: [],
 };

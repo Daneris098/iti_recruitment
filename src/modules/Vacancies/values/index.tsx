@@ -29,7 +29,7 @@ export const selectedDataVal: VacancyType = {
     end: "",
     from: ""
   },
-  mustHaveSkills: "",
+  mustHaveSkills: [],
   qualification: ""
 };
 

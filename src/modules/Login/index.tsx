@@ -63,16 +63,16 @@ export default function Login() {
   return (
     <div className=" h-full flex">
       <div className="bg-cover  w-1/2 hidden sm:block">
-        <div style={{ backgroundImage: `url(${loginBg})` }} className="bg-cover h-full w-full flex flex-col">
-          <img src="loginLogo.png " className="cursor-pointer w-36 2xl:w-48 pl-10 py-10" alt="bg" onClick={() => { navigate("/"); }}/>
+        <div style={{ backgroundImage: `url(${loginBg})` }} className="bg-cover h-full w-full flex flex-col p-4 ">
           <div className="flex flex-col gap-10 sm:h-[45%] sm:w-[80%] m-auto p-4 sm:p-0">
             <p className="text-white text-7xl font-bold text-center">Welcome Aboard!</p>
             <p className="text-white text-center text-xl w-[80%] self-center">To access the HRDotNet Recruitment and Onboarding Platform, please log-in with your credentials.</p>
           </div>
         </div>
       </div>
-      <div className=" w-full sm:w-1/2">
-        <div className="h-full w-full flex flex-col ">
+      <div className=" w-full sm:w-1/2  ">
+        <div className="h-full w-full flex flex-col">
+          <img src="logo.png " className=" cursor-pointer w-36 2xl:w-48 pr-10 absolute py-10 self-end " alt="bg" onClick={() => { navigate("/"); }} />
           <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[55%] m-auto p-4 sm:p-0">
             <p className=" text-center font-semibold poppins text-5xl sm:text-6xl text-[#559CDA]">Admin Log-in</p>
             <div className="w-full text-start text-slate-700 mt-6">

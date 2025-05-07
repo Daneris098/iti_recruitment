@@ -84,7 +84,7 @@ const Hiring = forwardRef((_, ref) => {
                     <p className="text-center font-semibold">OFFER RESPONSE PERIOD</p>
                     <Divider size={3} color="#ebe5e5" />
                     <p>Establish the maximum number days for applicants to sign the job offer issued. Once this limit is reached, the job offer automatically marked as declined, and the applicant's status will be updated to Archived.</p>
-                    <NumberInput  {...form.getInputProps(`offerResponsePeriod`)} classNames={{ input: 'poppins text-[#6D6D6D] ' }}  radius={"md"} size="md" label="Number of Days" placeholder="Input Number of Days" className="w-full" suffix=" Days" min={1} />
+                    <NumberInput withAsterisk  {...form.getInputProps(`offerResponsePeriod`)} classNames={{ input: 'poppins text-[#6D6D6D] ' }}  radius={"md"} size="md" label="Number of Days" placeholder="Input Number of Days" className="w-full" suffix=" Days" min={1} />
                 </div>
 
                 <div className="flex flex-col gap-6">
@@ -92,8 +92,8 @@ const Hiring = forwardRef((_, ref) => {
                     <Divider size={3} color="#ebe5e5" />
                     <p>Customize your hiring process according to your preferences, including the option to allow applicants to reapply after not advancing to the final stage of the hiring pipeline.</p>
                     <div className="flex gap-4">
-                        <Select classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D] ' }} {...form.getInputProps(`applicationSettings.allowReApply`)} radius={8} data={["Yes", "No"]} className="w-full sm:w-1/2" size="md" label="Allow Applicants to Re-apply" placeholder="Select if Yes or No" rightSection={<IconCaretDownFilled size='18' />} />
-                        <NumberInput classNames={{ input: 'poppins text-[#6D6D6D] ' }}  {...form.getInputProps(`applicationSettings.alloweReApplyAfer`)} hideControls radius={"md"} size="md" label="Allow Re-apply after" placeholder="Input Number of Months" className="w-1/2" suffix=" Months" min={1} max={12} />
+                        <Select withAsterisk classNames={{ input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D] ' }} {...form.getInputProps(`applicationSettings.allowReApply`)} radius={8} data={["Yes", "No"]} className="w-full sm:w-1/2" size="md" label="Allow Applicants to Re-apply" placeholder="Select if Yes or No" rightSection={<IconCaretDownFilled size='18' />} />
+                        <NumberInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D] ' }}  {...form.getInputProps(`applicationSettings.alloweReApplyAfer`)} hideControls radius={"md"} size="md" label="Allow Re-apply after" placeholder="Input Number of Months" className="w-1/2" suffix=" Months" min={1} max={12} />
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@ const Hiring = forwardRef((_, ref) => {
                         {accountSetupForm.hiring.interviewStages.map((interview, index) =>
                             <div className="relative " key={interview.id}>
                                 {index != 0 && (<IconCircleMinus size={35} className="cursor-pointer absolute right-[-3%] bottom-[0%]" onClick={() => { removeFieldStage(interview.id) }} />)}
-                                <TextInput classNames={{ input: 'poppins text-[#6D6D6D] ' }} radius={"md"}  {...form.getInputProps(`interviewStages.${index}.name`)} size="md" label="Interview Stage Name" placeholder="Type Name" className="w-full" min={1} />
+                                <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D] ' }} radius={"md"}  {...form.getInputProps(`interviewStages.${index}.name`)} size="md" label="Interview Stage Name" placeholder="Type Name" className="w-full" min={1} />
                                 {index === accountSetupForm.hiring.interviewStages.length - 1 && (<p className="w-36 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 my-5 absolute" onClick={() => { addFieldStage() }}><IconCirclePlus size={20} />ADD STAGE</p>)}
                             </div>
                         )}
@@ -121,7 +121,7 @@ const Hiring = forwardRef((_, ref) => {
                         {accountSetupForm.hiring.interviewers.map((interviewer, index) =>
                             <div className="relative " key={interviewer.id}>
                                 {index != 0 && (<IconCircleMinus size={35} className="cursor-pointer absolute right-[-3%] bottom-[0%]" onClick={() => { removeFieldInterviewer(interviewer.id) }} />)}
-                                <TextInput classNames={{ input: 'poppins text-[#6D6D6D] ' }}  {...form.getInputProps(`interviewers.${index}.name`)} radius={"md"} size="md" label="Interviewer Name" placeholder="Type Name" className="w-full" min={1} />
+                                <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D] ' }}  {...form.getInputProps(`interviewers.${index}.name`)} radius={"md"} size="md" label="Interviewer Name" placeholder="Type Name" className="w-full" min={1} />
                                 {index === accountSetupForm.hiring.interviewers.length - 1 && (<p className="w-44 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 my-5 absolute" onClick={() => { addFieldInterviewer() }}><IconCirclePlus size={20} />ADD INTERVIEWER</p>)}
                             </div>
                         )}

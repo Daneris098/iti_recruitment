@@ -1,12 +1,11 @@
 import 'mantine-datatable/styles.layer.css';
 import { DataTable } from 'mantine-datatable';
-import Vacancies from '@src/modules/Vacancies/values/response/Vacancies.json';
 import { useEffect, useState } from 'react';
 import { VacancyType } from '../types';
-import { VacancyStore, ApplicantStore } from '../store';
-// import { useApplicantIdStore, } from "@src/modules/Vacancies/store";
-// import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
-// import { useApplicantIdStore, } from "@modules/Applicants/store";
+import { VacancyStore, ApplicantStore, DataTableStore } from '../store';
+import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
+import { useQueryClient } from '@tanstack/react-query';
+import { selectedDataVal } from '../values';
 
 enum StatusColor {
     Published = '#5A9D27',
@@ -15,50 +14,22 @@ enum StatusColor {
 }
 
 export default function index() {
-    // const applicantId = useApplicantIdStore((state) => state.id);
-    // const { data: applicantsById } = useApplicantsById(applicantId)
-    // console.log(applicantId);
-
+    const { page, pageSize, sortStatus, setPage, setSortStatus, time } = DataTableStore();
     const { selectedData, setSelectedData } = ApplicantStore();
-
+    const { isFetching, data } = useVacancies();
     const { setSelectedVacancy } = VacancyStore();
-    const [vacancyRecords, setVacancyRecords] = useState<VacancyType[]>([]);
-    const [page, setPage] = useState(1);
-    const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
-        columnAccessor: "position", // Use a valid key from VacancyType
-        direction: "asc",
-    });
-
-    // const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
-
-    const pageSize = 10;
-
-    useEffect(() => {
-        setVacancyRecords(Vacancies as VacancyType[]); // Type assertion
-    }, []);
-
-    const sortedRecords = [...vacancyRecords].sort((a, b) => {
-        if (!sortStatus.columnAccessor) return 0;
-        const valueA = a[sortStatus.columnAccessor as keyof VacancyType];
-        const valueB = b[sortStatus.columnAccessor as keyof VacancyType];
-
-        if (typeof valueA === 'string' && typeof valueB === 'string') {
-            return sortStatus.direction === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
-        }
-
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-            return sortStatus.direction === 'asc' ? valueA - valueB : valueB - valueA;
-        }
-        return 0;
-    });
-
-    const paginatedRecords = sortedRecords.slice((page - 1) * pageSize, page * pageSize);
+    const queryClient = useQueryClient();
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     };
 
+    useEffect(() => {
+        if (selectedData != selectedDataVal) {
+            queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: 'active' });
+        }
+    }, [selectedData])
 
     // const handleRowClick = async (applicant: any) => {
     //     setApplicantId(applicant.id)
@@ -73,7 +44,11 @@ export default function index() {
             withTableBorder
             borderRadius="sm"
             highlightOnHover
-            records={paginatedRecords}
+            fetching={isFetching}
+            loaderType="dots"
+            loaderSize="lg"
+            loaderColor="blue"
+            loaderBackgroundBlur={1}
             columns={[
                 { accessor: 'position', title: 'Vacancy', textAlign: "left", sortable: true },
                 {
@@ -97,22 +72,26 @@ export default function index() {
                     title: 'Action',
                     textAlign: "center",
                     render: (data) => (
-                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => { e.stopPropagation(); setSelectedData(data); 
-                            // setApplicantId(data.id)
+                        <div className='rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]' onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedData(data);
                         }}>
                             View Applicants
                         </div>
                     ),
                 },
             ]}
-            paginationText={({ from, to, totalRecords }) => `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`}
-            totalRecords={vacancyRecords.length}
+            paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (${time}) seconds`}
+            records={data}
+            totalRecords={data?.length}
             recordsPerPage={pageSize}
             page={page}
             onPageChange={setPage}
             sortStatus={sortStatus}
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
-            onRowClick={(val) => { setSelectedVacancy(val.record) }}
+            onRowClick={(val) => {
+                setSelectedVacancy(val.record)
+            }}
         />
     );
 }

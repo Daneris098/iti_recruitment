@@ -1,7 +1,7 @@
 import { AccountSetupStore } from "@modules/AccountSetup/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { CircleAlert, CircleCheckBig } from "lucide-react";
+import { CircleCheckBig, HelpCircle } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "@modules/AccountSetup/types";
 import { IconX } from "@tabler/icons-react";
@@ -65,7 +65,7 @@ export default function AlertModals() {
                     <Divider size="xs" color="#6D6D6D" />
                 </div>
                 <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
-                    <CircleAlert color="#559cda" size={70} strokeWidth={1} />
+                    <HelpCircle color="#559cda" size={70} strokeWidth={1} />
                     <Text className="text-xl font-bold text-center">
                         Do you want to save all the account details you've entered?
                     </Text>
