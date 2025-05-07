@@ -15,17 +15,17 @@ const formatApplicant = (applicant: any): Applicants => {
             month: 'short',
             day: 'numeric',
         }),
-        Phone: applicant.contact.mobileNo,
-        Email: applicant.contact.emailAddress,
-        Position: position?.name,
-        Status: movement?.status?.name,
+        phone: applicant.contact.mobileNo,
+        email: applicant.contact.emailAddress,
+        position: position?.name,
+        status: movement?.status?.name,
         page: 0,
         pageSize: 0,
         total: 0
     }
 }
 
-export const useApplicants = (params?: Record<string, any>) => {
+export const  useApplicants = (params?: Record<string, any>) => {
     // debugger;
     return useQuery({
         queryKey: applicantKeys.list(params),

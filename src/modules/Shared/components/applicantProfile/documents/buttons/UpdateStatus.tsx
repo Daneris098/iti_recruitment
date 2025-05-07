@@ -313,7 +313,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       </div>
 
       {/* This is the update successful modal. This modal is the default modal. */}
-      <StatusUpdatedModal isOpen={isDefaultUpdated} onClose={() => setIsDefaultUpdated(false)}>
+      <StatusUpdatedModal isOpen={isDefaultUpdated} >
         <StatusUpdatedAlert
           onClose={() => {
             setIsUpdateStatusButtonModalOpen(false);
@@ -324,14 +324,14 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
       {/* This modal will be activated when the  the user clicked the button "Generate Offer" from update status form 
        and is reponsible for generating a PDF of the offer letter. */}
-      <JobGeneratedModal isOpen={isOffered} onClose={() => setIsOffered(false)}>
+      <JobGeneratedModal isOpen={isOffered} >
         <JobGeneratedAlert
           title={selectedStatus}
           onClose={() => setIsOffered(false)} />
       </JobGeneratedModal>
 
       {/* Modal that will appear when the user selected archived status and clicked on the save feedback button. */}
-      <JobGeneratedModal isOpen={isFeedbackSent} onClose={() => setIsFeedbackSent(false)}>
+      <JobGeneratedModal isOpen={isFeedbackSent} >
         <FeedbackSent
           selectedStatus={selectedStatus}
           onClose={() => {

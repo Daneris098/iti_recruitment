@@ -42,32 +42,32 @@ const applicantsColumns = [
     sortable: true,
   },
   {
-    accessor: 'Phone',
+    accessor: 'phone',
     title: <span className='job-offers-table font-bold text-[14px]'>Phone</span>,
     sortable: true,
   },
   {
-    accessor: 'Email',
+    accessor: 'email',
     title: <span className='job-offers-table font-bold text-[14px]'>Email</span>,
     sortable: true,
   },
   {
-    accessor: 'Position',
+    accessor: 'position',
     title: <span className='job-offers-table font-bold text-[14px]'>Position</span>,
     sortable: true,
   },
   {
-    accessor: 'Feedback',
+    accessor: 'feedback',
     title: <span className='job-offers-table font-bold text-[14px]'>Feedback</span>,
     sortable: true,
   },
   {
-    accessor: 'Status',
+    accessor: 'status',
     title: <span className='job-offers-table font-bold text-[14px] flex justify-center w-full'>Status</span>,
     sortable: true,
-    render: ({ Status }: { Status: string }) => (
+    render: ({ status }: { status: string }) => (
       <div className="flex justify-center w-full">
-        {checkStatus(Status)}
+        {checkStatus(status)}
       </div>
     )
   },

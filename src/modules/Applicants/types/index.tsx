@@ -14,10 +14,10 @@ export interface Applicants {
     id: number;
     applicantName: string;
     applicationDate: string;
-    Phone: string;
-    Email: string;
-    Position: string;
-    Status: string;
+    phone: string;
+    email: string;
+    position: string;
+    status: string;
     page: number;
     pageSize: number;
     total: number;

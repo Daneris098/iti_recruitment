@@ -8,11 +8,13 @@ interface Applicant {
   id: any;
   applicantName: string;
   applicationDate: string;
-  Phone: string;
-  Email: string;
-  Position: string;
-  Status: string;
-  Feedback?: string;
+  phone: string;
+  email: string;
+  position: string;
+  status: string;
+  feedback?: string;
+  // movement: any;
+  // comments: any;
 }
 
 interface ApplicantStore {
@@ -426,7 +428,7 @@ export interface ViewApplicantsProps extends Partial<PDFProps> {
 }
 
 // for updating the selected status in update status modal
-type StatusType = Applicants["Status"] | null;
+type StatusType = Applicants["status"] | null;
 
 interface StatusState {
   selectedStatus: StatusType;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import header from '@src/assets/intellismart-header.png';
-import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
 import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'
 import { PDFProps } from "@modules/Offers/types"
 
@@ -9,7 +8,6 @@ import { PDFProps } from "@modules/Offers/types"
 Font.register({
   family: 'Poppins',
   fonts: [
-    { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
     { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
   ],
 });

@@ -19,7 +19,7 @@ import TransferredStatus from "@modules/Shared/components/applicantProfile/movem
 import ForInterviewStatus from "@modules/Shared/components/applicantProfile/movement/Status/ForInterview";
 
 import ScheduleInterview from "@modules/Shared/components/applicantProfile/movement/ScheduleInterview";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 interface UpdateStatusProps {
   Status: string;

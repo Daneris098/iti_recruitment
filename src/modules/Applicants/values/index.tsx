@@ -13,11 +13,14 @@ export const filterVal: ApplicantStatus = {
 }
 
 export const selectedVal: Applicants = {
-    id: "",
-    Applicant_Name: "",
-    Application_Date: "",
-    Phone: "",
-    Email: "",
-    Position: "",
-    Status: "",
+    id: 0,
+    applicantName: "",
+    applicationDate: "",
+    phone: "",
+    email: "",
+    position: "",
+    status: "",
+    page: 0,
+    pageSize: 0,
+    total: 0
 }

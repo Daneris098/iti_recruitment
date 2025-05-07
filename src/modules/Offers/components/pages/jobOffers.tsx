@@ -110,7 +110,7 @@ export default function index() {
             <div className="flex flex-col h-full bg-white rounded-md shadow-md p-6 overflow-hidden poppins">
                 <Tabs
                     value={activeTab}
-                    onChange={setActiveTab}
+                    onChange={()=>setActiveTab!}
                     defaultValue="All_offers">
                     <Tabs.List>
                         {TABS.map((tab) => (

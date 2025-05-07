@@ -73,10 +73,10 @@ export default function index() {
 
     if (filterCriteria) {
       if (Array.isArray(filterCriteria)) {
-        filteredRecords = records.filter((applicant) => filterCriteria.includes(applicant.Status));
+        filteredRecords = records.filter((applicant) => filterCriteria.includes(applicant.status));
       }
       else {
-        filteredRecords = records.filter((applicant) => applicant.Status === filterCriteria)
+        filteredRecords = records.filter((applicant) => applicant.status === filterCriteria)
       }
     }
 
@@ -106,7 +106,7 @@ export default function index() {
   const extendedColumn = applicantsColumns
 
     // Exclude Feedback Column from the JSON object
-    .filter((col: any) => col.accessor !== "Feedback")
+    .filter((col: any) => col.accessor !== "feedback")
     .map((col) => {
       let updatedCol = { ...col };
 
@@ -181,13 +181,13 @@ export default function index() {
       <ApplicantModal isOpen={isViewApplicant}>
         <ViewApplicant
           applicantName={selectedApplicant?.applicantName}
-          Position={selectedApplicant?.Position}
-          Status={selectedApplicant?.Status}
-          Email={selectedApplicant?.Email}
-          Phone={selectedApplicant?.Phone}
-          Skills={selectedApplicant?.Skills}
-          Remarks={selectedApplicant?.Remarks}
-          Application_Date={selectedApplicant?.Application_Date}
+          Position={selectedApplicant?.position}
+          Status={selectedApplicant?.status}
+          Email={selectedApplicant?.email}
+          Phone={selectedApplicant?.phone}
+          Skills={selectedApplicant?.skills}
+          Remarks={selectedApplicant?.remarks}
+          Application_Date={selectedApplicant?.applicationDate1}
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />

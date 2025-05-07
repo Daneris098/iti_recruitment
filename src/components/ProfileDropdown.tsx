@@ -14,7 +14,7 @@ import { ProfileSettingsStore } from "@modules/ProfileSettings/store"
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
   const { setActivePanel, activePanel } = ProfileSettingsStore()
-  const { userDetails, isMobile, setUserDetails } = GlobalStore()
+  const { setUserDetails } = GlobalStore()
   return (
     <Menu
       shadow="md"

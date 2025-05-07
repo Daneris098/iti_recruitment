@@ -252,7 +252,7 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                     <div className="h-[80vh]">
                         <PDFViewer width="100%" height={"100%"} style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                             <MyDocument
-                                Name={Applicant_Name}
+                                Applicant_Name={Applicant_Name}
                                 Position={Position}
                                 Department=""
                                 Remarks=""

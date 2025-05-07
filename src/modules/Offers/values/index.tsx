@@ -1,7 +1,7 @@
 import { AllJobOffersFilterType, OfferType } from '@src/modules/Offers/types';
 
 export const filterVal: AllJobOffersFilterType = {
-  id: "",
+  filterId: "",
   applicantName: "",
   dateFrom: null,
   dateTo: null,
