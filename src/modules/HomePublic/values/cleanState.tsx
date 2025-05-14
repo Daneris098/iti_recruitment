@@ -172,7 +172,7 @@ export const educationAndEmploymentVal: EducationalAndEmployment = {
 
 export const educationAndEmploymentVal2: EducationalAndEmployment = {
   educationBackground: educationBackgroundVal2,
-  employmentRecord: employmentRecordVal2
+  employmentRecord: employmentRecordVal
 }
 
 export const familyBackgroundVal: FamilyBackground = {

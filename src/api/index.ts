@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("accessTokenFlash");
+    const token = sessionStorage.getItem("accessToken");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
       try {
         const refreshToken = getRefreshTokenFromCookie();
         if (refreshToken) {
-          sessionStorage.setItem("accessTokenFlash", refreshToken);
+          sessionStorage.setItem("accessToken", refreshToken);
           originalRequest.headers["Authorization"] = refreshToken;
           return axiosInstance(originalRequest);
         }

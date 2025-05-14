@@ -96,8 +96,8 @@ export default function index() {
                         <TextInput className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("username")} key={form.key('username')} radius='md' size="lg" label="Username" placeholder="Enter username" />
                     </div>
                     <div className='flex gap-4'>
-                        <PasswordInput className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("password")} key={form.key('password')} radius='md' size="lg" label="Enter Password" placeholder="Enter password" />
-                        <PasswordInput className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("rePassword")} key={form.key('rePassword')} radius='md' size="lg" label="Confirm Password" placeholder="Confirm password" />
+                        <PasswordInput disabled={isGenerated} className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("password")} key={form.key('password')} radius='md' size="lg" label="Enter Password" placeholder="Enter password" />
+                        <PasswordInput disabled={isGenerated} className='w-[50%] text-[#6D6D6D]' classNames={{ input: 'poppins' }} {...form.getInputProps("rePassword")} key={form.key('rePassword')} radius='md' size="lg" label="Confirm Password" placeholder="Confirm password" />
                     </div>
                     <div className='flex flex-col gap-8 mt-4'>
                         <div className='flex gap-4'>

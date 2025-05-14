@@ -58,10 +58,15 @@ export default function index() {
 
         }
     });
+    
     const onSubmit = async (form: FamilyBackground) => {
         setApplicationForm({ ...applicationForm, familyBackground: { ...form, otherInformation: { ...form.otherInformation, specialTechnicalSkills: technicalSkills.toString() } } })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
+
+    useEffect(() => {
+        console.log('applicationForm.familyBackground.siblings: ', applicationForm.familyBackground.siblings)
+    }, [])
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.FamilyAndOther && formRef.current) {
@@ -168,13 +173,14 @@ export default function index() {
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
+                
                 {applicationForm.familyBackground.siblings.map((_, index) => (
-                    <div className="flex flex-col sm:flex-row gap-4 items-end" >
-                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
-                        <NumberInput classNames={{ input: 'poppins text-[#6D6D6D]' }} min={1} hideControls   {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
-                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                        <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
-                        {index === applicationForm.familyBackground.siblings.length - 1 && index != 0 && (<div>
+                    <div className="flex flex-col sm:flex-row gap-4 items-end">
+                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key(`siblings.${index}.fullname`)} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
+                        <NumberInput classNames={{ input: 'poppins text-[#6D6D6D]' }} min={1} hideControls key={form.key(`siblings.${index}.age`)} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} key={form.key(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
+                        <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                        {(<div>
                             <IconCircleMinus size={35} className="" onClick={() => { removeField(index) }} />
                         </div>)}
                     </div>

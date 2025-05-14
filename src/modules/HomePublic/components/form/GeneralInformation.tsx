@@ -63,6 +63,8 @@ export default function index() {
                 mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
                 landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+                
+                // sssNo: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
             }
         }
     });

@@ -84,8 +84,8 @@ export const ProfileDropdown = () => {
             <IconLogout style={{ width: rem(20), height: rem(20) }} />
           }
           onClick={() => {
-            sessionStorage.setItem("accessTokenFlash", '');
-            document.cookie = "refreshTokenFlash=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
+            sessionStorage.setItem("accessToken", '');
+            document.cookie = "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
             setUserDetails(userDetailsValue)
             navigate("/login");
           }}

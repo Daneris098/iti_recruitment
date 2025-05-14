@@ -7,7 +7,7 @@ const authApi = axios.create({
 
 authApi.interceptors.request.use(
     (config) => {
-        const token = sessionStorage.getItem("accessTokenFlash");
+        const token = sessionStorage.getItem("accessToken");
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }

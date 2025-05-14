@@ -214,8 +214,8 @@ const SelectedAccount = forwardRef((_, ref) => {
                                             <TextInput {...form.getInputProps("email")} key={form.key('email')} disabled label="Email" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></TextInput>
                                         </div>
                                         <div className='flex gap-4 items-end'>
-                                            <PasswordInput {...form.getInputProps("password")} key={form.key('password')} label="Enter Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></PasswordInput>
-                                            <PasswordInput {...form.getInputProps("rePassword")} key={form.key('rePassword')} label="Confirm Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></PasswordInput>
+                                            <PasswordInput disabled={isGenerated} {...form.getInputProps("password")} key={form.key('password')} label="Enter Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></PasswordInput>
+                                            <PasswordInput disabled={isGenerated} {...form.getInputProps("rePassword")} key={form.key('rePassword')} label="Confirm Password" radius={'md'} className='text-sm text-[#6D6D6D] w-[50%]'></PasswordInput>
                                         </div>
                                         <div className='flex gap-4 items-end'>
                                             <Checkbox

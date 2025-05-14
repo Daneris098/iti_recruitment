@@ -31,27 +31,30 @@ import Hired from "@src/modules/Applicants/components/pages/hired";
 import ForTransferee from "@src/modules/Applicants/components/pages/forTransfer";
 import Transferred from "@src/modules/Applicants/components/pages/transferred";
 import Archived from "@src/modules/Applicants/components/pages/archived";
-
+import useFetchUserDetails from "@src/utils/FetchUserDetails";
 const isValidJWT = (token: string | null): boolean => {
   return typeof token === "string" && token.split(".").length === 3;
 };
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore();
-  const token = sessionStorage.getItem("accessTokenFlash");
+  const fetchUserDetails = useFetchUserDetails();
+  const token = sessionStorage.getItem("accessToken");
   if (!isValidJWT(token)) {
     return
   }
   // use access token if exist
-  if (Boolean(sessionStorage.getItem("accessTokenFlash"))) {
+  if (Boolean(sessionStorage.getItem("accessToken"))) {
     const decodedToken = token != null ? jwtDecode(token) : userDetailsValue;
-    if (!userDetails.Name) {
-      setUserDetails(decodedToken);
+    if (!userDetails.userId) {
+      fetchUserDetails();
+      // setUserDetails(response);
+      // console.log('decodedToken: ', decodedToken)
     }
     const expirationTime = (decodedToken as any).exp * 1000;
     const currentTime = Date.now();
     if (currentTime > expirationTime) {
-      sessionStorage.removeItem("accessTokenFlash");
+      sessionStorage.removeItem("accessToken");
       return false;
     }
     return true;
@@ -69,7 +72,7 @@ const isAuthenticated = () => {
             const { accessToken } = response.data;
             const decodedToken = jwtDecode(accessToken);
             setUserDetails(decodedToken);
-            sessionStorage.setItem("accessTokenFlash", accessToken);
+            sessionStorage.setItem("accessToken", accessToken);
           // }
         })
         .catch((error) => {
@@ -87,11 +90,13 @@ const isAuthenticated = () => {
 
 // Authentication wrapper
 const RequireAuth: React.FC = () => {
+  // return <Outlet />;      
   return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 // Redirect wrapper for public routes
 const RedirectIfAuthenticated: React.FC = () => {
+  // return <Outlet />;      
   return isAuthenticated() ? <Navigate to="/home" replace /> : <Outlet />;
 };
 

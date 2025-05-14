@@ -38,8 +38,8 @@ export default function Login() {
       .then((response) => {
         if (response.status === 200) {
           const { refreshToken, accessToken } = response.data;
-          sessionStorage.setItem("accessTokenFlash", accessToken);
-          document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
+          sessionStorage.setItem("accessToken", accessToken);
+          document.cookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`;
           navigate("/home");
         }
       })
