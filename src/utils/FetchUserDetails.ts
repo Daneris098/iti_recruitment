@@ -11,16 +11,26 @@ const useFetchUserDetails = () => {
 
         try {
             const response = await axiosInstance.get("user-management/users/me/profile");
-            const photoData = JSON.parse(response.data.photo);
-            const photoPath = photoData[0]?.path;
-            console.log('response: ', response.data.extension)
+            console.log('response: ', response)
+
+            let photoPath = null;
+
+            if (response.data.photo) {
+                try {
+                    const photoData = JSON.parse(response.data.photo);
+                    photoPath = photoData[0]?.path || null;
+                } catch (error) {
+                    console.error('Invalid JSON in photo data:', error);
+                }
+            }
+
             setUserDetails({
                 ...response.data,
-                extension: response.data.extension == 'undefined' ? '' : response.data.extension,
+                extension: response.data.extension === 'undefined' ? '' : response.data.extension,
                 photo: photoPath,
                 username: (decodedToken as any).sub
-                
             });
+
         } catch (error) {
             console.error(error);
             return false;

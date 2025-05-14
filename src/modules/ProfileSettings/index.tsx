@@ -14,12 +14,14 @@ import axiosInstance from "@src/api/authApi";
 export const ProfileSettings = () => {
     const { setAlert, activePanel, setActivePanel } = ProfileSettingsStore();
     const { userDetails } = GlobalStore()
-    const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
+    const formRef = useRef<HTMLFormElement>(null); 
+    const formRef2 = useRef<HTMLFormElement>(null); 
     // State to hold the uploaded image
     const [image, setImage] = useState<string>(avatar);
     // Create refs for both tabs
     const profileDetailsTabRef = useRef(null);
     const changePasswordTabRef = useRef(null);
+    const [username, setUsername] = useState('');
     // Function to switch to Profile Details tab
     const switchToProfileDetails = () => {
         if (profileDetailsTabRef.current) {
@@ -86,6 +88,12 @@ export const ProfileSettings = () => {
         username: '',
     }
 
+    const value2 = {
+        currentPassword: '',
+        newPassword: '',
+        rePassword: '',
+    }
+
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: value,
@@ -101,30 +109,59 @@ export const ProfileSettings = () => {
         }
     });
 
-    const onSubmit = async (form: any) => {
-            const formData = new FormData();
-            formData.append('LastName', form.lastName);
-            formData.append('FirstName', form.firstName);
-            formData.append('MiddleName', form.middleName);
-            formData.append('Extension', form.extension);
+    const form2 = useForm({
+        mode: 'uncontrolled',
+        initialValues: value2,
+        validate: {
+            currentPassword: (value: string) => value === null || value === '' ? "Current Password is required" : null,
+            newPassword: (value: string) => value === null || value === '' ? "New Password is required" : null,
+            rePassword: (value: string) => value === null || value === '' ? "Confirm Password is required" : null,
+        }
+    });
 
-            if (image && image.startsWith('data:image/')) {
-                const contentType = image.substring(image.indexOf(":") + 1, image.indexOf(";")); // e.g. "image/jpeg"
-                const blob = base64ToBlob(image, contentType);
-                const file = new File([blob], "profile.jpg", { type: contentType });
-                formData.append('Photo', file);
-            }
-            await axiosInstance.post("user-management/users/me/profile", formData)
-                .then(() => {
-                    setAlert(AlertType.saved);
-                })
-                .catch((error) => {
-                  console.error(error)
+    const onSubmit = async (form: any) => {
+        const formData = new FormData();
+        formData.append('LastName', form.lastName);
+        formData.append('FirstName', form.firstName);
+        formData.append('MiddleName', form.middleName);
+        formData.append('Extension', form.extension);
+
+        if (image && image.startsWith('data:image/')) {
+            const contentType = image.substring(image.indexOf(":") + 1, image.indexOf(";")); // e.g. "image/jpeg"
+            const blob = base64ToBlob(image, contentType);
+            const file = new File([blob], "profile.jpg", { type: contentType });
+            formData.append('Photo', file);
+        }
+        await axiosInstance.post("user-management/users/me/profile", formData)
+            .then(() => {
+                setAlert(AlertType.saved);
+            })
+            .catch((error) => {
+                console.error(error)
+        });
+    };
+
+    const onSubmit2 = async (form: any) => {
+        console.log('userDetails: ', userDetails)
+        const payload = {
+            username: username,
+            currentPassword : form.currentPassword,
+            password: form.newPassword,
+            rePassword: form.rePassword,
+        }
+        await axiosInstance.post("user-management/users/me/change-password", payload)
+            .then(() => {
+                setAlert(AlertType.saved);
+            })
+            .catch((error) => {
+                console.error(error)
             });
-        };
+    };
 
     useEffect(() => {
+        console.log('userDetails:', userDetails)
         if (userDetails.firstName != '') {
+            setUsername(userDetails.username)
             form.setFieldValue('lastName', userDetails.lastName);
             form.setFieldValue('firstName', userDetails.firstName);
             form.setFieldValue('middleName', userDetails.middleName);
@@ -147,7 +184,15 @@ export const ProfileSettings = () => {
                     </div>
                     <div className="flex gap-2 sm:w-[15%]">
                         <Button className="text-xs rounded-md w-[52%]" onClick={() => { setAlert(AlertType.cancel) }} color="white" variant="outline">Cancel</Button>
-                        <Button className="text-xs rounded-md w-[48%]" onClick={() => {  formRef.current?.requestSubmit(); }}>Save</Button>
+                        <Button className="text-xs rounded-md w-[48%]" onClick={() => {
+                            console.log(activePanel)
+                            if (activePanel == 'profileDetails' || activePanel == '') {
+                                formRef.current?.requestSubmit();
+                            }
+                            else if (activePanel === 'changePassword') {
+                                formRef2.current?.requestSubmit();
+                            }
+                        }}>Save</Button>
                     </div>
                 </div>
             </div>
@@ -196,7 +241,7 @@ export const ProfileSettings = () => {
                                 <TextInput {...form.getInputProps("firstName")} key={form.key('firstName')} className="sm:w-[25%]" radius='md' label="First Name" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
                                 <TextInput {...form.getInputProps("middleName")} key={form.key('middleName')} className="sm:w-[25%]" radius='md' label="Middle Name" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
                                 <TextInput {...form.getInputProps("nameExtension")} key={form.key('nameExtension')} className="sm:w-[25%]" radius='md' label="Name Extension" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
-                            </div>
+                                </div>
                             <div className="flex gap-2 flex-col sm:flex-row">
                                 <TextInput disabled {...form.getInputProps("email")} className="sm:w-[50%]" radius='md' label="Email" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
                                 <TextInput disabled {...form.getInputProps("username")} className="sm:w-[50%]" radius='md' label="Username" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
@@ -212,11 +257,13 @@ export const ProfileSettings = () => {
                         <p className="text-md text-[#6D6D6D]">Passwords should contain at least one capital letter, a number, and a special character.</p>
                     </div>
 
-                    <div className="flex gap-2 items-end">
-                        <PasswordInput label="Current Password" className="w-[33%]" radius='md' value="password" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
-                        <PasswordInput label="New Password" className="w-[33%]" radius='md' value="password" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
-                        <PasswordInput label="Confirm Password" className="w-[33%]" radius='md' value="password" classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
-                    </div>
+                    <form ref={formRef2} onSubmit={form2.onSubmit(onSubmit2)}>
+                        <div className="flex gap-2 items-end">
+                            <PasswordInput {...form2.getInputProps("currentPassword")} key={form2.key('currentPassword')} label="Current Password" className="w-[33%]" radius='md' classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                            <PasswordInput {...form2.getInputProps("newPassword")} key={form2.key('newPassword')} label="New Password" className="w-[33%]" radius='md' classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                            <PasswordInput {...form2.getInputProps("rePassword")} key={form2.key('rePassword')} label="Confirm Password" className="w-[33%]" radius='md' classNames={{ label: "p-1 text-[#6d6d6d]", input: 'poppins text-[#6D6D6D]' }} />
+                        </div>
+                    </form> 
                 </Tabs.Panel>
             </Tabs>
         </div>
