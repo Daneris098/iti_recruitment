@@ -1,7 +1,8 @@
 import { useApplicantIdStore, useApplicantStore } from "@modules/Applicants/store";
 import { DataTable } from "mantine-datatable";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
-import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
+// import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
+import { useApplicantsById } from "@modules/Shared/hooks/useSharedApplicants";
 
 interface ViewApplicantsProps {
     applicantName: string;

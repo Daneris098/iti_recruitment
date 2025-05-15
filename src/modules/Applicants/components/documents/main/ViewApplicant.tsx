@@ -15,8 +15,8 @@ import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/G
 import ApplicantModal from "@modules/Applicants/components/modal/dropdownOfferedModal"
 import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
 import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
-import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
-
+// import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
+import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
 
 export default function ViewApplicant({ applicantName, Position, Status, Email, Phone, Remarks, onClose, Application_Date, IsJobOffer, Acknowledgement, Department }: ViewApplicantsProps) {
 
@@ -34,7 +34,7 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
         "Initial Interview": "bg-[#559CDA]",
         // 'Ready for Transfer': 'bg-[#6D6D6D]',
     }
-    
+
     const applicantId = useApplicantIdStore((state) => state.id);
     const { data: applicantsById } = useApplicantsById(applicantId)
 

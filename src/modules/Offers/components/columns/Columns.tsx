@@ -31,49 +31,49 @@ const columns = [
     sortable: true
   },
   {
-    accessor: 'Applicant_Name',
+    accessor: 'applicantName',
     title: <span className='job-offers-table poppins font-bold text-[14px]'>Applicant Name</span>,
     sortable: true
 
   },
   {
-    accessor: 'Date_Generated',
+    accessor: 'dateGenerated',
     title: <span className='job-offers-table poppins font-bold text-[14px]'>Date Generated</span>,
     sortable: true
   },
   {
-    accessor: 'Date_Last_Updated',
+    accessor: 'dateLastUpdated',
     title: <span className='job-offers-table poppins font-bold text-[14px]'>Date Last Updated</span>,
     sortable: true
   },
   {
-    accessor: 'Remarks',
+    accessor: 'remarks',
     title: <span className='job-offers-table poppins font-bold text-[14px]'>Remarks</span>,
     sortable: true
   },
   {
-    accessor: 'Status',
+    accessor: 'status',
     title: (
       <div className="flex justify-center w-full">
         <span className="poppins font-bold text-[15px]">Status</span>
       </div>
     ),
     sortable: true,
-    render: ({ Status }: any) => (
+    render: ({ status }: any) => (
       <div>
-        {checkStatus(Status)}
+        {checkStatus(status)}
       </div>
     ),
   },
   {
-    accessor: 'Attachments',
+    accessor: 'attachments',
     title: (
       <span className='job-offers-table poppins font-bold text-[14px]' style={{ textAlign: 'center', display: 'inline-flex', justifyContent: 'center', width: '100%' }}>
         Attachments
       </span>
     ),
     sortable: true,
-    render: ({ Attachments }: any) => Attachments ? <IconFile size={18} className="text-gray-600 poppins font-bold text-[14px]" /> : null,
+    render: ({ attachments }: any) => attachments ? <IconFile size={18} className="text-gray-600 poppins font-bold text-[14px]" /> : null,
   },
 ]
 

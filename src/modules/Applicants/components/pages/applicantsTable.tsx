@@ -1,10 +1,12 @@
+//#region IMPORTS
 import { Divider } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { useApplicants } from "@src/modules/Applicants/hooks/useApplicant"
+// import { useApplicants } from "@src/modules/Applicants/hooks/useApplicant";
+import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import {
   useCloseModal,
@@ -22,6 +24,8 @@ import ApplicantModal from "@modules/Applicants/components/modal/applicantProfil
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
+import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
+
 
 export default function index() {
 
@@ -37,6 +41,7 @@ export default function index() {
   const headerText = currentRoute?.label;
   const isTransfereePath = currentRoute?.path === "/transferee";
 
+  //#region STORES
   //stores
   const { setPage } = usePaginationStore();
   const records = useApplicantStore((s) => s.records)
@@ -44,16 +49,17 @@ export default function index() {
   const { isViewApplicant, setIsViewApplicant } = useCloseModal();
 
   const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
-  
+
   const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
   const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
 
   //local states
   const [loadTime, setLoadTime] = useState<number | null>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
-  const [hasCheckedFirstPage, setHasCheckedFirstPage] = useState(false);
+  // const [hasCheckedFirstPage, setHasCheckedFirstPage] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
 
+  //region FUNCTIONS
   // functions
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (newPage: number) => {
@@ -85,7 +91,9 @@ export default function index() {
     company: filter.company,
     status: filter.status
   });
-  //hooks
+
+  //#region HOOKS
+  //Data population
   useEffect(() => {
     if (isLoading && startTime === null) {
       setStartTime(performance.now());
@@ -101,66 +109,102 @@ export default function index() {
     }
   }, [isLoading, applicants, startTime, setApplicantRecords, setPage]);
 
+  //#region HELPER FUNCTIONS
   // intially load the records from useApplicationStore().
   // The record rendering will conditionally render the displayed status depending on the 
   // route. For example, if the path is /applied, it will display all the applied status.
-  useEffect(() => {
-    const currentRoute = Object.values(ApplicantRoutes).find(
-      (route) => route.path === location.pathname
+  const getCurrentRoute = (pathname: string): ApplicantRoute | undefined =>
+    Object.values(ApplicantRoutes).find(route => route.path === pathname);
+
+  const extractStatusArray = (
+    route?: ApplicantRoute | undefined
+  ): string[] => {
+    if (!route?.status) return [];
+
+    // Handle both string and readonly array cases
+    // The spread operator creates a new regular string array
+    return Array.isArray(route.status) ? [...route.status] : [route.status];
+  };
+
+  const filterApplicantsByStatus = (
+    applicants: Applicant[],
+    statusArray: string[]
+  ): Applicant[] => {
+    const lowerStatusArray = statusArray.map((s) => s.toLowerCase());
+    return applicants.filter((applicant) =>
+      lowerStatusArray.includes(applicant.status.toLowerCase())
     );
+  };
 
-    const statusArray: string[] = Array.isArray(currentRoute?.status)
-      ? [...currentRoute.status]
-      : currentRoute?.status
-        ? [currentRoute.status]
-        : [];
+  const transformToTransferredStatus = (applicants: Applicant[]) =>
+    applicants.map((applicant) => ({
+      ...applicant,
+      status: "Transferred"
+    }));
 
-    if (applicants && statusArray.length > 0) {
-      let filteredRecords = applicants.applicants.filter((applicant) => {
-        const status = applicant.status.toLowerCase();
-        return statusArray.some(
-          (statusFilter) => status === statusFilter.toLowerCase()
-        );
-      });
+  // const checkAndAdjustFirstPage = (
+  //   records: Applicant[],
+  //   page: number,
+  //   pageSize: number
+  // ) => {
+  //   if (!hasCheckedFirstPage && page === 1) {
+  //     const startIndex = page * pageSize
+  //     const firstPageRecords = records.slice(startIndex, startIndex + pageSize);
 
-      // Transform status to "Transferred" for display
-      if (statusArray.includes("Ready for Transfer")) {
-        filteredRecords = filteredRecords.map((applicant) => ({
-          ...applicant,
-          status: "Transferred",
-        }));
-      }
+  //     if (firstPageRecords.length === 0) {
+  //       setPage(page);
+  //       setSearchParams((prev) => {
+  //         const params = new URLSearchParams(prev);
+  //         params.set("page", String(page));
+  //         return params;
+  //       });
+  //     }
+  //     setHasCheckedFirstPage(true);
+  //   }
+  // }
 
-      setRecords(filteredRecords);
 
-      if (!hasCheckedFirstPage && page === 1) {
-        const startIndex = (page - 1) * pageSize;
-        const firstPageRecords = filteredRecords.slice(
-          startIndex,
-          startIndex + pageSize
-        );
+  useEffect(() => {
+    if (!applicants) return;
 
-        if (firstPageRecords.length === 0) {
-          setPage(page + 1);
-          setSearchParams((prev) => {
-            const params = new URLSearchParams(prev);
-            params.set("page", String(page + 1));
-            return params;
-          });
-        }
+    const currentRoute = getCurrentRoute(location.pathname);
+    const statusArray = extractStatusArray(currentRoute);
 
-        setHasCheckedFirstPage(true);
-      }
+    let filtered = filterApplicantsByStatus(applicants.applicants, statusArray);
+
+    if (statusArray.includes("Ready for Transfer")) {
+      filtered = transformToTransferredStatus(filtered);
     }
-  }, [
-    location.pathname,
-    applicants,
-    page,
-    pageSize,
-    setRecords,
-    setPage,
-    setSearchParams,
-  ]);
+
+    setRecords(filtered);
+  }, [applicants, location.pathname]);
+
+
+  // useEffect(() => {
+  //   if (!applicants) return;
+
+  //   const currentRoute = getCurrentRoute(location.pathname);
+  //   const statusArray = extractStatusArray(currentRoute);
+
+  //   if (statusArray.length === 0) return;
+
+  //   let filteredRecords = filterApplicantsByStatus(applicants.applicants, statusArray);
+
+  //   if (statusArray.includes("Ready for Transfer")) {
+  //     filteredRecords = transformToTransferredStatus(filteredRecords);
+  //   }
+
+  //   setRecords(filteredRecords);
+  //   checkAndAdjustFirstPage(filteredRecords, page, pageSize);
+  // }, [
+  //   location.pathname,
+  //   applicants,
+  //   page,
+  //   pageSize,
+  //   setRecords,
+  //   setPage,
+  //   setSearchParams,
+  // ]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
@@ -180,7 +224,7 @@ export default function index() {
         // Ascending or Descending state of the column. In other words, for sorting animation.
         updatedCol.title = (  // This is for rendering the column title with the icon. 
           <span
-            className="job-offers-table cursor-pointer flex items-center gap-1"
+            className="job-offers-table cursor-pointer flex items-center gap-1 text-[#5E6670]"
             onClick={() => setSort(col.accessor, sortedRecords)}
           >
             {col.title}
@@ -193,6 +237,7 @@ export default function index() {
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
 
+  //#region MAIN
   // main
   return (
     // Container

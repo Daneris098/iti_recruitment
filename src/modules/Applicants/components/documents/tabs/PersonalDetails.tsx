@@ -1,4 +1,6 @@
-import { useApplicantsById } from "@modules/Applicants/hooks/useApplicant";
+// import { useApplicantsById } from "@modules/Applicants/hooks/useApplicant";
+import { useApplicantsById } from "@modules/Shared/hooks/useSharedApplicants";
+
 import { useApplicantIdStore } from "@src/modules/Applicants/store";
 
 export default function PersonalDetails() {

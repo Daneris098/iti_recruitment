@@ -22,6 +22,7 @@ interface Applicant {
     Phone: string,
     Remarks: string,
     Application_Date: string,
+    // ApplicantId: number,
 }
 
 interface ViewApplicantsProps {
@@ -32,10 +33,11 @@ interface ViewApplicantsProps {
 }
 
 export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApplicantsProps) {
-    const { Applicant_Name, Email, Phone, Application_Date, Position, Remarks, Status, Skills } = applicant
+    const {
+        //  ApplicantId,
+         Applicant_Name, Email, Phone, Application_Date, Position, Remarks, Status, Skills } = applicant
 
-    // const applicantId = useApplicantIdStore((state) => state.id)
-    // console.log(applicantId)
+
     //For checking the status of selected employee to properly return the proper color
     const statusColors: Record<string, string> = {
         "Applied": "bg-[#559CDA]",
@@ -255,21 +257,21 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                     <div className="h-[80vh]">
                         <PDFViewer width="100%" height={"100%"} style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                             <MyDocument
-                                Applicant_Name={Applicant_Name}
-                                Position={Position}
-                                Department=""
-                                Remarks=""
-                                Salary_Monthly=""
-                                Salary_Yearly=""
-                                Note_Salary=""
-                                Merit_Increase=""
-                                Description_VL=""
-                                Description_SL=""
-                                Description_BL=""
-                                Benefit_Paternity=""
-                                Benefit_Maternity=""
-                                Description_Transpo=""
-                                Acknowledgement=""
+                                applicantName={Applicant_Name}
+                                position={Position}
+                                department=""
+                                remarks=""
+                                salaryMonthly=""
+                                salaryYearly=""
+                                noteSalary=""
+                                meritIncrease=""
+                                descriptionVL=""
+                                descriptionSL=""
+                                descriptionBL=""
+                                benefitPaternity=""
+                                benefitMaternity=""
+                                descriptionTranspo=""
+                                acknowledgement=""
                             />
                         </PDFViewer>
                     </div>

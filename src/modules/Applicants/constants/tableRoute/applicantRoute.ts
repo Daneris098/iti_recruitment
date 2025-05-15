@@ -1,4 +1,8 @@
-export const ApplicantRoutes = {
+import { ApplicantRoute } from "@modules/Shared/types"
+
+const createApplicantRoutes = <T extends Record<string, ApplicantRoute>>(routes: T) => routes;
+
+export const ApplicantRoutes = createApplicantRoutes({
     applied: {
         path: "/applied",
         status: ["Applied"],
@@ -39,7 +43,6 @@ export const ApplicantRoutes = {
         status: ["Archived"],
         label: "Archived",
     },
-} as const;
-
+});
 export type ApplicantRouteKey = keyof typeof ApplicantRoutes;
 export type ApplicantPath = (typeof ApplicantRoutes)[ApplicantRouteKey]["path"];

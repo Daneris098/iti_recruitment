@@ -4,6 +4,7 @@ import { ApplicantStore } from "@modules/Vacancies/store/index"
 export default function index() { 
     const { setIsViewApplicant, selectedApplicant, isViewApplicant } = ApplicantStore()
     const Applicant = {
+        ApplicantId: selectedApplicant.applicantId,
         Applicant_Name: selectedApplicant.Applicant_Name,
         Position: selectedApplicant.Position,
         Status: selectedApplicant.Status,

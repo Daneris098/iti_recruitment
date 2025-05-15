@@ -1,6 +1,6 @@
 import 'mantine-datatable/styles.layer.css';
 import { DataTable } from 'mantine-datatable';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { VacancyType } from '../types';
 import { VacancyStore, ApplicantStore, DataTableStore } from '../store';
 import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
@@ -34,8 +34,11 @@ export default function index() {
     // const handleRowClick = async (applicant: any) => {
     //     setApplicantId(applicant.id)
     // }
-    console.log(selectedData)
-// debugger;
+    // console.log(selectedData.id)
+    // console.log("applicants", selectedApplicant.applicantId);
+    // console.log(val.record)
+    // debugger;
+    // debugger;
     return (
         <DataTable
             style={{
@@ -91,7 +94,9 @@ export default function index() {
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
             onRowClick={(val) => {
                 setSelectedVacancy(val.record)
+                // setSelectedApplicant()
             }}
+          
         />
     );
 }

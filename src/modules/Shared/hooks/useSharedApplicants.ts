@@ -1,9 +1,12 @@
-// import { applicantsByIdService } from "@src/modules/Applicants/api/userService";
-import { applicantsByIdService } from "@modules/Shared/components/api/UserService"
-import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
 import { useQuery } from "@tanstack/react-query";
-import { ViewApplicantById } from "@modules/Applicants/types"
+import { Applicant,
+    //  Applicants
+     } from "@modules/Shared/types";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { ViewApplicantById } from "@modules/Applicants/types"
+import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
+import { useSharedUserService } from "@modules/Shared/api/useSharedUserService";
+import { applicantsByIdService } from "@modules/Shared/components/api/UserService"
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -193,5 +196,58 @@ export const useApplicantsById = (id: string | number) => {
         queryKey: sharedApplicantKeys.lists(),
         queryFn: () => applicantsByIdService.getById(id),
         select: (data) => formatApplicantById(data),
+    });
+};
+
+const formatApplicant = (applicant: any, page: number, pageSize: number, total: number): Applicant => {
+
+    const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
+    const position = applicant.positionsApplied?.[applicant.positionsApplied.length - 1]
+    const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
+
+    let movement;
+    if (applicant.applicationMovements?.length === 1) {
+        movement = applicant.applicationMovements[0];
+    } else if (applicant.applicationMovements?.length > 1) {
+        movement = applicant.applicationMovements[applicant.applicationMovements.length - 1];
+    }
+
+    return {
+        id: applicant.id,
+        applicantName: `${applicant.nameResponse.firstName} ${applicant.nameResponse.lastName}`,
+        applicationDate: new Date(applicant.dateApplied).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        }),
+        phone: applicant.contact.mobileNo,
+        email: applicant.contact.emailAddress,
+        position: position?.name,
+        status: movement?.status?.name,
+        page: page,
+        pageSize: pageSize,
+        total: total,
+        movement: mapApplicationMovements,
+        comments: mapComments,
+    }
+}
+
+export const useApplicants = (
+    page: number = 0,
+    pageSize: number = 0,
+    filters: Record<string, any> = {}
+) => {
+    return useQuery({
+        queryKey: sharedApplicantKeys.list({ page, pageSize, ...filters }),
+        queryFn: () => useSharedUserService.getAll({ page, pageSize, ...filters }),
+        select: (data) => ({
+            applicants: data.items.map(item =>
+                formatApplicant(item, data.page, data.pageSize, data.total)
+            ),
+            page: data.page,
+            pageSize: data.pageSize,
+            total: data.total,
+            items: data.items,
+        }),
     });
 };
