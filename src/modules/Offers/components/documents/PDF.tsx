@@ -1,15 +1,16 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import header from '@src/assets/intellismart-header.png';
-import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'
+// import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
+// import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'\
+import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { PDFProps } from "@modules/Offers/types"
 
 // Register the Poppins font
 Font.register({
   family: 'Poppins',
   fonts: [
-    { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
+    // { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
     { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
   ],
 });
@@ -107,33 +108,33 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 
 // Create Document Component
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
-  Applicant_Name,               
-  Position,
-  Department,
-  Remarks,
-  Note_Salary,
-  Salary_Monthly,
-  Salary_Yearly,
-  Merit_Increase,
-  Description_SL,
-  Description_VL,
-  Description_BL,       // Importing props from MyDocumentProps interface
-  Description_Transpo,
-  Benefit_Paternity,
-  Benefit_Maternity,
-  Acknowledgement,
+  applicantName,
+  position,
+  department,
+  remarks,
+  salaryMonthly,
+  salaryYearly,
+  noteSalary,
+  meritIncrease,
+  descriptionVL,
+  descriptionSL,
+  descriptionBL,
+  benefitPaternity,
+  benefitMaternity,
+  descriptionTranspo,
+  acknowledgement,
 }) => {
 
   const descriptions = [ // This array will be used later for mapping the type of Leave and Benefit of the user.
-    { label: 'Vacation Leave', value: Description_VL },
-    { label: 'Sick Leave', value: Description_SL },
-    { label: 'Bereavement Leave', value: Description_BL },
+    { label: 'Vacation Leave', value: descriptionVL },
+    { label: 'Sick Leave', value: descriptionSL },
+    { label: 'Bereavement Leave', value: descriptionBL },
     {
       label: 'Maternity/Paternity Leave', value: {
-        Benefit_Paternity, Benefit_Maternity
+        benefitPaternity, benefitMaternity
       },
     },
-    { label: 'Transportation Subsidy', value: Description_Transpo },
+    { label: 'Transportation Subsidy', value: descriptionTranspo },
   ];
 
   return (
@@ -154,34 +155,34 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Name</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Applicant_Name ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{applicantName ?? "No Data"}</Text>
             </View>
 
             {/* Position and Rank */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Position and Rank</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Position ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{position ?? "No Data"}</Text>
             </View>
 
             {/* Department/Division */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Department/Division</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Department ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{department ?? "No Data"}</Text>
             </View>
 
             {/* Status Upon Hiring */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Status Upon Hiring</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Remarks ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{remarks ?? "No Data"}</Text>
             </View>
 
             {/* Second Section: Salary  & Merits */}
             <View style={{ paddingTop: 6 }}>
               <Text style={styles.text_title}>
-                Salary {"\n"} <Text style={styles.salary_note}>{Note_Salary ?? "No Data"}</Text>
+                Salary {"\n"} <Text style={styles.salary_note}>{noteSalary ?? "No Data"}</Text>
               </Text>
 
               {/* Actual Salary */}
@@ -189,13 +190,13 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                 {/* Monthly */}
                 <Text style={styles.text_title}>
                   Salary (Monthly) {"\n"}
-                  <Text style={styles.actual_salary}>{Salary_Monthly ?? "No Data"}</Text>
+                  <Text style={styles.actual_salary}>{salaryMonthly ?? "No Data"}</Text>
                 </Text>
 
                 {/* Annual */}
                 <Text style={styles.text_title}>
                   Salary (Annual) {"\n"}
-                  <Text style={styles.actual_salary}>{Salary_Yearly ?? "No Data"}</Text>
+                  <Text style={styles.actual_salary}>{salaryYearly ?? "No Data"}</Text>
                 </Text>
               </View>
 
@@ -203,7 +204,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
               <View style={{ paddingTop: 6 }}>
                 <Text style={styles.text_title}>
                   Merit Increase {"\n"}
-                  <Text style={styles.salary_note}>{Merit_Increase ?? "No Data"}</Text>
+                  <Text style={styles.salary_note}>{meritIncrease ?? "No Data"}</Text>
                 </Text>
               </View>
             </View>
@@ -256,14 +257,14 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
 
                                   {/* Maternity Leave Details */}
                                   <View style={{ flex: 8 }}>
-                                    {description.value.Benefit_Maternity?.split("\n").map((line, idx) => (
+                                    {description.value.benefitMaternity?.split("\n").map((line, idx) => (
                                       <Text key={idx} style={styles.leave_text}>{line}</Text>
                                     ))}
                                   </View>
 
                                   {/* Paternity Leave Details */}
                                   <View style={{ flex: 5 }}>
-                                    <Text style={styles.benefits_text}>{description.value.Benefit_Paternity}</Text>
+                                    <Text style={styles.benefits_text}>{description.value.benefitPaternity}</Text>
                                   </View>
                                 </View>
                               </View>
@@ -288,7 +289,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             {/* Fourth section: Acknowledgement */}
             <View>
               <Text style={[styles.benefits_text, { textAlign: "center" }]}>
-                {Acknowledgement ?? "No Data"}
+                {acknowledgement ?? "No Data"}
               </Text>
             </View>
 

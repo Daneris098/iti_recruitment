@@ -11,12 +11,14 @@ const statusBgClasses: Record<string, string> = {
   assessment: 'bg-[#ED8028]',
   'initial interview': 'bg-[#559CDA]',
   'final interview': 'bg-[#FEC001]',
+  'ready for transfer': 'bg-[#6D6D6D]',
 };
 
 const baseStatusClass = 'text-white rounded-xl p-1 inline-block w-[132px] text-center font-medium';
 
 const getStatusClass = (status: string) => {
   const normalized = status.toLowerCase();
+  // const normalized = status;
   const bgClass = statusBgClasses[normalized] ?? 'bg-gray-200 text-teal-500 rounded-md my-1';
   return `${baseStatusClass} ${bgClass}`;
 };
@@ -42,35 +44,60 @@ const applicantsColumns = [
     sortable: true,
   },
   {
-    accessor: 'Phone',
+    accessor: 'phone',
     title: <span className='job-offers-table font-bold text-[14px]'>Phone</span>,
     sortable: true,
   },
   {
-    accessor: 'Email',
+    accessor: 'email',
     title: <span className='job-offers-table font-bold text-[14px]'>Email</span>,
     sortable: true,
   },
   {
-    accessor: 'Position',
+    accessor: 'position',
     title: <span className='job-offers-table font-bold text-[14px]'>Position</span>,
     sortable: true,
   },
   {
-    accessor: 'Feedback',
+    accessor: 'feedback',
     title: <span className='job-offers-table font-bold text-[14px]'>Feedback</span>,
     sortable: true,
   },
   {
-    accessor: 'Status',
+    accessor: 'status',
     title: <span className='job-offers-table font-bold text-[14px] flex justify-center w-full'>Status</span>,
     sortable: true,
-    render: ({ Status }: { Status: string }) => (
+    render: ({ status }: {
+      id: any;
+      status: string;
+      movement: string;
+      comments: string;
+
+    }) => (
       <div className="flex justify-center w-full">
-        {checkStatus(Status)}
+        {checkStatus(status)}
       </div>
     )
   },
+  {
+    accessor: 'movement',
+    title: <span className='job-offers-table font-bold text-[14px] flex justify-center w-full '>Movements</span>,
+    sortable: false,
+    render: ({ movement }: { movement: string }) => (
+      <div className="flex justify-center w-full">
+        {checkStatus(movement)}
+      </div>
+    ),
+  },
+  {
+    accessor: 'comments',
+    title: <span className='job-offers-table font-bold text-[14px] flex justify-center w-full'>Comments</span>,
+    sortable: false,
+    render: ({ comments }: { comments: string }) => (
+      <span className="flex justify-center w-full">{comments || ''}</span>
+    ),
+  }
+
 ];
 
 export default applicantsColumns;

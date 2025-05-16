@@ -1,3 +1,4 @@
+//#region OFFER
 export interface OfferColumns {
   applicantName: string;
   applicationDateFrom: string | null;
@@ -16,6 +17,7 @@ export type OfferType = {
 };
 
 
+//#region FILTER
 export interface FilterState {
   selectedData: OfferType;
   filterDrawer: boolean;
@@ -33,7 +35,7 @@ export interface FilterState {
   setFilterDrawer: (filterDrawer: boolean) => void;
   setIsFiltered: (isFiltered: boolean) => void;
   setFilter: (filter: AllJobOffersFilterType) => void;
-  setActiveTab: (tab: string | null) => void;
+  setActiveTab: (tab: TabKey | undefined) => void;
 }
 
 export interface AllJobOffersFilterType {
@@ -51,36 +53,71 @@ export interface AllJobOffersFilterType {
   remarks: string[];
   dateRange?: [string | null, string | null];
 }
+
+//#region PDF PROPS
 export interface PDFProps {
-  Applicant_Name: string;
-  Position: string;
-  Department: string;
-  Remarks: string;
-  Salary_Monthly: string;
-  Salary_Yearly: string;
-  Note_Salary: string;
-  Merit_Increase: string;
-  Description_VL: string;
-  Description_SL: string;
-  Description_BL: string;
-  Benefit_Paternity: string;
-  Benefit_Maternity: string;
-  Description_Transpo: string;
-  Acknowledgement: string;
+  applicantName: string;
+  position: string;
+  department: string;
+  remarks: string;
+  salaryMonthly: string;
+  salaryYearly: string;
+  noteSalary: string;
+  meritIncrease: string;
+  descriptionVL: string;
+  descriptionSL: string;
+  descriptionBL: string;
+  benefitPaternity: string;
+  benefitMaternity: string;
+  descriptionTranspo: string;
+  acknowledgement: string;
 }
-
-export interface Row {
-    Status: string;
-    Attachments: string | null;
-}
-
-export type TabKey = "Pending" | "Accepted" | "All_offers" | "Archived";
 
 export type JobOfferRecord = Partial<PDFProps> & {
-  Status: "Pending" | "Accepted" | "Archived" | string;
+  status: "Pending" | "Accepted" | "Archived" | string;
   id?: string;
-  Date_Generated?: string;
-  Date_Last_Updated?: string;
-  Attachments: string | null;
+  dateGenerated?: string;
+  dateLastUpdated?: string;
+  attachments: string | null;
 };
 
+//#region ROW
+export interface Row {
+  status: string;
+  attachments: string | null;
+}
+
+//#region TABKEYs
+export type TabKey = "Pending" | "Accepted" | "All_offers" | "Archived";
+
+export enum TABSKey {
+  AllOffers = "All_offers",
+  Pending = "Pending",
+  Accepted = "Accepted",
+  Archived = "Archived"
+}
+
+//#region SORT
+export interface SortState {
+  columnAccessor: string;
+  direction: "asc" | "desc";
+  sortedRecords: JobOffersColumns[];
+
+  setSort: (column: string, records: JobOffersColumns[]) => void;
+  setRecords: (records: JobOffersColumns[]) => void;
+}
+
+export interface JobOffersColumns {
+  id: string;
+  applicantName: string;
+  dateGenerated: string;
+  dateLastUpdated: string;
+  remarks: string;
+  status: string;
+  attachments: string;
+}
+
+export interface JobOffersStore {
+  records: JobOffersColumns[];
+  loadCandidates: (data: JobOffersColumns[]) => void;
+}

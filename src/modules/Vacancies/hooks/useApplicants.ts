@@ -10,7 +10,7 @@ export const useApplicants = () => {
         setTime,
         setCounts
     } = ViewApplicantsDataTableStore();
-    const { selectedData } = ApplicantStore();
+    const { selectedData, selectedApplicant, setSelectedApplicant } = ApplicantStore();
 
     const fetchData = async () => {
         try {
@@ -65,73 +65,100 @@ export const useApplicants = () => {
                 hired: [],
             };
 
-            appliedResponse.data.items.forEach((item: any, index: number) => {
+            appliedResponse.data.items.forEach((item: any) => {
                 const positionAppliedId = item.positionsApplied[0].id;
                 const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
                 const firstName: string = item.nameResponse.firstName ?? '';
+                const applicantId: number = item.id;
                 const candidate: Candidate = {
                     name: firstName,
-                    id: index + 1,
-                    status: applicantStatus
+                    id: item.id,
+                    status: applicantStatus,
+                    applicantId: applicantId,
+
                 };
                 if (positionAppliedId == selectedData.id) {
                     stageGroup.applied.push(candidate);
                 }
+
+                if (selectedApplicant.applicantId === applicantId) {
+                    setSelectedApplicant(candidate);
+                }
             });
 
-            forInterviewResponse.data.items.forEach((item: any, index: number) => {
+            forInterviewResponse.data.items.forEach((item: any) => {
                 const positionAppliedId = item.positionsApplied[0].id;
                 const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
                 const firstName: string = item.nameResponse.firstName ?? '';
+                const applicantId: number = item.id;
                 const candidate: Candidate = {
                     name: firstName,
-                    id: index + 1,
-                    status: applicantStatus
+                    id: item.id,
+                    status: applicantStatus,
+                    applicantId: applicantId,
                 };
                 if (positionAppliedId == selectedData.id) {
                     stageGroup.forInterview.push(candidate);
                 }
+                if (selectedApplicant.applicantId === applicantId) {
+                    setSelectedApplicant(candidate);
+                }
             });
 
-            offeredResponse.data.items.forEach((item: any, index: number) => {
+            offeredResponse.data.items.forEach((item: any) => {
                 const positionAppliedId = item.positionsApplied[0].id;
                 const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
                 const firstName: string = item.nameResponse.firstName ?? '';
+                const applicantId: number = item.id;
                 const candidate: Candidate = {
                     name: firstName,
-                    id: index + 1,
-                    status: applicantStatus
+                    id: item.id,
+                    status: applicantStatus,
+                    applicantId: applicantId,
                 };
                 if (positionAppliedId == selectedData.id) {
                     stageGroup.offered.push(candidate);
                 }
+                if (selectedApplicant.applicantId === applicantId) {
+                    setSelectedApplicant(candidate);
+                }
             });
 
-            hiredResponse.data.items.forEach((item: any, index: number) => {
+            hiredResponse.data.items.forEach((item: any) => {
                 const positionAppliedId = item.positionsApplied[0].id;
                 const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
                 const firstName: string = item.nameResponse.firstName ?? '';
+                const applicantId: number = item.id;
                 const candidate: Candidate = {
                     name: firstName,
-                    id: index + 1,
-                    status: applicantStatus
+                    id: item.id,
+                    status: applicantStatus,
+                    applicantId: applicantId,
                 };
                 if (positionAppliedId == selectedData.id) {
                     stageGroup.hired.push(candidate);
                 }
+                if (selectedApplicant.applicantId === applicantId) {
+                    setSelectedApplicant(candidate);
+                }
             });
 
-            archivedResponse.data.items.forEach((item: any, index: number) => {
-                const positionAppliedId = item.positionsApplied[0].id;
+            archivedResponse.data.items.forEach((item: any) => {
+                const positionAppliedId = item.positionsApplied[0].name;
                 const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
                 const firstName: string = item.nameResponse.firstName ?? '';
+                const applicantId: number = item.id;
                 const candidate: Candidate = {
                     name: firstName,
-                    id: index + 1,
-                    status: applicantStatus
+                    id: item.id,
+                    status: applicantStatus,
+                    applicantId: applicantId,
                 };
                 if (positionAppliedId == selectedData.id) {
                     stageGroup.archived.push(candidate);
+                }
+                if (applicantId === applicantId) {
+                    setSelectedApplicant(candidate.applicantId);
                 }
             });
 
@@ -143,11 +170,11 @@ export const useApplicants = () => {
             //     stageGroup.hired.length,
             //     stageGroup.archived.length
             // );
-            
+
             const maxLength = 10;
             const fillWithNullCandidates = (stage: Candidate[], length: number): Candidate[] => {
                 const fillCount = length - stage.length;
-                const nullCandidates = Array(fillCount).fill({ id: null});
+                const nullCandidates = Array(fillCount).fill({ id: null });
                 return [...stage, ...nullCandidates];
             };
 
@@ -174,7 +201,7 @@ export const useApplicants = () => {
             const endTime = performance.now();
             const executionTime = (endTime - startTime) / 1000;
             setTime(executionTime.toFixed(3).toString());
-            return transformed; 
+            return transformed;
         } catch (error: any) {
             console.error("Error fetching data:", error.response || error);
             throw error;
@@ -186,7 +213,7 @@ export const useApplicants = () => {
 
         const group = stageGroups[0];
         const keys = ['applied', 'forInterview', 'offered', 'hired', 'archived'];
-        const length = group.applied.length; 
+        const length = group.applied.length;
         const result = Array.from({ length }, (_, index) => {
             const vacancy: any = { id: index + 1 };
 
@@ -203,6 +230,6 @@ export const useApplicants = () => {
     return useQuery<VacancyType[]>({
         queryKey: ["recruitment/applicants", { page, pageSize, sortStatus, selectedData }],
         queryFn: fetchData,
-        staleTime: 60 * 1000, 
+        staleTime: 60 * 1000,
     });
 };

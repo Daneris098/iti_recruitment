@@ -3,11 +3,7 @@ import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import { IconBrandTelegram, IconX } from "@tabler/icons-react";
 import { useEffect } from "react";
 
-interface AddtoCalendarAlertProps {
-    onClose: () => void;
-}
-
-export default function AddtoCalendar({ onClose }: AddtoCalendarAlertProps) {
+export default function AddtoCalendar({ onClose }: { onClose: () => void }) {
 
     const {
         isScheduleInterview, setIsScheduleInterview,

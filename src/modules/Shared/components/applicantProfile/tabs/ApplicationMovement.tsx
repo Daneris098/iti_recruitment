@@ -14,7 +14,7 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
 
     // Filter records based on props (Applicant_Name & Status)
     const filteredRecords = records.filter(record =>
-        record.Applicant_Name === Applicant_Name && record.Status === Status
+        record.applicantName === Applicant_Name && record.status === Status
     );
 
     // Filter columns to only include Application_Date, Status, and Remarks (Comments)

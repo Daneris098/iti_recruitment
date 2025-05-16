@@ -1,23 +1,21 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
-import { Divider, Textarea } from "@mantine/core";
 import { Menu, Button } from "@mantine/core";
-import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import StatusUpdatedModal from "@modules/Applicants/components/modal/jobGenerated";
-import StatusUpdatedAlert from "@src/modules/Applicants/components/alerts/StatusUpdated";
-import { useDropDownOfferedStore } from "@modules/Applicants/store"
-import { useStatusStore } from "@src/modules/Applicants/store";
+import { Divider, Textarea } from "@mantine/core";
 import { useCloseModal } from "@modules/Applicants/store";
-import ArchivedStatus from "@modules/Applicants/components/documents/movement/Status/Archived";
-import OfferedStatus from "@modules/Applicants/components/documents/movement/Status/Offered";
+import { useStatusStore } from "@src/modules/Applicants/store";
+import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
+import { useDropDownOfferedStore } from "@modules/Applicants/store"
+import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
+import StatusUpdatedAlert from "@src/modules/Applicants/components/alerts/StatusUpdated";
 import HiredStatus from "@modules/Applicants/components/documents/movement/Status/Hired";
+import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
+import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar";
+import OfferedStatus from "@modules/Applicants/components/documents/movement/Status/Offered";
+import ArchivedStatus from "@modules/Applicants/components/documents/movement/Status/Archived";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 import ForInterviewStatus from "@modules/Applicants/components/documents/movement/Status/ForInterview";
-import ApplicantUnreachable from "@modules/Applicants/components/modal/applicantUnReachable"
 import ScheduleInterview from "@src/modules/Applicants/components/documents/movement/ScheduleInterview";
-import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar";
-import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
-import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
-import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 
 interface UpdateStatusProps {
   Status: string;
@@ -26,30 +24,26 @@ interface UpdateStatusProps {
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
+  const { comments, setComments } = useDropDownOfferedStore();
   const { selectedStatus, setSelectedStatus } = useStatusStore();
-  const {
-    comments, setComments
-  } = useDropDownOfferedStore();
 
   const {
-    isDefaultUpdated, setIsDefaultUpdated,
-    isOffered, setIsOffered,
     setIsModalOpen,
-    setIsUpdateStatusButtonModalOpen,
-    isFeedbackSent, setIsFeedbackSent,
-    isScheduleInterview,
-    setIsScheduleInterview,
-    isDropdownOpen, setIsDropdownOpen,
-    setIsContactApplicant, isContactApplicant,
     setIsViewApplicant,
-    setIsAddtoCalendar
+    setIsAddtoCalendar,
+    isOffered, setIsOffered,
+    setIsUpdateStatusButtonModalOpen,
+    isDropdownOpen, setIsDropdownOpen,
+    isFeedbackSent, setIsFeedbackSent,
+    isDefaultUpdated, setIsDefaultUpdated,
+    setIsContactApplicant, isContactApplicant,
+    isScheduleInterview, setIsScheduleInterview,
   } = useCloseModal();
 
   const handleStatusClick = (status: "Offered" | "Archived" | "Hired" | "For Interview") => {
     setSelectedStatus(status);
     setIsModalOpen(true);
   };
-
 
   // For Interview 
   const handleDropdownToggle = (event: React.MouseEvent) => {
@@ -313,25 +307,40 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       </div>
 
       {/* This is the update successful modal. This modal is the default modal. */}
-      <StatusUpdatedModal isOpen={isDefaultUpdated} onClose={() => setIsDefaultUpdated(false)}>
+      <ModalWrapper
+        isOpen={isDefaultUpdated}
+        overlayClassName="job-offer-modal-overlay"
+        contentClassName="job-generated"
+        onClose={() => { }}
+      >
         <StatusUpdatedAlert
           onClose={() => {
             setIsUpdateStatusButtonModalOpen(false);
             setIsDefaultUpdated(false);
             onClose();
           }} />
-      </StatusUpdatedModal>
+      </ModalWrapper>
 
       {/* This modal will be activated when the  the user clicked the button "Generate Offer" from update status form 
        and is reponsible for generating a PDF of the offer letter. */}
-      <JobGeneratedModal isOpen={isOffered} onClose={() => setIsOffered(false)}>
+      <ModalWrapper
+        isOpen={isOffered}
+        overlayClassName="job-offer-modal-overlay"
+        contentClassName="job-generated"
+        onClose={() => { }}
+      >
         <JobGeneratedAlert
           title={selectedStatus}
           onClose={() => setIsOffered(false)} />
-      </JobGeneratedModal>
+      </ModalWrapper>
 
       {/* Modal that will appear when the user selected archived status and clicked on the save feedback button. */}
-      <JobGeneratedModal isOpen={isFeedbackSent} onClose={() => setIsFeedbackSent(false)}>
+      <ModalWrapper
+        isOpen={isFeedbackSent}
+        overlayClassName="job-offer-modal-overlay"
+        contentClassName="job-generated"
+        onClose={() => { }}
+      >
         <FeedbackSent
           selectedStatus={selectedStatus}
           onClose={() => {
@@ -339,10 +348,15 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             setIsViewApplicant(false);
           }}
         />
-      </JobGeneratedModal>
+      </ModalWrapper>
 
       {/* This modal will be called when the selected status is equivalent to "For Interview" and the "Schedule Interview button has been clicked." */}
-      <ApplicantUnreachable isOpen={isScheduleInterview} >
+      <ModalWrapper
+        isOpen={isScheduleInterview}
+        overlayClassName="applicant-unreachable-modal-overlay"
+        contentClassName="applicant-unreachable"
+        onClose={() => { }}
+      >
         <ScheduleInterview onClose={() => {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 
@@ -351,14 +365,19 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
           setIsScheduleInterview(false);
           setIsAddtoCalendar(false)
         }} />
-      </ApplicantUnreachable>
+      </ModalWrapper>
+
 
       {/* This modal will appear if the user clicks on the "Add to Calendar" 
           button under the Schedule interview of update applicant status modal. */}
-      <ApplicantUnreachable isOpen={isContactApplicant} >
-        <ScheduleInterviewAlert onClose={() => setIsContactApplicant(false)}
-        />
-      </ApplicantUnreachable>
+      <ModalWrapper
+        isOpen={isContactApplicant}
+        overlayClassName="applicant-unreachable-modal-overlay"
+        contentClassName="applicant-unreachable"
+        onClose={() => { }}
+      >
+        <ScheduleInterviewAlert onClose={() => setIsContactApplicant(false)} />
+      </ModalWrapper>
     </div >
   );
 }

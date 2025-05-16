@@ -40,6 +40,7 @@ export interface FilterType {
 export interface VacancyType {
   id: number;
   position: string;
+  applicantId: number;
   workplace: string;
   department: string;
   company: string;
@@ -87,7 +88,6 @@ export interface FetchExpensesParams {
   };
 }
 
-
 export interface ApplicantState {
   selectedData: VacancyType,
   loading: boolean,
@@ -99,7 +99,6 @@ export interface ApplicantState {
   setSelectedData: (action: VacancyType) => void;
   setLoading: (loading: boolean) => void;
 }
-
 export interface DataTableState {
   time: string,
   search: string,
@@ -151,6 +150,8 @@ export enum AlertType {
 }
 
 export interface selectedApplicant {
+  id: number;
+  applicantId: number;
   Applicant_Name: string,
   Position: string,
   Status: string,
@@ -163,18 +164,20 @@ export interface selectedApplicant {
 
 
 export interface Candidate {
-    name: string | null;
-    id: number | null;
-    status: string | null;
+  applicantId: number;
+  name: string | null;
+  id: number | null;
+  status: string | null;
+  // position: string;
 }
 
 export interface StageGroup {
-    id: number;
-    applied: Candidate[];
-    forInterview: Candidate[];
-    offered: Candidate[];
-    hired: Candidate[];
-    archived: Candidate[];
+  id: number;
+  applied: Candidate[];
+  forInterview: Candidate[];
+  offered: Candidate[];
+  hired: Candidate[];
+  archived: Candidate[];
 }
 
 export enum Action {

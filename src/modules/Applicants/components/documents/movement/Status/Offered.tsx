@@ -2,20 +2,32 @@
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import { IconCaretDownFilled } from "@tabler/icons-react";
+import dropDownChoicesJSON from "@modules/Applicants/constants/json/dropdown.json";
 
 export default function OfferedStatus() {
 
     const {
         getSalaryTypes, setSalaryTypes,
-        fullName, setFullName,
         amount, setAmount,
         position, setPosition,
         department, setDepartment,
+        setDepartmentId, setPositionId, setPaymentSchemeId
     } = useDropDownOfferedStore();
 
-    const positions = ["HR Specialist", "Engineer", "Doctor"];
-    const departments = ["Finance", "IT", "HR", "Operations"];
-    const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
+    const positionOptions = dropDownChoicesJSON[0].position.map((pos) => ({
+        value: pos.id,
+        label: pos.name,
+    }));
+
+    const departmentOptions = dropDownChoicesJSON[0].department.map((dep) => ({
+        value: dep.id,
+        label: dep.name,
+    }))
+
+    const salaryTypesOptions = dropDownChoicesJSON[0].paymentScheme.map((paysch) => ({
+        value: paysch.id,
+        label: paysch.name,
+    }))
 
     const departmentCombobox = useCombobox({ onDropdownClose: () => departmentCombobox.resetSelectedOption(), });
     const salaryComboBox = useCombobox({ onDropdownClose: () => salaryComboBox.resetSelectedOption(), })
@@ -26,22 +38,6 @@ export default function OfferedStatus() {
 
     return (
         <div>
-            {/* Applicant Full Name */}
-            <div className="pt-4">
-                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
-                    Applicant Full Name <span className="text-[#F14336]">*</span>
-                </h3>
-                <TextInput
-                    type="text"
-                    placeholder="Type Full Name"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    classNames={{
-                        input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
-                    }}
-                    required
-                />
-            </div>
 
             {/* Position and Department (Two-Column Layout)*/}
             <div className="flex gap-4 pt-4 poppins">
@@ -54,30 +50,31 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 value={position}
-                                onChange={(e) => setPosition(e.currentTarget.value)}
+                                onChange={() => { }}
                                 onFocus={() => positionCombobox.openDropdown()}
                                 rightSection={<IconCaretDownFilled size={16} />}
                                 placeholder="Select Position"
                                 classNames={{
-                                    input: "poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                    input: "cursor-pointer poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                 }}
                                 required
                             />
                         </Combobox.Target>
 
-                        {positions.length > 0 && (
+                        {positionOptions.length > 0 && (
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                                {positions.map((role) => (
+                                {positionOptions.map((role) => (
                                     <Combobox.Option
-                                        key={role}
-                                        value={role}
+                                        key={role.value}
+                                        value={role.label}
                                         onClick={() => {
-                                            setPosition(role);
+                                            setPosition(role.label);
+                                            setPositionId(role.value)
                                             positionCombobox.closeDropdown();
                                         }}
                                         className="poppins px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
                                     >
-                                        {role}
+                                        {role.label}
                                     </Combobox.Option>
                                 ))}
                             </Combobox.Dropdown>
@@ -94,30 +91,31 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 value={department}
-                                onChange={(e) => setDepartment(e.currentTarget.value)}
+                                onChange={() => { }}
                                 onFocus={() => departmentCombobox.openDropdown()}
                                 rightSection={<IconCaretDownFilled size={16} />}
                                 placeholder="Select Department"
                                 classNames={{
-                                    input: " poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                    input: "cursor-pointer poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                 }}
                                 required
                             />
                         </Combobox.Target>
 
-                        {departments.length > 0 && (
+                        {departmentOptions.length > 0 && (
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                                {departments.map((dept) => (
+                                {departmentOptions.map((dept) => (
                                     <Combobox.Option
-                                        key={dept}
-                                        value={dept}
+                                        key={dept.value}
+                                        value={dept.label}
                                         onClick={() => {
-                                            setDepartment(dept);
+                                            setDepartment(dept.label);
                                             departmentCombobox.closeDropdown();
+                                            setDepartmentId(dept.value)
                                         }}
                                         className="poppins px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
                                     >
-                                        {dept}
+                                        {dept.label}
                                     </Combobox.Option>
                                 ))}
                             </Combobox.Dropdown>
@@ -136,30 +134,31 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 value={getSalaryTypes}
-                                onChange={(e) => setSalaryTypes(e.currentTarget.value)}
+                                onChange={() => { }}
                                 onFocus={() => salaryComboBox.openDropdown()}
                                 rightSection={<IconCaretDownFilled size={16} />}
                                 placeholder="Monthly Rate"
                                 classNames={{
-                                    input: "poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                    input: "cursor-pointer poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                                 }}
                                 required
                             />
                         </Combobox.Target>
 
-                        {salaryTypes.length > 0 && (
+                        {salaryTypesOptions.length > 0 && (
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                                {salaryTypes.map((salary) => (
+                                {salaryTypesOptions.map((salary) => (
                                     <Combobox.Option
-                                        key={salary}
-                                        value={salary}
+                                        key={salary.value}
+                                        value={salary.label}
                                         onClick={() => {
-                                            setSalaryTypes(salary);
+                                            setSalaryTypes(salary.label);
+                                            setPaymentSchemeId(salary.value)
                                             salaryComboBox.closeDropdown();
                                         }}
                                         className="poppins px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
                                     >
-                                        {salary}
+                                        {salary.label}
                                     </Combobox.Option>
                                 ))}
                             </Combobox.Dropdown>

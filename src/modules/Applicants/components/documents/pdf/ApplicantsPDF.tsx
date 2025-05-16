@@ -93,7 +93,7 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 
 // Create Document Component
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
-  Applicant_Name,
+  applicantName,
   Position,
   Department,
   Remarks,
@@ -141,7 +141,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Name</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{Applicant_Name ?? "No Data"}</Text>
+              <Text style={[styles.text_data, { flex: 3 }]}>{applicantName ?? "No Data"}</Text>
             </View>
 
             {/* Position and Rank */}

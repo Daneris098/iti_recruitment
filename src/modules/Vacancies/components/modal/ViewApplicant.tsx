@@ -2,7 +2,10 @@ import { Divider, Modal } from "@mantine/core";
 import { ApplicantStore, ViewApplicantsDataTableStore } from "../../store";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
-import { VacancyType, StageGroup, Candidate } from "../../types";
+import {
+    VacancyType,
+    // StageGroup, Candidate
+} from "../../types";
 // import Vacancies from '@src/modules/Vacancies/values/response/Applicants.json';
 import { DataTable } from "mantine-datatable";
 import { Badge } from '@mantine/core';
@@ -10,13 +13,13 @@ import "@modules/Vacancies/style.css"
 import { useApplicants } from "@modules/Vacancies/hooks/useApplicants";
 
 export default function index() {
-    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
+    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant, selectedApplicant } = ApplicantStore();
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
         columnAccessor: "position", // Use a valid key from VacancyType
         direction: "asc",
     });
-    const { data, isFetching } = useApplicants();
+    const { data: applicants, isFetching } = useApplicants();
     const { counts, pageSize } = ViewApplicantsDataTableStore();
     const [appliedCount, setAppliedCount] = useState(0);
     const [forInterviewCount, setForInterviewCount] = useState(0);
@@ -60,7 +63,7 @@ export default function index() {
                             withRowBorders={false}
                             withTableBorder
                             borderRadius="sm"
-                            records={data}
+                            records={applicants}
                             paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (0.225) seconds`}
                             columns={[
                                 {
@@ -113,8 +116,10 @@ export default function index() {
                             sortStatus={sortStatus}
                             onCellClick={(val) => {
                                 setSelectedApplicant({
+                                    applicantId: val.record[val.column.accessor]?.applicantId ?? 0,
                                     Applicant_Name: val.record[val.column.accessor]['name'],
                                     Position: 'Data Analyst',
+                                    // position: val.record[val.column.accessor]?.position ?? "NA",
                                     Status: val.record[val.column.accessor]['status'],
                                     Email: 'maxineramsey@pearlessa.com',
                                     Phone: '+63 (856) 555-3987',

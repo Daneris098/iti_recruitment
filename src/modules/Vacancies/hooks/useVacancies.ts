@@ -12,7 +12,7 @@ export const useVacancies = () => {
 
     const fetchData = async () => {
         try {
-            const startTime = performance.now();    
+            const startTime = performance.now();
             const res = await axiosInstance.get('recruitment/vacancies', {
                 params: {
                     page,
@@ -23,7 +23,7 @@ export const useVacancies = () => {
             if (res.status === 200 && Array.isArray(res.data.items)) {
                 const mapped = res.data.items.map((item: any) => ({
                     ...item,
-                    mustHaveSkills: item.skills,            
+                    mustHaveSkills: item.skills,
                     company: item.companyResponse.name,
                     branch: item.branchResponse.name,
                     division: item.divisionResponse.name,
@@ -36,7 +36,7 @@ export const useVacancies = () => {
                     id: item.id,
                     position: item.positionTitleResponse,
                     datePublish: item.vacancyDurationResponse?.dateStart,
-                    interviewer: "N/A", 
+                    interviewer: "N/A",
                     department: item.departmentResponse?.name || "-",
                     quantity: item.availableSlot,
                     totalApplicant: item.availableSlot,

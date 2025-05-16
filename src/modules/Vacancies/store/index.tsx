@@ -27,15 +27,27 @@ export const FilterStore = create<FilterState>((set) => ({
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
 }));
 
+// export const ApplicantStore = create<ApplicantState>((set) => ({
+//   selectedData: selectedDataVal,
+//   loading: false,
+//   isViewApplicant: false,
+//   selectedApplicant: selectedApplicantInitial,
+
+//   setSelectedApplicant: (selectedApplicant: selectedApplicant) => set({ selectedApplicant: selectedApplicant }),
+//   setIsViewApplicant: (isViewApplicant: boolean) => set({ isViewApplicant: isViewApplicant }),
+//   setLoading: (loading: boolean) => set({ loading: loading }),
+//   setSelectedData: (selected_data: VacancyType) => set({ selectedData: selected_data }),
+// }));
 export const ApplicantStore = create<ApplicantState>((set) => ({
   selectedData: selectedDataVal,
   loading: false,
   isViewApplicant: false,
   selectedApplicant: selectedApplicantInitial,
 
-  setSelectedApplicant: (selectedApplicant: selectedApplicant) => set({ selectedApplicant: selectedApplicant }),
-  setIsViewApplicant: (isViewApplicant: boolean) => set({ isViewApplicant: isViewApplicant }),
-  setLoading: (loading: boolean) => set({ loading: loading }),
+  // Methods to update state
+  setSelectedApplicant: (selectedApplicant: selectedApplicant) => set({ selectedApplicant }),
+  setIsViewApplicant: (isViewApplicant: boolean) => set({ isViewApplicant }),
+  setLoading: (loading: boolean) => set({ loading }),
   setSelectedData: (selected_data: VacancyType) => set({ selectedData: selected_data }),
 }));
 
@@ -62,9 +74,9 @@ export const ViewApplicantsDataTableStore = create<DataTableState2>((set) => ({
   page: 1,
   pageSize: 20,
   sortStatus: { columnAccessor: 'guid', direction: 'desc' },
-  counts  : {}, 
+  counts: {},
 
-  setCounts: (counts: { [key: string]: number }) => set({ counts }), 
+  setCounts: (counts: { [key: string]: number }) => set({ counts }),
   setTime: (time: string) => set({ time: time }),
   setSearch: (search: string) => set({ search: search }),
   setTotalRecords: (total: number) => set({ totalRecords: total }),
@@ -82,3 +94,12 @@ export const useDateRangeStore = create<DateRangeState>((set) => ({
   value: [null, null],
   setValue: (newValue) => set({ value: newValue }),
 }));
+
+interface ApplicantId {
+  id: number
+  setApplicantId: (id: number) => void
+}
+export const useApplicantIdStore = create<ApplicantId>((set) => ({
+  id: 0,
+  setApplicantId: (id) => set({ id }),
+}))

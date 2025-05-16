@@ -1,10 +1,10 @@
-{/*Generate new offer button.*/}
+{/*Generate new offer button.*/ }
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
 import { IconChevronDown, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Applicants/store"
-import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
 import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert"
-import { useCloseModal } from "@modules/Applicants/store"
+import { useCloseModal } from "@modules/Applicants/store";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 interface DropDownOfferedProps {
     onClose: () => void;
     ApplicantName: string;
@@ -243,9 +243,14 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             </form>
 
             <div>
-                <JobGeneratedModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <JobGeneratedAlert onClose={onClose} title={""}/>
-                </JobGeneratedModal>
+                <ModalWrapper
+                    isOpen={isModalOpen}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={onClose}
+                >
+                    <JobGeneratedAlert onClose={onClose} title={""} />
+                </ModalWrapper>
             </div>
         </div>
     )

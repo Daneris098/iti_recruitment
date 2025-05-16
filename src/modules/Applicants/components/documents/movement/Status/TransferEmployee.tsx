@@ -1,9 +1,8 @@
 import { Button, Divider } from "@mantine/core";
-import { IconCaretDownFilled, IconDots, IconX } from "@tabler/icons-react";
-import TransferredPositionModal from "@modules/Applicants/components/modal/jobGenerated";
-import TransferEmployeePosition from "@src/modules/Applicants/components/alerts/TransferEmployee";
 import { useCloseModal } from "@src/modules/Applicants/store";
-
+import { IconCaretDownFilled, IconDots, IconX } from "@tabler/icons-react";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import TransferEmployeePosition from "@src/modules/Applicants/components/alerts/TransferEmployee";
 interface TransferEmployeeProps {
     Name: string
     onClose: () => void
@@ -301,12 +300,19 @@ export default function TransferEmployee({ Name, onClose, Status }: TransferEmpl
             </div>
 
             <div>
-                <TransferredPositionModal isOpen={isTransferEmployeePosition}>
+
+                <ModalWrapper
+                    isOpen={isTransferEmployeePosition}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={() => { }}
+                >
                     <TransferEmployeePosition
                         Employee_Name={Name}
                         onClose={onClose}
                     />
-                </TransferredPositionModal>
+                </ModalWrapper>
+
             </div>
         </div>
 

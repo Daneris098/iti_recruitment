@@ -139,6 +139,18 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.available-positions {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 1000px;
+  /* max-height: 90vh; */
+  max-height: 600px;
+  overflow: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .applicant-unreachable {
   background-color: #fff;
   padding: 20px;

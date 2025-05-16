@@ -1,9 +1,9 @@
 import { Button, Divider } from "@mantine/core";
 import { IconUserQuestion, IconX } from "@tabler/icons-react";
 import { useCloseModal } from "@src/modules/Applicants/store";
-
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar"
-import ScheduleInterviewModal from "@modules/Applicants/components/modal/scheduleInterview";
+
 interface ApplicantNotReachableProps {
     onClose: () => void;
 }
@@ -134,9 +134,14 @@ export default function ApplicantNotReachable({ onClose }: ApplicantNotReachable
             </div>
 
             <div>
-                <ScheduleInterviewModal isOpen={isAddtoCalendar}>
+                <ModalWrapper
+                    isOpen={isAddtoCalendar}
+                    overlayClassName="schedule-interview-modal-overlay"
+                    contentClassName="schedule-interview-content"
+                    onClose={onClose}
+                >
                     <ScheduleInterviewAlert onClose={() => setIsAddtoCalendar(false)} />
-                </ScheduleInterviewModal>
+                </ModalWrapper>
             </div>
         </div>
     );

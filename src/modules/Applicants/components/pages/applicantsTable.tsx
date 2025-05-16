@@ -1,104 +1,149 @@
-import { Pagination } from "@mantine/core";
-import { useLocation } from "react-router-dom";
+//#region IMPORTS
+import { Divider } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
-import { useApplicants } from "@src/modules/Applicants/hooks/useApplicant"
-import { useApplicantStore, useCloseModal, usePaginationStore, useSortStore, useApplicantIdStore } from "@modules/Applicants/store";
+import { IconArrowUpRight } from "@tabler/icons-react";
+import { Button, Modal, Pagination } from "@mantine/core";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
+import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
+import {
+  useCloseModal,
+  useSortStore,
+  useApplicantStore,
+  usePaginationStore,
+  useApplicantIdStore,
+  useSelectedApplicantsStore,
+  FilterStore
+} from "@modules/Applicants/store";
+
 import Filter from "@src/modules/Applicants/components/filter/Filter";
+import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
+// import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
-import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer"
-import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
-import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant"
+import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
+import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
+import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 
 
 export default function index() {
-  // For conditionally rendering table header based on their corresponding route.
+
+  const { filter } = FilterStore();
+
   const location = useLocation();
-  const headerText = {
-    "/applied": "Applied",
-    "/interview": "For Interview",
-    "/applicants": "All Applicants",
-    "/offered": "Offered",
-    "/hired": "Hired",
-    "/transferee": "For Transfer",
-    "/transferred": "Transferred",
-    "/archive": "Archived"
-  }[location.pathname] || ""
+  const { isForMultipleTransfer, setIsForMultipleTransfer } = useCloseModal();
+  const currentRoute = Object.values(ApplicantRoutes).find(
+    (route) => route.path === location.pathname
+  );
+  const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
 
-  //initializing applicant, sort and pagination store
-  const { data: applicants, isLoading } = useApplicants();
-  const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
-  const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
+  const headerText = currentRoute?.label;
+  const isTransfereePath = currentRoute?.path === "/transferee";
+
+  //#region STORES
+  const { setPage } = usePaginationStore();
   const records = useApplicantStore((s) => s.records)
-  const { sortedRecords, setSort, setRecords } = useSortStore(); // for sorting
-  const { page, pageSize, setPage } = usePaginationStore(); // for pagination
-  const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null); // For Document model
-  const { isViewApplicant, setIsViewApplicant } = useCloseModal(); // For handling the state of view applicant modal.
+  const { sortedRecords, setSort, setRecords } = useSortStore();
+  const { isViewApplicant, setIsViewApplicant } = useCloseModal();
+
+  const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+
+  const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
+  const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
+
+  //local states
   const [loadTime, setLoadTime] = useState<number | null>(null);
-  const [startTime, setStartTime] = useState<number | null>(null);
 
-  //Load the applicants data from React-Query.
-  useEffect(() => {
-    if (isLoading && startTime === null) {
-      setStartTime(performance.now());
-    }
+  const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
 
-    if (!isLoading && applicants && startTime !== null) {
-      setApplicantRecords(applicants);
-      const endTime = performance.now();
-      setLoadTime((endTime - startTime) / 1000);
-      setStartTime(null);
-    }
-  }, [isLoading, applicants, startTime, setApplicantRecords, setPage]);
+  //region FUNCTIONS
+  const [searchParams, setSearchParams] = useSearchParams();
+  const handlePageChange = (newPage: number) => {
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev);
+      params.set("page", String(newPage));
+      params.set("pageSize", String(pageSize));
+      return params;
+    });
+  };
 
-  // intially load the records from useApplicationStore().
-  // The record rendering will conditionally render the displayed status depending on the 
-  // route. For example, if the path is /applied, it will display all the applied status.
-  useEffect(() => {
-    const statusFilters: Record<string, string | string[]> = {
-      "/applied": "Applied",
-      "/offered": "Offered",
-      "/interview": ["Assessment", "Initial Interview", "Final Interview"],
-      "/applicants": ["Hired", "Applied", "Offered", "For Transfer", "Archived", "For Interview"],
-      "/hired": "Hired",
-      "/transferee": "For Transfer",
-      "/transferred": "Transferred",
-      "/archive": "Archived",
-    };
-
-    // Filtering the records based on the current tab.
-    // This will filter the records based on the status of the applicant.
-    let filteredRecords = records;
-    const filterCriteria = statusFilters[location.pathname];
-
-    if (filterCriteria) {
-      if (Array.isArray(filterCriteria)) {
-        filteredRecords = records.filter((applicant) => filterCriteria.includes(applicant.Status));
-      }
-      else {
-        filteredRecords = records.filter((applicant) => applicant.Status === filterCriteria)
-      }
-    }
-
-    setRecords(filteredRecords);
-  }, [records, location.pathname, setRecords]);
-
-  // for making sure that the records will be divided into x number of records per page.
-  // also responsible for pagination display.
-  const paginatedRecords = useMemo(() => {
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return sortedRecords.slice(startIndex, endIndex);
-  }, [sortedRecords, page, pageSize]);
-
-  // For handling the state of row clicking of each record.
   const handleRowClick = async (applicant: any) => {
     setSelectedApplicant(applicant);
     setApplicantId(applicant.id);
     setIsViewApplicant(true);
   };
 
+  const { page, pageSize } = useMemo(() => {
+    return {
+      page: parseInt(searchParams.get("page") || "1"),
+      pageSize: parseInt(searchParams.get("pageSize") || "30"),
+    };
+  }, [searchParams]);
 
+  const { data: getApplicants, isLoading } = useApplicants(page, pageSize, {
+    name: filter.applicantName,
+    company: filter.company,
+    status: filter.status
+  }, setLoadTime);
+
+  //#region HOOKS
+  //Data population
+  useEffect(() => {
+    if (!isLoading && getApplicants) {
+      setApplicantRecords(getApplicants.applicants);
+      setPage(page);
+    }
+  }, [isLoading, getApplicants, page, setApplicantRecords, setPage]);
+
+  //#region HELPER FUNCTIONS
+  // intially load the records from useApplicationStore().
+  // The record rendering will conditionally render the displayed status depending on the 
+  // route. For example, if the path is /applied, it will display all the applied status.
+  const getCurrentRoute = (pathname: string): ApplicantRoute | undefined =>
+    Object.values(ApplicantRoutes).find(route => route.path === pathname);
+
+  const extractStatusArray = (
+    route?: ApplicantRoute | undefined
+  ): string[] => {
+    if (!route?.status) return [];
+
+    // Handle both string and readonly array cases
+    // The spread operator creates a new regular string array
+    return Array.isArray(route.status) ? [...route.status] : [route.status];
+  };
+
+  const filterApplicantsByStatus = (
+    applicants: Applicant[],
+    statusArray: string[]
+  ): Applicant[] => {
+    const lowerStatusArray = statusArray.map((s) => s.toLowerCase());
+    return applicants.filter((applicant) =>
+      lowerStatusArray.includes(applicant.status.toLowerCase())
+    );
+  };
+
+  const transformToTransferredStatus = (applicants: Applicant[]) =>
+    applicants.map((applicant) => ({
+      ...applicant,
+      status: "Transferred"
+    }));
+
+
+  useEffect(() => {
+    if (!getApplicants) return;
+
+    const currentRoute = getCurrentRoute(location.pathname);
+    const statusArray = extractStatusArray(currentRoute);
+
+    let filtered = filterApplicantsByStatus(getApplicants.applicants, statusArray);
+
+    if (statusArray.includes("Ready for Transfer")) {
+      filtered = transformToTransferredStatus(filtered);
+    }
+
+    setRecords(filtered);
+  }, [getApplicants, location.pathname]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
@@ -106,7 +151,7 @@ export default function index() {
   const extendedColumn = applicantsColumns
 
     // Exclude Feedback Column from the JSON object
-    .filter((col: any) => col.accessor !== "Feedback")
+    .filter((col: any) => col.accessor !== "feedback" && col.accessor !== 'movement' && col.accessor !== "comments")
     .map((col) => {
       let updatedCol = { ...col };
 
@@ -118,11 +163,10 @@ export default function index() {
         // Ascending or Descending state of the column. In other words, for sorting animation.
         updatedCol.title = (  // This is for rendering the column title with the icon. 
           <span
-            className="job-offers-table cursor-pointer flex items-center gap-1"
+            className="job-offers-table cursor-pointer flex items-center gap-1 text-[#5E6670]"
             onClick={() => setSort(col.accessor, sortedRecords)}
           >
             {col.title}
-            {/* {icon} */}
           </span>
         );
       } else {
@@ -132,14 +176,28 @@ export default function index() {
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
 
+  //#region MAIN
   // main
   return (
     // Container
     <div className="rounded-md h-full flex flex-col gap-5 p-6 bg-white relative">
 
       {/* Header */}
-      <h1 className="text-[#559CDA] text-2xl font-bold poppins ml-2">
+      <h1 className="text-[#559CDA] text-2xl font-bold poppins ml-2 flex justify-between">
         {headerText}
+        {isTransfereePath && (
+          <Button
+            className="bg-[#559CDA] rounded-lg w-32 h-9 poppins font-semibold text-xs tracking-wide"
+            onClick={() => {
+              setIsForMultipleTransfer(true);
+            }}
+          >
+            <span className="mr-2">
+              <IconArrowUpRight size={20} stroke={2} />
+            </span>
+            TRANSFER
+          </Button>
+        )}
       </h1>
 
       {/* Filter Component */}
@@ -148,12 +206,31 @@ export default function index() {
 
       {/* Table Wrapper (Grows to Fill Space) */}
       <div className="flex-grow overflow-auto poppins">
-        <DataTable
-          columns={extendedColumn}
-          records={paginatedRecords}
-          onRowClick={({ record }) => handleRowClick(record)}
-          rowClassName={() => "cursor-pointer text-[#6D6D6D]"} // Add hover effect
-        />
+        {isTransfereePath && (
+          <DataTable
+            columns={extendedColumn}
+            records={sortedRecords}
+            // withrowselection="true"
+            selectedRecords={selectedRecords}
+            onSelectedRecordsChange={(records) => {
+              setSelectedRecords(records);
+              const ids = records.map((record) => record.id);
+              setSelectedIds(ids);
+            }}
+            onRowClick={({ record }) => handleRowClick(record)}
+            rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
+          />
+        )}
+
+        {!isTransfereePath && (
+          <DataTable
+            columns={extendedColumn}
+            records={sortedRecords}
+            onRowClick={({ record }) => handleRowClick(record)}
+            rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
+          />
+        )}
+
       </div>
 
       {/* Pagination and Footer (Sticky at Bottom) */}
@@ -163,35 +240,74 @@ export default function index() {
           {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
             page * pageSize,
             records.length
-          )} of ${records.length} entries`}
+          )} of ${getApplicants?.total} entries`}
           {loadTime !== null && ` found in (${loadTime.toFixed(3)}) seconds`}
         </p>
 
         {/* Pagination */}
         <Pagination
           value={page}
-          onChange={setPage}
-          total={Math.ceil(records.length / pageSize)}
+          onChange={handlePageChange}
+          total={Math.ceil(getApplicants?.total! / pageSize)}
           siblings={1}
           size="sm"
         />
       </div>
 
       {/* View Applicant Modal */}
-      <ApplicantModal isOpen={isViewApplicant}>
+      <ModalWrapper
+        isOpen={isViewApplicant}
+        overlayClassName="modal-overlay"
+        contentClassName="modal-content"
+        onClose={() => setIsViewApplicant(false)}
+      >
         <ViewApplicant
           applicantName={selectedApplicant?.applicantName}
-          Position={selectedApplicant?.Position}
-          Status={selectedApplicant?.Status}
-          Email={selectedApplicant?.Email}
-          Phone={selectedApplicant?.Phone}
-          Skills={selectedApplicant?.Skills}
-          Remarks={selectedApplicant?.Remarks}
-          Application_Date={selectedApplicant?.Application_Date}
+          Position={selectedApplicant?.position}
+          Status={selectedApplicant?.status}
+          Email={selectedApplicant?.email}
+          Phone={selectedApplicant?.phone}
+          Skills={selectedApplicant?.skills}
+          Remarks={selectedApplicant?.remarks}
+          Application_Date={selectedApplicant?.applicationDate}
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />
-      </ApplicantModal>
+      </ModalWrapper>
+      {/* <ApplicantModal isOpen={isViewApplicant}>
+        <ViewApplicant
+          applicantName={selectedApplicant?.applicantName}
+          Position={selectedApplicant?.position}
+          Status={selectedApplicant?.status}
+          Email={selectedApplicant?.email}
+          Phone={selectedApplicant?.phone}
+          Skills={selectedApplicant?.skills}
+          Remarks={selectedApplicant?.remarks}
+          Application_Date={selectedApplicant?.applicationDate}
+          IsJobOffer={selectedApplicant?.isJobOffer}
+          onClose={() => setIsViewApplicant(false)}
+        />
+      </ApplicantModal> */}
+
+      <Modal
+        opened={isForMultipleTransfer}
+        onClose={() => setIsForMultipleTransfer(false)}
+        title={
+          <div className="text-[22px] font-semibold text-[#559CDA]">
+            Transfer Applicants
+          </div>
+        }
+        centered
+        size="lg"
+        overlayProps={{
+          opacity: 0.5,
+          blur: 1,
+        }}
+      >
+        <Divider size={2} color="#A8A8A899" className="w-full" />
+        <TransferredStatus />
+      </Modal>
+
     </div>
   );
 }

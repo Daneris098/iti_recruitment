@@ -2,6 +2,7 @@ import { FilterType, VacancyType, selectedApplicant } from "@modules/Vacancies/t
 
 export const selectedDataVal: VacancyType = {
   id: 0,
+  applicantId: 0,
   position: "",
   workplace: "",
   department: "",
@@ -49,6 +50,7 @@ export const filterVal: FilterType = {
 }
 
 export const selectedApplicantInitial: selectedApplicant = {
+  applicantId: 0,
   Applicant_Name: '',
   Email: '',
   Position: '',
@@ -56,5 +58,6 @@ export const selectedApplicantInitial: selectedApplicant = {
   Status: '',
   Remarks: '',
   Phone: '',
-  Application_Date: ''
+  Application_Date: '',
+  id: 0
 }

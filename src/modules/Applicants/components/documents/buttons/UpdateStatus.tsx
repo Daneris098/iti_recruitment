@@ -1,24 +1,22 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore } from "@modules/Applicants/store"
 import { useStatusStore } from "@src/modules/Applicants/store";
-import { HandleStatusClickTypes, StatusType } from "@modules/Applicants/types"
-import StatusUpdatedModal from "@modules/Applicants/components/modal/jobGenerated";
-import StatusUpdatedAlert from "@src/modules/Applicants/components/alerts/StatusUpdated";
-import ArchivedStatus from "@modules/Applicants/components/documents/movement/Status/Archived";
-import OfferedStatus from "@modules/Applicants/components/documents/movement/Status/Offered";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
 import HiredStatus from "@modules/Applicants/components/documents/movement/Status/Hired";
+import StatusUpdatedAlert from "@src/modules/Applicants/components/alerts/StatusUpdated";
+import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
+import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar";
+import OfferedStatus from "@modules/Applicants/components/documents/movement/Status/Offered";
+import ArchivedStatus from "@modules/Applicants/components/documents/movement/Status/Archived";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 import ForInterviewStatus from "@modules/Applicants/components/documents/movement/Status/ForInterview";
-import ApplicantUnreachable from "@modules/Applicants/components/modal/applicantUnReachable"
 import ScheduleInterview from "@src/modules/Applicants/components/documents/movement/ScheduleInterview";
-import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar";
-import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
-import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert";
-import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
 import TransferApplicantLoader from "@modules/Applicants/components/documents/movement/TransferApplicants";
-import { useMovementArchive } from "@modules/Applicants/hooks/useApplicant"
+import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Shared/hooks/useSharedApplicants";
+import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types"
+import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore, useFeedbacksStore, useFileUploadStore, useFileUploadHiredStore } from "@modules/Applicants/store";
 
 interface UpdateStatusProps {
   Status: string;
@@ -29,9 +27,21 @@ interface UpdateStatusProps {
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
-  // const { mutate } = useMovementArchive()
+
+  const { mutateAsync: movementArchive } = usePOSTArchive();
+  const { mutateAsync: movementScheduleInterview } = usePOSTForInterview();
+  const { mutateAsync: movementHired } = useCreateHired();
+
+  const today = new Date().toISOString().split("T")[0];
+  const hiredToday = new Date().toISOString().split("T")[0];
+  const time = new Date().toTimeString().split(" ")[0];
+
+  const { file } = useFileUploadStore();
+  // const { uploadHiredFile } = useFileUploadHiredStore();
+
+  const { feedback, applicantFeedback } = useFeedbacksStore();
   const { selectedStatus, setSelectedStatus } = useStatusStore();
-  const { comments, setComments } = useDropDownOfferedStore();
+  const { comments, setComments, interviewStages, interviewerId, getInterviewer, interviewStagesId } = useDropDownOfferedStore();
   const {
     setIsModalOpen,
     isScheduleInterview,
@@ -45,7 +55,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     isFeedbackSent, setIsFeedbackSent,
     isDropdownOpen, setIsDropdownOpen,
     setIsContactApplicant, isContactApplicant,
-    isForTransfer, setisForTransfer,
+    isForTransfer,
   } = useCloseModal();
 
   const applicantId = useApplicantIdStore((state) => state.id);
@@ -56,35 +66,28 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
   // For Interview 
   const handleDropdownToggle = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevents triggering parent button's onClick`
-    setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown visibility
+    event.stopPropagation();
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
-  let handleClick = () => { }; // Default empty function
-  let buttonText = "Update" // Default button text
+  let handleClick = () => { };
+  let buttonText = "Update"
 
-  const { mutateAsync } = useMovementArchive();
   if (selectedStatus === "Archived") {
-
     buttonText = "Save Feedback";
     handleClick = async () => {
-      await mutateAsync({
-        applicantId,
-        queryParams: {
-          HiringTeamFeedback: "Hiring Feedback",
-          ApplicantFeedback: "Applicant Feedback",
-          Order: 1,
-          Comment: "Comment",
-        },
-      });
-      setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
-      setIsFeedbackSent(true); // Set to true to show the feedback sent alert
 
-      // This might confuse other developers why some buttons have delays like this.
-      // I put a delay here because the modal dependencies of the corresponding buttons for this is not deeply nested and only rely on single modal.
-      // However, some of the buttons calls for 2 or 3 child modals therefore, I cannot locally define a delay for them unlike this one.
-      // The whole function runs when the component (selected status) has been set to "Archived". Then the button text will be changed to "Save feedback".
-      // Upon completion of the runtime, the relevant modals will eventually closed after a second.
+      await movementArchive({
+        applicantId,
+        file,
+        feedback,
+        applicantFeedback,
+        comments
+      })
+
+      setIsDropdownOpen(false);
+      setIsFeedbackSent(true);
+
       setTimeout(() => {
         setIsFeedbackSent(false);
         setIsUpdateStatusButtonModalOpen(false);
@@ -96,9 +99,25 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       }, 1000);
     };
   }
+
   else if (selectedStatus === "For Interview") {
     buttonText = "Schedule Interview"
-    handleClick = () => {
+    handleClick = async () => {
+
+      await movementScheduleInterview({
+        applicantId,
+        queryParams: {
+          Date: today,
+          Time: time,
+          "Interviewer.Id": interviewerId,
+          "Interviewer.Name": getInterviewer,
+          "InterviewStage.Id": interviewStagesId,
+          "InterviewStage.Name": interviewStages,
+          Order: interviewStagesId,
+          Comment: comments,
+          UserId: 1
+        }
+      })
       // setIsScheduleInterview(true);
       setIsContactApplicant(true)
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Schedule Interview"
@@ -109,9 +128,14 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   }
   else if (selectedStatus === "Hired") {
     buttonText = "Upload";
-    handleClick = () => {
+    handleClick = async () => {
+      await movementHired({
+        applicantId,
+        file,
+        order: interviewStagesId,
+        dateStart: hiredToday
+      })
       setIsFeedbackSent(true);
-
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
       setTimeout(() => {
         setIsFeedbackSent(false);
@@ -130,35 +154,9 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   }
 
   // This is the array of possible drop down options for update status button depending on the user's selected status.
-  enum ApplicantStatus {
-    Applied = "Applied",
-    FinalInterview = "Final Interview",
-    InitialInterview = "Initial Interview",
-    ForInterview = "For Interview",
-    Assessment = "Assessment",
-    Offered = "Offered",
-    Hired = "Hired",
-    ForTransfer = "For Transfer",
-    Transferred = "Transferred",
-    Archived = "Archived",
-  }
-
-  const statusTransitions: Record<ApplicantStatus, readonly ApplicantStatus[]> = {
-    [ApplicantStatus.Applied]: [ApplicantStatus.ForInterview, ApplicantStatus.Offered, ApplicantStatus.Archived],
-    [ApplicantStatus.FinalInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
-    [ApplicantStatus.InitialInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
-    [ApplicantStatus.ForInterview]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
-    [ApplicantStatus.Assessment]: [ApplicantStatus.Offered, ApplicantStatus.Archived],
-    [ApplicantStatus.Offered]: [ApplicantStatus.Hired, ApplicantStatus.Archived],
-    [ApplicantStatus.Hired]: [],
-    [ApplicantStatus.ForTransfer]: [ApplicantStatus.Transferred, ApplicantStatus.Archived],
-    [ApplicantStatus.Transferred]: [],
-    [ApplicantStatus.Archived]: [],
-  };
-
   let availableStatuses = (
     Object.keys(statusTransitions).includes(Status)
-      ? (statusTransitions[Status as ApplicantStatus] as StatusType[])
+      ? (statusTransitions[Status as ApplicantMovementStatus] as StatusType[])
       : []
   );
 
@@ -281,7 +279,9 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             )}
 
             {isForTransfer && (
-              <TransferApplicantLoader onClose={onClose} />
+              <TransferApplicantLoader
+              //  onClose={onClose} 
+              />
             )}
           </>
           {/* End of Transferred Status */}
@@ -353,25 +353,40 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       </div>
 
       {/* This is the update successful modal. This modal is the default modal. */}
-      <StatusUpdatedModal isOpen={isDefaultUpdated}>
+      <ModalWrapper
+        isOpen={isDefaultUpdated}
+        overlayClassName="job-offer-modal-overlay"
+        contentClassName="job-generated"
+        onClose={() => { }}
+      >
         <StatusUpdatedAlert
           onClose={() => {
             setIsUpdateStatusButtonModalOpen(false);
             setIsDefaultUpdated(false);
             onClose();
           }} />
-      </StatusUpdatedModal>
+      </ModalWrapper>
 
       {/* This modal will be activated when the  the user clicked the button "Generate Offer" from update status form 
        and is reponsible for generating a PDF of the offer letter. */}
-      <JobGeneratedModal isOpen={isOffered}>
+      <ModalWrapper
+        isOpen={isOffered}
+        overlayClassName="job-offer-modal-overlay"
+        contentClassName="job-generated"
+        onClose={() => { }}
+      >
         <JobGeneratedAlert
           title={selectedStatus}
           onClose={() => setIsOffered(false)} />
-      </JobGeneratedModal>
+      </ModalWrapper>
 
       {/* Modal that will appear when the user selected archived status and clicked on the save feedback button. */}
-      <JobGeneratedModal isOpen={isFeedbackSent}>
+      <ModalWrapper
+        isOpen={isFeedbackSent}
+        overlayClassName="job-offer-modal-overlay"
+        contentClassName="job-generated"
+        onClose={() => { }}
+      >
         <FeedbackSent
           selectedStatus={selectedStatus}
           onClose={() => {
@@ -379,10 +394,15 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             setIsViewApplicant(false);
           }}
         />
-      </JobGeneratedModal>
+      </ModalWrapper>
 
       {/* This modal will be called when the selected status is equivalent to "For Interview" and the "Schedule Interview button has been clicked." */}
-      <ApplicantUnreachable isOpen={isScheduleInterview}>
+      <ModalWrapper
+        isOpen={isScheduleInterview}
+        overlayClassName="applicant-unreachable-modal-overlay"
+        contentClassName="applicant-unreachable"
+        onClose={() => { }}
+      >
         <ScheduleInterview onClose={() => {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 
@@ -391,20 +411,19 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
           setIsScheduleInterview(false);
           setIsAddtoCalendar(false)
         }} />
-      </ApplicantUnreachable>
+      </ModalWrapper>
+
 
       {/* This modal will appear if the user clicks on the "Add to Calendar" 
           button under the Schedule interview of update applicant status modal. */}
-      <ApplicantUnreachable isOpen={isContactApplicant} >
-        <ScheduleInterviewAlert onClose={() => setIsContactApplicant(false)}
-        />
-      </ApplicantUnreachable>
-
-      <ApplicantUnreachable isOpen={isForTransfer} >
-        <TransferApplicantLoader
-          onClose={() => setisForTransfer(false)}
-        />
-      </ApplicantUnreachable>
+      <ModalWrapper
+        isOpen={isContactApplicant}
+        overlayClassName="applicant-unreachable-modal-overlay"
+        contentClassName="applicant-unreachable"
+        onClose={() => { }}
+      >
+        <ScheduleInterviewAlert onClose={() => setIsContactApplicant(false)} />
+      </ModalWrapper>
     </div >
   );
 }
