@@ -1,19 +1,18 @@
-import { Combobox, TextInput, useCombobox } from "@mantine/core";
-import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import { useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
+import { Combobox, TextInput, useCombobox } from "@mantine/core";
+import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import DatePicker from "@modules/Applicants/components/picker/DatePicker"
 import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 import interviewJSON from "@modules/Applicants/constants/json/interview.json";
 
 export default function ForInterview() {
 
-    const { getInterviewer, setInterviewer, setInterviewerID, setInterviewStages, setInterviewStagesId, interviewStages } = useDropDownOfferedStore();
+    const { getInterviewer, setInterviewer, setInterviewerID, setInterviewStages, setInterviewStagesId, interviewStages, interviewLocation, setInterviewLocation } = useDropDownOfferedStore();
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [selectedTime, setSelectedTime] = useState("");
     const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption(), })
     const interviewStagesComboBox = useCombobox({ onDropdownClose: () => interviewStagesComboBox.resetSelectedOption(), })
-    // const Interviewer = ["HR Kristia", "HR Andrea", "HR Jera"];
 
     const interviewerOptions = interviewJSON[0].interviewer.map((interviewer) => ({
         value: interviewer.id,
@@ -107,7 +106,6 @@ export default function ForInterview() {
                         <TextInput
                             value={getInterviewer}
                             onChange={(e) => setInterviewer(e.currentTarget.value)}
-                            // onFocus={() => interviewerCombobox.openDropdown()}
                             onFocus={(e) => {
                                 if (document.activeElement === e.currentTarget) {
                                     interviewerCombobox.openDropdown();
@@ -141,6 +139,21 @@ export default function ForInterview() {
                         </Combobox.Dropdown>
                     )}
                 </Combobox>
+            </div>
+            <div>
+                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins pt-4">
+                    Location <span className="text-[#F14336]">*</span>
+                </h3>
+                <TextInput
+                    type="text"
+                    placeholder="Set Interview Location"
+                    value={interviewLocation}
+                    onChange={(e) => setInterviewLocation(e.target.value)}
+                    classNames={{
+                        input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                    }}
+                    required
+                />
             </div>
         </div>
     )

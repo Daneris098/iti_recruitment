@@ -2,8 +2,8 @@ import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@ma
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { useDropDownOfferedStore } from "@modules/Applicants/store";
 import { useState } from "react";
-import TransferredPositionModal from "@modules/Applicants/components/modal/jobGenerated";
-import TransferredPosition from "@src/modules/Applicants/components/alerts/Transferred"
+import TransferredPosition from "@src/modules/Applicants/components/alerts/Transferred";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 interface ApplicantTransfereeName {
     Applicant_Name: string
     onClose: () => void
@@ -116,11 +116,14 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             </div>
 
             <div>
-                <TransferredPositionModal isOpen={isTransferred}>
-                    <TransferredPosition
-                        onClose={onClose}
-                    />
-                </TransferredPositionModal>
+                <ModalWrapper
+                    isOpen={isTransferred}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={onClose}
+                >
+                    <TransferredPosition onClose={onClose} />
+                </ModalWrapper>
             </div>
         </div>
     )

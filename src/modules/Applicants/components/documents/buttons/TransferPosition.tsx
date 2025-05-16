@@ -1,9 +1,11 @@
-import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
-import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { DataTable } from "mantine-datatable";
+import { IconDots, IconX } from "@tabler/icons-react";
+import { Button, Divider, Textarea } from "@mantine/core";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
-import { useState } from "react";
-import TransferredPositionModal from "@modules/Applicants/components/modal/jobGenerated";
-import TransferredPosition from "@src/modules/Applicants/components/alerts/Transferred"
+import TransferredPosition from "@src/modules/Applicants/components/alerts/Transferred";
 interface ApplicantTransfereeName {
     Applicant_Name: string
     onClose: () => void
@@ -11,11 +13,34 @@ interface ApplicantTransfereeName {
 
 export default function TransferPosition({ Applicant_Name, onClose }: ApplicantTransfereeName) {
 
-    const positions = ["HR Specialist", "Engineer", "Doctor"];
     const [isTransferred, setIsTransferred] = useState(false);
-    const positionCombobox = useCombobox();
-    const { position, setPosition, comments, setComments } = useDropDownOfferedStore();
+    const { comments, setComments } = useDropDownOfferedStore();
     const { setIsTransferPosition } = useCloseModal();
+    const [getAvailableSlots, setAvailableSlots] = useState()
+
+    const getVacancies = async () => {
+        try {
+            const response = await axios.get("/api/recruitment/vacancies");
+            const getVacantPositions = response.data.items.map((item: any) => ({
+                id: item.id,
+                position: item.positionTitleResponse,
+                company: item.companyResponse?.name ?? '',
+                slots: item.availableSlot,
+            }));
+            // debugger;
+            setAvailableSlots(getVacantPositions);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getVacancies();
+    }, [])
+
+
+    const [opened, setOpened] = useState(false);
+    const [selected, setSelected] = useState<any[]>([]);
 
     return (
         <div className="p-9">
@@ -39,42 +64,20 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
 
             {/* Position Dropdown */}
             <div className="pt-4">
-                <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
-                    Position
-                </h3>
-                <Combobox store={positionCombobox} withinPortal={false}>
-                    <Combobox.Target>
-                        <TextInput
-                            value={position}
-                            onChange={(e) => setPosition(e.currentTarget.value)}
-                            onFocus={() => positionCombobox.openDropdown()}
-                            rightSection={<IconCaretDownFilled size={18} />}
-                            placeholder="Select from open vacancy"
-                            classNames={{
-                                input: "poppins relative flex items-center w-[540px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
-                            }}
-                            required
-                        />
-                    </Combobox.Target>
+                <h1 className="poppins font-medium text-[#6D6D6D] text-[15px] pb-1">Vacancies</h1>
 
-                    {positions.length > 0 && (
-                        <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg">
-                            {positions.map((role) => (
-                                <Combobox.Option
-                                    key={role}
-                                    value={role}
-                                    onClick={() => {
-                                        setPosition(role);
-                                        positionCombobox.closeDropdown();
-                                    }}
-                                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition"
-                                >
-                                    {role}
-                                </Combobox.Option>
-                            ))}
-                        </Combobox.Dropdown>
-                    )}
-                </Combobox>
+                <div className="w-full">
+                    <Button
+                        onClick={() => setOpened(true)}
+                        className="relative w-[540px] h-[56px] px-4 bg-[#6D6D6D10] border border-[#6D6D6D] rounded-lg text-[#6D6D6D99] hover:bg-[#6D6D6D30] hover:text-[#6D6D6D99] flex items-center"
+                    >
+                        <span className="text-left text-[#6D6D6D99] font-medium text-[16px]">
+                            Select Vacancies
+                        </span>
+                        <IconDots className="absolute right-4 text-[#6D6D6D99]" />
+                    </Button>
+                </div>
+
             </div>
 
             {/* Comment and suggestion text input */}
@@ -115,12 +118,42 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             </div>
 
             <div>
-                <TransferredPositionModal isOpen={isTransferred}>
+                <ModalWrapper
+                    isOpen={isTransferred}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={onClose}
+                >
                     <TransferredPosition
                         onClose={onClose}
                     />
-                </TransferredPositionModal>
+                </ModalWrapper>
+
+                <ModalWrapper
+                    isOpen={opened}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="available-positions"
+                    onClose={() => setOpened(false)}
+                >
+                    <div className="flex justify-between items-center">
+                        <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">Vacancies</h1>
+                        <IconX className="w-[15px] h-[15px] cursor-pointer" onClick={() => setOpened(false)} />
+                    </div>
+                    <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
+                    <DataTable
+                        records={getAvailableSlots}
+                        columns={[
+                            { accessor: 'position', title: 'Position' },
+                            { accessor: 'company', title: 'Company' },
+                            { accessor: 'slots', title: 'Slots' },
+                        ]}
+                        selectedRecords={selected}
+                        onSelectedRecordsChange={setSelected}
+                        highlightOnHover
+                        withColumnBorders
+                    />
+                </ModalWrapper>
             </div>
-        </div>
+        </div >
     )
 }

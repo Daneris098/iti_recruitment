@@ -31,14 +31,6 @@ export default function index() {
         }
     }, [selectedData])
 
-    // const handleRowClick = async (applicant: any) => {
-    //     setApplicantId(applicant.id)
-    // }
-    // console.log(selectedData.id)
-    // console.log("applicants", selectedApplicant.applicantId);
-    // console.log(val.record)
-    // debugger;
-    // debugger;
     return (
         <DataTable
             style={{
@@ -92,11 +84,7 @@ export default function index() {
             onPageChange={setPage}
             sortStatus={sortStatus}
             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
-            onRowClick={(val) => {
-                setSelectedVacancy(val.record)
-                // setSelectedApplicant()
-            }}
-          
+            onRowClick={(val) => { setSelectedVacancy(val.record) }}
         />
     );
 }

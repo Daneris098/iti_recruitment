@@ -1,17 +1,17 @@
 //#region IMPORTS
-import Filter from "@modules/Offers/components/filter/Filter";
-import PDFModal from "@modules/Offers/components/modal/pdfModal";
-import PDFDocument from "@modules/Offers/components/documents/PDF";
-import jobOfferColumns from "@modules/Offers/components/columns/Columns";
-import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import { DataTable } from "mantine-datatable";
 import { PDFViewer } from "@react-pdf/renderer";
 import { Pagination, Tabs } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import Filter from "@modules/Offers/components/filter/Filter";
 import { IconFileCheck, IconFileX } from "@tabler/icons-react";
+import PDFModal from "@modules/Offers/components/modal/pdfModal";
+import PDFDocument from "@modules/Offers/components/documents/PDF";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
 import { useApplicants } from "@modules/Shared/hooks/useSharedApplicants";
+import jobOfferColumns from "@modules/Offers/components/columns/Columns";
+import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey } from "@modules/Offers/types";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
 import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
@@ -45,7 +45,7 @@ export default function index() {
     const { activeTab, setActiveTab } = FilterStore();
     const { records, loadCandidates } = useJobOfferStore();
     const [loadTime, setLoadTime] = useState<number | null>(null);
-    const { data: sharedApplicants } = useApplicants(page, pageSize);
+    const { data: sharedApplicants } = useApplicants(page, pageSize, {}, setLoadTime);
     const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
     //#endregion
 
@@ -55,7 +55,7 @@ export default function index() {
     // HOOKS
     useEffect(() => {
         if (!sharedApplicants?.items) return;
-        const startTime = performance.now();
+
         // Transform the applicants into an array of JobOffersColumns objects
         const transformedApplicants: JobOffersColumns[] = sharedApplicants.items
             .filter(applicant => {
@@ -63,28 +63,23 @@ export default function index() {
                 return lastStatus && lastStatus in STATUS_MAP;
             })
             .map(applicant => {
+
                 // Create an object that matches the JobOffersColumns type
-                const result: JobOffersColumns = {} as JobOffersColumns;
+                const result = {} as JobOffersColumns;
 
                 // Populate the object with transformed fields and ensure no undefined values
                 Object.entries(APPLICANT_FIELDS).forEach(([key, transformFn]) => {
+
                     // Cast the key to keyof JobOffersColumns to access the property
                     const typedKey = key as keyof JobOffersColumns;
 
-                    // Apply the transform function and provide a default empty string if result is undefined
-                    const transformedValue = transformFn(applicant) ?? '';
-
                     // Assign the value to the result object
-                    result[typedKey] = transformedValue as any; // Using 'any' temporarily to bridge the type gap
+                    result[typedKey] = transformFn(applicant) ?? '';
                 });
-
                 return result;
             });
 
         loadCandidates(transformedApplicants);
-
-        const endTime = performance.now();
-        setLoadTime((endTime - startTime) / 1000);
     }, [sharedApplicants]);
 
     // #region CONSTANTS

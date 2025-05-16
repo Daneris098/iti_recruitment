@@ -1,22 +1,20 @@
-import { Button, Divider, Tabs } from "@mantine/core";
-import { IconFileUpload, IconX } from "@tabler/icons-react";
 import { useState } from "react";
-import { useApplicantIdStore, useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store"
+
 import { PDFViewer } from "@react-pdf/renderer";
 import profileImage from '@src/assets/jane.png';
-import PersonalDetails from "@src/modules/Applicants/components/documents/tabs/PersonalDetails";
-import TransferDetails from "@modules/Applicants/components/documents/tabs/TransferDetails";
-import ApplicationMovement from "@src/modules/Applicants/components/documents/tabs/ApplicationMovement";
-import UpdateStatus from "@src/modules/Applicants/components/documents/buttons/UpdateStatus";
-import UpdateStatusModal from "@modules/Applicants/components/modal/updateStatus";
-import TransferPositionModal from "@src/modules/Applicants/components/modal/transferPositionModal";
-import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
-import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer";
-import ApplicantModal from "@modules/Applicants/components/modal/dropdownOfferedModal"
+import { Button, Divider, Tabs } from "@mantine/core";
+import { IconFileUpload, IconX } from "@tabler/icons-react";
 import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
-import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
-// import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
+import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
+import TransferDetails from "@modules/Applicants/components/documents/tabs/TransferDetails";
+import UpdateStatus from "@src/modules/Applicants/components/documents/buttons/UpdateStatus";
+import PersonalDetails from "@src/modules/Applicants/components/documents/tabs/PersonalDetails";
+import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer";
+import { useApplicantIdStore, useCloseModal, ViewApplicantsProps } from "@modules/Applicants/store";
+import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
+import ApplicationMovement from "@src/modules/Applicants/components/documents/tabs/ApplicationMovement";
 
 export default function ViewApplicant({ applicantName, Position, Status, Email, Phone, Remarks, onClose, Application_Date, IsJobOffer, Acknowledgement, Department }: ViewApplicantsProps) {
 
@@ -37,19 +35,17 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
 
     const applicantId = useApplicantIdStore((state) => state.id);
     const { data: applicantsById } = useApplicantsById(applicantId)
-
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
     const { isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered, isTransferPosition, setIsTransferPosition } = useCloseModal();
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
-    // const [isTransferPosition, setIsTransferPosition] = useState(false) // Set the Transferred Modal to True upon triggering
 
     // Excluding these three status types to the current status field.
     const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(Status)
     const bgColorForInterview = forInterviewStatus ? "bg-[#ED8028]" : statusColors[Status] || "bg-[#559CDA]";
-    // const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
+
     const getDisplayStatus = () => {
         if (forInterviewStatus) return "For Interview";
-        // if (Status === "Ready for Transfer") return "Transferred";
+
         return Status;
     };
 
@@ -260,27 +256,41 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
              <UpdateStatusModal> for updating the status of the applicant. 
             <TransferPositionModal> for updating the position of the applied job and so on. */}
             <div>
-                {/* <UpdateStatusModal isOpen={isModalOpen} onClose={onCloseAll}> */}
-                <UpdateStatusModal isOpen={isUpdateStatusButtonModalOpen} >
+                <ModalWrapper
+                    isOpen={isUpdateStatusButtonModalOpen}
+                    overlayClassName="update-status-modal-overlay"
+                    contentClassName="update-status-offered-modal-content"
+                    onClose={() => { }}
+                >
                     <UpdateStatus
                         Status={Status}
                         onClose={onCloseAll}
                         IsJobOffer={IsJobOffer}
                         Name={applicantName}
                     />
-                </UpdateStatusModal>
+                </ModalWrapper>
 
-                <TransferPositionModal isOpen={isTransferPosition} onClose={onCloseAll}>
+                <ModalWrapper
+                    isOpen={isTransferPosition}
+                    overlayClassName="modal-overlay"
+                    contentClassName="update-status-offered-modal-content"
+                    onClose={onCloseAll}
+                >
                     <TransferPosition
                         Applicant_Name={applicantName}
                         onClose={() => setIsTransferPosition(false)} />
-                </TransferPositionModal>
+                </ModalWrapper>
 
-                <ApplicantModal isOpen={isGenerateNewOffer}>
+                <ModalWrapper
+                    isOpen={isGenerateNewOffer}
+                    overlayClassName="modal-overlay"
+                    contentClassName="update-status-offered-modal-content"
+                    onClose={() => { }}
+                >
                     <GenerateNewOffer
                         ApplicantName={applicantName}
                         onClose={() => setIsGenerateNewOffer(false)} />
-                </ApplicantModal>
+                </ModalWrapper>
             </div>
 
             {/* PDF */}

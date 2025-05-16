@@ -1,12 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { Applicant,
-    //  Applicants
-     } from "@modules/Shared/types";
+import { Applicant } from "@modules/Shared/types";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
 import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
 import { useSharedUserService } from "@modules/Shared/api/useSharedUserService";
 import { applicantsByIdService } from "@modules/Shared/components/api/UserService"
+import {
+    applicationMovementHired,
+    applicationMovementArchive, applicationMovementForTransfer,
+    applicationMovementOffered, applicationMovementForInterview,
+} from "@modules/Applicants/api/userService";
+import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -23,7 +28,6 @@ const formatAddress = (address?: {
         address.city?.name
     ].filter(Boolean).join(', ');
 }
-
 
 function getApplicantCurrentAge(dateString: string): number {
     const today = new Date();
@@ -199,10 +203,9 @@ export const useApplicantsById = (id: string | number) => {
     });
 };
 
-const formatApplicant = (applicant: any, page: number, pageSize: number, total: number): Applicant => {
-
+export const formatApplicant = (applicant: any, page: number, pageSize: number, total: number): Applicant => {
     const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
-    const position = applicant.positionsApplied?.[applicant.positionsApplied.length - 1]
+    const position = applicant.positionsApplied?.[applicant.positionsApplied.length - 1];
     const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
 
     let movement;
@@ -224,30 +227,184 @@ const formatApplicant = (applicant: any, page: number, pageSize: number, total: 
         email: applicant.contact.emailAddress,
         position: position?.name,
         status: movement?.status?.name,
-        page: page,
-        pageSize: pageSize,
-        total: total,
+        page,
+        pageSize,
+        total,
         movement: mapApplicationMovements,
         comments: mapComments,
-    }
-}
+    };
+};
 
 export const useApplicants = (
     page: number = 0,
     pageSize: number = 0,
-    filters: Record<string, any> = {}
+    filters: Record<string, any> = {},
+    setTime?: (time: number) => void
 ) => {
     return useQuery({
         queryKey: sharedApplicantKeys.list({ page, pageSize, ...filters }),
-        queryFn: () => useSharedUserService.getAll({ page, pageSize, ...filters }),
-        select: (data) => ({
-            applicants: data.items.map(item =>
-                formatApplicant(item, data.page, data.pageSize, data.total)
-            ),
-            page: data.page,
-            pageSize: data.pageSize,
-            total: data.total,
-            items: data.items,
-        }),
+        queryFn: async () => {
+            const start = performance.now();
+            const data = await useSharedUserService.getAll({ page, pageSize, ...filters });
+            const end = performance.now();
+
+            if (setTime) {
+                const seconds = (end - start) / 1000;
+                setTime(seconds);
+            }
+
+            return {
+                applicants: data.items.map(item =>
+                    formatApplicant(item, data.page, data.pageSize, data.total)
+                ),
+                page: data.page,
+                pageSize: data.pageSize,
+                total: data.total,
+                items: data.items,
+            };
+        },
+        staleTime: 60 * 1000,
+    });
+};
+
+export const usePOSTArchive = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            applicantId,
+            file,
+            feedback,
+            applicantFeedback,
+            comments,
+            order = 1,
+        }: {
+            applicantId: number;
+            file: File | null;
+            feedback: string;
+            applicantFeedback: string;
+            comments: string;
+            order?: number;
+        }) => {
+
+            const formData = new FormData();
+
+            if (file) {
+                formData.append("FileAttachment", file);
+            }
+            if (feedback) {
+                formData.append("HiringTeamFeedback", feedback);
+            }
+            if (applicantFeedback) {
+                formData.append("ApplicantFeedback", applicantFeedback);
+            }
+
+            formData.append("Order", order.toString());
+            formData.append("Comment", comments);
+
+            formData.append("Order", order.toString());
+            formData.append("Comment", comments);
+
+            return await applicationMovementArchive.postById(applicantId, formData)
+        }, onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+        },
+        onError: (error) => {
+            console.error("Failed to save feedback", error);
+        },
+    });
+};
+
+export const usePOSTOffer = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            applicantId,
+            queryParams,
+        }: {
+            applicantId: number;
+            queryParams: Record<string, any>;
+        }) => applicationMovementOffered.postById(applicantId, queryParams),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+        },
+        onError: (error) => {
+            console.error("Error submitting offer", error)
+        }
+    });
+}
+export const usePOSTForInterview = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            applicantId,
+            queryParams,
+        }: {
+            applicantId: number;
+            queryParams: Record<string, any>;
+        }) => {
+            return await applicationMovementForInterview.postById(applicantId, queryParams);
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+        },
+
+        onError: (error) => {
+            console.error("Error Scheduling interview.", error);
+        },
+    });
+};
+
+export const useCreateHired = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            applicantId,
+            dateStart,
+            file,
+            order = 1,
+        }: {
+            applicantId: number;
+            dateStart: string;
+            file: File | null;
+            order?: number;
+        }) => {
+            const formData = new FormData();
+
+            formData.append("DateStart", dateStart);
+            formData.append("Order", order.toString());
+            formData.append("FileAttachment", file!);
+
+            return await applicationMovementHired.postById(applicantId, formData)
+        }, onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+        },
+        onError: (error) => {
+            console.error("Failed to save feedback", error);
+        },
+    })
+}
+
+export const useCreateForTransfer = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async ({
+            applicantIds
+        }: {
+            applicantIds: number[];
+        }) => {
+            return await applicationMovementForTransfer.transferApplicants(applicantIds);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+        },
+        onError: (error) => {
+            console.error("Failed to transfer applicants", error);
+        },
     });
 };

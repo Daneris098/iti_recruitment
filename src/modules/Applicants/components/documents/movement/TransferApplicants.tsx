@@ -1,15 +1,9 @@
 
 import { useEffect, useState } from "react";
 import { IconLoader2, IconUserCheck } from "@tabler/icons-react";
-import { useCreateForTransfer } from "@src/modules/Applicants/hooks/useApplicant";
+import { useCreateForTransfer } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { useApplicantIdStore, useCloseModal, useSelectedApplicantsStore, useStatusStore } from "@src/modules/Applicants/store";
-// interface ApplicantContactProps {
-//     onClose: () => void;
-// }
-
-export default function TransferApplicantLoader(
-    // { onClose }: ApplicantContactProps
-) {
+export default function TransferApplicantLoader() {
 
     const { mutate: transferApplicants } = useCreateForTransfer();
 
@@ -23,6 +17,7 @@ export default function TransferApplicantLoader(
         setIsForTransferLoader, setIsOffered,
         setIsGenerateNewOffer, setIsModalOpen,
         setIsUpdateStatusButtonModalOpen } = useCloseModal();
+
     const { setSelectedStatus } = useStatusStore();
 
     const applicantId = useApplicantIdStore((state) => state.id);
@@ -78,11 +73,7 @@ export default function TransferApplicantLoader(
                         size={110}
                         stroke={1}
                     />
-                ) : (
-                    <IconUserCheck className="text-[#559CDA]" size={110} stroke={1} />
-
-                )}
-
+                ) : (<IconUserCheck className="text-[#559CDA]" size={110} stroke={1} />)}
             </div>
 
             {/* Text prompt */}

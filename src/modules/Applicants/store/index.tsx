@@ -184,6 +184,9 @@ interface useDropDownOfferedState {
 
   interviewStagesId: number;
   setInterviewStagesId: (interviewStagesId: number) => void;
+
+  interviewLocation: string;
+  setInterviewLocation: (interviewPosition: string) => void;
 }
 
 export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => ({
@@ -227,7 +230,10 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   setInterviewStages: (interviewStages) => set({ interviewStages }),
 
   interviewStagesId: 0,
-  setInterviewStagesId: (interviewStagesId) => set({ interviewStagesId })
+  setInterviewStagesId: (interviewStagesId) => set({ interviewStagesId }),
+
+  interviewLocation: "",
+  setInterviewLocation: (interviewLocation) => set({ interviewLocation })
 
 }))
 // End of DropDownOffered modal
@@ -460,7 +466,7 @@ export const useCloseModal = create<CloseModal>((set) => ({
   isTransferPosition: false,
   setIsTransferPosition: (value) => set({ isTransferPosition: value }),
 
-resetTransferState: () => set((state) => ({
+  resetTransferState: () => set((state) => ({
     ...state,  //  Keep existing state
     isForTransfer: false,
     transferred: false,

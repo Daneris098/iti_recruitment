@@ -3,7 +3,8 @@ import { IconUserQuestion, IconX } from "@tabler/icons-react";
 import { useCloseModal } from "@src/modules/Applicants/store";
 
 import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar"
-import ScheduleInterviewModal from "@modules/Applicants/components/modal/scheduleInterview";
+// import ScheduleInterviewModal from "@modules/Applicants/components/modal/scheduleInterview";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 interface ApplicantNotReachableProps {
     onClose: () => void;
 
@@ -138,9 +139,15 @@ export default function ApplicantNotReachable({ onClose }: ApplicantNotReachable
             </div>
 
             <div>
-                <ScheduleInterviewModal isOpen={isAddtoCalendar}>
+                <ModalWrapper
+                    isOpen={isAddtoCalendar}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={onClose}
+                >
                     <ScheduleInterviewAlert onClose={() => setIsAddtoCalendar(false)} />
-                </ScheduleInterviewModal>
+                </ModalWrapper>
+
             </div>
         </div>
     );

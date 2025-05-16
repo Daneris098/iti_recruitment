@@ -1,17 +1,13 @@
 import { Button } from "@mantine/core";
-import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import { IconUserQuestion } from "@tabler/icons-react";
-import ForTransfer from "@modules/Applicants/components/modal/forTransfer";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import { useCloseModal, useStatusStore } from "@src/modules/Applicants/store";
 import TransferApplicants from "@modules/Applicants/components/documents/movement/TransferApplicants";
-
 
 export default function Transferred() {
 
-    const { isForTransferLoader, setIsForTransferLoader } = useCloseModal();
-
     const { setSelectedStatus } = useStatusStore();
-
-
+    const { isForTransferLoader, setIsForTransferLoader } = useCloseModal();
 
     return (
         <div className="p-1 w-full h-full">
@@ -57,11 +53,14 @@ export default function Transferred() {
             </div>
 
             {/* This modal will be called when the selectedStatus === Transferred and the user agrees to transfer applicants to hrdotnet. */}
-            <ForTransfer isOpen={isForTransferLoader} onClose={() => setIsForTransferLoader(false)}>
-                <TransferApplicants
-                    // onClose={() => setIsForTransferLoader(false)}
-                />
-            </ForTransfer>
+            <ModalWrapper
+                isOpen={isForTransferLoader}
+                overlayClassName="applicant-unreachable-modal-overlay"
+                contentClassName="applicant-unreachable h-[350px]"
+                onClose={() => setIsForTransferLoader(false)}
+            >
+                <TransferApplicants />
+            </ModalWrapper>
         </div>
     )
 }

@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
 import { useLocation, useSearchParams } from "react-router-dom";
-// import { useApplicants } from "@src/modules/Applicants/hooks/useApplicant";
 import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import {
@@ -20,11 +19,12 @@ import {
 
 import Filter from "@src/modules/Applicants/components/filter/Filter";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
-import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
+// import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 
 
 export default function index() {
@@ -42,7 +42,6 @@ export default function index() {
   const isTransfereePath = currentRoute?.path === "/transferee";
 
   //#region STORES
-  //stores
   const { setPage } = usePaginationStore();
   const records = useApplicantStore((s) => s.records)
   const { sortedRecords, setSort, setRecords } = useSortStore();
@@ -55,12 +54,10 @@ export default function index() {
 
   //local states
   const [loadTime, setLoadTime] = useState<number | null>(null);
-  const [startTime, setStartTime] = useState<number | null>(null);
-  // const [hasCheckedFirstPage, setHasCheckedFirstPage] = useState(false);
+
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
 
   //region FUNCTIONS
-  // functions
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (newPage: number) => {
     setSearchParams(prev => {
@@ -77,7 +74,6 @@ export default function index() {
     setIsViewApplicant(true);
   };
 
-  // memo
   const { page, pageSize } = useMemo(() => {
     return {
       page: parseInt(searchParams.get("page") || "1"),
@@ -85,29 +81,20 @@ export default function index() {
     };
   }, [searchParams]);
 
-  // const { data: applicants, isLoading } = useApplicants(page, pageSize);
-  const { data: applicants, isLoading } = useApplicants(page, pageSize, {
+  const { data: getApplicants, isLoading } = useApplicants(page, pageSize, {
     name: filter.applicantName,
     company: filter.company,
     status: filter.status
-  });
+  }, setLoadTime);
 
   //#region HOOKS
   //Data population
   useEffect(() => {
-    if (isLoading && startTime === null) {
-      setStartTime(performance.now());
-    }
-    if (!isLoading && applicants && startTime !== null) {
-      const { applicants: applicantList } = applicants;
-      setApplicantRecords(applicantList); // this will populate your sortedRecords
-
+    if (!isLoading && getApplicants) {
+      setApplicantRecords(getApplicants.applicants);
       setPage(page);
-      const endTime = performance.now();
-      setLoadTime((endTime - startTime) / 1000);
-      setStartTime(null);
     }
-  }, [isLoading, applicants, startTime, setApplicantRecords, setPage]);
+  }, [isLoading, getApplicants, page, setApplicantRecords, setPage]);
 
   //#region HELPER FUNCTIONS
   // intially load the records from useApplicationStore().
@@ -142,69 +129,21 @@ export default function index() {
       status: "Transferred"
     }));
 
-  // const checkAndAdjustFirstPage = (
-  //   records: Applicant[],
-  //   page: number,
-  //   pageSize: number
-  // ) => {
-  //   if (!hasCheckedFirstPage && page === 1) {
-  //     const startIndex = page * pageSize
-  //     const firstPageRecords = records.slice(startIndex, startIndex + pageSize);
-
-  //     if (firstPageRecords.length === 0) {
-  //       setPage(page);
-  //       setSearchParams((prev) => {
-  //         const params = new URLSearchParams(prev);
-  //         params.set("page", String(page));
-  //         return params;
-  //       });
-  //     }
-  //     setHasCheckedFirstPage(true);
-  //   }
-  // }
-
 
   useEffect(() => {
-    if (!applicants) return;
+    if (!getApplicants) return;
 
     const currentRoute = getCurrentRoute(location.pathname);
     const statusArray = extractStatusArray(currentRoute);
 
-    let filtered = filterApplicantsByStatus(applicants.applicants, statusArray);
+    let filtered = filterApplicantsByStatus(getApplicants.applicants, statusArray);
 
     if (statusArray.includes("Ready for Transfer")) {
       filtered = transformToTransferredStatus(filtered);
     }
 
     setRecords(filtered);
-  }, [applicants, location.pathname]);
-
-
-  // useEffect(() => {
-  //   if (!applicants) return;
-
-  //   const currentRoute = getCurrentRoute(location.pathname);
-  //   const statusArray = extractStatusArray(currentRoute);
-
-  //   if (statusArray.length === 0) return;
-
-  //   let filteredRecords = filterApplicantsByStatus(applicants.applicants, statusArray);
-
-  //   if (statusArray.includes("Ready for Transfer")) {
-  //     filteredRecords = transformToTransferredStatus(filteredRecords);
-  //   }
-
-  //   setRecords(filteredRecords);
-  //   checkAndAdjustFirstPage(filteredRecords, page, pageSize);
-  // }, [
-  //   location.pathname,
-  //   applicants,
-  //   page,
-  //   pageSize,
-  //   setRecords,
-  //   setPage,
-  //   setSearchParams,
-  // ]);
+  }, [getApplicants, location.pathname]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
@@ -301,7 +240,7 @@ export default function index() {
           {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
             page * pageSize,
             records.length
-          )} of ${applicants?.total} entries`}
+          )} of ${getApplicants?.total} entries`}
           {loadTime !== null && ` found in (${loadTime.toFixed(3)}) seconds`}
         </p>
 
@@ -309,14 +248,19 @@ export default function index() {
         <Pagination
           value={page}
           onChange={handlePageChange}
-          total={Math.ceil(applicants?.total! / pageSize)}
+          total={Math.ceil(getApplicants?.total! / pageSize)}
           siblings={1}
           size="sm"
         />
       </div>
 
       {/* View Applicant Modal */}
-      <ApplicantModal isOpen={isViewApplicant}>
+      <ModalWrapper
+        isOpen={isViewApplicant}
+        overlayClassName="modal-overlay"
+        contentClassName="modal-content"
+        onClose={() => setIsViewApplicant(false)}
+      >
         <ViewApplicant
           applicantName={selectedApplicant?.applicantName}
           Position={selectedApplicant?.position}
@@ -329,7 +273,21 @@ export default function index() {
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />
-      </ApplicantModal>
+      </ModalWrapper>
+      {/* <ApplicantModal isOpen={isViewApplicant}>
+        <ViewApplicant
+          applicantName={selectedApplicant?.applicantName}
+          Position={selectedApplicant?.position}
+          Status={selectedApplicant?.status}
+          Email={selectedApplicant?.email}
+          Phone={selectedApplicant?.phone}
+          Skills={selectedApplicant?.skills}
+          Remarks={selectedApplicant?.remarks}
+          Application_Date={selectedApplicant?.applicationDate}
+          IsJobOffer={selectedApplicant?.isJobOffer}
+          onClose={() => setIsViewApplicant(false)}
+        />
+      </ApplicantModal> */}
 
       <Modal
         opened={isForMultipleTransfer}

@@ -2,7 +2,7 @@ import { Button, Divider } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { useCloseModal } from "@src/modules/Applicants/store";
 import ScheduleInterviewAlert from "@src/modules/Applicants/components/alerts/AddtoCalendar"
-import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 interface ApplicantContactProps {
     onClose: () => void;
     updateSelectedStatus: () => void;
@@ -65,9 +65,14 @@ export default function ApplicantContactNumber({ onClose, updateSelectedStatus }
             </div>
 
             <div>
-                <JobGeneratedModal isOpen={isAddtoCalendar} >
+                <ModalWrapper
+                    isOpen={isAddtoCalendar}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={() => { }}
+                >
                     <ScheduleInterviewAlert onClose={() => setIsAddtoCalendar(false)} />
-                </JobGeneratedModal>
+                </ModalWrapper>
             </div>
         </div>
     );

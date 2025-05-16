@@ -1,10 +1,10 @@
 {/*Generate new offer button.*/ }
-import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
-import { IconChevronDown, IconX } from "@tabler/icons-react";
-import { useDropDownOfferedStore } from "@modules/Applicants/store"
-import JobGeneratedModal from "@modules/Applicants/components/modal/jobGenerated"
-import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert"
 import { useCloseModal } from "@modules/Applicants/store"
+import { IconChevronDown, IconX } from "@tabler/icons-react";
+import { useDropDownOfferedStore } from "@modules/Applicants/store";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert"
+import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
 interface DropDownOfferedProps {
     onClose: () => void;
     ApplicantName: string;
@@ -17,11 +17,11 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
     const departments = ["Finance", "IT", "HR", "Operations"];
     const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
     const {
-        getSalaryTypes, setSalaryTypes,
         amount, setAmount,
+        comments, setComments,
         position, setPosition,
         department, setDepartment,
-        comments, setComments
+        getSalaryTypes, setSalaryTypes
     } = useDropDownOfferedStore();
 
     const { isModalOpen, setIsModalOpen } = useCloseModal();
@@ -54,11 +54,9 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                 </div>
                 <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
             </div>
- 
+
             {/* Form */}
-            <form
-                // onSubmit={handleSubmit} 
-                className="space-y-4 mt-4">
+            <form className="space-y-4 mt-4">
                 {/* Applicant Full Name */}
                 <div>
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
@@ -242,9 +240,14 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             </form>
 
             <div>
-                <JobGeneratedModal isOpen={isModalOpen} >
+                <ModalWrapper
+                    isOpen={isModalOpen}
+                    overlayClassName="job-offer-modal-overlay"
+                    contentClassName="job-generated"
+                    onClose={() => { }}
+                >
                     <JobGeneratedAlert onClose={onClose} title={""} />
-                </JobGeneratedModal>
+                </ModalWrapper>
             </div>
         </div>
     )
