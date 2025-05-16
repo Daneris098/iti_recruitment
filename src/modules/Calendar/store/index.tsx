@@ -14,7 +14,9 @@ export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewUpdate: false,
   onViewFilter: false,
   onMonthYear: false,
+  currentDate: '',
 
+  setCurrentDate: (date: boolean) => set({ currentDate: date }),
   setOnMonthYear: (my: boolean) => set({ onMonthYear: my }),
   setOnViewFilter: (filter: boolean) => set({ onViewFilter: filter }),
   setOnViewEvent: (event: boolean) => set({ onViewEvent: event }),

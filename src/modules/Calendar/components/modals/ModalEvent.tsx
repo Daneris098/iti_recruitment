@@ -13,12 +13,61 @@ import Modal from "@shared/template/container/Modal";
 import { ModalViewEventProps } from "../../assets/Types";
 //--- Calendar Store
 import { useCalendarStore } from "../../store";
+import { useEffect, useState } from "react";
+
+interface Position {
+  [key: string]: any; // Adjust if specific fields are known
+}
+
+interface Person {
+  id: number;
+  name: string;
+}
+
+interface Applicant extends Person {
+  position: Position;
+}
+
+interface InterviewStage {
+  id: number;
+  name: string;
+}
+
+export interface InterviewDetails {
+  scheduleId: number;
+  date: string;
+  time: string;
+  applicant: Applicant;
+  interviewer: Person;
+  interviewStage: InterviewStage;
+}
+
+// Initial empty value
+const initialDetails: InterviewDetails = {
+  scheduleId: 0,
+  date: '',
+  time: '',
+  applicant: {
+    id: 0,
+    name: '',
+    position: {},
+  },
+  interviewer: {
+    id: 0,
+    name: '',
+  },
+  interviewStage: {
+    id: 0,
+    name: '',
+  },
+};
+
+
 
 export default function ModalViewEvent(props: ModalViewEventProps) {
   const { eventInfo } = props;
-
-  const { onViewEvent, setOnViewEvent, setOnViewApplicant, setOnViewResched } =
-    useCalendarStore();
+  const [details, setDetails] = useState<InterviewDetails>(initialDetails);
+  const { onViewEvent, setOnViewEvent, setOnViewApplicant, setOnViewResched } = useCalendarStore();
 
   const propsFunc = {
     opened: onViewEvent,
@@ -36,6 +85,21 @@ export default function ModalViewEvent(props: ModalViewEventProps) {
     setOnViewApplicant(true);
   };
 
+  useEffect(() => { 
+    console.log('eventInfo: ', eventInfo)
+    if (eventInfo.title != '') {
+      const time = new Date(details.date).toTimeString().split(' ')[0];
+      console.log('time: ',time)
+      setDetails({...(eventInfo.extendedProps as any)?.entry, time:`${time}`})
+      // setDetails((eventInfo.extendedProps as any)?.entry)
+    }
+  }, [eventInfo])
+
+  useEffect(() => {
+    console.log('details: ', details)
+    console.log('details date: ', details.date)
+  }, [details])
+
   return (
     <Modal centered {...propsFunc} title="View Event" size="lg">
       <Stack className="text-center" align="center" justify="center">
@@ -43,12 +107,12 @@ export default function ModalViewEvent(props: ModalViewEventProps) {
         <Text c="#559cda" fw={700} size="25px">
           Initial Interview
         </Text>
-        <Text mb={10}>Face-to-face</Text>
+        {/* <Text mb={10}>Face-to-face</Text> */}
 
         <Flex w="100%" display="flex" dir="row" mb={30}>
           <Container w="50%">
             <Text c="#6d6d6d" fw={700} size="18px">
-              September 1, 2024, Sunday
+              September 1, 2024, Sunday 
             </Text>
             <Text c="#424242" size="16px">
               3:00pm

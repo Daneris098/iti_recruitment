@@ -18,7 +18,9 @@ export interface CalendarStoreType {
   onViewUpdate: boolean;
   onViewFilter: boolean;
   onMonthYear: boolean;
+  currentDate: any;
 
+  setCurrentDate(date: any): void;
   setOnMonthYear(my: boolean): void;
   setOnViewFilter(filter: boolean): void;
   setOnViewEvent(event: boolean): void;

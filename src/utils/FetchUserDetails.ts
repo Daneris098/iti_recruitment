@@ -11,8 +11,6 @@ const useFetchUserDetails = () => {
 
         try {
             const response = await axiosInstance.get("user-management/users/me/profile");
-            console.log('response: ', response)
-
             let photoPath = null;
 
             if (response.data.photo) {

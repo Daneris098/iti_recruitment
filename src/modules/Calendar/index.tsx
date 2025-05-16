@@ -4,7 +4,7 @@
  */
 
 //--- React
-import React from "react";
+import React, { useEffect } from "react";
 //--- Mantine
 import { Stack } from "@mantine/core";
 //--- Full Calendar
@@ -32,20 +32,28 @@ import MonthYear from "./components/modals/ModalMonthYear";
 import { INITIAL_EVENTS, createEventId } from "./assets/Events";
 import SuccessAlert from "./components/alerts/SuccessAlert";
 import { ResponsiveContainer } from "recharts";
+import { useCalendar } from "@modules/Calendar/hooks/useCalendar";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
-  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear } = useCalendarStore();
+  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
-
+  const { isFetching, data} = useCalendar();
   const handleEventClick = (clickInfo: EventClickArg) => {
+    // console.log('clickInfo: ', clickInfo)
+    // console.log("Selected event:", clickInfo.event._def);
     setEventInfo({ ...clickInfo.event._def });
     setPublicId(clickInfo.event.id);
     setDateStart(clickInfo.event.start!);
     setOnViewEvent(true);
   };
+
+  useEffect(() => {
+    // console.log('INITIAL_EVENTS: ', INITIAL_EVENTS)
+    console.log('data123: ', data)  
+  }, [data])
 
   const handleSubmitUpdate = () => {
     const api = calendarRef!.current?.getApi() as CalendarApi;
@@ -78,14 +86,32 @@ export default function index() {
     const api = calendarRef!.current?.getApi() as CalendarApi;
     if (api) {
       setType(api.view.type);
+      const date = new Date(api.getDate());
+      const formatter = new Intl.DateTimeFormat('en-PH', {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+      const parts = formatter.formatToParts(date);
+      const year = parts.find(p => p.type === 'year')?.value;
+      const month = parts.find(p => p.type === 'month')?.value;
+      const day = parts.find(p => p.type === 'day')?.value;
+      const formattedDate = `${year}${month}${day}`;
+      setCurrentDate(formattedDate)
     }
   };
+
+  useEffect(() => {
+    console.log('currentDate: ', currentDate)    
+  }, [currentDate])
 
   return (
     <Stack flex={1} bg="white" w="100%" h="100%">
       <title>Calendar</title>
       <ResponsiveContainer width="100%" height="100%">
         <FullCalendar
+          events={data} 
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
           headerToolbar={{
@@ -107,7 +133,7 @@ export default function index() {
               click: () => setOnMonthYear(true),
               text: "▼",
             },
-          }}
+          }}    
           datesSet={handleViewChange}
           dayHeaderFormat={{ weekday: "long" }}
           dayHeaderClassNames="custom-header"
@@ -115,7 +141,7 @@ export default function index() {
           eventClassNames="custom-event"
           initialView="dayGridMonth"
           dayMaxEvents={true}
-          initialEvents={filteredEvents}
+          initialEvents={data}
           eventContent={renderEventContent}
           eventClick={handleEventClick}
         />

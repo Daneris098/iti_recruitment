@@ -18,26 +18,26 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (!originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        const refreshToken = getRefreshTokenFromCookie();
-        if (refreshToken) {
-          sessionStorage.setItem("accessToken", refreshToken);
-          originalRequest.headers["Authorization"] = refreshToken;
-          return axiosInstance(originalRequest);
-        }
-      } catch (err) {
-        console.error("Failed to refresh token", err);
-      }
-    }
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+//     if (!originalRequest._retry) {
+//       originalRequest._retry = true;
+//       try {
+//         const refreshToken = getRefreshTokenFromCookie();
+//         if (refreshToken) {
+//           sessionStorage.setItem("accessToken", refreshToken);
+//           originalRequest.headers["Authorization"] = refreshToken;
+//           return axiosInstance(originalRequest);
+//         }
+//       } catch (err) {
+//         console.error("Failed to refresh token", err);
+//       }
+//     }
 
-    return Promise.reject(error);
-  }
-);
+//     return Promise.reject(error);
+//   }
+// );
 
 export default axiosInstance;
