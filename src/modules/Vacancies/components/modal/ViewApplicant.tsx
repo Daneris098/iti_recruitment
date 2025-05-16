@@ -35,11 +35,6 @@ export default function index() {
         setArchivedCount(counts['archived'] || 0);
     }, [counts]);
 
-    // console.log("applicantId", applicantId)
-    // debugger;
-    // console.log("applicants", selectedApplicant.applicantId);
-    console.log("selectedApplicant", selectedApplicant)
-
     return (
         <>
             <Modal size={'80%'} opened={selectedData != selectedDataVal} centered onClose={() => setSelectedData(selectedDataVal)} title={'View Applicants'}

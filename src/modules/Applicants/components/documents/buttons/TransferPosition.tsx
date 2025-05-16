@@ -27,7 +27,6 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 company: item.companyResponse?.name ?? '',
                 slots: item.availableSlot,
             }));
-            // debugger;
             setAvailableSlots(getVacantPositions);
         } catch (error) {
             console.error(error);

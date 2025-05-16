@@ -37,7 +37,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   const time = new Date().toTimeString().split(" ")[0];
 
   const { file } = useFileUploadStore();
-  const { uploadHiredFile } = useFileUploadHiredStore();
+  // const { uploadHiredFile } = useFileUploadHiredStore();
 
   const { feedback, applicantFeedback } = useFeedbacksStore();
   const { selectedStatus, setSelectedStatus } = useStatusStore();
@@ -56,7 +56,6 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     isDropdownOpen, setIsDropdownOpen,
     setIsContactApplicant, isContactApplicant,
     isForTransfer,
-    //  setisForTransfer,
   } = useCloseModal();
 
   const applicantId = useApplicantIdStore((state) => state.id);
@@ -85,14 +84,6 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         applicantFeedback,
         comments
       })
-
-      console.log(
-        "applicant ID:", applicantId, "\n",
-        "file:", file, "\n",
-        "feedback:", feedback, "\n",
-        "applicantFeedback:", applicantFeedback, "\n",
-        "comments:", comments, "\n",
-      )
 
       setIsDropdownOpen(false);
       setIsFeedbackSent(true);
@@ -144,16 +135,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         order: interviewStagesId,
         dateStart: hiredToday
       })
-
-      console.log(
-        "applicant ID:", applicantId, "\n",
-        "file:", uploadHiredFile, "\n",
-        "interviewStagesId:", interviewStagesId, "\n",
-        "dateStart:", hiredToday, "\n",
-      )
-
       setIsFeedbackSent(true);
-
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
       setTimeout(() => {
         setIsFeedbackSent(false);

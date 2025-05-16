@@ -8,7 +8,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem("accessTokenFlash");
-    debugger;
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
