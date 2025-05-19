@@ -10,11 +10,25 @@ export const useCalendar = () => {
         sortStatus,
         setTime
     } = DataTableStore();
-    const { currentDate } = useCalendarStore();
+    const { currentDate, filterInterviewer, filterDepartmentIds, filterComapnyId } = useCalendarStore();
 
     const fetchData = async () => {
         try {
-            const res = await axiosInstance.get(`recruitment/calendar?Date=${currentDate}`);
+            let url = "recruitment/calendar";
+            if (currentDate) {
+                url += `?Date=${currentDate}`;
+            }
+            if (filterDepartmentIds.length > 0) {
+                // url += `?DepartmentId=[${filterDepartmentIds}]`;
+            }
+            if (filterComapnyId != 0) {
+                // url += `?CompanyId=${filterComapnyId}`;
+            }
+            if (filterInterviewer.length > 0) {
+                // url += `?Interviewer=[${filterInterviewer}]`;
+            }
+            console.log('url: ', url)
+            const res = await axiosInstance.get(url);
             // console.log('response456: ', res.data)
             if (res.status === 200 && Array.isArray(res.data.calendarDates)) {
                 const mapped = res.data.calendarDates.flatMap((day: any, dayIndex: number) => {
@@ -45,7 +59,7 @@ export const useCalendar = () => {
     };
 
     return useQuery<[]>({
-        queryKey: ["recruitment/calendar", { page, pageSize, sortStatus, currentDate }],
+        queryKey: ["recruitment/calendar", { page, pageSize, sortStatus, currentDate, filterDepartmentIds, filterComapnyId, filterInterviewer }],
         queryFn: fetchData,
         staleTime: 60 * 1000, // Data is fresh for 5 minutes
     });
