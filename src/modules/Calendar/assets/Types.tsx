@@ -19,7 +19,9 @@ export interface CalendarStoreType {
   onViewFilter: boolean;
   onMonthYear: boolean;
   currentDate: any;
+  details: EventDetails;
 
+  setDetails(any: EventDetails): void;
   setCurrentDate(date: any): void;
   setOnMonthYear(my: boolean): void;
   setOnViewFilter(filter: boolean): void;
@@ -63,4 +65,31 @@ export interface MonthYearStoreType {
   setMonth(month: number): void;
   setYear(year: number): void;
   setDay(day: Date): void;
+}
+
+interface Position {
+  [key: string]: any; // Adjust if specific fields are known
+}
+
+interface Person {
+  id: number;
+  name: string;
+}
+
+interface Applicant extends Person {
+  position: Position;
+}
+
+interface InterviewStage {
+  id: number;
+  name: string;
+}
+
+export interface EventDetails {
+  scheduleId: number;
+  date: string;
+  time: string;
+  applicant: Applicant;
+  interviewer: Person;
+  interviewStage: InterviewStage;
 }

@@ -10,22 +10,20 @@ export const useCalendar = () => {
         sortStatus,
         setTime
     } = DataTableStore();
-    const {  currentDate } = useCalendarStore();
+    const { currentDate } = useCalendarStore();
 
     const fetchData = async () => {
         try {
             const res = await axiosInstance.get(`recruitment/calendar?Date=${currentDate}`);
-            console.log('response456: ', res.data)
-            if (res.status === 200 && Array.isArray(res.data.calendarDates)) {  
-                const mapped = res.data.calendarDates.flatMap((day:any, dayIndex:number) => {
-                    return day.entries.map((entry:any, entryIndex:number) => {
+            // console.log('response456: ', res.data)
+            if (res.status === 200 && Array.isArray(res.data.calendarDates)) {
+                const mapped = res.data.calendarDates.flatMap((day: any, dayIndex: number) => {
+                    return day.entries.map((entry: any, entryIndex: number) => {
                         const applicantName = entry.applicant?.name || 'No Name';
-                        const interviewerName = entry.interviewer?.name || 'Unknown';
-                        const interviewStage = entry.interviewStage?.name || 'Interview';
 
                         return {
                             id: `${dayIndex}-${entryIndex}`, // Ensures unique ID
-                            title: `${interviewerName} - ${interviewStage} with ${applicantName}`,
+                            title: `${applicantName}`,
                             start: entry.date, // Full timestamp of the interview
                             textColor: '#559cda',
                             backgroundColor: '#deecff',
@@ -35,7 +33,7 @@ export const useCalendar = () => {
                 });
 
                 return mapped;
-                  
+
             } else {
                 console.error("Unexpected response format:", res.data);
                 return [];

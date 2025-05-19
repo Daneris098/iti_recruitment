@@ -36,14 +36,35 @@ import { useCalendar } from "@modules/Calendar/hooks/useCalendar";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
-  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate } = useCalendarStore();
+  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate, setDetails } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
-  const { isFetching, data} = useCalendar();
+  const { isFetching, data } = useCalendar();
+
   const handleEventClick = (clickInfo: EventClickArg) => {
     // console.log('clickInfo: ', clickInfo)
-    // console.log("Selected event:", clickInfo.event._def);
+    console.log("Selected event:", clickInfo.event._def);
+    const ev = clickInfo.event._def
+    if (ev.title != '') {
+      const date = new Date((ev.extendedProps as any).entry.date);
+      const dateOptions: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      };
+      const timeOptions: Intl.DateTimeFormatOptions = {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      };
+      // Format the date and time
+      const formattedDate = date.toLocaleDateString('en-US', dateOptions);
+      const formattedTime = date.toLocaleTimeString('en-US', timeOptions).toLowerCase();
+      setDetails({ ...(ev.extendedProps as any)?.entry, date: formattedDate, time: `${formattedTime}` })
+    }
+
     setEventInfo({ ...clickInfo.event._def });
     setPublicId(clickInfo.event.id);
     setDateStart(clickInfo.event.start!);
@@ -52,7 +73,7 @@ export default function index() {
 
   useEffect(() => {
     // console.log('INITIAL_EVENTS: ', INITIAL_EVENTS)
-    console.log('data123: ', data)  
+    console.log('data123: ', data)
   }, [data])
 
   const handleSubmitUpdate = () => {
@@ -103,7 +124,7 @@ export default function index() {
   };
 
   useEffect(() => {
-    console.log('currentDate: ', currentDate)    
+    console.log('currentDate: ', currentDate)
   }, [currentDate])
 
   return (
@@ -111,7 +132,7 @@ export default function index() {
       <title>Calendar</title>
       <ResponsiveContainer width="100%" height="100%">
         <FullCalendar
-          events={data} 
+          events={data}
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
           headerToolbar={{
@@ -133,7 +154,7 @@ export default function index() {
               click: () => setOnMonthYear(true),
               text: "▼",
             },
-          }}    
+          }}
           datesSet={handleViewChange}
           dayHeaderFormat={{ weekday: "long" }}
           dayHeaderClassNames="custom-header"
