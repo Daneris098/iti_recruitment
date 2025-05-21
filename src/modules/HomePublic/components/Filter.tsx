@@ -1,7 +1,7 @@
 import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
-import {  FilterStore } from "@src/modules/HomePublic/store";
+import { FilterStore } from "@src/modules/HomePublic/store";
 import { useEffect } from "react";
 import { filterVal } from "../values";
 
@@ -65,9 +65,9 @@ export default function Filter() {
   const removeFilter = (label: string, item: any) => {
     let updatedFilter = { ...filter };
     const camelCaseLabel = toCamelCase(label);
-    
+
     const filterValue = (updatedFilter as any)[camelCaseLabel];
-    
+
     // If it's an array, filter the item out
     if (Array.isArray(filterValue)) {
       (updatedFilter as any)[camelCaseLabel] = filterValue.filter((i: string) => i !== item);
@@ -76,7 +76,7 @@ export default function Filter() {
     else if (typeof filterValue === 'string' && filterValue === item) {
       (updatedFilter as any)[camelCaseLabel] = '';  // Reset the string value
     }
-    
+
     setFilter(updatedFilter);
   };
 

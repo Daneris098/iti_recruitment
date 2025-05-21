@@ -11,6 +11,8 @@ import JobOfferTemplate from "@modules/HiringSettings/components/panel/JobOfferT
 import ApplicationSource from "@modules/HiringSettings/components/panel/ApplicationSource";
 import bg2 from '@assets/bg2.png';
 import { useEffect, useRef } from "react";
+import OfferConfiguration from "./components/panel/OfferConfiguration";
+import { cn } from "@src/lib/utils";
 
 export default function index() {
     const { setAlert, setActivePanel, activePanel } = HiringSettingsStore()
@@ -20,6 +22,7 @@ export default function index() {
         interviewers: useRef<DataTableRef | null>(null),
         interviewStages: useRef<DataTableRef | null>(null),
         applicationSource: useRef<DataTableRef | null>(null),
+        offerConfiguration: useRef<DataTableRef | null>(null),
     };
 
     useEffect(() => {
@@ -51,16 +54,16 @@ export default function index() {
                     >
                         {description.customFeedback}
                     </Tabs.Tab>
-                    <Tabs.Tab value={panel.offerResponsePeriod}
+                    {/* <Tabs.Tab value={panel.offerResponsePeriod}
                         className={` ${activePanel === panel.offerResponsePeriod ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.offerResponsePeriod}
-                    </Tabs.Tab>
-                    <Tabs.Tab value={panel.applicationSettings}
+                    </Tabs.Tab> */}
+                    {/* <Tabs.Tab value={panel.applicationSettings}
                         className={` ${activePanel === panel.applicationSettings ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.applicationSettings}
-                    </Tabs.Tab>
+                    </Tabs.Tab> */}
                     <Tabs.Tab value={panel.interviewStages}
                         className={` ${activePanel === panel.interviewStages ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
@@ -76,21 +79,27 @@ export default function index() {
                     >
                         {description.applicationSource}
                     </Tabs.Tab>
-                    <Tabs.Tab value={panel.jobOfferTemplate}
+                    {/* <Tabs.Tab value={panel.jobOfferTemplate}
                         className={` ${activePanel === panel.jobOfferTemplate ? 'text-[#559CDA]' : 'text-gray-500'}`}
                     >
                         {description.jobOfferTemplate}
+                    </Tabs.Tab> */}
+                    <Tabs.Tab value={panel.offerConfiguration}
+                        className={` ${activePanel === panel.offerConfiguration ? 'text-[#559CDA]' : 'text-gray-500'}`}
+                    >
+                        {description.offerConfiguration}
                     </Tabs.Tab>
                 </Tabs.List>
 
-                <div className="border-[2px] border-blue-300  rounded-md  px-4 sm:m-4 h-[85%] sm:h-[90%] p-4 sm:p-8 ">
+                <div className={cn("h-[85%] overflow-y-auto rounded-md px-4 sm:m-4 sm:h-[90%] p-4 sm:p-8 ", activePanel != panel.offerConfiguration && "border-[2px] border-blue-300")}>
                     <Tabs.Panel value={panel.customFeedback} className="h-full"><CustomFeedback ref={dataTableRef[panel.customFeedback]} /></Tabs.Panel>
-                    <Tabs.Panel value={panel.offerResponsePeriod} className="h-full"><OfferResponsePeriod /></Tabs.Panel>
-                    <Tabs.Panel value={panel.applicationSettings} className="h-full"><ApplicationSettings /></Tabs.Panel>
+                    {/* <Tabs.Panel value={panel.offerResponsePeriod} className="h-full"><OfferResponsePeriod /></Tabs.Panel> */}
+                    {/* <Tabs.Panel value={panel.applicationSettings} className="h-full"><ApplicationSettings /></Tabs.Panel> */}
                     <Tabs.Panel value={panel.interviewStages} className="h-full"><InterviewStages ref={dataTableRef[panel.interviewStages]} /></Tabs.Panel>
                     <Tabs.Panel value={panel.interviewers} className="h-full"><Interviewers ref={dataTableRef[panel.interviewers]} /></Tabs.Panel>
                     <Tabs.Panel value={panel.applicationSource} className="h-full"><ApplicationSource ref={dataTableRef[panel.applicationSource]} /></Tabs.Panel>
-                    <Tabs.Panel value={panel.jobOfferTemplate} className="h-full"><JobOfferTemplate /></Tabs.Panel>
+                    {/* <Tabs.Panel value={panel.jobOfferTemplate} className="h-full"><JobOfferTemplate /></Tabs.Panel> */}
+                    <Tabs.Panel value={panel.offerConfiguration} className="h-full"><OfferConfiguration /></Tabs.Panel>
                 </div>
             </Tabs>
 

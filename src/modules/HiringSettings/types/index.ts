@@ -12,6 +12,7 @@ export interface DataTableRefs {
   offerResponsePeriod?: React.RefObject<DataTableRef>;
   applicationSettings?: React.RefObject<DataTableRef>;
   jobOfferTemplate?: React.RefObject<DataTableRef>;
+  offerConfiguration?: React.RefObject<DataTableRef>;
 }
 
 export enum Operation {
@@ -38,7 +39,7 @@ export type applicationSource = {
   id: number;
   sourceName: string;
   status: string;
-  fieldStatus? : string;
+  fieldStatus?: string;
   lastModified: string;
 };
 
@@ -46,7 +47,7 @@ export type interviewer = {
   id: number;
   name: string;
   status: string;
-  fieldStatus? : string;
+  fieldStatus?: string;
   lastModified: string;
 };
 
@@ -127,16 +128,18 @@ export enum description {
   interviewers = 'Interviewers',
   applicationSource = 'Application Source',
   jobOfferTemplate = 'Job Offer Template',
+  offerConfiguration = 'Offer Configuration',
 }
 
 export enum panel {
   customFeedback = 'customFeedback',
-  offerResponsePeriod = 'offerResponsePeriod',
-  applicationSettings = 'applicationSettings',
+  // offerResponsePeriod = 'offerResponsePeriod',
+  // applicationSettings = 'applicationSettings',
   interviewStages = 'interviewStages',
   interviewers = 'interviewers',
   applicationSource = 'applicationSource',
-  jobOfferTemplate = 'jobOfferTemplate',
+  // jobOfferTemplate = 'jobOfferTemplate',
+  offerConfiguration = 'offerConfiguration',
 }
 
 export const columns = {
@@ -189,9 +192,9 @@ export type SpreadsheetCell = {
 };
 
 export type ExportOptions = {
-    sheetName?: string;
-    fileName?: string;
-    data: SpreadsheetCell[][];
-    image?: string; // base64 or URL
-    customStylingFn?: (worksheet: ExcelJS.Worksheet) => void;
+  sheetName?: string;
+  fileName?: string;
+  data: SpreadsheetCell[][];
+  image?: string; // base64 or URL
+  customStylingFn?: (worksheet: ExcelJS.Worksheet) => void;
 };

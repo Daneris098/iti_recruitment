@@ -3,8 +3,10 @@ import { VacancyType } from "@src/modules/HomePublic/types";
 import { MantineSize, Pill, useMatches } from "@mantine/core";
 import { HomeStore } from "@src/modules/HomePublic/store";
 import { cn } from "@src/lib/utils";
+import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 
 export default function index() {
+  const { isFetching, data } = useVacancies();
   const jobs: VacancyType[] = jobsJson;
   const { setSelectedData, selectedData } = HomeStore();
   const pillSize: MantineSize = useMatches({
@@ -12,9 +14,10 @@ export default function index() {
     lg: "xs",
     xl: "lg"
   });
+
   return (
     <div className="flex flex-col  gap-2 2xl:gap-4">
-      {jobs.map((job: VacancyType, index: number) => (
+      {data?.map((job: VacancyType, index: number) => (
         <div
           key={index}
           className={cn(
@@ -22,6 +25,7 @@ export default function index() {
             selectedData.id === job.id && "bg-blue-500"
           )}
           onClick={() => {
+            console.log('job: ', job)
             setSelectedData(job);
           }}
         >

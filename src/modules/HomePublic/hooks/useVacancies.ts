@@ -2,9 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
 import { DataTableStore } from "@src/modules/Vacancies/store";
 import { VacancyType } from "@src/modules/Vacancies/types";
-import { FilterStore } from "@modules/Vacancies/store";
+import { FilterStore } from "@src/modules/HomePublic/store";
 
 export const useVacancies = () => {
+    const { filter, isFiltered, setIsFiltered } = FilterStore();
     const {
         page,
         pageSize,
@@ -12,34 +13,31 @@ export const useVacancies = () => {
         setTime
     } = DataTableStore();
 
-    const { filter, isFiltered } = FilterStore();
-
     const fetchData = async () => {
         try {
-            console.log('filter: ', filter)
+            console.log('filter1: ', filter)
             let url = "recruitment/vacancies";
 
-            if (filter.company.length) {
-                // url += `?Name=[${filter.company}]`;
+            if (filter.jobTitle) {
+                // url += `?Name=${filter.jobTitle}`;
             }
-            if (filter.vacancy.length) {
-                // url += `?Name=[${filter.vacancy}]`;
-            }
-            if (filter.dateFrom) {
-                // url += `?dateFrom=${filter.dateFrom}`;
-            }
-            if (filter.dateTo) {
-                // url += `?dateFrom=${filter.dateTo}`;
-            }
-            if (filter.interviewer.length) {
-                // url += `?Name=[${filter.interviewer}]`;
+            if (filter.postedDate) {
+                // url += `?Name=${filter.jobTitle}`;
             }
             if (filter.department.length) {
-                // url += `?Name=[${filter.department}]`;
+                // url += `?Name=[${filter.jobTitle}]`;
             }
-            if (filter.status.length) {
-                // url += `?Name=[${filter.status}]`;
+            if (filter.employmentType.length) {
+                // url += `?Name=[${filter.employmentType}]`;
             }
+            if (filter.workplaceType.length) {
+                // url += `?Name=[${filter.workplaceType}]`;
+            }
+            if (filter.experienceLevel.length) {
+                // url += `?Name=[${filter.experienceLevel}]`;
+            }
+
+            console.log('url: ', url)
             const startTime = performance.now();
             const res = await axiosInstance.get(url);
 

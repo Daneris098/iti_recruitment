@@ -136,18 +136,17 @@ export const useApplicants = () => {
             });
 
             // Find the maximum length of any stage
-            // const maxLength = Math.max(
-            //     stageGroup.applied.length,
-            //     stageGroup.forInterview.length,
-            //     stageGroup.offered.length,
-            //     stageGroup.hired.length,
-            //     stageGroup.archived.length
-            // );
-            
-            const maxLength = 10;
+            const maxLength = Math.max(
+                stageGroup.applied.length,
+                stageGroup.forInterview.length,
+                stageGroup.offered.length,
+                stageGroup.hired.length,
+                stageGroup.archived.length
+            );
+
             const fillWithNullCandidates = (stage: Candidate[], length: number): Candidate[] => {
                 const fillCount = length - stage.length;
-                const nullCandidates = Array(fillCount).fill({ id: null});
+                const nullCandidates = Array(fillCount).fill({ id: null });
                 return [...stage, ...nullCandidates];
             };
 
@@ -170,11 +169,12 @@ export const useApplicants = () => {
                 acc[stage] = validItems.length;
                 return acc;
             }, {} as { [key: string]: number });
+
             setCounts(stageCounts);
             const endTime = performance.now();
             const executionTime = (endTime - startTime) / 1000;
             setTime(executionTime.toFixed(3).toString());
-            return transformed; 
+            return transformed;
         } catch (error: any) {
             console.error("Error fetching data:", error.response || error);
             throw error;
@@ -186,7 +186,7 @@ export const useApplicants = () => {
 
         const group = stageGroups[0];
         const keys = ['applied', 'forInterview', 'offered', 'hired', 'archived'];
-        const length = group.applied.length; 
+        const length = group.applied.length;
         const result = Array.from({ length }, (_, index) => {
             const vacancy: any = { id: index + 1 };
 
@@ -203,6 +203,6 @@ export const useApplicants = () => {
     return useQuery<VacancyType[]>({
         queryKey: ["recruitment/applicants", { page, pageSize, sortStatus, selectedData }],
         queryFn: fetchData,
-        staleTime: 60 * 1000, 
+        staleTime: 60 * 1000,
     });
 };

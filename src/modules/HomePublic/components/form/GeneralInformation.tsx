@@ -63,8 +63,17 @@ export default function index() {
                 mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
                 landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
-                
-                // sssNo: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+
+                governmentIdOrNumber: {
+                    sssNo: (value: string) => value.length != 10 ? "Please input a valid SSS Number" : null,
+                    // gsisNo: (value: string) => value.length != 10 ? "Please input a valid Driver's License Number" : null,
+                    driversLicense: (value: string) => value.length != 11 ? "Please input a valid Driver's License Number" : null,
+                    philhealthNo: (value: string) => value.length != 12 ? "Please input a valid Philhealth Number" : null,
+                    passport: (value: string) => value.length != 12 ? "Please input a valid Passport Number" : null,
+                    tinNo: (value: string) => !(9 <= value.length && value.length <= 12) ? "Please input a valid Tin Number" : null,
+                    // rdoCode: (value: string) => value.length === 0 ? "RDO Code is required" : null,
+                }
+
             }
         }
     });
@@ -155,7 +164,7 @@ export default function index() {
                             />
                         </Popover.Target>
                         <Popover.Dropdown className="w-full">
-                            <DatePicker firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => { form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            <DatePicker minDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => { form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
                         </Popover.Dropdown>
                     </Popover>
                 </div>

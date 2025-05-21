@@ -133,7 +133,7 @@ export default function DrawerFilter() {
             onChange={(value) => setFilter({ ...filter, vacancy: value })}
           />
           <Divider size={0.5} color="#edeeed" className="w-full" />
-          <p>Published Date Range</p>
+          <p className="text-[#6d6d6d]">Published Date Range</p>
           <DateRange
             gapValue={12}
             size="md"
