@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { PDFViewer } from "@react-pdf/renderer";
 import profileImage from '@src/assets/jane.png';
 import { Button, Divider, Tabs } from "@mantine/core";
@@ -30,11 +29,10 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
         "Assessment": "bg-[#ED8028]",
         "Final Interview": "bg-[#FEC001]",
         "Initial Interview": "bg-[#559CDA]",
-        // 'Ready for Transfer': 'bg-[#6D6D6D]',
     }
 
     const applicantId = useApplicantIdStore((state) => state.id);
-    const { data: applicantsById } = useApplicantsById(applicantId)
+    const { data: applicantsById } = useApplicantsById(applicantId);
     const viewPDFStatuses = ['Offered', 'Hired', 'For Transfer', 'Transferred'];
     const { isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered, isTransferPosition, setIsTransferPosition } = useCloseModal();
     const [isViewPDF, setIsViewPDF] = useState(false); // Open the View PDF Modal
@@ -101,7 +99,7 @@ export default function ViewApplicant({ applicantName, Position, Status, Email, 
                             </p>
 
                             {/* Hide the Update Status button if the current status is equivalent to either "Hired" or "Transferred" */}
-                            {Status !== 'Hired' && Status !== 'Ready for Transfer' && (
+                            {Status !== 'Hired' && Status !== 'Transferred' && (
 
                                 // If the current Status is equals to "Archived" then use cursor-disabled.
                                 <p className={`text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold 

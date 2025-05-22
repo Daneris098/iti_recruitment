@@ -16,7 +16,7 @@ import ScheduleInterview from "@src/modules/Applicants/components/documents/move
 import TransferApplicantLoader from "@modules/Applicants/components/documents/movement/TransferApplicants";
 import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Shared/hooks/useSharedApplicants";
 import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types"
-import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore, useFeedbacksStore, useFileUploadStore, useFileUploadHiredStore } from "@modules/Applicants/store";
+import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
 
 interface UpdateStatusProps {
   Status: string;
@@ -27,21 +27,23 @@ interface UpdateStatusProps {
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
-
+  const { mutateAsync: movementHired } = useCreateHired();
   const { mutateAsync: movementArchive } = usePOSTArchive();
   const { mutateAsync: movementScheduleInterview } = usePOSTForInterview();
-  const { mutateAsync: movementHired } = useCreateHired();
 
-  const today = new Date().toISOString().split("T")[0];
   const hiredToday = new Date().toISOString().split("T")[0];
-  const time = new Date().toTimeString().split(" ")[0];
 
   const { file } = useFileUploadStore();
-  // const { uploadHiredFile } = useFileUploadHiredStore();
-
   const { feedback, applicantFeedback } = useFeedbacksStore();
   const { selectedStatus, setSelectedStatus } = useStatusStore();
-  const { comments, setComments, interviewStages, interviewerId, getInterviewer, interviewStagesId } = useDropDownOfferedStore();
+  const {
+    interviewTime,
+    comments, setComments,
+    interviewStages, interviewerId,
+    interviewLocation, interviewDate,
+    getInterviewer, interviewStagesId
+  } = useDropDownOfferedStore();
+
   const {
     setIsModalOpen,
     isScheduleInterview,
@@ -76,13 +78,12 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   if (selectedStatus === "Archived") {
     buttonText = "Save Feedback";
     handleClick = async () => {
-
       await movementArchive({
-        applicantId,
-        file,
-        feedback,
-        applicantFeedback,
-        comments
+        ApplicantId: applicantId,
+        File: file,
+        Feedback: feedback,
+        ApplicantFeedback: applicantFeedback,
+        Comments: comments
       })
 
       setIsDropdownOpen(false);
@@ -101,26 +102,32 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   }
 
   else if (selectedStatus === "For Interview") {
-    buttonText = "Schedule Interview"
-    handleClick = async () => {
+    buttonText = "Schedule Interview";
 
-      await movementScheduleInterview({
-        applicantId,
-        queryParams: {
-          Date: today,
-          Time: time,
-          "Interviewer.Id": interviewerId,
-          "Interviewer.Name": getInterviewer,
-          "InterviewStage.Id": interviewStagesId,
-          "InterviewStage.Name": interviewStages,
+    handleClick = async () => {
+      try {
+        await movementScheduleInterview({
+          ApplicantId: applicantId,
+          Date: interviewDate,
+          Time: interviewTime,
+          Location: interviewLocation,
+          Interviewer: {
+            Id: interviewerId,
+            Name: getInterviewer
+          },
+          InterviewStage: {
+            Id: interviewStagesId,
+            Name: interviewStages,
+          },
           Order: interviewStagesId,
           Comment: comments,
-          UserId: 1
-        }
-      })
-      // setIsScheduleInterview(true);
-      setIsContactApplicant(true)
-      setIsDropdownOpen(false);  //  Close dropdown when clicking "Schedule Interview"
+        });
+
+        setIsContactApplicant(true);
+        setIsDropdownOpen(false);
+      } catch (error) {
+        console.error("Error scheduling interview:", error);
+      }
     };
   } else if (selectedStatus === "Offered") {
     buttonText = "Generate Offer"
@@ -130,10 +137,10 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     buttonText = "Upload";
     handleClick = async () => {
       await movementHired({
-        applicantId,
-        file,
-        order: interviewStagesId,
-        dateStart: hiredToday
+        ApplicantId: applicantId,
+        File: file,
+        Order: interviewStagesId,
+        DateStart: hiredToday
       })
       setIsFeedbackSent(true);
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
