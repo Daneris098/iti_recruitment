@@ -1,12 +1,13 @@
 import { IconCaretDownFilled, IconCirclePlus, IconCircleX, IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { InteviewerStore, HiringSettingsStore } from "@modules/HiringSettings/store"
-import { useState, forwardRef, useImperativeHandle } from "react";
-import { AlertType, interviewer, Operation } from "@modules/HiringSettings/types"
+import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
+import { AlertType, interviewer, Operation, panel } from "@modules/HiringSettings/types"
 import { DataTable } from "mantine-datatable";
 import { Select, TextInput } from "@mantine/core";
+import axiosInstance from "@src/api";
 
 const Interviewers = forwardRef((_, ref) => {
-    const { setValidationMessage, setAlert } = HiringSettingsStore();
+    const { setValidationMessage, setAlert, activePanel } = HiringSettingsStore();
     const { interviewers, setInterviewers } = InteviewerStore()
     const [interviewStagesEditMode, setInterviewStagesEditMode] = useState<{ [key: number]: boolean }>({});
     const [interviewStagesEditableData, setInterviewStagesEditableData] = useState<{ [key: number]: Partial<interviewer> }>({});
@@ -69,13 +70,13 @@ const Interviewers = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => {
-                        if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
-                            return
-                        }
-                        setSelectedRowId(data.id)
-                        setExpandedRowIds([data.id])
-                        toggleEditMode(data.id)
-                        setInterviewStagesNewRows([]);
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
+                            setSelectedRowId(data.id)
+                            setExpandedRowIds([data.id])
+                            toggleEditMode(data.id)
+                            setInterviewStagesNewRows([]);
                         }}>
                             <IconPencil />
                         </div>
@@ -83,7 +84,7 @@ const Interviewers = forwardRef((_, ref) => {
                 ,
             },
         ];
-    
+
     const checkEditIsValid = () => {
         const fieldsToCheck = ['name'];
         return !Object.entries(interviewStagesEditableData).some(([data]) =>
@@ -109,7 +110,7 @@ const Interviewers = forwardRef((_, ref) => {
             day: 'numeric',
         });
         const newRow: interviewer = {
-            id: Math.max(...interviewers.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), 
+            id: Math.max(...interviewers.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)),
             fieldStatus: 'new',
             name: '',
             status: 'ACTIVE',
@@ -164,7 +165,7 @@ const Interviewers = forwardRef((_, ref) => {
             const merged = interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record;
             const { fieldStatus, ...rest } = merged;
             return rest;
-        }); 
+        });
         setInterviewers(result);
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
@@ -234,6 +235,24 @@ const Interviewers = forwardRef((_, ref) => {
             )
         },
     };
+
+    const fetchData = async () => {
+        await axiosInstance
+            .get("/recruitment/hiring/interviewers")
+            .then((response) => {
+                console.log('response: ', response.data)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    useEffect(() => {
+        if (activePanel === panel.interviewers) {
+            fetchData()
+        }
+    }, [activePanel])
 
 
     return (

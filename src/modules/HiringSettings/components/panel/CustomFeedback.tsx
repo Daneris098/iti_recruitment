@@ -1,9 +1,10 @@
-import { useState, forwardRef, useImperativeHandle } from 'react';
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable } from 'mantine-datatable';
 import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
 import { TextInput } from '@mantine/core';
 import { FeedbackStore, HiringSettingsStore } from '@modules/HiringSettings/store';
 import { AlertType, feedback, Operation } from '@modules/HiringSettings/types';
+import axiosInstance from '@src/api';
 
 const CustomFeedback = forwardRef((_, ref) => {
     const { setValidationMessage, setAlert } = HiringSettingsStore();
@@ -22,6 +23,71 @@ const CustomFeedback = forwardRef((_, ref) => {
     const [selectedRowId2, setSelectedRowId2] = useState<number | null>(null);
 
     type FeedbackMode = "applicantFeedback" | "hiringFeedback";
+
+    const fetchData = async () => {
+        await axiosInstance
+            .get("/recruitment/hiring/feedbacks")
+            .then((response) => {
+                const appFeedArr: feedback[] = []
+                const hiringFeedArr: feedback[] = []
+                response.data.items.forEach((element: any) => {
+                    if (element.isApplicantFeedback) {
+                        appFeedArr.push({ id: element.id, feedback: element.description, guid: element.guid })
+                    }
+                    else {
+                        hiringFeedArr.push({ id: element.id, feedback: element.description, guid: element.guid })
+                    }
+                });
+                setApplicantFeedback(appFeedArr)
+                setHiringFeedback(hiringFeedArr)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    const addFeedback = async (formVal: any) => {
+        const payload = {
+            description: formVal.description,
+            isApplicantFeedback: formVal.isApplicantFeedback,
+        };
+        await axiosInstance
+            .post("/recruitment/hiring/feedbacks", payload)
+            .then((response) => {
+                fetchData()
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+    const updateFeedback = async (formVal: any) => {
+        const payload = {
+            id: formVal.id,
+            guid: formVal.guid,
+            description: formVal.description,
+            isApplicantFeedback: formVal.isApplicantFeedback,
+        };
+        await axiosInstance
+            .post(`/recruitment/hiring/feedbacks/${formVal.id}/update`, payload)
+            .then((response) => {
+                fetchData()
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const toggleEditMode = (id: number, mode: FeedbackMode) => {
         SetOperation(Operation.edit)
@@ -125,17 +191,26 @@ const CustomFeedback = forwardRef((_, ref) => {
         if (!checkEditIsValid()) {
             return
         }
+
+        setSelectedRowId(null);
         setSelectedRowId2(null);
-        const result = [...applicantFeedback, ...applicantNewRows].map((record) =>
-            applicantEditableData[record.id] ? { ...record, ...applicantEditableData[record.id] } : record
-        );
-        setApplicantFeedback(result);
 
-
-        const result2 = [...hiringFeedback, ...hiringNewRows].map((record) =>
-            hiringEditableData[record.id] ? { ...record, ...hiringEditableData[record.id] } : record
-        );
-        setHiringFeedback(result2);
+        if (operation == Operation.add) {
+            if (applicantEditableData && Object.keys(applicantEditableData).length > 0) {
+                addFeedback({ description: Object.values(applicantEditableData)[0]?.feedback, isApplicantFeedback: true, guid: Object.values(hiringEditableData)[0]?.guid })
+            }
+            else {
+                addFeedback({ description: Object.values(hiringEditableData)[0]?.feedback, isApplicantFeedback: false, guid: Object.values(hiringEditableData)[0]?.guid })
+            }
+        }
+        else if (operation == Operation.edit) {
+            if (applicantEditableData && Object.keys(applicantEditableData).length > 0) {
+                updateFeedback({ id: Object.values(applicantEditableData)[0]?.id, description: Object.values(applicantEditableData)[0]?.feedback, isApplicantFeedback: false, guid: Object.values(hiringEditableData)[0]?.guid })
+            }
+            else {
+                updateFeedback({ id: Object.values(hiringEditableData)[0]?.id, description: Object.values(hiringEditableData)[0]?.feedback, isApplicantFeedback: false, guid: Object.values(hiringEditableData)[0]?.guid })
+            }
+        }
 
         setApplicantNewRows([]);
         setApplicantEditMode({});
@@ -237,7 +312,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                         </div>
                     </div>
                 ), sortable: false,
-                render: (data: any) => hiringEditMode[data.id] && data.fieldStatus === 'new'  ? (
+                render: (data: any) => hiringEditMode[data.id] && data.fieldStatus === 'new' ? (
                     <TextInput
                         value={hiringEditableData[data.id]?.feedback || data.feedback}
                         onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'hiringFeedback')}
@@ -276,7 +351,7 @@ const CustomFeedback = forwardRef((_, ref) => {
 
     const checkEditIsValid = () => {
         const fieldsToCheck = ['feedback'];
-        return !Object.entries(applicantEditableData).some(([data]) =>
+        return !Object.entries(applicantEditableData).some(([_, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -286,7 +361,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                 }
                 return false;
             })
-        ) && !Object.entries(hiringEditableData).some(([data]) =>
+        ) && !Object.entries(hiringEditableData).some(([_, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -299,11 +374,9 @@ const CustomFeedback = forwardRef((_, ref) => {
         );
     };
 
-
     const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
     const [expandedRowIds2, setExpandedRowIds2] = useState<number[]>([]);
 
-    
     const rowExpansion1: any = {
         trigger: 'never',
         allowMultiple: false,

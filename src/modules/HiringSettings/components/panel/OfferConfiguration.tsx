@@ -51,7 +51,7 @@ const OfferConfiguration = () => {
                 />
             </div>
 
-            <div className="flex flex-col gap-8 border-[2px] border-blue-300 rounded-md px-4 sm:h-[90%] p-4 sm:p-8">
+            {/* <div className="flex flex-col gap-8 border-[2px] border-blue-300 rounded-md px-4 sm:h-[90%] p-4 sm:p-8">
                 <p className="text-[#559CDA] font-bold">Job Offer Template</p>
                 <SpreadsheetExportButton
                     data={data}
@@ -59,7 +59,7 @@ const OfferConfiguration = () => {
                     fileName="job-offer-template.xlsx"
                 />
                 <Dropzone />
-            </div>
+            </div> */}
         </div>
     );
 };

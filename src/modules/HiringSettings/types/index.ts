@@ -23,12 +23,15 @@ export enum Operation {
 
 export type feedback = {
   id: number;
+  guid?: string;
   feedback: string;
   fieldStatus?: string;
 };
 
 export type interviewStage = {
+  guid?: string;
   id: number;
+  sequenceNo?: number;
   stageName: string;
   status: string;
   fieldStatus?: string;
