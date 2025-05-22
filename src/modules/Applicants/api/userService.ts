@@ -1,5 +1,5 @@
 import { apiClient } from "@shared/services/apiClient";
-import { ApplicationMovementOffered, ApplicationMovementForInterview, ApplicationMovementHired } from "@modules/Applicants/types";
+import { ApplicationMovementHired } from "@modules/Applicants/types";
 
 export const applicationMovementArchive = {
     postById: (idOrGuid: number, formData: FormData) =>
@@ -11,13 +11,21 @@ export const applicationMovementArchive = {
 }
 
 export const applicationMovementOffered = {
-    postById: (idOrGuid: string | number, data: Record<string, any>) =>
-        apiClient.post<ApplicationMovementOffered>(`/recruitment/applicants/${idOrGuid}/job-offer`, null, { params: data })
+    postById: (idOrGuid: number, formData: FormData) =>
+        apiClient.post(`/recruitment/applicants/${idOrGuid}/job-offer`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
 }
 
 export const applicationMovementForInterview = {
-    postById: (id: number, data: Record<string, any>) =>
-        apiClient.post<ApplicationMovementForInterview>(`/recruitment/applicants/${id}/schedule/interview`, null, { params: data })
+    postById: (id: number, formData: FormData) =>
+        apiClient.post(`/recruitment/applicants/${id}/schedule/interview`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
 }
 
 export const applicationMovementHired = {
@@ -35,5 +43,14 @@ export const applicationMovementForTransfer = {
             headers: {
                 "Content-Type": "application/json",
             },
+        })
+}
+
+export const transferApplicantPosition = {
+    transferApplicantPositions: (jobOpeningsId: number, data: FormData) =>
+        apiClient.post(`recruitment/applicants/${jobOpeningsId}/transfer-position`, data, {
+            headers: {
+                "Content-Type": "application/json",
+            }
         })
 }

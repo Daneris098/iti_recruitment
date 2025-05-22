@@ -4,7 +4,7 @@ import { IconChecklist } from "@tabler/icons-react";
 import { PDFProps } from "@modules/Applicants/types";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import MyDocument from "@modules/Offers/components/documents/PDF"
-import { usePOSTOffer } from "@modules/Shared/hooks/useSharedApplicants";
+import { useCreateOffer } from "@modules/Shared/hooks/useSharedApplicants";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import { useCloseModal, useStatusStore, useApplicantIdStore, useDropDownOfferedStore } from "@src/modules/Applicants/store";
@@ -14,8 +14,6 @@ interface JobGeneratedAlertProps extends Partial<PDFProps> {
 }
 
 export default function JobGeneratedAlert({ title, onClose, applicantName, Acknowledgement, Department, Remarks }: JobGeneratedAlertProps) {
-
-
     const {
         getSalaryTypes,
         amount,
@@ -25,7 +23,7 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
     } = useDropDownOfferedStore();
 
     const applicantId = useApplicantIdStore((state) => state.id);
-    const { mutateAsync } = usePOSTOffer();
+    const { mutateAsync: createOffer } = useCreateOffer();
 
     // zustand store.
     const {
@@ -60,20 +58,23 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
 
     // For submitting Offered Application Movement.
     const handleSubmit = async () => {
-        await mutateAsync({
-            applicantId,
-            queryParams: {
-                "Position.Id": positionId,
-                "Position.Name": position,
-                "Department.Id": departmentId,
-                "Department.Name": department,
-                "PaymentScheme.Id": paymentSchemeId,
-                "PaymentScheme.Name": getSalaryTypes,
-                "Salary": amount,
-                "Comment": comments,
-            }
-
-        });
+        await createOffer({
+            ApplicantId: applicantId,
+            Position: {
+                Id: positionId,
+                Name: position
+            },
+            Department: {
+                Name: department,
+                Id: departmentId
+            },
+            PaymentScheme: {
+                Id: paymentSchemeId,
+                Name: getSalaryTypes
+            },
+            Salary: amount,
+            Comment: comments
+        })
         setIsUpdateSuccessful(true);
         setTimeout(() => {
             handleCloseAll();

@@ -155,3 +155,128 @@ export type ApplicantRoute = {
     status: string[];
     label: string;
 };
+
+export interface SelectedApplicantsStore {
+    selectedIds: (string | number)[];
+    setSelectedIds: (ids: (string | number)[]) => void;
+    addSelectedId: (id: string | number) => void;
+    removeSelectedId: (id: string | number) => void;
+}
+
+export interface JobOpenings {
+    departmentResponse: {
+        id: number;
+        name?: string;
+    };
+    id: string | number;
+    positionTitleResponse: string;
+    companyResponse: {
+        name: string;
+        [key: string]: any;
+    } | null;
+    availableSlot: number;
+    vacancyDurationResponse: {
+        dateStart: string;
+    }
+}
+
+export interface JobOpeningsStore {
+    records: JobOpenings[],
+    setJobOpenings: (rows: JobOpenings[]) => void;
+    updateJobOpenings: (id: string, newJobOpenings: string) => void;
+}
+
+
+export interface ApplicantTransfereeName {
+    Applicant_Name: string;
+    onClose: () => void;
+}
+
+export interface Company {
+    id?: number;
+    name?: string;
+}
+
+export interface Slot {
+    id: any;
+    position: string;
+    company?: Company | null;
+    slots: number;
+}
+
+export interface PaginationState {
+    page: number;
+    pageSize: number;
+    setPageSize: (size: number) => void;
+    setPage: (page: number) => void;
+    getPaginatedRecords: (records: Applicant[]) => Applicant[];
+}
+
+export type ForInterviewForm = {
+    ApplicantId: number;
+    Date: string;
+    Time: string;
+    Location: string;
+    Interviewer: {
+        Id: number;
+        Name: string;
+    };
+    InterviewStage: {
+        Id: number;
+        Name: string;
+    };
+    Order: number;
+    Comment?: string;
+}
+
+export type HiredForm = {
+    ApplicantId: number;
+    File: File | null;
+    Order?: number;
+    DateStart: string;
+}
+
+export type OfferForm = {
+    ApplicantId: number;
+    Position: {
+        Id: number;
+        Name: string;
+    }
+    Department: {
+        Id: number;
+        Name: string;
+    }
+    PaymentScheme: {
+        Id: number;
+        Name: string;
+    }
+    Salary: number;
+    Comment?: string;
+}
+
+export type ArchiveForm = {
+    ApplicantId: number;
+    File: File | null;
+    Feedback: string;
+    ApplicantFeedback: string;
+    Comments?: string;
+    Order?: number;
+}
+
+export type TransferApplicationPositionForm = {
+    applicantId: number;
+    position: {
+        id: number,
+        name: string,
+        salary: number,
+
+        choice: {
+            id: number;
+            name: string;
+        },
+
+        availableDateStart: string;
+        companyId: number;
+        departmentId: number;
+    }, comment: string;
+}

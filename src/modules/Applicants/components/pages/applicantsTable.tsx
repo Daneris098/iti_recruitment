@@ -274,20 +274,6 @@ export default function index() {
           onClose={() => setIsViewApplicant(false)}
         />
       </ModalWrapper>
-      {/* <ApplicantModal isOpen={isViewApplicant}>
-        <ViewApplicant
-          applicantName={selectedApplicant?.applicantName}
-          Position={selectedApplicant?.position}
-          Status={selectedApplicant?.status}
-          Email={selectedApplicant?.email}
-          Phone={selectedApplicant?.phone}
-          Skills={selectedApplicant?.skills}
-          Remarks={selectedApplicant?.remarks}
-          Application_Date={selectedApplicant?.applicationDate}
-          IsJobOffer={selectedApplicant?.isJobOffer}
-          onClose={() => setIsViewApplicant(false)}
-        />
-      </ApplicantModal> */}
 
       <Modal
         opened={isForMultipleTransfer}
