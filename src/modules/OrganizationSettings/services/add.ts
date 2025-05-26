@@ -1,18 +1,21 @@
 import { queryClient } from "@src/client/queryClient";
 import { useSharedOrgService } from "@src/modules/Shared/api/useSharedUserService";
 import { useMutation } from "@tanstack/react-query";
+import { OrganizationSettingsStore } from "../store";
 
 export const useAddOrganizationSettings = () => {
+  const { setAlert } = OrganizationSettingsStore();
   const { mutate: addBranch } = useMutation({
     mutationFn: async (form: Record<string, any>) => {
-      console.log(form);
       return useSharedOrgService("/branches").create(form);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_branch"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -22,9 +25,11 @@ export const useAddOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_company"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -34,9 +39,11 @@ export const useAddOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_department"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -46,9 +53,11 @@ export const useAddOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_division"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -59,9 +68,11 @@ export const useAddOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_position"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -71,9 +82,11 @@ export const useAddOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_section"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 

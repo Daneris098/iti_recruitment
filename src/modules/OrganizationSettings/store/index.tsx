@@ -33,6 +33,9 @@ interface OrganizationSettingsState {
 
   sortBy: string;
   setSortBy: (value: string) => void;
+  ascDesc: boolean;
+  setAscDesc: (value: boolean) => void;
+  toggleAscDesc: () => void;
 
   time: string;
   setTime: (value: string) => void;
@@ -95,6 +98,9 @@ export const OrganizationSettingsStore = create<OrganizationSettingsState>((set,
 
   sortBy: "", // default
   setSortBy: (value) => set({ sortBy: value }),
+  ascDesc: true, // or false as default
+  setAscDesc: (value) => set({ ascDesc: value }),
+  toggleAscDesc: () => set((state) => ({ ascDesc: !state.ascDesc })),
 
   time: "",
   setTime: (value: string) => set({ time: value }),

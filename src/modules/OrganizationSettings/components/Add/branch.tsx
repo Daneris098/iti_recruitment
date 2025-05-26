@@ -1,6 +1,6 @@
 import { DataTableColumn } from "mantine-datatable";
 import { BranchType } from "../../assets/Types";
-import { Select, TextInput } from "@mantine/core";
+import { Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ type AddBranchProps = {
   };
 };
 export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[] {
-  const { setAddOrg, setNewRows } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
 
   const addBranch = useForm<AddBranchProps>({
@@ -55,7 +55,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
   return [
     {
       accessor: "code",
-      title: "Code",
+      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       width: "10%",
       sortable: true,
       render: (row: any) => {
@@ -75,7 +75,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
     },
     {
       accessor: "name",
-      title: "Name",
+      title: <div className="flex flex-row gap-3">Name {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "25%",
       render: (row: any) => {
@@ -95,7 +95,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
     },
     {
       accessor: "location",
-      title: "Location",
+      title: <div className="flex flex-row gap-3">Location {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "15%",
       render: (row: any) => {
@@ -128,7 +128,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
     },
     {
       accessor: "area",
-      title: "Area",
+      title: <div className="flex flex-row gap-3">Area {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "15%",
       render: (row: any) => {

@@ -11,6 +11,8 @@ export const useEditOrganizationSettings = () => {
   const positionData = OrganizationSettingsStore((state) => state.getForm("editPosition"));
   const sectionData = OrganizationSettingsStore((state) => state.getForm("editSection"));
 
+  const { setAlert } = OrganizationSettingsStore();
+
   const { mutate: editBranch } = useMutation({
     mutationFn: async (id: string) => {
       const formData: Record<string, any> = { ...branchData };
@@ -18,9 +20,11 @@ export const useEditOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_branch"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -31,9 +35,11 @@ export const useEditOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_company"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -44,9 +50,11 @@ export const useEditOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_department"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -57,9 +65,11 @@ export const useEditOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_division"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -70,9 +80,11 @@ export const useEditOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_position"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 
@@ -83,9 +95,11 @@ export const useEditOrganizationSettings = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["org_section"] });
+      setAlert("saved");
     },
     onError: (error: { response: { data: any } }) => {
       console.error(error.response.data);
+      setAlert("Validation");
     },
   });
 

@@ -1,6 +1,6 @@
 import { DataTableColumn } from "mantine-datatable";
 import { PositionType } from "../../assets/Types";
-import { Select, TextInput } from "@mantine/core";
+import { Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
@@ -12,7 +12,7 @@ type AddPositionProps = {
   description: string;
 };
 export default function AddPosition(addOrg: boolean): DataTableColumn<PositionType>[] {
-  const { setAddOrg, setNewRows } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addPosition = useForm<AddPositionProps>({
     initialValues: { code: "P-1", name: "Position 1", isActive: true, description: "Position 1 Description" },
@@ -30,7 +30,7 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
   return [
     {
       accessor: "code",
-      title: "Code",
+      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "10%",
       render: (row: any) => {
@@ -50,7 +50,7 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
     },
     {
       accessor: "name",
-      title: "Name",
+      title: <div className="flex flex-row gap-3">Name {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "30%",
       render: (row: any) => {

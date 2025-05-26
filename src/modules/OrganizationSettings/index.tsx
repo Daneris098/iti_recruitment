@@ -10,7 +10,7 @@ import { useFetchOrganizationSettings } from "./services/data";
 
 export const OrganizationSettings = () => {
   const { branches, departments, companies, divisions, positions, sections } = useFetchOrganizationSettings();
-  const { setAlert, setActivePanel, activePanel, reroute, setReroute, setSortBy } = OrganizationSettingsStore();
+  const { setAlert, setActivePanel, activePanel, reroute, setReroute } = OrganizationSettingsStore();
 
   const dataTableRef = useRef<{
     saveAll: () => void;
@@ -73,20 +73,17 @@ export const OrganizationSettings = () => {
           <Tabs.Tab value={Panel.branch} className={` ${activePanel === Panel.branch ? "text-[#559CDA]" : "text-gray-500"}`}>
             <Flex className="items-center"> Branch {branches.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
-          <Tabs.Tab value={Panel.section} className={` ${activePanel === Panel.section ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center">Section {sections.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
-          </Tabs.Tab>
           <Tabs.Tab value={Panel.division} className={` ${activePanel === Panel.division ? "text-[#559CDA]" : "text-gray-500"}`}>
             <Flex className="items-center">Division{divisions.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
+          <Tabs.Tab value={Panel.departments} className={` ${activePanel === Panel.departments ? "text-[#559CDA]" : "text-gray-500"}`}>
+            <Flex className="items-center"> Departments {departments.data?.total === 0 && <IconExclamationMark color="red" />} </Flex>
+          </Tabs.Tab>
+          <Tabs.Tab value={Panel.section} className={` ${activePanel === Panel.section ? "text-[#559CDA]" : "text-gray-500"}`}>
+            <Flex className="items-center">Section {sections.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
+          </Tabs.Tab>
           <Tabs.Tab value={Panel.positionLevel} className={` ${activePanel === Panel.positionLevel ? "text-[#559CDA]" : "text-gray-500"}`}>
             <Flex className="items-center"> Position Level{positions.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
-          </Tabs.Tab>
-          <Tabs.Tab value={Panel.departments} className={` ${activePanel === Panel.departments ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center">
-              Departments
-              {departments.data?.total === 0 && <IconExclamationMark color="red" />}
-            </Flex>
           </Tabs.Tab>
         </Tabs.List>
 

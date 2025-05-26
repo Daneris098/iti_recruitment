@@ -1,6 +1,6 @@
 import { DataTableColumn } from "mantine-datatable";
 import { DepartmentType } from "../../assets/Types";
-import { Select, TextInput } from "@mantine/core";
+import { Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
@@ -18,7 +18,7 @@ type AddDepartmentProps = {
   head: string;
 };
 export default function AddDepartment(addOrg: boolean): DataTableColumn<DepartmentType>[] {
-  const { setAddOrg, setNewRows } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDepartment = useForm<AddDepartmentProps>({
     initialValues: {
@@ -48,7 +48,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
   return [
     {
       accessor: "code",
-      title: "Code",
+      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "10%",
       render: (row: any) => {
@@ -68,7 +68,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
     },
     {
       accessor: "name",
-      title: "Name",
+      title: <div className="flex flex-row gap-3">Name {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "20%",
       render: (row: any) => {
@@ -88,7 +88,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
     },
     {
       accessor: "head",
-      title: "Department Head",
+      title: <div className="flex flex-row gap-3">Department Head {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "15%",
       render: (row: any) => {
@@ -108,7 +108,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
     },
     {
       accessor: "division",
-      title: "Division",
+      title: <div className="flex flex-row gap-3">Division {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "15%",
       render: (row: any) => {

@@ -1,6 +1,6 @@
 import { DataTableColumn } from "mantine-datatable";
 import { SectionType } from "../../assets/Types";
-import { Select, TextInput } from "@mantine/core";
+import { Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ type AddSectionProps = {
   };
 };
 export default function AddSection(addOrg: boolean): DataTableColumn<SectionType>[] {
-  const { setAddOrg, setNewRows } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addSection = useForm<AddSectionProps>({
     initialValues: {
@@ -54,7 +54,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
   return [
     {
       accessor: "code",
-      title: "Code",
+      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "10%",
       render: (row: any) => {
@@ -74,7 +74,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
     },
     {
       accessor: "name",
-      title: "Name",
+      title: <div className="flex flex-row gap-3">Name {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "20%",
       render: (row: any) => {
@@ -94,7 +94,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
     },
     {
       accessor: "division",
-      title: "Division",
+      title: <div className="flex flex-row gap-3">Division {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "20%",
       render: (row: any) => {
@@ -127,7 +127,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
     },
     {
       accessor: "department",
-      title: "Department",
+      title: <div className="flex flex-row gap-3">Department {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       sortable: true,
       width: "20%",
       render: (row: any) => {

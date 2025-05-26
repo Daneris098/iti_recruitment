@@ -12,7 +12,7 @@ import { useAddOrganizationSettings } from "../services/add";
 import { useEditOrganizationSettings } from "../services/edit";
 
 const DataTableComp = forwardRef((_, ref) => {
-  const { activePanel, addOrg, setAddOrg, expandedIds, setNewRows, newRows, sortBy, setSortBy, time, page, pageSize, setPage } = OrganizationSettingsStore();
+  const { activePanel, addOrg, setAddOrg, expandedIds, setNewRows, newRows, sortBy, setSortBy, time, page, setPage, ascDesc, toggleAscDesc } = OrganizationSettingsStore();
   const { addBranch, addCompany, addDepartment, addDivision, addPosition, addSection } = useAddOrganizationSettings();
   const { editBranch, editCompany, editDepartment, editDivision, editPosition, editSection } = useEditOrganizationSettings();
 
@@ -32,7 +32,6 @@ const DataTableComp = forwardRef((_, ref) => {
       cancelAll();
     },
   }));
-  // const [page, setPage] = useState(1);
 
   const dataRecords = useRecords();
   const dataColumns = useColumns();
@@ -91,12 +90,13 @@ const DataTableComp = forwardRef((_, ref) => {
 
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<OrganizationItem>>({
     columnAccessor: sortBy,
-    direction: "asc",
+    direction: ascDesc ? "asc" : "desc",
   });
 
   const handleSortChange = (status: DataTableSortStatus<OrganizationItem>) => {
     setSortStatus(status);
     setSortBy(status.columnAccessor);
+    toggleAscDesc();
   };
 
   return (
@@ -116,7 +116,7 @@ const DataTableComp = forwardRef((_, ref) => {
         records={[...newRows, ...rows]}
         columns={(dataColumns as any)[activePanel]}
         totalRecords={rows.length}
-        recordsPerPage={pageSize}
+        recordsPerPage={30}
         page={page}
         onPageChange={setPage}
         rowExpansion={(dataExpandedRow as any)[activePanel]}

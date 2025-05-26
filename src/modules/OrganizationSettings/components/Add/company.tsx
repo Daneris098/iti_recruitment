@@ -1,6 +1,6 @@
 import { DataTableColumn } from "mantine-datatable";
 import { CompanyType } from "../../assets/Types";
-import { Select, TextInput } from "@mantine/core";
+import { Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ type AddCompanyProps = {
   isActive: boolean;
 };
 export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType>[] {
-  const { setAddOrg, setNewRows } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addCompany = useForm<AddCompanyProps>({
     initialValues: { code: "C-1", name: "Company 1", isActive: true },
@@ -29,7 +29,7 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
   return [
     {
       accessor: "code",
-      title: "Code",
+      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       width: "25%",
       sortable: true,
       render: (row: any) => {
@@ -49,7 +49,7 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
     },
     {
       accessor: "name",
-      title: "Name",
+      title: <div className="flex flex-row gap-3">Name {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       width: "50%",
       sortable: true,
       render: (row: any) => {

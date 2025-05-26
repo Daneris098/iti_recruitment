@@ -5,17 +5,17 @@ import { Panel } from "../assets/Enum";
 
 export const useFetchOrganizationSettings = () => {
   const { sortBy, activePanel, setTime, page, pageSize } = OrganizationSettingsStore();
-  const formattedValues: Record<string, any> = {
+  const formattedFilters: Record<string, any> = {
     SortBy: sortBy === "" ? null : sortBy,
     Page: page === 1 ? null : page,
     PageSize: pageSize === 15 ? null : pageSize,
   };
-  const cleanedValues = Object.fromEntries(Object.entries(formattedValues).filter(([_, value]) => value !== null));
+  const sortFilter = Object.fromEntries(Object.entries(formattedFilters).filter(([_, value]) => value !== null));
   const branches = useQuery({
-    queryKey: ["org_branch", { ...cleanedValues }],
+    queryKey: ["org_branch", { ...sortFilter }],
     queryFn: async () => {
       const startTime = performance.now();
-      const result = await useSharedOrgService("/branches").getAll(cleanedValues);
+      const result = await useSharedOrgService("/branches").getAll(sortFilter);
       const endTime = performance.now();
       const executionTime = (endTime - startTime) / 1000;
       setTime(executionTime.toFixed(3).toString());
@@ -27,10 +27,10 @@ export const useFetchOrganizationSettings = () => {
   });
 
   const companies = useQuery({
-    queryKey: ["org_company", { ...cleanedValues }],
+    queryKey: ["org_company", { ...sortFilter }],
     queryFn: async () => {
       const startTime = performance.now();
-      const result = await useSharedOrgService("/companies").getAll(cleanedValues);
+      const result = await useSharedOrgService("/companies").getAll(sortFilter);
       const endTime = performance.now();
       const executionTime = (endTime - startTime) / 1000;
       setTime(executionTime.toFixed(3).toString());
@@ -42,10 +42,10 @@ export const useFetchOrganizationSettings = () => {
   });
 
   const departments = useQuery({
-    queryKey: ["org_department", { ...cleanedValues }],
+    queryKey: ["org_department", { ...sortFilter }],
     queryFn: async () => {
       const startTime = performance.now();
-      const result = await useSharedOrgService("/departments").getAll(cleanedValues);
+      const result = await useSharedOrgService("/departments").getAll(sortFilter);
       const endTime = performance.now();
       const executionTime = (endTime - startTime) / 1000;
       setTime(executionTime.toFixed(3).toString());
@@ -56,10 +56,10 @@ export const useFetchOrganizationSettings = () => {
   });
 
   const divisions = useQuery({
-    queryKey: ["org_division", { ...cleanedValues }],
+    queryKey: ["org_division", { ...sortFilter }],
     queryFn: async () => {
       const startTime = performance.now();
-      const result = await useSharedOrgService("/divisions").getAll(cleanedValues);
+      const result = await useSharedOrgService("/divisions").getAll(sortFilter);
       const endTime = performance.now();
       const executionTime = (endTime - startTime) / 1000;
       setTime(executionTime.toFixed(3).toString());
@@ -70,10 +70,10 @@ export const useFetchOrganizationSettings = () => {
   });
 
   const positions = useQuery({
-    queryKey: ["org_position", { ...cleanedValues }],
+    queryKey: ["org_position", { ...sortFilter }],
     queryFn: async () => {
       const startTime = performance.now();
-      const result = await useSharedOrgService("/position-levels").getAll(cleanedValues);
+      const result = await useSharedOrgService("/position-levels").getAll(sortFilter);
       const endTime = performance.now();
       const executionTime = (endTime - startTime) / 1000;
       setTime(executionTime.toFixed(3).toString());
@@ -84,10 +84,10 @@ export const useFetchOrganizationSettings = () => {
   });
 
   const sections = useQuery({
-    queryKey: ["org_section", { ...cleanedValues }],
+    queryKey: ["org_section", { ...sortFilter }],
     queryFn: async () => {
       const startTime = performance.now();
-      const result = await useSharedOrgService("/sections").getAll(cleanedValues);
+      const result = await useSharedOrgService("/sections").getAll(sortFilter);
       const endTime = performance.now();
       const executionTime = (endTime - startTime) / 1000;
       setTime(executionTime.toFixed(3).toString());

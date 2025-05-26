@@ -1,6 +1,6 @@
 import { DataTableColumn } from "mantine-datatable";
 import { DivisionType } from "../../assets/Types";
-import { Select, TextInput } from "@mantine/core";
+import { Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
@@ -12,7 +12,7 @@ type AddDivisionProps = {
   description: string;
 };
 export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionType>[] {
-  const { setAddOrg, setNewRows } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDivision = useForm<AddDivisionProps>({
     initialValues: { code: "D-1", name: "Division 1", isActive: true, description: "Division 1 Description" },
@@ -30,7 +30,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
   return [
     {
       accessor: "code",
-      title: "Code",
+      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       width: "10%",
       sortable: true,
       render: (row: any) => {
@@ -50,7 +50,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
     },
     {
       accessor: "name",
-      title: "Name",
+      title: <div className="flex flex-row gap-3">Name {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       width: "30%",
       sortable: true,
       render: (row: any) => {
