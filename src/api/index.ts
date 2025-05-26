@@ -13,9 +13,7 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // axiosInstance.interceptors.response.use(
@@ -27,7 +25,7 @@ axiosInstance.interceptors.request.use(
 //       try {
 //         const refreshToken = getRefreshTokenFromCookie();
 //         if (refreshToken) {
-//           sessionStorage.setItem("accessToken", refreshToken);
+//           sessionStorage.setItem("accessTokenFlash", refreshToken);
 //           originalRequest.headers["Authorization"] = refreshToken;
 //           return axiosInstance(originalRequest);
 //         }

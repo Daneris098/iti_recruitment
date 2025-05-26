@@ -22,6 +22,7 @@ const InterviewStage = forwardRef((_, ref) => {
                 accessor: 'sequenceNo', title: ('Sequence No'), sortable: true,
                 render: (data: any) => interviewStagesEditMode[data.id] && data.fieldStatus === 'new' ? (
                     <NumberInput
+                        readOnly
                         value={interviewStagesEditableData[data.id]?.sequenceNo || data.sequenceNo}
                         onChange={(e: any) => handleEditChange(data.id, 'sequenceNo', e)}
                     />
@@ -138,8 +139,6 @@ const InterviewStage = forwardRef((_, ref) => {
             id: formVal.id,
             guid: formVal.guid,
             createdById: 0,
-            dateCreated: "2025-05-22T06:12:13.082Z",
-            dateModified: "2025-05-22T06:12:13.082Z",
             name: formVal.stageName,
             sequenceNo: formVal.sequenceNo,
             isActive: formVal.isActive
@@ -148,6 +147,7 @@ const InterviewStage = forwardRef((_, ref) => {
             .post("/recruitment/hiring/interview-stages", payload)
             .then((response) => {
                 fetchData()
+                setAlert(AlertType.saved);
             })
             .catch((error) => {
                 const message = error.response.data.title;
@@ -161,9 +161,6 @@ const InterviewStage = forwardRef((_, ref) => {
         const payload = {
             id: formVal.id,
             guid: formVal.guid,
-            createdById: 0,
-            dateCreated: "2025-05-22T06:12:13.082Z",
-            dateModified: "2025-05-22T06:12:13.082Z",
             name: formVal.stageName,
             sequenceNo: formVal.sequenceNo,
             isActive: formVal.isActive
@@ -204,6 +201,7 @@ const InterviewStage = forwardRef((_, ref) => {
             status: 'ACTIVE',
             fieldStatus: 'new',
             lastModified: currentDate,
+            sequenceNo: interviewStage.length + 1
         };
 
         setInterviewStagesNewRows(prev => [...prev, newRow]);
@@ -315,6 +313,7 @@ const InterviewStage = forwardRef((_, ref) => {
             return (
                 <div className=' flex gap-2 relative'>
                     <TextInput
+                        readOnly
                         className="w-full"
                         classNames={{ input: 'poppins text-[#6D6D6D]' }}
                         value={interviewStagesEditableData[id]?.sequenceNo ?? ''} // fallback to empty string instead of undefined

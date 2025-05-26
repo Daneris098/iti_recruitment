@@ -56,6 +56,7 @@ const CustomFeedback = forwardRef((_, ref) => {
             .post("/recruitment/hiring/feedbacks", payload)
             .then((response) => {
                 fetchData()
+                setAlert(AlertType.saved);
             })
             .catch((error) => {
                 const message = error.response.data.title;
@@ -76,6 +77,7 @@ const CustomFeedback = forwardRef((_, ref) => {
             .post(`/recruitment/hiring/feedbacks/${formVal.id}/update`, payload)
             .then((response) => {
                 fetchData()
+                setAlert(AlertType.saved);
             })
             .catch((error) => {
                 const message = error.response.data.title;

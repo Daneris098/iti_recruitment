@@ -42,7 +42,7 @@ export default function index() {
                     </div>
                     <div className="flex gap-3 sm:w-[15%]">
                         <Button className="rounded-md w-[52%]" onClick={() => { setAlert(AlertType.cancel) }} color="white" variant="outline">Cancel</Button>
-                        <Button className="rounded-md w-[48%]" onClick={() => { setAlert(AlertType.saved); dataTableRef[panel[activePanel]]?.current?.saveAll(); }}>Save</Button>
+                        <Button className="rounded-md w-[48%]" onClick={() => { dataTableRef[panel[activePanel]]?.current?.saveAll(); }}>Save</Button>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import { OrganizationSettingsStore } from '../store';
 import { title, description, Company, AlertType, panel, Operation } from '@modules/OrganizationSettings/types';
 
 const DataTableComp = forwardRef((_, ref) => {
-        
+
     const PAGE_SIZE = 15;
     const initialData: Company[] = [
         { id: 1, name: 'John', code: 'insys001', location: 'Quezon City', area: 'North 3', description: 'SM Downtown', status: 'ACTIVE', division: 'Quezon City', department: 'North 3', departmentHead: 'Jane Cooper' },
@@ -125,8 +125,8 @@ const DataTableComp = forwardRef((_, ref) => {
         setAlert(AlertType.saved);
         SetOperation(Operation.noOperation)
     };
-    
-    
+
+
     const cancelAll = () => {
         setEditMode({});
         setEditableData({});
@@ -976,7 +976,7 @@ const DataTableComp = forwardRef((_, ref) => {
 
                                 </div>
                             ) :
-                        (<></>)}
+                                (<></>)}
                 </>
             )
         },

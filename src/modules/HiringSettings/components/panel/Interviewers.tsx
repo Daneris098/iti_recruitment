@@ -87,7 +87,7 @@ const Interviewers = forwardRef((_, ref) => {
 
     const checkEditIsValid = () => {
         const fieldsToCheck = ['name'];
-        return !Object.entries(interviewStagesEditableData).some(([data]) =>
+        return !Object.entries(interviewStagesEditableData).some(([_, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -119,6 +119,7 @@ const Interviewers = forwardRef((_, ref) => {
         setInterviewStagesNewRows(prev => [...prev, newRow]);
         setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
         setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        SetOperation(Operation.add)
     };
 
 
@@ -157,16 +158,39 @@ const Interviewers = forwardRef((_, ref) => {
         }
     };
 
+
     const saveAll = () => {
         if (!checkEditIsValid()) {
             return
         }
-        const result = [...interviewers, ...interviewStagesNewRows].map((record) => {
-            const merged = interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record;
-            const { fieldStatus, ...rest } = merged;
-            return rest;
-        });
-        setInterviewers(result);
+        // const result = [...interviewers, ...interviewStagesNewRows].map((record) => {
+        //     const merged = interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record;
+        //     const { fieldStatus, ...rest } = merged;
+        //     return rest;
+        // });
+        // setInterviewers(result);
+        console.log('interviewStagesEditableData: ', interviewStagesEditableData)
+        console.log('operation: ', operation)
+        if (operation == Operation.add) {
+            if (interviewStagesEditableData && Object.keys(interviewStagesEditableData).length > 0) {
+                addInterviewer({
+                    name: Object.values(interviewStagesEditableData)[0]?.name,
+                    isActive: Object.values(interviewStagesEditableData)[0]?.status === 'ACTIVE'
+                })
+            }
+        }
+        else if (operation == Operation.edit) {
+            if (interviewStagesEditableData && Object.keys(interviewStagesEditableData).length > 0) {
+                updateInterviewStage({
+                    name: Object.values(interviewStagesEditableData)[0]?.name,
+                    isActive: Object.values(interviewStagesEditableData)[0]?.status === 'ACTIVE',
+                    id: Object.values(interviewStagesEditableData)[0]?.id,
+                    guid: Object.values(interviewStagesEditableData)[0]?.guid
+                })
+            }
+        }
+
+
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
         setInterviewStagesEditableData({});
@@ -240,13 +264,64 @@ const Interviewers = forwardRef((_, ref) => {
         await axiosInstance
             .get("/recruitment/hiring/interviewers")
             .then((response) => {
-                console.log('response: ', response.data)
+                console.log('response123: ', response.data.items)
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        guid: item.guid,
+                        name: item.name,
+                        status: item.isActive ? 'ACTIVE' : 'INACTIVE',
+                        lastModified: item.dateModified
+                    }
+                });
+                setInterviewers(map)
             })
             .catch((error) => {
                 const message = error.response.data.errors[0].message;
                 console.error(message)
             });
     };
+
+    const addInterviewer = async (formVal: any) => {
+        const payload = {
+            name: formVal.name,
+            isActive: formVal.isActive
+        };
+        await axiosInstance
+            .post("/recruitment/hiring/interviewers", payload)
+            .then((response) => {
+                fetchData()
+                setAlert(AlertType.saved);
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+    const updateInterviewStage = async (formVal: any) => {
+        const payload = {
+            id: formVal.id,
+            guid: formVal.guid,
+            name: formVal.name,
+            sequenceNo: formVal.sequenceNo,
+            isActive: formVal.isActive
+        };
+        await axiosInstance
+            .post(`/recruitment/hiring/interviewers/${formVal.id}/update`, payload)
+            .then((response) => {
+                fetchData()
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
 
     useEffect(() => {
         if (activePanel === panel.interviewers) {

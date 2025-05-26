@@ -48,6 +48,7 @@ export type applicationSource = {
 
 export type interviewer = {
   id: number;
+  guid?: number;
   name: string;
   status: string;
   fieldStatus?: string;
