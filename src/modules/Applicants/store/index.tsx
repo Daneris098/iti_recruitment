@@ -41,11 +41,6 @@ interface ApplicantId {
   setApplicantId: (id: number) => void
 }
 
-// export const useApplicantIdStore = create<ApplicantId>((set) => ({
-//   id: 0,
-//   setApplicantId: (id) => set({ id }),
-// }))
-
 // for sorting table
 interface SortState {
   columnAccessor: string;
@@ -100,18 +95,10 @@ export const usePaginationStore = create<PaginationState>((set, get) => ({
 
   setPage: (page) => set({ page }),
   setPageSize: (size) => set({ pageSize: size }),
-
-  // getPaginatedRecords: (records) => {
-  //   const { page, pageSize } = get();
-  //   const startIndex = (page - 1) * pageSize;
-  //   const endIndex = startIndex + pageSize;
-  //   return records.slice(startIndex, endIndex);
-  // },
   getPaginatedRecords: (records) => {
     const { page, pageSize } = get();
 
     if (pageSize === -1) {
-      // Return all records
       return records;
     }
 
@@ -155,8 +142,8 @@ interface useDropDownOfferedState {
   fullName: string;
   setFullName: (name: string) => void;
 
-  amount: string;
-  setAmount: (amount: string) => void;
+  amount: number;
+  setAmount: (amount: number) => void;
 
   position: string;
   setPosition: (position: string) => void;
@@ -187,6 +174,12 @@ interface useDropDownOfferedState {
 
   interviewLocation: string;
   setInterviewLocation: (interviewPosition: string) => void;
+
+  interviewDate: string;
+  setInterviewDate: (interviewDate: string) => void;
+
+  interviewTime: string;
+  setInterviewTime: (interviewTime: string) => void;
 }
 
 export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => ({
@@ -202,7 +195,7 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   fullName: "",
   setFullName: (name) => set({ fullName: name }),
 
-  amount: "",
+  amount: 0,
   setAmount: (amount) => set({ amount }),
 
   position: "",
@@ -233,8 +226,13 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   setInterviewStagesId: (interviewStagesId) => set({ interviewStagesId }),
 
   interviewLocation: "",
-  setInterviewLocation: (interviewLocation) => set({ interviewLocation })
+  setInterviewLocation: (interviewLocation) => set({ interviewLocation }),
 
+  interviewDate: "",
+  setInterviewDate: (interviewDate) => set({ interviewDate }),
+
+  interviewTime: "",
+  setInterviewTime: (interviewTime) => set({ interviewTime })
 }))
 // End of DropDownOffered modal
 
@@ -708,8 +706,3 @@ export const useApplicantIdStore = create<ApplicantId>((set) => ({
   id: 0,
   setApplicantId: (id) => set({ id }),
 }))
-
-// export const useApplicantIdStore = create<ApplicantId>((set) => ({
-//   id: 0,
-//   setApplicantId: (id) => set({ id }),
-// }))

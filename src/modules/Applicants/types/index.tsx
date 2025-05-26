@@ -25,48 +25,6 @@ export interface Applicants {
     comments: string
 }
 
-export interface ApplicationMovementArchive {
-    HiringTeamFeedback: string;
-    ApplicantFeedback: string;
-    Order: number;
-    Comment: string;
-}
-
-export interface ApplicationMovementOffered {
-    position: {
-        id: number;
-        name: string;
-    }
-    department: {
-        id: number;
-        name: string;
-    }
-    paymentScheme: {
-        id: number;
-        name: string;
-    }
-    salary: number,
-    comment: string
-
-}
-
-export interface ApplicationMovementForInterview {
-    applicantId: number;
-    date: string;
-    time: string;
-    interviewer: {
-        id: number;
-        name: string;
-    }
-    interviewStage: {
-        id: string;
-        name: string;
-    }
-    order: number;
-    comment: string;
-    userId: number;
-}
-
 export type FileUploadStore = {
     file: File | null;
     setFile: (file: File) => void;
@@ -332,19 +290,3 @@ export const statusTransitions: Record<ApplicantMovementStatus, readonly Applica
     [ApplicantMovementStatus.Transferred]: [],
     [ApplicantMovementStatus.Archived]: [],
 };
-
-// export const buildApplicantQueryParams = (filter: ApplicantStatus): Record<string, string> => {
-//     const query: Record<string, string> = {};
-
-//     if (filter.applicantName) query.name = filter.applicantName;
-//     if (filter.company.length > 0) query.company = filter.company.join(",");
-//     if (filter.position.length > 0) query.position = filter.position.join(",");
-//     if (filter.status.length > 0) query.status = filter.status.join(",");
-
-//     if (filter.applicationDateFrom) query.applicationDateFrom = filter.applicationDateFrom;
-//     if (filter.applicationDateTo) query.applicationDateTo = filter.applicationDateTo;
-//     if (filter.dateLastUpdatedFrom) query.dateLastUpdatedFrom = filter.dateLastUpdatedFrom;
-//     if (filter.dateLastUpdatedTo) query.dateLastUpdatedTo = filter.dateLastUpdatedTo;
-
-//     return query;
-// };

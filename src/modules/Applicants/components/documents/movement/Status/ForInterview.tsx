@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
@@ -8,9 +7,14 @@ import interviewJSON from "@modules/Applicants/constants/json/interview.json";
 
 export default function ForInterview() {
 
-    const { getInterviewer, setInterviewer, setInterviewerID, setInterviewStages, setInterviewStagesId, interviewStages, interviewLocation, setInterviewLocation } = useDropDownOfferedStore();
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
-    const [selectedTime, setSelectedTime] = useState("");
+    const {
+        getInterviewer, setInterviewer,
+        interviewDate, setInterviewDate,
+        interviewTime, setInterviewTime,
+        setInterviewerID, setInterviewStages,
+        setInterviewStagesId, interviewStages,
+        interviewLocation, setInterviewLocation
+    } = useDropDownOfferedStore();
     const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption(), })
     const interviewStagesComboBox = useCombobox({ onDropdownClose: () => interviewStagesComboBox.resetSelectedOption(), })
 
@@ -79,9 +83,9 @@ export default function ForInterview() {
 
                     <DatePicker
                         label=""
-                        value={selectedDate}
+                        value={interviewDate}
                         onChange={(date) => {
-                            setSelectedDate(date);
+                            setInterviewDate(date ?? "No valid Date");
                         }}
                         placeholder="mm-dd-yyyy"
                     />
@@ -93,7 +97,7 @@ export default function ForInterview() {
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
                         Time <span className="text-[#F14336]">*</span>
                     </h3>
-                    <TimePicker selectedTime={selectedTime} onTimeChange={setSelectedTime} />
+                    <TimePicker selectedTime={interviewTime} onTimeChange={setInterviewTime} />
                 </div>
             </div>
 

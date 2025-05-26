@@ -1,17 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-import { Applicant } from "@modules/Shared/types";
+import {
+    ArchiveForm,
+    HiredForm, OfferForm,
+    Applicant, ForInterviewForm,
+    TransferApplicationPositionForm
+} from "@modules/Shared/types";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
 import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
-import { useSharedUserService } from "@modules/Shared/api/useSharedUserService";
 import { applicantsByIdService } from "@modules/Shared/components/api/UserService"
+import { useSharedUserService, useSharedTransferredPosition } from "@modules/Shared/api/useSharedUserService";
 import {
     applicationMovementHired,
     applicationMovementArchive, applicationMovementForTransfer,
     applicationMovementOffered, applicationMovementForInterview,
+    transferApplicantPosition
 } from "@modules/Applicants/api/userService";
 import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { payloadMapper } from "@modules/Shared/utils/payloadMapper";
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -235,6 +242,48 @@ export const formatApplicant = (applicant: any, page: number, pageSize: number, 
     };
 };
 
+export const useTransferPositionLookup = (
+    page: number = 0,
+    pageSize: number = 0,
+    filters: Record<string, any> = {},
+    setTime?: (time: number) => void
+) => {
+    const queryResult = useQuery({
+        queryKey: sharedApplicantKeys.list({ page, pageSize, ...filters }),
+        queryFn: async () => {
+            const start = performance.now();
+            const data = await useSharedTransferredPosition.getAll({ page, pageSize, ...filters });
+            const end = performance.now();
+
+            if (setTime) {
+                const seconds = (end - start) / 1000;
+                setTime(seconds);
+            }
+            return {
+                jobOpenings: data.items.map(item => ({
+                    id: item.id,
+                    position: item.positionTitleResponse,
+                    company: item.companyResponse,
+                    slots: item.availableSlot,
+                })),
+                page: data.page,
+                pageSize: data.pageSize,
+                total: data.total,
+                items: data.items,
+            };
+        },
+        staleTime: 60 * 1000,
+    });
+
+    return {
+        ...queryResult,
+        data: queryResult.data?.jobOpenings,
+        total: queryResult.data?.total,
+        allVacancies: queryResult.data?.items
+    };
+};
+
+
 export const useApplicants = (
     page: number = 0,
     pageSize: number = 0,
@@ -271,41 +320,18 @@ export const usePOSTArchive = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({
-            applicantId,
-            file,
-            feedback,
-            applicantFeedback,
-            comments,
-            order = 1,
-        }: {
-            applicantId: number;
-            file: File | null;
-            feedback: string;
-            applicantFeedback: string;
-            comments: string;
-            order?: number;
-        }) => {
+        mutationFn: async (payload: ArchiveForm) => {
+            const { ApplicantId, ...rest } = payload
+            const keyMap = {
+                File: "FileAttachment",
+                Feedback: "HiringTeamFeedback",
+                ApplicantFeedback: "ApplicantFeedback"
+            };
 
-            const formData = new FormData();
+            const formData = payloadMapper(rest, new FormData(), "", keyMap)
 
-            if (file) {
-                formData.append("FileAttachment", file);
-            }
-            if (feedback) {
-                formData.append("HiringTeamFeedback", feedback);
-            }
-            if (applicantFeedback) {
-                formData.append("ApplicantFeedback", applicantFeedback);
-            }
+            return await applicationMovementArchive.postById(payload.ApplicantId, formData);
 
-            formData.append("Order", order.toString());
-            formData.append("Comment", comments);
-
-            formData.append("Order", order.toString());
-            formData.append("Comment", comments);
-
-            return await applicationMovementArchive.postById(applicantId, formData)
         }, onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
         },
@@ -315,37 +341,37 @@ export const usePOSTArchive = () => {
     });
 };
 
-export const usePOSTOffer = () => {
+export const useCreateOffer = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({
-            applicantId,
-            queryParams,
-        }: {
-            applicantId: number;
-            queryParams: Record<string, any>;
-        }) => applicationMovementOffered.postById(applicantId, queryParams),
+        mutationFn: async (payload: OfferForm) => {
+            const formData = payloadMapper(payload)
+
+            return applicationMovementOffered.postById(payload.ApplicantId, formData)
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
         },
+
         onError: (error) => {
-            console.error("Error submitting offer", error)
-        }
-    });
+            console.error("Error scheduling interview.", error);
+        },
+    })
 }
+
 export const usePOSTForInterview = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({
-            applicantId,
-            queryParams,
-        }: {
-            applicantId: number;
-            queryParams: Record<string, any>;
-        }) => {
-            return await applicationMovementForInterview.postById(applicantId, queryParams);
+        mutationFn: async (payload: ForInterviewForm) => {
+
+            payload.Time = payload.Time.split(":").length === 2 ? `${payload.Time}:00` : payload.Time;
+            payload.Date = typeof payload.Date === "string" ? new Date(payload.Date).toLocaleDateString("en-CA") : DateTimeUtils.dateDashToDefaultAddDay(payload.Date);
+
+            const formData = payloadMapper(payload);
+
+            return await applicationMovementForInterview.postById(payload.ApplicantId, formData)
         },
 
         onSuccess: () => {
@@ -353,7 +379,7 @@ export const usePOSTForInterview = () => {
         },
 
         onError: (error) => {
-            console.error("Error Scheduling interview.", error);
+            console.error("Error scheduling interview.", error);
         },
     });
 };
@@ -362,29 +388,36 @@ export const useCreateHired = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({
-            applicantId,
-            dateStart,
-            file,
-            order = 1,
-        }: {
-            applicantId: number;
-            dateStart: string;
-            file: File | null;
-            order?: number;
-        }) => {
-            const formData = new FormData();
+        mutationFn: async (payload: HiredForm) => {
+            const formData = payloadMapper(payload);
 
-            formData.append("DateStart", dateStart);
-            formData.append("Order", order.toString());
-            formData.append("FileAttachment", file!);
-
-            return await applicationMovementHired.postById(applicantId, formData)
-        }, onSuccess: () => {
+            return await applicationMovementHired.postById(payload.ApplicantId, formData)
+        },
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
         },
         onError: (error) => {
             console.error("Failed to save feedback", error);
+        },
+    })
+}
+
+export const useTransferApplicantPosition = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload: TransferApplicationPositionForm) => {
+
+            const formData = payloadMapper(payload);
+
+            return await transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData)
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+        },
+        onError: (error) => {
+            console.error("Failed to transfer applicants", error);
         },
     })
 }
