@@ -44,7 +44,7 @@ export default function index() {
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     // console.log('clickInfo: ', clickInfo)
-    console.log("Selected event:", clickInfo.event._def);
+    // console.log("Selected event:", clickInfo.event._def);
     const ev = clickInfo.event._def
     if (ev.title != '') {
       const date = new Date((ev.extendedProps as any).entry.date);
@@ -73,7 +73,7 @@ export default function index() {
 
   useEffect(() => {
     // console.log('INITIAL_EVENTS: ', INITIAL_EVENTS)
-    console.log('data123: ', data)
+    // console.log('data123: ', data)
   }, [data])
 
   const handleSubmitUpdate = () => {
@@ -124,7 +124,7 @@ export default function index() {
   };
 
   useEffect(() => {
-    console.log('currentDate: ', currentDate)
+    // console.log('currentDate: ', currentDate)
   }, [currentDate])
 
   return (

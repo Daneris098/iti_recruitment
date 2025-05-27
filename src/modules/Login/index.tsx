@@ -28,7 +28,7 @@ export default function Login() {
     },
   });
 
-  const onSubmit = async (formVal:any) => {
+  const onSubmit = async (formVal: any) => {
     const payload = {
       username: formVal.username,
       password: formVal.password,
@@ -40,12 +40,14 @@ export default function Login() {
           const { refreshToken, accessToken } = response.data;
           sessionStorage.setItem("accessToken", accessToken);
           document.cookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`;
+          // check if account 
           navigate("/home");
+          // navigate("/AccountSetup");
         }
       })
       .catch((error) => {
-        const message = error.response.data.errors[0].message;    
-        form.setErrors({ username: ' ', password: message});
+        const message = error.response.data.errors[0].message;
+        form.setErrors({ username: ' ', password: message });
       });
   };
 

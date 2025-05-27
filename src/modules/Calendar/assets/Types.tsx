@@ -20,14 +20,14 @@ export interface CalendarStoreType {
   onMonthYear: boolean;
   currentDate: any;
   filterDepartmentIds: number[];
-  filterComapnyId: number;
+  filterCompanyId: number[];
   filterInterviewer: number[],
   details: EventDetails;
 
   setDetails(any: EventDetails): void;
   setCurrentDate(date: any): void;
   setFilterDepartmentIds(data: number[]): void;
-  setFilterCompanyId(data: number): void;
+  setFilterCompanyId(data: number[]): void;
   setFilterInterviewer(data: number[]): void;
   setOnMonthYear(my: boolean): void;
   setOnViewFilter(filter: boolean): void;

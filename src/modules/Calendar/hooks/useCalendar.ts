@@ -10,7 +10,7 @@ export const useCalendar = () => {
         sortStatus,
         setTime
     } = DataTableStore();
-    const { currentDate, filterInterviewer, filterDepartmentIds, filterComapnyId } = useCalendarStore();
+    const { currentDate, filterInterviewer, filterDepartmentIds, filterCompanyId } = useCalendarStore();
 
     const fetchData = async () => {
         try {
@@ -18,16 +18,31 @@ export const useCalendar = () => {
             if (currentDate) {
                 url += `?Date=${currentDate}`;
             }
+
+
+            if (filterCompanyId.length > 0) {
+                for (let index in filterCompanyId) {
+                    const id = filterCompanyId[index];
+                    url += `&CompanyId=${id}`;
+                }
+            }
+
             if (filterDepartmentIds.length > 0) {
-                // url += `?DepartmentId=[${filterDepartmentIds}]`;
+                for (let index in filterDepartmentIds) {
+                    const id = filterDepartmentIds[index];
+                    url += `&DepartmentIds=${id}`;
+                }
             }
-            if (filterComapnyId != 0) {
-                // url += `?CompanyId=${filterComapnyId}`;
-            }
+
             if (filterInterviewer.length > 0) {
-                // url += `?Interviewer=[${filterInterviewer}]`;
+                for (let index in filterInterviewer) {
+                    const id = filterInterviewer[index];
+                    url += `&InterviewerIds=${id}`;
+                }
             }
-            console.log('url: ', url)
+            // console.log('useCalendar-filterDepartmentIds: ', filterDepartmentIds)
+            // console.log('useCalendar-filterInterviewer: ', filterInterviewer)
+            // console.log('useCalendar-filterInterviewer: ', filterInterviewer)
             const res = await axiosInstance.get(url);
             // console.log('response456: ', res.data)
             if (res.status === 200 && Array.isArray(res.data.calendarDates)) {
@@ -59,7 +74,7 @@ export const useCalendar = () => {
     };
 
     return useQuery<[]>({
-        queryKey: ["recruitment/calendar", { page, pageSize, sortStatus, currentDate, filterDepartmentIds, filterComapnyId, filterInterviewer }],
+        queryKey: ["recruitment/calendar", { page, pageSize, sortStatus, currentDate, filterDepartmentIds, filterCompanyId, filterInterviewer }],
         queryFn: fetchData,
         staleTime: 60 * 1000, // Data is fresh for 5 minutes
     });

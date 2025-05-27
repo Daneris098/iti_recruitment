@@ -1,12 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import headerImage from "@src/assets/intellismart-header.png";
 import { JobOfferExcelTemplateData } from "@modules/HiringSettings/constants/jobOfferExcelTemplateData"
 import Dropzone from "@modules/HiringSettings/components/Dropzone";
 import SpreadsheetExportButton from "@modules/HiringSettings/components/excel/SpreadSheetExportButton";
 import { NumberInput, Select } from "@mantine/core";
+import axiosInstance from "@src/api";
+import { panel } from "../../types";
+import { HiringSettingsStore } from "../../store";
 
 const OfferConfiguration = () => {
     const [data] = useState(JobOfferExcelTemplateData)
+    const { activePanel } = HiringSettingsStore();
+
+    const fetchData = async () => {
+        await axiosInstance
+            .get("/recruitment/hiring/other-settings")
+            .then((response) => {
+                console.log('response123: ', response)
+                // const map = response.data.items.map((item: any) => {
+                //     return {
+                //         id: item.id,
+                //         guid: item.guid,
+                //         name: item.name,
+                //         status: item.isActive ? 'ACTIVE' : 'INACTIVE',
+                //         lastModified: item.dateModified
+                //     }
+                // });
+                // setInterviewers(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+    useEffect(() => {
+        if (activePanel === panel.offerConfiguration) {
+            fetchData()
+        }
+    }, [activePanel])
 
     return (
         <div className="flex flex-col gap-6 ">
