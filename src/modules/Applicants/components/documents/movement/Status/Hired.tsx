@@ -23,31 +23,7 @@ export default function Hired() {
                 Please upload the job offer signed by both the authorized signatories and the applicant.
                 <span className="text-[#F14336] poppins">*</span>
             </p>
-
-            {/* <div className="bg-[#d5d5d599] h-[223px] w-[555px] poppins py-5 border-2 border-dashed border-[#6D6D6D] rounded-lg flex flex-col justify-center items-center"> */}
-                {/* Upload Icon */}
-                {/* <div className="flex justify-center">
-                    <IconCloudUpload className="text-[#559CDA]" size={70} stroke={1} />
-                </div> */}
-
-
-                {/* <div className="flex flex-col justify-center items-center pt-4  space-y-1 text-center poppins">
-                    <p className="mb-2 font-semibold text-[15px] text-[#6D6D6D] poppins">
-                        Drag & drop files or{" "}
-                        <label
-                            htmlFor="file-upload" // Associate this label with the FileInput
-                            className="text-[#559CDA] underline underline-offset-4 cursor-pointer poppins"
-                        >
-                            Browse
-                        </label>
-                    </p>
-                    <p className="text-[12px] text-[#6D6D6D] poppins">Supported formats: PDF, DOC</p>
-                    <p className="text-[12px] text-[#6D6D6D] poppins">Max File Size: 25MB</p>
-                    <p className="text-[12px] text-[#6D6D6D] poppins">File Upload Limit: 1</p>
-
-                </div> */}
-                <DropZone />
-            {/* </div> */}
+            <DropZone />
         </div>
     )
 }

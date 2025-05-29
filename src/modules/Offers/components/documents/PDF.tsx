@@ -1,7 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 import header from '@src/assets/intellismart-header.png';
-// import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
+import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
 // import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'\
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { PDFProps } from "@modules/Offers/types"
@@ -10,7 +10,7 @@ import { PDFProps } from "@modules/Offers/types"
 Font.register({
   family: 'Poppins',
   fonts: [
-    // { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
+    { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
     { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
   ],
 });
@@ -101,10 +101,6 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
     fontFamily: 'Poppins',
   },
 });
-
-
-
-
 
 // Create Document Component
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
@@ -247,7 +243,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                                   <Text style={[styles.benefits_label, { flex: 8, fontWeight: 'bold', textAlign: 'left' }]}>
                                     Maternity Leave Benefit
                                   </Text>
-                                  <Text style={[styles.benefits_label, { flex: 5, fontWeight: 'bold', textAlign: 'left' }]}>
+                                  <Text style={[styles.benefits_label, { flex: 8, fontWeight: 'bold', textAlign: 'left' }]}>
                                     Paternity Leave Benefit
                                   </Text>
                                 </View>
@@ -263,7 +259,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                                   </View>
 
                                   {/* Paternity Leave Details */}
-                                  <View style={{ flex: 5 }}>
+                                  <View style={{ flex: 8 }}>
                                     <Text style={styles.benefits_text}>{description.value.benefitPaternity}</Text>
                                   </View>
                                 </View>

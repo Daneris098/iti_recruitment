@@ -1,0 +1,178 @@
+import { useState } from "react";
+import { Divider } from "@mantine/core";
+import profileImage from "@src/assets/jane.png";
+import { ViewApplicantsProps } from "@modules/Shared/types";
+import { IconFileUpload, IconX } from "@tabler/icons-react";
+import Modals from "@modules/Shared/components/viewApplicants/Modals";
+import TabsPanel from "@modules/Shared/components/viewApplicants/TabsPanel";
+import { SkillChip } from "@modules/Shared/utils/ApplicantModal/skillChips";
+import { useApplicantIdStore, useCloseModal } from "@modules/Applicants/store";
+import { getTabs } from "@modules/Shared/utils/ApplicantModal/tabConfiguration";
+import { StatusBadge } from "@modules/Shared/utils/ApplicantModal/statusColors";
+import { ActionButton } from "@modules/Shared/utils/ApplicantModal/actionButton";
+import { TextRenderer } from "@modules/Shared/utils/ApplicantModal/textRenderer";
+import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
+import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus";
+
+export default function ViewApplicant({
+  applicantName,
+  Position,
+  Status,
+  Email,
+  Phone,
+  Remarks,
+  Application_Date,
+  onClose,
+  IsJobOffer
+}: ViewApplicantsProps) {
+
+  const applicantId = useApplicantIdStore((state) => state.id);
+  const { data: applicantsById } = useApplicantsById(applicantId);
+  console.log(applicantId)
+  const {
+    isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
+    isGenerateNewOffer, setIsGenerateNewOffer,
+    setIsOffered, isTransferPosition,
+    setIsTransferPosition
+  } = useCloseModal();
+
+  const [isViewPDF, togglePDF] = useState(false);
+  const displayStatus = getDisplayStatus(Status);
+  const changeTabs = getTabs({ applicantName, status: Status, remarks: Remarks });
+
+  return (
+    <div className="h-screen w-full p-4">
+
+      {/* Title */}
+      <div className="w-full flex justify-between items-center">
+        <TextRenderer as="p" className="text-[#559CDA] font-medium text-[22px] mb-1">
+          Applicant Profile
+        </TextRenderer>
+        <div className="flex items-center space-x-2">
+          <IconFileUpload stroke={1} className="w-[20px] h-[25px]" />
+          <IconX stroke={1} onClick={onClose} className="cursor-pointer w-[20px] h-[25px]" />
+        </div>
+      </div>
+      <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
+
+      {/* Layout */}
+      <div className="flex h-full">
+        {/* Sidebar */}
+        <div className="w-1/4 p-2 sticky top-0 h-screen overflow-y-auto">
+          <div className="flex flex-col items-start mt-3">
+            <img src={profileImage} className="w-[100px] h-[100px] rounded-full shadow-sm" />
+            <TextRenderer as="p" className="text-[#559CDA] text-[20px] font-bold mt-2">
+              {applicantName}
+            </TextRenderer>
+            <TextRenderer as="p" className="text-[#6D6D6D] text-[12px] font-medium">
+              {Position}
+            </TextRenderer>
+          </div>
+
+          <div className="mt-8 text-[12px] text-[#6D6D6D]">
+            <TextRenderer as="h1" className="pb-1">Current Status</TextRenderer>
+            <StatusBadge Status={displayStatus} />
+            {Status !== "Hired" && Status !== "Transferred" && (
+              <p
+                className={`text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold mt-2 ${Status === "Archived" ? "cursor-not-allowed" : "cursor-pointer"
+                  }`}
+                onClick={Status !== "Archived" ? () => setIsUpdateStatusButtonModalOpen(true) : undefined}
+              >
+                {Status === "Archived" ? "Inactive" : "Update Status"}
+              </p>
+            )}
+          </div>
+
+          {/* Contact */}
+          <div className="mt-8 text-[12px] text-[#6D6D6D] space-y-3">
+            <TextRenderer as="h1">Location</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px]">United States</TextRenderer>
+
+            <TextRenderer as="h1">Email</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px] break-words">{Email ?? "No Data"}</TextRenderer>
+
+            <TextRenderer as="h1">Phone</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px]">{Phone ?? "No Data"}</TextRenderer>
+          </div>
+
+          {/* Skills */}
+          <div className="mt-8 text-[12px] text-[#6D6D6D]">
+            <TextRenderer as="h1">Skills</TextRenderer>
+            <div className="flex gap-2 mt-2 flex-wrap">
+              {applicantsById?.generalInformation?.skills?.length ? (
+                applicantsById.generalInformation.skills.map((skill: string, index: number) => (
+                  <SkillChip key={index} skill={skill} />
+                ))
+              ) : (
+                <TextRenderer as="p" className='text-[#6D6D6D] poppins'>No Skills Listed</TextRenderer>
+              )}
+            </div>
+          </div>
+
+          {/* Start Date */}
+          {(Status === "For Transfer" || Status === "Transferred" || Status === "Hired") && (
+            <div className="mt-3 text-[12px] text-[#6D6D6D]">
+              <TextRenderer as="h1">Start Date</TextRenderer>
+              <p className="font-semibold mt-1">{Application_Date}</p>
+            </div>
+          )}
+
+          {IsJobOffer === "Yes" && (
+            <TextRenderer as="h1" className="mt-8 text-[12px] text-[#6D6D6D]">
+              Job Offer
+            </TextRenderer>
+          )}
+
+          {/* Actions */}
+          {(IsJobOffer === "Yes" || Status !== "Archived") && (
+            <ActionButton
+              status={Status}
+              onPDFView={() => togglePDF(true)}
+              onTransfer={() => setIsTransferPosition(true)}
+            />
+          )}
+
+          {Status === "Offered" && (
+            <p
+              className="text-white rounded-[10px] bg-[#6D6D6D] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer mt-2"
+              onClick={() => setIsGenerateNewOffer(true)}
+            >
+              Generate new Offer
+            </p>
+          )}
+        </div>
+
+        {/* Right Panel */}
+        <div className="w-4/5 p-4 overflow-y-auto h-screen">
+          <TabsPanel tabs={changeTabs} />
+        </div>
+      </div>
+
+      {/* PDF Modal */}
+      <Modals
+        isUpdateStatusOpen={isUpdateStatusButtonModalOpen}
+        isTransferPositionOpen={isTransferPosition}
+        isGenerateNewOfferOpen={isGenerateNewOffer}
+        isViewPDFOpen={isViewPDF}
+        onCloseAll={() => {
+          setIsUpdateStatusButtonModalOpen(false);
+          setIsTransferPosition(false);
+          setIsGenerateNewOffer(false);
+          setIsOffered(false);
+          togglePDF(false);
+        }}
+        onCloseUpdateStatus={() => setIsUpdateStatusButtonModalOpen(false)}
+        onCloseTransferPosition={() => setIsTransferPosition(false)}
+        onCloseGenerateNewOffer={() => setIsGenerateNewOffer(false)}
+        onClosePDF={() => togglePDF(false)}
+        applicantName={applicantName}
+        Status={Status}
+        IsJobOffer={IsJobOffer}
+        Position={Position}
+        Remarks={Remarks}
+        Acknowledgement={""}
+        Department={""}
+      />
+    </div>
+  );
+}

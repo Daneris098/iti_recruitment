@@ -1,6 +1,6 @@
 import { apiClient } from "@shared/services/apiClient";
 import { BaseService } from "@shared/services/baseService";
-import { ApplicantResponse, JobOpenings } from "@modules/Shared/types";
+import { ApplicantResponse, JobOpenings, ViewAcceptedOffer } from "@modules/Shared/types";
 
 export const useSharedUserService = new BaseService<ApplicantResponse>(
     apiClient,

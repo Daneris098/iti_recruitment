@@ -3,6 +3,8 @@ import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { useEffect, } from "react";
 import { FilterStore, useDateUpdatedRangeStore, useApplicationDateStore } from '@modules/Applicants/store';
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import dayjs from "dayjs";
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
@@ -10,12 +12,6 @@ export default function Filter() {
   const { applicationDateValue: applicationDateRange } = useApplicationDateStore();
 
   const { } = useApplicationDateStore();
-
-  // useEffect(() => {
-  //   if (filter) {
-  //     setIsFiltered(false)
-  //   }
-  // }, [filter])
 
   useEffect(() => {
     const hasActiveFilters = Object.values(filter).some(value => value !== '' && value !== null);
@@ -118,7 +114,9 @@ export default function Filter() {
     return range.map((date, index) =>
       date ? renderSinglePill(
         `${label} ${index === 0 ? 'From' : 'To'}`,
-        date.toDateString()
+        DateTimeUtils.dateDefaultToHalfMonthWord(
+          dayjs(date).format("YYYY-MM-DD")  // convert Date -> string "YYYY-MM-DD"
+        )
       ) : null
     );
   };
@@ -141,7 +139,7 @@ export default function Filter() {
             {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
 
             {renderDateRangePills(applicationDateRange, 'Date')}
-            {renderDateRangePills(dateUpdatedRange, 'Updated')}
+            {renderDateRangePills(dateUpdatedRange, 'Applied')}
 
             {filter.position && filter.position.length > 0 && renderPills('Position', filter.position)}
             {filter.status && filter.status.length > 0 && renderPills('Status', filter.status)}

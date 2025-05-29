@@ -4,7 +4,6 @@ import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import DatePicker from "@modules/Applicants/components/picker/DatePicker"
 import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 import interviewJSON from "@modules/Applicants/constants/json/interview.json";
-
 export default function ForInterview() {
 
     const {
@@ -28,6 +27,13 @@ export default function ForInterview() {
         label: interviewStages.name
     }))
 
+    const defaultLocation = "12 Catanduanes, Quezon City, 1105 Metro Manila";
+
+    const handleBlur = () => {
+        if (!interviewLocation.trim()) {
+            setInterviewLocation(defaultLocation);
+        }
+    };
     return (
         <div>
             <div>
@@ -148,13 +154,16 @@ export default function ForInterview() {
                 <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins pt-4">
                     Location <span className="text-[#F14336]">*</span>
                 </h3>
+
                 <TextInput
                     type="text"
-                    placeholder="Set Interview Location"
+                    placeholder={defaultLocation}
                     value={interviewLocation}
-                    onChange={(e) => setInterviewLocation(e.target.value)}
+                    onChange={(e) => setInterviewLocation(e.currentTarget.value)}
+                    onBlur={handleBlur}
                     classNames={{
-                        input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                        input:
+                            "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                     }}
                     required
                 />

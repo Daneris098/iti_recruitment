@@ -6,8 +6,10 @@ export interface ApplicantStatus {
     dateLastUpdatedFrom: string | null;
     dateLastUpdatedTo: string | null;
     applicationDateValue: string | null;
-    position: string[];
+    position: any;
     status: any;
+    dateUpdated: any;
+    setDateUpdated: any;
 }
 
 export interface Applicants {
@@ -197,6 +199,8 @@ type FamilyInSameCompany = {
     answer: string;
 }
 export interface ViewApplicantById {
+    name: string;
+    department?: string;
     generalInformation: {
         firstChoice: string;
         secondChoice: string;
@@ -229,7 +233,6 @@ export interface ViewApplicantById {
 
     education: {
         primary: Education;
-        // secondary: Education;
     };
 
     employmentRecord: {

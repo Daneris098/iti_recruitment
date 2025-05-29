@@ -280,3 +280,65 @@ export type TransferApplicationPositionForm = {
         departmentId: number;
     }, comment: string;
 }
+
+export type ViewAcceptedOffer = {
+    applicantId: number;
+}
+
+export interface PDFProps {
+    applicantName: string;
+    Position: string;
+    Department: string;
+    Remarks: string;
+    Salary_Monthly: string;
+    Salary_Yearly: string;
+    Note_Salary: string;
+    Merit_Increase: string;
+    Description_VL: string;
+    Description_SL: string;
+    Description_BL: string;
+    Benefit_Paternity: string;
+    Benefit_Maternity: string;
+    Description_Transpo: string;
+    Acknowledgement: string;
+}
+
+export type TextRendererProps = {
+    as?: 'h1' | 'h2' | 'h3' | 'p';
+    className?: string;
+    children: React.ReactNode;
+};
+
+
+export interface ViewApplicantsProps extends Partial<PDFProps> {
+    applicantName: string;
+    Position: string;
+    Status: string;
+    Email: string;
+    Phone: string;
+    Skills: string;
+    Remarks: string;
+    Application_Date: string;
+    IsJobOffer: any;
+    onClose: () => void;
+}
+
+export type ModalsProps = {
+    isUpdateStatusOpen: boolean;
+    isTransferPositionOpen: boolean;
+    isGenerateNewOfferOpen: boolean;
+    isViewPDFOpen: boolean;
+    onCloseAll: () => void;
+    onCloseUpdateStatus: () => void;
+    onCloseTransferPosition: () => void;
+    onCloseGenerateNewOffer: () => void;
+    onClosePDF: () => void;
+
+    applicantName: string;
+    Status: string;
+    IsJobOffer: string;
+    Position: string;
+    Remarks: string;
+    Acknowledgement: string;
+    Department: string;
+};

@@ -14,9 +14,18 @@ import jobOfferColumns from "@modules/Offers/components/columns/Columns";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey } from "@modules/Offers/types";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
-import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
+import { useJobOfferStore, useSortStore, FilterStore, useViewAcceptedOfferId } from "@src/modules/Offers/store";
 
+import { useApplicantIdStore } from "@modules/Applicants/store";
+interface ExtendedPDFProps extends PDFProps {
+    applicantId?: number;
+}
 export default function index() {
+    const applicantId = useApplicantIdStore((state) => state.id);
+    const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+
+    console.log(applicantId)
+   
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -99,9 +108,11 @@ export default function index() {
     //#endregion
 
     //#region FUNCTIONS
-    const handleRowClick = (row: Partial<PDFProps>) => {
+    const handleRowClick = (row: ExtendedPDFProps) => {
+        setApplicantId(row.applicantId!);
         setSelectedRow(row);
     };
+    debugger;
 
     const renderCell = (col: { accessor: string }, row: Row) => {
         if (col.accessor === "attachments") {

@@ -11,17 +11,15 @@ import TransferPosition from "@src/modules/Shared/components/applicantProfile/bu
 import GenerateNewOffer from "@modules/Shared/components/applicantProfile/buttons/GenerateNewOffer"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { PDFViewer } from "@react-pdf/renderer";
-// import { useApplicantIdStore, } from "@src/modules/Vacancies/store";
-
 interface Applicant {
-    Applicant_Name: string,
-    Position: string,
-    Status: string,
-    Skills: string,
-    Email: string,
-    Phone: string,
-    Remarks: string,
-    Application_Date: string,
+    applicantName: string,
+    position: string,
+    status: string,
+    skills: string,
+    email: string,
+    phone: string,
+    remarks: string,
+    applicationDate: string,
     // ApplicantId: number,
 }
 
@@ -35,7 +33,7 @@ interface ViewApplicantsProps {
 export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApplicantsProps) {
     const {
         //  ApplicantId,
-         Applicant_Name, Email, Phone, Application_Date, Position, Remarks, Status, Skills } = applicant
+        applicantName, email, phone, applicationDate, position, remarks, status, skills } = applicant
 
 
     //For checking the status of selected employee to properly return the proper color
@@ -56,9 +54,9 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
     const { isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen, isGenerateNewOffer, setIsGenerateNewOffer, setIsOffered } = useCloseModal();
     const [isViewPDF, setIsViewPDF] = useState(false);
     const [isTransferPosition, setIsTransferPosition] = useState(false)
-    const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(Status)
-    const bgColorForInterview = forInterviewStatus ? "bg-[#ED8028]" : statusColors[Status] || "bg-[#559CDA]";
-    const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
+    const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(status)
+    const bgColorForInterview = forInterviewStatus ? "bg-[#ED8028]" : statusColors[status] || "bg-[#559CDA]";
+    const forInterviewDisplayText = forInterviewStatus ? "For Interview" : status;
     const onCloseAll = () => {
         setIsTransferPosition(false);
         setIsOffered(false);
@@ -95,8 +93,8 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                             {/* Profile Image & Name (Left Aligned) */}
                             <div className="flex flex-col items-left mt-3">
                                 <img src={profileImage} className="w-[100px] h-[100px] shadow-sm rounded-full" />
-                                <p className="text-[#559CDA] text-[20px] font-bold mt-2">{Applicant_Name ?? "No Data"}</p>
-                                <p className='text-[#6D6D6D] text-[12px] font-medium'>{Position ?? "No Data"}</p>
+                                <p className="text-[#559CDA] text-[20px] font-bold mt-2">{applicantName ?? "No Data"}</p>
+                                <p className='text-[#6D6D6D] text-[12px] font-medium'>{position ?? "No Data"}</p>
                             </div>
 
                             {/* Status Section */}
@@ -112,12 +110,12 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                                     </p>
 
                                     {/* Hide the Update Status button if the current status is equivalent to either "Hired" or "Transferred" */}
-                                    {Status !== 'Hired' && Status !== 'Transferred' && (
+                                    {status !== 'Hired' && status !== 'Transferred' && (
                                         <p className={`text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold 
-                                    ${Status === 'Archived' ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                    ${status === 'Archived' ? 'cursor-not-allowed' : 'cursor-pointer'}`}
 
-                                            onClick={Status !== 'Archived' ? () => setIsUpdateStatusButtonModalOpen(true) : undefined}>
-                                            {Status === 'Archived' ? "Inactive" : "Update Status"}
+                                            onClick={status !== 'Archived' ? () => setIsUpdateStatusButtonModalOpen(true) : undefined}>
+                                            {status === 'Archived' ? "Inactive" : "Update Status"}
                                         </p>
                                     )}
                                 </div>
@@ -129,18 +127,18 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                                 <p className="font-bold text-[#6D6D6D] text-[14px] poppins">United States</p>
 
                                 <h2 className="text-[12px]">Email</h2>
-                                <p className="font-bold text-[#6D6D6D] text-[14px] break-words poppins">{Email ?? "No Data"}</p>
+                                <p className="font-bold text-[#6D6D6D] text-[14px] break-words poppins">{email ?? "No Data"}</p>
 
                                 <h3 className="text-[12px]">Phone</h3>
-                                <p className="font-bold text-[#6D6D6D] text-[14px] poppins">{Phone ?? "No Data"}</p>
+                                <p className="font-bold text-[#6D6D6D] text-[14px] poppins">{phone ?? "No Data"}</p>
                             </div>
 
                             {/* Skills Section */}
                             <div className="mt-8 text-[#6D6D6D] text-[12px] poppins">
                                 <h1>Skills</h1>
                                 <div className="flex gap-2 mt-2 flex-wrap">
-                                    {Skills
-                                        ? Skills.split(", ").map((skill, index) => (
+                                    {skills
+                                        ? skills.split(", ").map((skill, index) => (
                                             <p key={index} className="flex rounded-[10px] text-[#6D6D6D] bg-[#D9D9D9] w-auto px-3 h-[21px] font-semibold text-[12px] items-center justify-center">
                                                 {skill}
                                             </p>
@@ -150,35 +148,35 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                             </div>
 
                             {/* Conditional Start Date */}
-                            {(Status === "For Transfer" || Status === "Transferred" || Status === "Hired") && (
+                            {(status === "For Transfer" || status === "Transferred" || status === "Hired") && (
                                 <div className="mt-3 text-[#6D6D6D] text-[12px] poppins">
                                     <h1>Start Date</h1>
                                     <div className="flex gap-2 mt-2 flex-wrap">
-                                        {Application_Date}
+                                        {applicationDate}
                                     </div>
                                 </div>
                             )}
 
                             <div className="mt-3 pb-6">
-                                {Status !== 'Archived' && (
+                                {status !== 'Archived' && (
                                     <p className="text-white rounded-[10px] poppins bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer"
 
                                         onClick={() => {
-                                            if (viewPDFStatuses.includes(Status)) {
+                                            if (viewPDFStatuses.includes(status)) {
                                                 setIsViewPDF(true);
                                             }
-                                            else if (Status === 'For Interview' || Status === 'Final Interview' || Status === 'Initial Interview' || Status === 'Assessment' || Status === 'Applied') {
+                                            else if (status === 'For Interview' || status === 'Final Interview' || status === 'Initial Interview' || status === 'Assessment' || status === 'Applied') {
                                                 setIsTransferPosition(true);
                                             }
                                             else {
                                                 setIsUpdateStatusButtonModalOpen(false);
                                             }
                                         }}>
-                                        {Status === 'Hired' || Status === 'Offered' || Status === 'For Transfer' || Status === 'Transferred' ? 'View PDF' : "Transfer Position"}
+                                        {status === 'Hired' || status === 'Offered' || status === 'For Transfer' || status === 'Transferred' ? 'View PDF' : "Transfer Position"}
                                     </p>
                                 )}
 
-                                {Status === 'Offered' && (
+                                {status === 'Offered' && (
                                     <p className="text-white rounded-[10px] bg-[#6D6D6D] poppins text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer mt-2"
                                         onClick={() => setIsGenerateNewOffer(true)}>
                                         Generate new Offer
@@ -195,7 +193,7 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                                     {[
                                         { value: "personal", label: "Personal Details" },
                                         { value: "application", label: "Application Movement" },
-                                        ...(Status === 'Transferred') ? [{ value: "transfer_details", label: "Transfer Details" }] : []
+                                        ...(status === 'Transferred') ? [{ value: "transfer_details", label: "Transfer Details" }] : []
                                     ].map((tab) => (
                                         <Tabs.Tab
                                             key={tab.value}
@@ -210,20 +208,20 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                                 {/* Peronsal Details Tab */}
                                 <Tabs.Panel value="personal">
                                     <PersonalDetails
-                                        Position={Position}
+                                        Position={position}
                                     />
                                 </Tabs.Panel>
 
                                 {/* Application movement Tab */}
                                 <Tabs.Panel value="application">
                                     <ApplicationMovement
-                                        Applicant_Name={Applicant_Name}
-                                        Status={Status}
-                                        Remarks={Remarks}
+                                        Applicant_Name={applicantName}
+                                        Status={status}
+                                        Remarks={remarks}
                                     />
                                 </Tabs.Panel>
 
-                                {Status === 'Transferred' && (
+                                {status === 'Transferred' && (
                                     <Tabs.Panel value="transfer_details">
                                         <TransferDetails />
                                     </Tabs.Panel>
@@ -236,20 +234,20 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
 
                 <Modal radius={"md"} size={"35%"} withCloseButton={false} centered opened={isUpdateStatusButtonModalOpen} onClose={onClose}>
                     <UpdateStatus
-                        Status={Status}
+                        Status={status}
                         onClose={onCloseAll}
                     />
                 </Modal>
 
                 <Modal radius={"md"} size={"35%"} withCloseButton={false} centered opened={isTransferPosition} onClose={onCloseAll}>
                     <TransferPosition
-                        Applicant_Name={Applicant_Name}
+                        Applicant_Name={applicantName}
                         onClose={onCloseAll} />
                 </Modal>
 
                 <Modal radius={"md"} size={"35%"} withCloseButton={false} centered opened={isGenerateNewOffer} onClose={onClose}>
                     <GenerateNewOffer
-                        ApplicantName={Applicant_Name}
+                        ApplicantName={applicantName}
                         onClose={() => setIsGenerateNewOffer(false)} />
                 </Modal>
 
@@ -257,8 +255,8 @@ export default function index({ applicant, isOpen, setIsOpen, onClose }: ViewApp
                     <div className="h-[80vh]">
                         <PDFViewer width="100%" height={"100%"} style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                             <MyDocument
-                                applicantName={Applicant_Name}
-                                position={Position}
+                                applicantName={applicantName}
+                                position={position}
                                 department=""
                                 remarks=""
                                 salaryMonthly=""

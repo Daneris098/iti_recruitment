@@ -5,3 +5,8 @@ export const applicantsByIdService = {
     getById: (idOrGuid: string | number) =>
         apiClient.get<ApplicantResponseById>(`/recruitment/applicants/${idOrGuid}`),
 };
+
+export const viewApplicantOfferService = {
+    getById: (idOrGuid: string | number) =>
+        apiClient.get<ApplicantResponseById>(`recruitment/applicants/${idOrGuid}`),
+}

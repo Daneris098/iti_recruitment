@@ -4,30 +4,25 @@ import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
+import { usePositionFilterStore } from "@modules/Shared/store";
 import { useLocation, useSearchParams } from "react-router-dom";
+import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
+import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
 import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import {
-  useCloseModal,
-  useSortStore,
-  useApplicantStore,
-  usePaginationStore,
-  useApplicantIdStore,
-  useSelectedApplicantsStore,
-  FilterStore
+  FilterStore, useCloseModal,
+  useSortStore, useApplicantStore,
+  usePaginationStore, useApplicantIdStore, useSelectedApplicantsStore,
 } from "@modules/Applicants/store";
-
 import Filter from "@src/modules/Applicants/components/filter/Filter";
-import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
-// import ApplicantModal from "@modules/Applicants/components/modal/applicantProfile";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
-import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
-import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
-import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
-
+import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
+import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
+import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 
 export default function index() {
+  const { selectedPositionIds } = usePositionFilterStore();
 
   const { filter } = FilterStore();
 
@@ -60,10 +55,14 @@ export default function index() {
   //region FUNCTIONS
   const [searchParams, setSearchParams] = useSearchParams();
   const handlePageChange = (newPage: number) => {
+    const statusArray = extractStatusArray(currentRoute);
+    const statusIds = statusArray.join(",");
+
     setSearchParams(prev => {
       const params = new URLSearchParams(prev);
       params.set("page", String(newPage));
       params.set("pageSize", String(pageSize));
+      params.set("statusIds", statusIds);
       return params;
     });
   };
@@ -81,11 +80,18 @@ export default function index() {
     };
   }, [searchParams]);
 
-  const { data: getApplicants, isLoading } = useApplicants(page, pageSize, {
-    name: filter.applicantName,
-    company: filter.company,
-    status: filter.status
-  }, setLoadTime);
+  const { data: getApplicants, isLoading } = useApplicants(
+    page,
+    pageSize,
+    0,
+    {
+      Name: filter.applicantName,
+      PositionIds: selectedPositionIds,
+      dateUpdatedFrom: filter.dateUpdated?.[0] ?? null,
+      dateUpdatedTo: filter.dateUpdated?.[1] ?? null,
+    },
+    setLoadTime
+  );
 
   //#region HOOKS
   //Data population
