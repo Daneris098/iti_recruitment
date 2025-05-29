@@ -5,16 +5,15 @@ import { JobOfferExcelTemplateData } from "@modules/HiringSettings/constants/job
 // import SpreadsheetExportButton from "@modules/HiringSettings/components/excel/SpreadSheetExportButton";
 import { NumberInput, Select } from "@mantine/core";
 import axiosInstance from "@src/api";
-import { panel } from "../../types";
+import { AlertType, panel } from "../../types";
 import { HiringSettingsStore } from "../../store";
 import { useForm } from "@mantine/form";
 
 const OfferConfiguration = forwardRef((_, ref) => {
     const [data] = useState(JobOfferExcelTemplateData)
-    const { activePanel } = HiringSettingsStore();
+    const { activePanel, setAlert } = HiringSettingsStore();
     const formRef = useRef<HTMLFormElement>(null);
     const [otherSettingsId, setOtherSettingsId] = useState({ id: '', guid: '' });
-
     const fetchData = async () => {
         await axiosInstance
             .get("/recruitment/hiring/other-settings")
@@ -74,6 +73,7 @@ const OfferConfiguration = forwardRef((_, ref) => {
                     }
                 );
             }
+            setAlert(AlertType.saved)
         } catch (error: any) {
             const message = error?.response?.data?.errors?.[0]?.message ?? 'An unexpected error occurred';
             form.setErrors({ username: ' ', password: message });
