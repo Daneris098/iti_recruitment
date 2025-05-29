@@ -7,9 +7,9 @@ import useColumns from "./columns";
 import { Description, Panel, Title } from "../assets/Enum";
 import useEdit from "./Edit/";
 import { OrganizationItem } from "../assets/Types";
-
 import { useAddOrganizationSettings } from "../services/add";
 import { useEditOrganizationSettings } from "../services/edit";
+import useTotalRecords from "./total";
 
 const DataTableComp = forwardRef((_, ref) => {
   const { activePanel, addOrg, setAddOrg, expandedIds, setNewRows, newRows, sortBy, setSortBy, time, page, setPage, ascDesc, toggleAscDesc } = OrganizationSettingsStore();
@@ -36,6 +36,7 @@ const DataTableComp = forwardRef((_, ref) => {
   const dataRecords = useRecords();
   const dataColumns = useColumns();
   const dataExpandedRow = useEdit();
+  const dataTotal = useTotalRecords();
 
   const [rows, setRows] = useState<OrganizationItem[]>([]);
 
@@ -115,7 +116,7 @@ const DataTableComp = forwardRef((_, ref) => {
         rowClassName={(row: any) => (row.id === expandedIds[0] ? "bg-[#DEECFF]" : "")}
         records={[...newRows, ...rows]}
         columns={(dataColumns as any)[activePanel]}
-        totalRecords={rows.length}
+        totalRecords={(dataTotal as any)[activePanel]}
         recordsPerPage={30}
         page={page}
         onPageChange={setPage}

@@ -81,7 +81,7 @@ export default function EditBranch({ record }: { record: BranchType }) {
           placeholder="Select Location"
           value={String(editBranch.values.location.id)}
           onChange={(value) => {
-            const selectedItem = locations.data?.items.find((item) => item.id.toString() === value);
+            const selectedItem: { id: number; name: string } = locations.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
             if (selectedItem) {
               editBranch.setFieldValue("location.id", selectedItem.id);
               editBranch.setFieldValue("location.name", selectedItem.name);
@@ -101,7 +101,7 @@ export default function EditBranch({ record }: { record: BranchType }) {
           placeholder="Select Area"
           value={String(editBranch.values.area.id)}
           onChange={(value) => {
-            const selectedItem = areas.data?.items.find((item) => item.id.toString() === value);
+            const selectedItem: { id: number; name: string } = areas.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
             if (selectedItem) {
               editBranch.setFieldValue("area.id", selectedItem.id);
               editBranch.setFieldValue("area.name", selectedItem.name);

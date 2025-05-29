@@ -114,7 +114,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
               placeholder="Select Location"
               error={addBranch.values.location.name === "" ? "Required" : undefined}
               onChange={(value) => {
-                const selectedItem: any = locations.data?.items.find((item: any) => item.id.toString() === value);
+                const selectedItem: { id: number; name: string } = locations.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                 if (selectedItem) {
                   addBranch.setFieldValue("location.id", selectedItem.id);
                   addBranch.setFieldValue("location.name", selectedItem.name);
@@ -148,7 +148,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
               placeholder="Select Area"
               error={addBranch.values.area.name === "" ? "Required" : undefined}
               onChange={(value) => {
-                const selectedItem: any = areas.data?.items.find((item: any) => item.id.toString() === value);
+                const selectedItem: { id: number; name: string } = areas.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                 if (selectedItem) {
                   addBranch.setFieldValue("area.id", selectedItem.id);
                   addBranch.setFieldValue("area.name", selectedItem.name);

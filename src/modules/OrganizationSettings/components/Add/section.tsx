@@ -113,7 +113,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
               styles={{ label: { color: "#6d6d6d" } }}
               placeholder="Select Division"
               onChange={(value) => {
-                const selectedItem = divisions.data?.items.find((item) => item.id.toString() === value);
+                const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                 if (selectedItem) {
                   addSection.setFieldValue("division.id", selectedItem.id);
                   addSection.setFieldValue("division.name", selectedItem.name);
@@ -146,7 +146,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
               styles={{ label: { color: "#6d6d6d" } }}
               placeholder="Select Division"
               onChange={(value) => {
-                const selectedItem = departments.data?.items.find((item) => item.id.toString() === value);
+                const selectedItem: { id: number; name: string } = departments.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                 if (selectedItem) {
                   addSection.setFieldValue("department.id", selectedItem.id);
                   addSection.setFieldValue("department.name", selectedItem.name);

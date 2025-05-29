@@ -79,7 +79,7 @@ export default function EditSection({ record }: { record: SectionType }) {
         placeholder="Select Division"
         value={String(editSection.values.division.id)}
         onChange={(value) => {
-          const selectedItem = divisions.data?.items.find((item) => item.id.toString() === value);
+          const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editSection.setFieldValue("division.id", selectedItem.id);
             editSection.setFieldValue("division.name", selectedItem.name);
@@ -99,7 +99,7 @@ export default function EditSection({ record }: { record: SectionType }) {
         placeholder="Select Department"
         value={String(editSection.values.department.id)}
         onChange={(value) => {
-          const selectedItem = departments.data?.items.find((item) => item.id.toString() === value);
+          const selectedItem: { id: number; name: string } = departments.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editSection.setFieldValue("department.id", selectedItem.id);
             editSection.setFieldValue("department.name", selectedItem.name);
