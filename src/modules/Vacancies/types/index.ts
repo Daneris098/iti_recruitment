@@ -152,14 +152,15 @@ export enum AlertType {
 export interface selectedApplicant {
   id: number;
   applicantId: number;
-  Applicant_Name: string,
-  Position: string,
-  Status: string,
-  Email: string,
-  Phone: string,
-  Skills: string,
-  Remarks: string,
-  Application_Date: string
+  applicantName: string,
+  position: string,
+  status: string,
+  email: string,
+  phone: string,
+  skills: string,
+  remarks: string,
+  applicationDate: string,
+  isJobOffer: string
 }
 
 

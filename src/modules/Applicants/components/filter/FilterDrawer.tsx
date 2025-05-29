@@ -1,96 +1,124 @@
-import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
-import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { FilterStore, useDateUpdatedRangeStore, useApplicationDateStore } from '@modules/Applicants/store'
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { filterVal } from "@modules/Applicants/values";
-import { DateRange } from "@modules/Applicants/components/filter/DateRangeFilter";
 import { useSearchParams } from "react-router-dom";
+import { filterVal } from "@modules/Applicants/values";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
+import { FilterStore, useDateUpdatedRangeStore } from '@modules/Applicants/store';
+import { DateRange } from "@modules/Applicants/components/filter/DateRangeFilter";
+import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches } from "@mantine/core";
+import { useApplicantStore } from "@modules/Applicants/store";
+import { usePositionFilterStore } from "@modules/Shared/store";
 
 export default function DrawerFilter() {
+  const getApplicantFilter = useApplicantStore((s) => s.records);
+
+  const { selectedPositionIds, setSelectedPositionIds } = usePositionFilterStore();
+  const positionMap = new Map<string, Set<string>>();
+
+  getApplicantFilter.forEach(({ id, position }) => {
+    if (!position) return;
+    if (!positionMap.has(position)) {
+      positionMap.set(position, new Set());
+    }
+    positionMap.get(position)!.add(String(id));
+  });
+
+  const filterPositions = Array.from(positionMap.entries()).map(
+    ([position, ids]) => ({
+      value: position,
+      label: position,
+      ids: Array.from(ids),
+    })
+  );
+
+
+  const filterStatus = Array.from(new Set(getApplicantFilter.map((s) => s.status)));
+
   const { filterDrawer, setFilterDrawer,
-    // filter,
     setFilter,
     clearFilter, setClearFilter, setIsFiltered
   } = FilterStore();
 
-  const filter = FilterStore((state) => state.filter)
-
-  // const currentDate = new Date();
-  // const dateTomorrow = new Date(currentDate);
-  // const statusFilterOptions = ["Pending", "Generated", "Accepted", "Archived", "Rejected"];
-  const statusFilterOptions = [
-    { label: "Applied", value: "1" },
-    { label: "For Interview", value: "2" },
-    { label: "Offered", value: "3" },
-    { label: "Hired", value: "5" },
-    // { label: "For Transfer", value: "5" },
-    { label: "Archived", value: "6" },
-    { label: "Transferred", value: "7" },
-  ];
-
-
-  const positionOptions = ["HR Admin", "Web Developer", "Tech Support", "QA Engineer"];
-  // const { dateUpdated, setDateUpdated } = useDateUpdatedRangeStore();
-  // const { applicationDateValue, setApplicationDateValue } = useApplicationDateStore();
-
-  const { applicationDateValue, setApplicationDateValue } = useApplicationDateStore();
+  const filter = FilterStore((state) => state.filter);
   const { dateUpdated, setDateUpdated } = useDateUpdatedRangeStore();
-
-  const inputSize = useMatches({
-    base: 'xs',
-    xl: 'md',
-  });
-
-  useEffect(() => {
-    if (!filterDrawer) return;
-  }, [filterDrawer]);
-
-  const [localApplicantName, setLocalApplicantName] = useState(filter.applicantName);
-  const [companyFilter, setCompanyFilter] = useState(filter.company);
-  const [statusFilter, setStatusFilter] = useState<string[]>(filter.status);
-  const [positionFilter, setPositionFilter] = useState<string[]>(filter.position);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const inputSize = useMatches({ base: 'xs', xl: 'md' });
+
+  // Local controlled states
+  const [localApplicantName, setLocalApplicantName] = useState(filter.applicantName || "");
+  const [localPositionFilter, setLocalPositionFilter] = useState<string[]>(filter.position || []);
+  const [statusFilter, setStatusFilter] = useState<string[]>(filter.status || []);
+
+  // When drawer opens, initialize local state from URL params
   useEffect(() => {
     if (filterDrawer) {
+      const dateUpdatedFrom = searchParams.get("dateUpdatedFrom");
+      const dateUpdatedTo = searchParams.get("dateUpdatedTo");
       const nameFromUrl = searchParams.get("name") || "";
-      const companyFromUrl = searchParams.get("company")?.split(",") || [];
       const statusFromUrl = searchParams.get("statusIds")?.split(",") || [];
       const positionFromUrl = searchParams.get("position")?.split(",") || [];
 
       setLocalApplicantName(nameFromUrl);
-      setCompanyFilter(companyFromUrl);
       setStatusFilter(statusFromUrl);
-      setPositionFilter(positionFromUrl);
+      setLocalPositionFilter(positionFromUrl);
+
+      if (dateUpdatedFrom || dateUpdatedTo) {
+        const from = dateUpdatedFrom ? new Date(dateUpdatedFrom) : null;
+        const to = dateUpdatedTo ? new Date(dateUpdatedTo) : null;
+        setDateUpdated([from, to]);
+      }
     }
   }, [filterDrawer]);
 
   const handleApplyFilters = () => {
+    let dateUpdatedFormatted: [string | null, string | null] = [null, null];
+    let formattedFrom = '';
+    let formattedTo = '';
+
+    if (dateUpdated && dateUpdated[0] && dateUpdated[1]) {
+      const from = dayjs(dateUpdated[0]).format("YYYY-MM-DD");
+      const to = dayjs(dateUpdated[1]).format("YYYY-MM-DD");
+
+      dateUpdatedFormatted = [
+        DateTimeUtils.dateDefaultToHalfMonthWord(from),
+        DateTimeUtils.dateDefaultToHalfMonthWord(to),
+      ];
+
+      formattedFrom = dateUpdatedFormatted[0] ?? '';
+      formattedTo = dateUpdatedFormatted[1] ?? '';
+    }
+
     setFilter({
       ...filter,
       applicantName: localApplicantName,
-      company: companyFilter,
+      position: localPositionFilter,
       status: statusFilter,
-      position: positionFilter,
+      dateUpdated: dateUpdatedFormatted,
     });
 
     setSearchParams({
       page: "1",
       pageSize: "30",
-      name: localApplicantName,
-      company: companyFilter.join(","),
+      Name: localApplicantName,
+      PositionIds: selectedPositionIds.join(","),
       statusIds: statusFilter.join(","),
-      position: positionFilter.join(","),
+      dateUpdatedFrom: formattedFrom,
+      dateUpdatedTo: formattedTo,
     });
 
+    setIsFiltered(true);
     setFilterDrawer(false);
   };
 
   const clear = () => {
-    setFilter(filterVal)
+    setFilter(filterVal);
     setLocalApplicantName("");
-    setIsFiltered(false)
-  }
+    setLocalPositionFilter([]);
+    setStatusFilter([]);
+    setIsFiltered(false);
+  };
 
   const buttonSize = useMatches({
     base: "xs",
@@ -98,11 +126,11 @@ export default function DrawerFilter() {
   });
 
   useEffect(() => {
-    clear()
-    return (
-      setClearFilter(false)
-    )
-  }, [clearFilter])
+    if (clearFilter) {
+      clear();
+      setClearFilter(false);
+    }
+  }, [clearFilter]);
 
   const drawerFilterSize = useMatches({
     base: "100%",
@@ -113,23 +141,6 @@ export default function DrawerFilter() {
     xl: "16.8%",
   });
 
-  // const [searchParams, setSearchParams] = useSearchParams();
-
-  // setSearchParams({
-  //   page: "1",
-  //   pageSize: "10",
-  //   name: localApplicantName,
-  //   status: statusFilter.join(","),
-  // })
-
-  // const filters = {
-  //   name: searchParams.get("name") || undefined,
-  //   status: searchParams.get("statusIds")?.split(",") || [],
-  //   company: searchParams.get("company") || undefined,
-
-  // }
-
-  console.log(positionFilter)
   return (
     <Drawer
       opened={filterDrawer}
@@ -140,10 +151,8 @@ export default function DrawerFilter() {
       overlayProps={{ backgroundOpacity: 0, blur: 0 }}
       styles={{ body: { height: '100%' } }}
     >
-
       <div className="w-full h-full flex flex-col justify-between">
         <div className="flex flex-col gap-2 2xl:gap-4">
-
           <Flex className="w-full" direction="column" gap={10}>
             <Flex direction="row" justify="space-between">
               <Text fw={600} fz={22} c="#559CDA">
@@ -160,17 +169,6 @@ export default function DrawerFilter() {
 
           <>
             <Divider size={2} color="#6d6d6d50" className="w-full" />
-            <MultiSelect
-              size={inputSize}
-              label="Company"
-              placeholder={filter.company.length > 0 ? '' : "Company"}
-              radius={8}
-              data={["Company 1", "Company 2", "Company 3"]}
-              rightSection={<IconCaretDownFilled size='18' />}
-              className="border-none w-full text-sm"
-              styles={{ label: { color: "#6d6d6d" } }}
-              onChange={(value) => setCompanyFilter(value)}
-            />
 
             <TextInput
               radius={8}
@@ -184,7 +182,7 @@ export default function DrawerFilter() {
             />
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
-            <Text fw={500} fz={16} c="#6d6d6d">Application Date Range</Text>
+            <Text fw={500} fz={16} c="#6d6d6d">Date Applied</Text>
 
             <DateRange
               gapValue={12}
@@ -199,19 +197,6 @@ export default function DrawerFilter() {
             />
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
-            <Text fw={500} fz={16} c="#6d6d6d">Date Last Updated Range</Text>
-
-            <DateRange
-              gapValue={12}
-              size="md"
-              value={applicationDateValue}
-              setValue={setApplicationDateValue}
-              fLabel="From"
-              lLabel="To"
-              fPlaceholder="Start Date"
-              lPlaceholder="End Date"
-              isColumn
-            />
 
             <MultiSelect
               radius={8}
@@ -237,23 +222,25 @@ export default function DrawerFilter() {
                   padding: "4px",
                 },
               })}
+              data={filterPositions}
+              value={localPositionFilter}
+              onChange={(selectedLabels) => {
+                setLocalPositionFilter(selectedLabels); // for display
+                const matchingIds = filterPositions
+                  .filter((item) => selectedLabels.includes(item.label))
+                  .flatMap((item) => item.ids);
+                setSelectedPositionIds(matchingIds);
+              }}
 
-              data={positionOptions}
-              // onChange={(values) => setFilter({ ...filter, position: values })}
-              onChange={(value) => setPositionFilter(value)}
-              value={positionFilter}
               searchable
               clearable
               nothingFoundMessage="No options"
               maxDropdownHeight={90}
-              rightSection={
-                <span>
-                  <IconCaretDownFilled size={18} stroke={2} />
-                </span>
-              }
+              rightSection={<IconCaretDownFilled size={18} stroke={2} />}
             />
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
+
             <MultiSelect
               radius={8}
               size={inputSize}
@@ -278,19 +265,14 @@ export default function DrawerFilter() {
                   padding: "4px",
                 },
               })}
-              data={statusFilterOptions}
-              onChange={(values) => setStatusFilter(values)}
-              // onChange={handleStatusChange}
+              data={filterStatus}
               value={statusFilter}
+              onChange={setStatusFilter}
               searchable
               clearable
               nothingFoundMessage="No options"
               maxDropdownHeight={90}
-              rightSection={
-                <span>
-                  <IconCaretDownFilled size={18} stroke={2} />
-                </span>
-              }
+              rightSection={<IconCaretDownFilled size={18} stroke={2} />}
             />
           </>
         </div>

@@ -61,3 +61,13 @@ export const FilterStore = create<FilterState>((set) => ({
   setActiveTab: (tab) => set({ activeTab: tab }),
 }));
 // end of filtering
+
+interface ApplicantId {
+  id: number
+  setApplicantId: (id: number) => void
+}
+
+export const useViewAcceptedOfferId = create<ApplicantId>((set) => ({
+  id: 0,
+  setApplicantId: (id) => set({ id }),
+}))

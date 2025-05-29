@@ -8,7 +8,7 @@ import {
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
 import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
-import { applicantsByIdService } from "@modules/Shared/components/api/UserService"
+import { applicantsByIdService, viewApplicantOfferService } from "@modules/Shared/components/api/UserService"
 import { useSharedUserService, useSharedTransferredPosition } from "@modules/Shared/api/useSharedUserService";
 import {
     applicationMovementHired,
@@ -55,6 +55,7 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
         questionnaire, characterReferences,
         positionsApplied, addresses, birthDate, birthPlace, gender, height,
         weight, religion, civilStatus, identification, educations, previousEmployments,
+        nameResponse
     } = applicant.data;
 
     const [address] = addresses;
@@ -63,8 +64,9 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
     const [firstPositionApplied, secondPositionApplied] = positionsApplied;
     const mapComments = applicationMovements.map((item: any) => item.comment)
     const mapApplicationMovements = applicationMovements.map((item: any) => item.status.name);
-
+    // debugger;
     return {
+        name: nameResponse.normalName,
         generalInformation: {
             firstChoice: firstPositionApplied.name,
             secondChoice: secondPositionApplied.name,
@@ -207,9 +209,18 @@ export const useApplicantsById = (id: string | number) => {
         queryKey: sharedApplicantKeys.lists(),
         queryFn: () => applicantsByIdService.getById(id),
         select: (data) => formatApplicantById(data),
+
     });
 };
 
+export const useViewOfferedApplicants = (id: string | number) => {
+    return useQuery({
+        queryKey: sharedApplicantKeys.lists(),
+        queryFn: () => viewApplicantOfferService.getById(id),
+        select: (data) => formatApplicantById(data),
+    })
+}
+// debugger;
 export const formatApplicant = (applicant: any, page: number, pageSize: number, total: number): Applicant => {
     const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
     const position = applicant.positionsApplied?.[applicant.positionsApplied.length - 1];
@@ -283,33 +294,38 @@ export const useTransferPositionLookup = (
     };
 };
 
-
 export const useApplicants = (
     page: number = 0,
     pageSize: number = 0,
+    statusId?: number,                        // single statusId
     filters: Record<string, any> = {},
     setTime?: (time: number) => void
 ) => {
     return useQuery({
-        queryKey: sharedApplicantKeys.list({ page, pageSize, ...filters }),
+        queryKey: sharedApplicantKeys.list({ page, pageSize, statusId, ...filters }),
         queryFn: async () => {
             const start = performance.now();
-            const data = await useSharedUserService.getAll({ page, pageSize, ...filters });
-            const end = performance.now();
-
-            if (setTime) {
-                const seconds = (end - start) / 1000;
-                setTime(seconds);
+            const apiFilters: Record<string, any> = { page, pageSize, ...filters };
+            if (statusId !== undefined) {
+                apiFilters.statusId = statusId;     // include in API call if defined
             }
 
+            const data = await useSharedUserService.getAll(apiFilters);
+
+            const end = performance.now();
+            if (setTime) setTime((end - start) / 1000);
+
+            const applicants = data.items.map(item =>
+                formatApplicant(item, page, pageSize, data.total)
+            );
+
             return {
-                applicants: data.items.map(item =>
-                    formatApplicant(item, data.page, data.pageSize, data.total)
-                ),
-                page: data.page,
-                pageSize: data.pageSize,
+                applicants,
+                page,
+                pageSize,
                 total: data.total,
                 items: data.items,
+                statusId,                            // expose the same statusId for consumer use
             };
         },
         staleTime: 60 * 1000,
@@ -441,3 +457,4 @@ export const useCreateForTransfer = () => {
         },
     });
 };
+

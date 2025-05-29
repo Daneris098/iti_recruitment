@@ -6,14 +6,16 @@ import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { useCreateOffer } from "@modules/Shared/hooks/useSharedApplicants";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
-import { useCloseModal, useStatusStore, useApplicantIdStore, useDropDownOfferedStore } from "@src/modules/Applicants/store";
+import { useCloseModal, useStatusStore, useApplicantIdStore, useDropDownOfferedStore, useApplicantStore } from "@src/modules/Applicants/store";
+import { JOB_OFFER_CONSTANTS } from "@modules/Applicants/constants/pdf/descriptions";
 interface JobGeneratedAlertProps extends Partial<PDFProps> {
     onClose: () => void;
     title: string | null;
 }
 
-export default function JobGeneratedAlert({ title, onClose, applicantName, Acknowledgement, Department, Remarks }: JobGeneratedAlertProps) {
+export default function JobGeneratedAlert({ title, onClose, Department }: JobGeneratedAlertProps) {
     const {
         getSalaryTypes,
         amount,
@@ -24,7 +26,14 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
 
     const applicantId = useApplicantIdStore((state) => state.id);
     const { mutateAsync: createOffer } = useCreateOffer();
+    const { data: applicantsById } = useApplicantsById(applicantId);
+    const getApplicantRecords = useApplicantStore((s) => s.records);
 
+    const annualSalary = (Number(applicantsById?.generalInformation?.desiredSalary) || 0) * 12;
+
+
+    console.log(applicantsById)
+    // debugger;
     // zustand store.
     const {
         isViewPDF, setIsViewPDF,
@@ -123,12 +132,25 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
                 click the "View" button under the "Job Generated Successfully prompt."
                 */}
                 <ViewPDF isOpen={isViewPDF} onClose={() => setIsViewPDF(false)} header={title === "Offered" ? "Generate Offer" : "Job Offer"}>
+                    <Divider size={2} color="#6D6D6D99" className="w-full poppins mb-2" />
                     <PDFViewer width="100%" height="710" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
+
                         <MyDocument
-                            applicantName={applicantName}
+                            applicantName={applicantsById?.name}
+                            position={getApplicantRecords[0].position}
                             department={Department}
-                            remarks={Remarks}
-                            acknowledgement={Acknowledgement}
+                            remarks={JOB_OFFER_CONSTANTS.remarks}
+                            acknowledgement={JOB_OFFER_CONSTANTS.acknowledgement}
+                            salaryMonthly={applicantsById?.generalInformation.desiredSalary + JOB_OFFER_CONSTANTS.currency}
+                            salaryYearly={annualSalary.toString() + JOB_OFFER_CONSTANTS.currency}
+                            meritIncrease={JOB_OFFER_CONSTANTS.meritIncrease}
+                            benefitMaternity={JOB_OFFER_CONSTANTS.benefitMaternity}
+                            benefitPaternity={JOB_OFFER_CONSTANTS.benefitPaternity}
+                            descriptionBL={JOB_OFFER_CONSTANTS.descriptionBL}
+                            descriptionSL={JOB_OFFER_CONSTANTS.descriptionSL}
+                            descriptionTranspo={JOB_OFFER_CONSTANTS.descriptionTranspo}
+                            descriptionVL={JOB_OFFER_CONSTANTS.descriptionVL}
+                            noteSalary={JOB_OFFER_CONSTANTS.noteSalary}
                         />
                     </PDFViewer>
                     <div className="py-9 flex justify-center space-x-9">
@@ -141,15 +163,6 @@ export default function JobGeneratedAlert({ title, onClose, applicantName, Ackno
                             onClick={() => {
                                 setIsOffered(false);
                                 setIsModalOpen(false)
-                                // console.log("amount:", amount, "\n",
-                                //     "position:", position, "\n",
-                                //     "position ID", positionId, "\n",
-                                //     "department:", department, "\n",
-                                //     "department ID:", departmentId, "\n",
-                                //     "payment Scheme:", getSalaryTypes, "\n",
-                                //     "payment Scheme ID:", paymentSchemeId, "\n",
-                                //     "comment:", comments
-                                // )
                             }}
                         >
                             {"Edit Details".toUpperCase()}

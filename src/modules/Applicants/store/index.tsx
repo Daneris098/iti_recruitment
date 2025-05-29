@@ -36,6 +36,8 @@ export const useApplicantStore = create<ApplicantStore>((set) => ({
     })),
 }));
 
+
+
 interface ApplicantId {
   id: number
   setApplicantId: (id: number) => void
@@ -494,7 +496,7 @@ export interface ViewApplicantsProps extends Partial<PDFProps> {
   Skills: string;
   Remarks: string;
   Application_Date: string;
-  IsJobOffer: string;
+  IsJobOffer: any;
   onClose: () => void;
 }
 
