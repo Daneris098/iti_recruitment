@@ -51,6 +51,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
     setNewRows([]);
   };
 
+  console.log(addSection.values);
   return [
     {
       accessor: "code",
@@ -165,14 +166,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
       width: "20%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Description"
-              {...addSection.getInputProps("description")}
-              error={addSection.values.description === "" ? "Required" : undefined}
-            />
-          );
+          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addSection.getInputProps("description")} />;
         }
 
         return row.description;
@@ -188,19 +182,16 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
           <div className="flex flex-row items-center justify-between gap-5">
             <Select
               radius={8}
-              data={["Active", "Inactive"]}
+              data={[
+                { value: String(1), label: "Active" },
+                { value: String(0), label: "Inactive" },
+              ]}
               rightSection={<IconCaretDownFilled size="18" />}
               className="border-none text-sm w-full"
               classNames={{ label: "p-1", input: "poppins text-[#6D6Ddepartments6D]" }}
               styles={{ label: { color: "#6d6d6d" } }}
               defaultValue={row.isActive ? "Inactive" : "Active"}
-              onChange={(value) => {
-                if (value === "Active") {
-                  addSection.setFieldValue("isActive", true);
-                } else {
-                  addSection.setFieldValue("isActive", false);
-                }
-              }}
+              onChange={(value) => addSection.setFieldValue("isActive", Boolean(value))}
             />
             <IconCircleMinus className="cursor-pointer" onClick={closeAddRow} />
           </div>

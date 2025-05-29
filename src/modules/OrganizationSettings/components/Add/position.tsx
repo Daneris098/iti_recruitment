@@ -74,17 +74,8 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
       sortable: true,
       width: "50%",
       render: (row: any) => {
-        if (row.id === "NEW" && addOrg) {
-          return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Description"
-              {...addPosition.getInputProps("description")}
-              error={addPosition.values.description === "" ? "Required" : undefined}
-            />
-          );
-        }
-
+        if (row.id === "NEW" && addOrg)
+          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addPosition.getInputProps("description")} />;
         return row.description;
       },
     },
@@ -105,11 +96,8 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
               styles={{ label: { color: "#6d6d6d" } }}
               defaultValue={row.isActive ? "Inactive" : "Active"}
               onChange={(value) => {
-                if (value === "Active") {
-                  addPosition.setFieldValue("isActive", true);
-                } else {
-                  addPosition.setFieldValue("isActive", false);
-                }
+                if (value === "Active") addPosition.setFieldValue("isActive", true);
+                else addPosition.setFieldValue("isActive", false);
               }}
             />
             <IconCircleMinus className="cursor-pointer" onClick={closeAddRow} />
