@@ -2,8 +2,11 @@ import { useForm } from "@mantine/form";
 import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import loginBg from '@assets/loginBg.png';
+import loginBg from "@assets/loginBg.png";
 import axiosInstance from "@src/api/authApi";
+import { jwtDecode } from "jwt-decode";
+import { useUserDataStore } from "@src/global/store/auth";
+import { JWTPayload } from "@src/global/types/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -28,6 +31,8 @@ export default function Login() {
     },
   });
 
+  const { setData } = useUserDataStore();
+
   const onSubmit = async (formVal: any) => {
     const payload = {
       username: formVal.username,
@@ -39,15 +44,17 @@ export default function Login() {
         if (response.status === 200) {
           const { refreshToken, accessToken } = response.data;
           sessionStorage.setItem("accessToken", accessToken);
+          const decodedToken: JWTPayload = jwtDecode(accessToken);
+          setData(decodedToken);
           document.cookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`;
-          // check if account 
+          // check if account
           navigate("/home");
           // navigate("/AccountSetup");
         }
       })
       .catch((error) => {
         const message = error.response.data.errors[0].message;
-        form.setErrors({ username: ' ', password: message });
+        form.setErrors({ username: " ", password: message });
       });
   };
 
@@ -63,7 +70,14 @@ export default function Login() {
       </div>
       <div className=" w-full sm:w-1/2  ">
         <div className="h-full w-full flex flex-col">
-          <img src="logo.png " className=" cursor-pointer w-36 2xl:w-48 pr-10 absolute py-10 self-end " alt="bg" onClick={() => { navigate("/"); }} />
+          <img
+            src="logo.png "
+            className=" cursor-pointer w-36 2xl:w-48 pr-10 absolute py-10 self-end "
+            alt="bg"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
           <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[55%] m-auto p-4 sm:p-0">
             <p className=" text-center font-semibold poppins text-5xl sm:text-6xl text-[#559CDA]">Admin Log-in</p>
             <div className="w-full text-start text-slate-700 mt-6">
@@ -90,7 +104,6 @@ export default function Login() {
               </Text>
               <PasswordInput
                 classNames={{ input: "poppins text-[#6D6D6D]" }}
-
                 variant="default"
                 size="md"
                 radius="md"
@@ -104,11 +117,7 @@ export default function Login() {
               />
             </div>
             <Button type="submit" size="lg" className="br-gradient border-none bg-blue-300 mt-7">
-              <Text
-                className="poppins text-white "
-              >
-                Login Now
-              </Text>
+              <Text className="poppins text-white ">Login Now</Text>
             </Button>
           </form>
         </div>
