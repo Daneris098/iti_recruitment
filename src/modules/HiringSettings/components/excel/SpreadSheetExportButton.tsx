@@ -15,23 +15,23 @@ const SpreadsheetExportButton = ({
     sheetName,
 }: Props) => {
     return (
-        <Button
-            onClick={() =>
+        <div
+
+            className="text-[#6D6D6D] bg-white hover:bg-white hover:text-[#6D6D6D]"
+        >
+            Click to&nbsp;
+            <span onClick={() => {
                 JobOfferExcelTemplate({
                     data,
                     image,
                     fileName,
                     sheetName,
                 })
-            }
-            className="text-[#6D6D6D] bg-white hover:bg-white hover:text-[#6D6D6D]"
-        >
-            Click to&nbsp;
-            <span className="text-[#559CDA] cursor-pointer underline font-semibold hover:text-[#6D6D6D]">
+            }} className="text-[#559CDA] cursor-pointer underline font-semibold hover:text-[#6D6D6D]">
                 GENERATE AND DOWNLOAD TEMPLATE
             </span>
             . Customize the benefits, then upload the updated Job Offer Template for use during Job Offer Generation.
-        </Button>
+        </div>
     );
 };
 

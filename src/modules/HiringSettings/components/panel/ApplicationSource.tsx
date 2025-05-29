@@ -89,10 +89,9 @@ const ApplicationSource = forwardRef((_, ref) => {
 
       const checkEditIsValid = () => {
           const fieldsToCheck = ['sourceName'];
-          return !Object.entries(applicationEditableData).some(([key, data]) =>
+          return !Object.entries(applicationEditableData).some(([data]) =>
                 fieldsToCheck.some(field => {
                     const value = (data as any)[field];
-                    console.log('value: ', value)
                     if ((typeof value === 'string' && value.trim() === '') || value == null) {
                         setValidationMessage(`${field} is empty`);
                         setAlert(AlertType.validation)
@@ -160,6 +159,9 @@ const ApplicationSource = forwardRef((_, ref) => {
     };
 
     const saveAll = () => {
+        if (!checkEditIsValid()) {
+            return
+        }
         const result = [...applicationSources, ...applicationNewRow].map((record) => {
             const merged = applicationEditableData[record.id] ? { ...record, ...applicationEditableData[record.id] } : record;
             const { fieldStatus, ...rest } = merged;
@@ -203,8 +205,7 @@ const ApplicationSource = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status, lastModified } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
+        content: ({ record: { id, status, lastModified } }: any) => {
             return (
                 <div className=' flex gap-2 relative'>
                     <TextInput

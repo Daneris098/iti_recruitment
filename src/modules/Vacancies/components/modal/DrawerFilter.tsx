@@ -29,6 +29,27 @@ export default function DrawerFilter() {
   }
 
   useEffect(() => {
+    const formatDate = (date: Date) => {
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      return `${mm}${dd}${yyyy}`;
+    };
+
+    const updatedFilter = { ...filter };
+
+    if (value[0] != null) {
+      updatedFilter.dateFrom = formatDate(value[0]);
+    }
+
+    if (value[1] != null) {
+      updatedFilter.dateTo = formatDate(value[1]);
+    }
+
+    setFilter(updatedFilter);
+  }, [value]);
+
+  useEffect(() => {
     clear()
     return (
       setClearFilter(false)
@@ -112,7 +133,7 @@ export default function DrawerFilter() {
             onChange={(value) => setFilter({ ...filter, vacancy: value })}
           />
           <Divider size={0.5} color="#edeeed" className="w-full" />
-          <p>Published Date Range</p>
+          <p className="text-[#6d6d6d]">Published Date Range</p>
           <DateRange
             gapValue={12}
             size="md"

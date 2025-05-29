@@ -3,7 +3,7 @@ import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { CircleCheck, CircleCheckBig, CircleHelp } from "lucide-react";
 import { useMatches } from "@mantine/core";
-import { AlertType } from "../../types";
+import { Action, AlertType } from "../../types";
 import { IconX } from "@tabler/icons-react";
 
 // Define auto-close behavior
@@ -60,7 +60,7 @@ export default function AlertModals() {
                         Job Vacancy successfully added!
                     </Text>
                     <Button className="rounded-lg br-gradient border-none" onClick={() => {
-                        setAction('New')
+                        setAction(Action.New)
                         setAlert("")
                     }}>ADD AGAIN</Button>
                 </div>

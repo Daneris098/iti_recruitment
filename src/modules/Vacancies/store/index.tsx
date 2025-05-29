@@ -57,14 +57,14 @@ export const DataTableStore = create<DataTableState>((set) => ({
   totalRecords: 0,
   page: 1,
   pageSize: 20,
-  sortStatus: { columnAccessor: 'guid', direction: 'desc' },
+  sortStatus: { columnAccessor: 'id', direction: 'desc' },
 
+  setSortStatus: (status: any) => set({ sortStatus: status }),
   setTime: (time: string) => set({ time: time }),
   setSearch: (search: string) => set({ search: search }),
   setTotalRecords: (total: number) => set({ totalRecords: total }),
   setPage: (page: number) => set({ page }),
   setPageSize: (size: number) => set({ pageSize: size }),
-  setSortStatus: (status: any) => set({ sortStatus: status }),
 }));
 
 export const ViewApplicantsDataTableStore = create<DataTableState2>((set) => ({

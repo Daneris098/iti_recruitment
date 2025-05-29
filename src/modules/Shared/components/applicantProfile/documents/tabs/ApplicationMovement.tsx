@@ -19,8 +19,8 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
 
     // Filter columns to only include Application_Date, Status, and Remarks (Comments)
     const filterColumns = applicantsColumns.filter(col =>
-        ['Application_Date', 'Status'].includes(col.accessor) ||
-        (col.accessor === 'Feedback' && Status === 'Archived')
+        ['applicationDate', 'status'].includes(col.accessor) ||
+        (col.accessor === 'feedback' && Status === 'Archived')
     );
 
     // Add Comments column manually via props

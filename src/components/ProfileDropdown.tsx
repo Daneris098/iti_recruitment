@@ -14,7 +14,7 @@ import { ProfileSettingsStore } from "@modules/ProfileSettings/store"
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
   const { setActivePanel, activePanel } = ProfileSettingsStore()
-  const { userDetails, isMobile, setUserDetails } = GlobalStore()
+  const { setUserDetails } = GlobalStore()
   return (
     <Menu
       shadow="md"
@@ -26,7 +26,7 @@ export const ProfileDropdown = () => {
 
       <div className="flex text-center items-center">
 
-        {!isMobile && !!userDetails.name && (userDetails.name.split(' ')[0])}
+        {/* {!isMobile && !!userDetails.Name && (userDetails.Name.split(' ')[0])} */}
         <Menu.Target>
           <Avatar
             src={avatar}
@@ -84,8 +84,8 @@ export const ProfileDropdown = () => {
             <IconLogout style={{ width: rem(20), height: rem(20) }} />
           }
           onClick={() => {
-            sessionStorage.setItem("accessTokenFlash", '');
-            document.cookie = "refreshTokenFlash=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
+            sessionStorage.setItem("accessToken", '');
+            document.cookie = "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
             setUserDetails(userDetailsValue)
             navigate("/login");
           }}

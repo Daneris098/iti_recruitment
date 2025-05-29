@@ -7,8 +7,8 @@ import { AlertType } from "@modules/AdministratorSettings/types";
 import { IconX, IconHelpCircle } from "@tabler/icons-react";
 
 
-export default function AlertModals() {
-    const { setAlert, alert } = AdministratorSettingsStore();
+export default function AlertModals({ selectedAccountRef }: { selectedAccountRef: React.RefObject<{ submit: () => void;    }> }) {
+    const { setAlert, alert, newlyAddedUser, resetCredentials } = AdministratorSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
         [AlertType.cancellled]: true,
@@ -64,6 +64,7 @@ export default function AlertModals() {
             </Modal>
 
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.editSuccess}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -101,6 +102,7 @@ export default function AlertModals() {
                 centered
                 size={modalSize}
                 padding={30}
+                zIndex={1000}
             >
                 <div className="flex flex-col gap-3">
                     <div className="flex justify-between">
@@ -116,10 +118,15 @@ export default function AlertModals() {
                     <Text className="text-xl font-bold text-center">
                         You've successfully reset the user credentials.
                     </Text>
-                    <div className="flex gap-4 w-[80%]">
-                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert('') }}>COPY CREDENTIALS</Button>
-                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>DOWNLOAD</Button>
-                    </div>
+                    <Button className="w-[50%] rounded-md" variant="outline" onClick={() => {
+                        setAlert(''); navigator.clipboard.writeText(JSON.stringify(resetCredentials, null, 2))
+                            .then(() => {
+                                console.log("Copied to clipboard!");
+                            })
+                            .catch(err => {
+                                console.error("Failed to copy: ", err);
+                            });
+                        }}>COPY CREDENTIALS</Button>
                 </div>
             </Modal>
 
@@ -148,10 +155,16 @@ export default function AlertModals() {
                     <Text className="text-xl font-bold text-center">
                         You've successfully added a new account.
                     </Text>
-                    <div className="flex gap-4 w-[80%]">
-                        <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert('') }}>COPY CREDENTIALS</Button>
-                        <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => { setAlert('') }}>DOWNLOAD</Button>
-                    </div>
+                    <Button className="w-[50%] rounded-md" variant="outline" onClick={() => {
+                        navigator.clipboard.writeText(JSON.stringify(newlyAddedUser, null, 2))
+                            .then(() => {
+                                console.log("Copied to clipboard!");
+                            })
+                            .catch(err => {
+                                console.error("Failed to copy: ", err);
+                            });
+                        setAlert('');
+                    }}>COPY CREDENTIALS</Button>
                 </div>
             </Modal>
 
@@ -221,11 +234,12 @@ export default function AlertModals() {
                 withCloseButton={false}
                 onClose={() => setAlert("")}
                 styles={{
-                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600, },
                 }}
                 centered
                 size={modalSize}
                 padding={30}
+                zIndex={1000}
             >
                 <div className="flex flex-col gap-3">
                     <div className="flex justify-between">
@@ -243,7 +257,10 @@ export default function AlertModals() {
                     </Text>
                     <div className="flex gap-2 w-[80%]">
                         <Button className="w-[50%] rounded-md" variant="outline" onClick={() => { setAlert(AlertType.cancellled) }}>NO</Button>
-                        <Button className="w-[50%] rounded-md  border-none br-gradient"  onClick={() => { setAlert(AlertType.resetSuccess) }}>YES</Button>
+                        <Button className="w-[50%] rounded-md  border-none br-gradient" onClick={() => {
+                            selectedAccountRef.current?.submit();
+                            setAlert(AlertType.resetSuccess);
+                        }}>YES</Button>
                     </div>
                 </div>
             </Modal>

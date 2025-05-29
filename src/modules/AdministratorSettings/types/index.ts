@@ -3,7 +3,11 @@ export interface AdministratorSettingsState {
   alert: string;
   activePanel: string;
   selectedUser: user;
+  newlyAddedUser: UserForm;
+  resetCredentials: ResetCredentialForm;
 
+  setResetCredentials: (resetCredentials: ResetCredentialForm) => void;
+  setNewlyAddedUser: (newlyAddedUser: UserForm) => void;
   setSelectedUser: (selectedUser: user) => void;
   setActivePanel: (activePanel: string) => void;
   setAlert: (alert: string) => void;
@@ -43,6 +47,7 @@ export const columns = {
 };
 
 export type user = {
+  id: number;
   username: string;
   lastname: string;
   firstname: string;
@@ -56,4 +61,39 @@ export interface DialogState {
 
   setAction: (action: string) => void;
   setLoading: (loading: boolean) => void;
+}
+
+export interface DataTableState {
+  time: string,
+  search: string,
+  totalRecords: number;
+  page: number;
+  pageSize: number;
+  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+
+  setTime: (time: string) => void;
+  setSearch: (action: string) => void;
+  setTotalRecords: (total: number) => void;
+  setPage: (page: number) => void;
+  setPageSize: (size: number) => void;
+  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
+}
+
+export interface UserForm {
+  firstName: string,
+  middleName: string,
+  lastName: string,
+  extension: string,
+  email: string,
+  username: string,
+  password: string,
+  rePassword: string,
+  isGenerated: boolean
+}
+
+export interface ResetCredentialForm {
+  username: string,
+  email: string,
+  password: string,
+  rePassword: string,
 }

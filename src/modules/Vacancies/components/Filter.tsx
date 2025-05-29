@@ -4,16 +4,21 @@ import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { FilterStore } from "@src/modules/Vacancies/store";
 import { useEffect } from "react";
 import { filterVal } from "@src/modules/Vacancies/values";
+import dayjs from 'dayjs';
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
-
   useEffect(() => {
     if (filter === filterVal) {
       setIsFiltered(false)
     }
   }, [filter])
 
+  const formatDate = (dateString: string) => {
+    const date = dayjs(dateString, "MMDDYYYY");
+    const formattedDate = date.format("MMMM D, YYYY");
+    return formattedDate;
+  }
 
   const renderPills = (label: any, items: any) => {
     return (
@@ -31,27 +36,58 @@ export default function Filter() {
     );
   };
 
-  // const renderSinglePill = (label: any, item: string) => {
-  //   return (
-  //     <div className="flex flex-row items-center  gap-2 ">
-  //       <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
-  //       <div className="flex h-full items-center">
-  //         <div className="">
-  //           <Pill
-  //             withRemoveButton
-  //             onRemove={() => removeFilter(label, item)}
-  //             className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
-  //           >
-  //             {item}
-  //           </Pill>
-  //         </div>
-  //       </div>
-  //       <Text size="xl" c="#eeeeee">
-  //         |
-  //       </Text>
-  //     </div>
-  //   );
-  // };
+
+  const renderSinglePill = (label: any, item: string) => {
+    return (
+      <div className="flex flex-row items-center  gap-2 ">
+        <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
+        <div className="flex h-full items-center">
+          <div className="">
+            <Pill
+              withRemoveButton
+              onRemove={() => removeFilter(label, item)}
+              className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
+            >
+              {item}
+            </Pill>
+          </div>
+        </div>
+        <Text size="xl" c="#eeeeee">
+          |
+        </Text>
+      </div>
+    );
+  };
+
+  const renderDateRange = (label: any, item: string, label2: any, item2: string) => {
+    return (
+      <div className="flex flex-row items-center  gap-2 ">
+        <Text className="text-xs 2xl:text-[1rem]">Date: </Text>
+        <div className="flex h-full items-center">
+          <div className="flex gap-1">
+            <Pill
+              withRemoveButton
+              onRemove={() => removeFilter(label, item)}
+              className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
+            >
+              {formatDate(item)}
+            </Pill>
+            -
+            <Pill
+              withRemoveButton
+              onRemove={() => removeFilter(label2, item2)}
+              className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold"
+            >
+              {formatDate(item2)}
+            </Pill>
+          </div>
+        </div>
+        <Text size="xl" c="#eeeeee">
+          |
+        </Text>
+      </div>
+    );
+  };
 
 
   const toCamelCase = (str: string): string => {
@@ -65,9 +101,8 @@ export default function Filter() {
   const removeFilter = (label: string, item: any) => {
     let updatedFilter = { ...filter };
     const camelCaseLabel = toCamelCase(label);
-    
     const filterValue = (updatedFilter as any)[camelCaseLabel];
-    
+
     // If it's an array, filter the item out
     if (Array.isArray(filterValue)) {
       (updatedFilter as any)[camelCaseLabel] = filterValue.filter((i: string) => i !== item);
@@ -76,7 +111,7 @@ export default function Filter() {
     else if (typeof filterValue === 'string' && filterValue === item) {
       (updatedFilter as any)[camelCaseLabel] = '';  // Reset the string value
     }
-    
+
     setFilter(updatedFilter);
   };
 
@@ -107,6 +142,23 @@ export default function Filter() {
           filter.company
         )}
 
+        {filter.dateFrom && !filter.dateTo && renderSinglePill(
+          'DateFrom',
+          filter.dateFrom
+        )}
+
+        {filter.dateTo && !filter.dateFrom && renderSinglePill(
+          'DateTo',
+          filter.dateTo
+        )}
+
+        {filter.dateTo && filter.dateFrom && renderDateRange(
+          'dateFrom',
+          filter.dateFrom,
+          'dateTo',
+          filter.dateTo
+        )}
+
         {filter.vacancy && filter.vacancy.length > 0 && renderPills(
           'Vacancy',
           filter.vacancy
@@ -127,7 +179,7 @@ export default function Filter() {
           filter.status
         )}
 
-    
+
       </div>
       )}
 

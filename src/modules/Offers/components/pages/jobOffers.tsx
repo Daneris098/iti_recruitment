@@ -25,7 +25,7 @@ export default function index() {
     const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 
     console.log(applicantId)
-   
+
 
     const [searchParams, setSearchParams] = useSearchParams();
 

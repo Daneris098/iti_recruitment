@@ -25,13 +25,13 @@ export default function ApplicationMovement({ Applicant_Name, Status, Remarks }:
 
     // Add Comments column manually via props
     const columnsWithComments = [
-        ...filterColumns.filter(col => col.accessor !== 'Status'), // All columns except Status
+        ...filterColumns.filter(col => col.accessor !== 'status'), // All columns except Status
         {
-            accessor: 'Remarks',
+            accessor: 'remarks',
             title: <span className='job-offers-table'>Comments</span>,
             render: () => <span>{Remarks}</span>,
         },
-        ...filterColumns.filter(col => col.accessor === 'Status') // Move Status to the end
+        ...filterColumns.filter(col => col.accessor === 'status') // Move Status to the end
     ];
 
 
