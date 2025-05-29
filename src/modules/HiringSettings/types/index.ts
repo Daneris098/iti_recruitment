@@ -12,6 +12,7 @@ export interface DataTableRefs {
   offerResponsePeriod?: React.RefObject<DataTableRef>;
   applicationSettings?: React.RefObject<DataTableRef>;
   jobOfferTemplate?: React.RefObject<DataTableRef>;
+  offerConfiguration: React.RefObject<DataTableRef>;
 }
 
 export enum Operation {
@@ -22,12 +23,15 @@ export enum Operation {
 
 export type feedback = {
   id: number;
+  guid?: string;
   feedback: string;
   fieldStatus?: string;
 };
 
 export type interviewStage = {
+  guid?: string;
   id: number;
+  sequenceNo?: number;
   stageName: string;
   status: string;
   fieldStatus?: string;
@@ -38,15 +42,16 @@ export type applicationSource = {
   id: number;
   sourceName: string;
   status: string;
-  fieldStatus? : string;
+  fieldStatus?: string;
   lastModified: string;
 };
 
 export type interviewer = {
   id: number;
+  guid?: number;
   name: string;
   status: string;
-  fieldStatus? : string;
+  fieldStatus?: string;
   lastModified: string;
 };
 
@@ -63,7 +68,11 @@ export interface HiringSettingsState {
 export interface FeedbackStoreState {
   applicantFeedback: feedback[];
   hiringFeedback: feedback[];
+  sortStatusApplicant: { columnAccessor: string; direction: boolean };
+  sortStatusHiring: { columnAccessor: string; direction: boolean };
 
+  setSortStatusApplicant: (status: { columnAccessor: string; direction: boolean }) => void;
+  setSortStatusHiring: (status: { columnAccessor: string; direction: boolean }) => void;
   setApplicantFeedback: (applicantFeedback: feedback[]) => void;
   setHiringFeedback: (hiringFeedback: feedback[]) => void;
 }
@@ -92,10 +101,16 @@ export interface vacancyForm {
 
 export interface InterviewStageseState {
   interviewStage: interviewStage[];
+  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+
+  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
   setInterviewStage: (interviewStage: interviewStage[]) => void;
 }
 export interface InterviewerState {
   interviewers: interviewer[];
+  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+
+  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
   setInterviewers: (interviewers: interviewer[]) => void;
 }
 export interface ApplicationSourceState {
@@ -127,16 +142,18 @@ export enum description {
   interviewers = 'Interviewers',
   applicationSource = 'Application Source',
   jobOfferTemplate = 'Job Offer Template',
+  offerConfiguration = 'Offer Configuration',
 }
 
 export enum panel {
   customFeedback = 'customFeedback',
-  offerResponsePeriod = 'offerResponsePeriod',
-  applicationSettings = 'applicationSettings',
+  // offerResponsePeriod = 'offerResponsePeriod',
+  // applicationSettings = 'applicationSettings',
   interviewStages = 'interviewStages',
   interviewers = 'interviewers',
   applicationSource = 'applicationSource',
-  jobOfferTemplate = 'jobOfferTemplate',
+  // jobOfferTemplate = 'jobOfferTemplate',
+  offerConfiguration = 'offerConfiguration',
 }
 
 export const columns = {
@@ -189,9 +206,9 @@ export type SpreadsheetCell = {
 };
 
 export type ExportOptions = {
-    sheetName?: string;
-    fileName?: string;
-    data: SpreadsheetCell[][];
-    image?: string; // base64 or URL
-    customStylingFn?: (worksheet: ExcelJS.Worksheet) => void;
+  sheetName?: string;
+  fileName?: string;
+  data: SpreadsheetCell[][];
+  image?: string; // base64 or URL
+  customStylingFn?: (worksheet: ExcelJS.Worksheet) => void;
 };

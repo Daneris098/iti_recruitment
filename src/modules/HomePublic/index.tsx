@@ -68,7 +68,9 @@ export default function Home() {
             <div className="hidden sm:block h-auto lg:w-[72%] sm:overflow-y-hidden  ease-in-out p-4">
 
               {selectedData != selectedDataVal ? (
-                <Details />
+                <>
+                  <Details />
+                </>
               ) : (
                 <div className=" w-full h-full flex flex-col items-center justify-center ">
                   <img src="selectJob.png " className="w-[30%] h-auto p-8" alt="bg" />

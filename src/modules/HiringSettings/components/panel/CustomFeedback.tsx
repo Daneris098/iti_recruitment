@@ -1,13 +1,14 @@
 import { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
 import { DataTable } from 'mantine-datatable';
-import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCircleX, IconCaretDownFilled } from "@tabler/icons-react";
-import { Select, TextInput } from '@mantine/core';
+import { IconCirclePlus, IconPencil, IconArrowsSort, IconTrashFilled, IconCircleX } from "@tabler/icons-react";
+import { TextInput } from '@mantine/core';
 import { FeedbackStore, HiringSettingsStore } from '@modules/HiringSettings/store';
 import { AlertType, feedback, Operation } from '@modules/HiringSettings/types';
+import axiosInstance from '@src/api';
 
 const CustomFeedback = forwardRef((_, ref) => {
     const { setValidationMessage, setAlert } = HiringSettingsStore();
-    const { applicantFeedback, setApplicantFeedback, hiringFeedback, setHiringFeedback } = FeedbackStore();
+    const { applicantFeedback, setApplicantFeedback, hiringFeedback, setHiringFeedback, sortStatusApplicant, sortStatusHiring, setSortStatusApplicant, setSortStatusHiring } = FeedbackStore();
 
     const [applicantEditMode, setApplicantEditMode] = useState<{ [key: number]: boolean }>({});
     const [applicantEditableData, setApplicantEditableData] = useState<{ [key: number]: Partial<feedback> }>({});
@@ -22,6 +23,89 @@ const CustomFeedback = forwardRef((_, ref) => {
     const [selectedRowId2, setSelectedRowId2] = useState<number | null>(null);
 
     type FeedbackMode = "applicantFeedback" | "hiringFeedback";
+
+    useEffect(() => {
+        fetchData()
+    }, [sortStatusApplicant, sortStatusHiring])
+
+    const fetchData = async () => {
+        const sortValApplicant = `SortBy=${sortStatusApplicant.direction ? '%2B' : '-'}id`;
+        const url = `/recruitment/hiring/feedbacks?IsApplicantFeedback=true&${sortValApplicant}`;
+
+        await axiosInstance
+            .get(url)
+            .then((response) => {
+                const feedback: feedback[] = []
+                response.data.items.forEach((element: any) => {
+                    feedback.push({ id: element.id, feedback: element.description, guid: element.guid })
+                });
+                setApplicantFeedback(feedback)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+
+        const sortValHiring = `SortBy=${sortStatusHiring.direction ? '%2B' : '-'}id`;
+        const url2 = `/recruitment/hiring/feedbacks?IsApplicantFeedback=false&${sortValHiring}`;
+        await axiosInstance
+            .get(url2)
+            .then((response) => {
+                const feedback: feedback[] = []
+                response.data.items.forEach((element: any) => {
+                    feedback.push({ id: element.id, feedback: element.description, guid: element.guid })
+                });
+                setHiringFeedback(feedback)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    const addFeedback = async (formVal: any) => {
+        const payload = {
+            description: formVal.description,
+            isApplicantFeedback: formVal.isApplicantFeedback,
+        };
+        await axiosInstance
+            .post("/recruitment/hiring/feedbacks", payload)
+            .then((response) => {
+                fetchData()
+                setAlert(AlertType.saved);
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+    const updateFeedback = async (formVal: any) => {
+        const payload = {
+            id: formVal.id,
+            guid: formVal.guid,
+            description: formVal.description,
+            isApplicantFeedback: formVal.isApplicantFeedback,
+        };
+        await axiosInstance
+            .post(`/recruitment/hiring/feedbacks/${formVal.id}/update`, payload)
+            .then((response) => {
+                fetchData()
+                setAlert(AlertType.saved);
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const toggleEditMode = (id: number, mode: FeedbackMode) => {
         SetOperation(Operation.edit)
@@ -94,7 +178,7 @@ const CustomFeedback = forwardRef((_, ref) => {
     };
 
     const addNewRow = (mode: string) => {
-        if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.add)) {
+        if (!checkEditIsValid(mode) || (operation != Operation.noOperation && operation != Operation.add)) {
             return
         }
         setSelectedRowId(null)
@@ -125,17 +209,26 @@ const CustomFeedback = forwardRef((_, ref) => {
         if (!checkEditIsValid()) {
             return
         }
+
+        setSelectedRowId(null);
         setSelectedRowId2(null);
-        const result = [...applicantFeedback, ...applicantNewRows].map((record) =>
-            applicantEditableData[record.id] ? { ...record, ...applicantEditableData[record.id] } : record
-        );
-        setApplicantFeedback(result);
 
-
-        const result2 = [...hiringFeedback, ...hiringNewRows].map((record) =>
-            hiringEditableData[record.id] ? { ...record, ...hiringEditableData[record.id] } : record
-        );
-        setHiringFeedback(result2);
+        if (operation == Operation.add) {
+            if (applicantEditableData && Object.keys(applicantEditableData).length > 0) {
+                addFeedback({ description: Object.values(applicantEditableData)[0]?.feedback, isApplicantFeedback: true, guid: Object.values(applicantEditableData)[0]?.guid })
+            }
+            else {
+                addFeedback({ description: Object.values(hiringEditableData)[0]?.feedback, isApplicantFeedback: false, guid: Object.values(hiringEditableData)[0]?.guid })
+            }
+        }
+        else if (operation == Operation.edit) {
+            if (applicantEditableData && Object.keys(applicantEditableData).length > 0) {
+                updateFeedback({ id: Object.values(applicantEditableData)[0]?.id, description: Object.values(applicantEditableData)[0]?.feedback, isApplicantFeedback: true, guid: Object.values(applicantEditableData)[0]?.guid })
+            }
+            else {
+                updateFeedback({ id: Object.values(hiringEditableData)[0]?.id, description: Object.values(hiringEditableData)[0]?.feedback, isApplicantFeedback: false, guid: Object.values(hiringEditableData)[0]?.guid })
+            }
+        }
 
         setApplicantNewRows([]);
         setApplicantEditMode({});
@@ -182,9 +275,12 @@ const CustomFeedback = forwardRef((_, ref) => {
             {
                 accessor: 'feedback', title: (
                     <div className='flex justify-between'>
-                        <p>Applicant Feedback</p>
+                        <p>Applicant Feedback <span className={operation != Operation.noOperation && applicantNewRows.length > 0 ? `text-red-500` : `hidden`}>*</span></p>
                         <div className='flex gap-2'>
-                            <IconArrowsSort size={24} className="cursor-pointer text-gray-500" />
+                            <IconArrowsSort size={24} onClick={() => {
+                                setSortStatusApplicant({ columnAccessor: 'name', direction: (!sortStatusApplicant.direction) })
+
+                            }} className="cursor-pointer text-gray-500" />
                             <IconCirclePlus size={28} color="green" onClick={() => { addNewRow('applicantFeedback') }} className='cursor-pointer' />
                         </div>
                     </div>
@@ -230,14 +326,17 @@ const CustomFeedback = forwardRef((_, ref) => {
             {
                 accessor: 'feedback', title: (
                     <div className='flex justify-between'>
-                        <p>Hiring Feedback</p>
+                        <p>Hiring Feedback <span className={operation != Operation.noOperation && hiringNewRows.length > 0 ? `text-red-500 ` : `hidden`}>*</span></p>
                         <div className='flex gap-2'>
-                            <IconArrowsSort size={24} className="cursor-pointer text-gray-500" />
+                            <IconArrowsSort size={24} className="cursor-pointer text-gray-500" onClick={() => {
+                                setSortStatusHiring({ columnAccessor: 'name', direction: (!sortStatusHiring.direction) })
+
+                            }} />
                             <IconCirclePlus size={28} color="green" onClick={() => { addNewRow('hiringFeedback') }} className='cursor-pointer' />
                         </div>
                     </div>
                 ), sortable: false,
-                render: (data: any) => hiringEditMode[data.id] && data.fieldStatus === 'new'  ? (
+                render: (data: any) => hiringEditMode[data.id] && data.fieldStatus === 'new' ? (
                     <TextInput
                         value={hiringEditableData[data.id]?.feedback || data.feedback}
                         onChange={(e: any) => handleEditChange(data.id, 'feedback', e.target.value, 'hiringFeedback')}
@@ -274,9 +373,22 @@ const CustomFeedback = forwardRef((_, ref) => {
     };
 
 
-    const checkEditIsValid = () => {
+    const checkEditIsValid = (operationFrom?: string) => {
         const fieldsToCheck = ['feedback'];
-        return !Object.entries(applicantEditableData).some(([key, data]) =>
+
+        if (operationFrom === 'applicantFeedback' && hiringNewRows.length > 0) {
+            setValidationMessage(`Please complete unsave changes`);
+            setAlert(AlertType.validation)
+            return false
+        }
+
+        if (operationFrom === 'hiringFeedback' && applicantNewRows.length > 0) {
+            setValidationMessage(`Please complete unsave changes`);
+            setAlert(AlertType.validation)
+            return false
+        }
+
+        return !Object.entries(applicantEditableData).some(([_, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -286,7 +398,7 @@ const CustomFeedback = forwardRef((_, ref) => {
                 }
                 return false;
             })
-        ) && !Object.entries(hiringEditableData).some(([key, data]) =>
+        ) && !Object.entries(hiringEditableData).some(([_, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
@@ -299,11 +411,9 @@ const CustomFeedback = forwardRef((_, ref) => {
         );
     };
 
-
     const [expandedRowIds, setExpandedRowIds] = useState<number[]>([]);
     const [expandedRowIds2, setExpandedRowIds2] = useState<number[]>([]);
 
-    
     const rowExpansion1: any = {
         trigger: 'never',
         allowMultiple: false,
@@ -312,8 +422,7 @@ const CustomFeedback = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
+        content: ({ record: { id } }: any) => {
             return (
                 <div className=' flex gap-2 relative bg-[#DEECFF] p-4 -m-4 '>
                     <TextInput
@@ -335,8 +444,7 @@ const CustomFeedback = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds2,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status } }: any) => {
-            // console.log('editableData[id]: ', editableData[id]);
+        content: ({ record: { id } }: any) => {
             return (
                 <div className='flex gap-2 relative bg-[#DEECFF]'>
                     <TextInput
@@ -372,9 +480,14 @@ const CustomFeedback = forwardRef((_, ref) => {
                         }}
                         rowClassName={(row) => row.id === selectedRowId ? "bg-[#DEECFF]" : ""}
                         withTableBorder
-                        records={[...applicantFeedback, ...applicantNewRows]}
+                        records={[...applicantNewRows, ...applicantFeedback]}
                         columns={(columns as any)['applicantFeedback']}
                         rowExpansion={rowExpansion1}
+                    // sortStatus={sortStatusApplicant}
+                    // onSortStatusChange={(sort) => {
+                    //     setSortStatusApplicant(sort as { columnAccessor: any; direction: "asc" | "desc" })
+                    // }}
+
                     />
                 </div>
                 <div className='w-[30%] '>
@@ -390,9 +503,14 @@ const CustomFeedback = forwardRef((_, ref) => {
                         }}
                         rowClassName={(row) => row.id === selectedRowId2 ? "bg-[#DEECFF]" : ""}
                         withTableBorder
-                        records={[...hiringFeedback, ...hiringNewRows]}
+                        records={[...hiringNewRows, ...hiringFeedback]}
                         columns={(columns as any)['hiringFeedback']}
                         rowExpansion={rowExpansion2}
+                    // sortStatus={sortStatusHiring}
+                    // onSortStatusChange={(sort) => {
+                    //     setSortStatusHiring(sort as { columnAccessor: any; direction: "asc" | "desc" })
+                    // }}
+
                     />
                 </div>
             </div>

@@ -14,11 +14,9 @@ import { ModalViewEventProps } from "../../assets/Types";
 //--- Calendar Store
 import { useCalendarStore } from "../../store";
 
-export default function ModalViewEvent(props: ModalViewEventProps) {
-  const { eventInfo } = props;
 
-  const { onViewEvent, setOnViewEvent, setOnViewApplicant, setOnViewResched } =
-    useCalendarStore();
+export default function ModalViewEvent(_: ModalViewEventProps) {
+  const { onViewEvent, setOnViewEvent, setOnViewApplicant, setOnViewResched, details } = useCalendarStore();
 
   const propsFunc = {
     opened: onViewEvent,
@@ -39,30 +37,31 @@ export default function ModalViewEvent(props: ModalViewEventProps) {
   return (
     <Modal centered {...propsFunc} title="View Event" size="lg">
       <Stack className="text-center" align="center" justify="center">
-        <IconPhoneCall color="#559cda" size={200} stroke={1} />
+        <IconPhoneCall color="#559cda" size={100} stroke={1} />
         <Text c="#559cda" fw={700} size="25px">
-          Initial Interview
+          {details.interviewStage.name}
         </Text>
-        <Text mb={10}>Face-to-face</Text>
+        {/* <Text mb={10}>Face-to-face</Text> */}
 
         <Flex w="100%" display="flex" dir="row" mb={30}>
           <Container w="50%">
             <Text c="#6d6d6d" fw={700} size="18px">
-              September 1, 2024, Sunday
+              {details.date} 
             </Text>
             <Text c="#424242" size="16px">
-              3:00pm
+              {details.time} 
             </Text>
           </Container>
           <Container w="50%">
             <Text c="#6d6d6d" fw={700} size="18px">
-              {eventInfo.title}
+              {details.applicant.name} 
             </Text>
             <Text c="#424242" size="16px">
-              Web Developer
+              {details.applicant.position.name}
             </Text>
           </Container>
         </Flex>
+        <Text c="#6d6d6d" fw={700} size="18px">Interviewer: {details.interviewer.name}</Text>
 
         <Flex w="100%" justify="space-around">
           <Button variant="outline" radius={10} onClick={handleOpenResched}>

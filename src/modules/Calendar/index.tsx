@@ -4,7 +4,7 @@
  */
 
 //--- React
-import React from "react";
+import React, { useEffect } from "react";
 //--- Mantine
 import { Stack } from "@mantine/core";
 //--- Full Calendar
@@ -32,15 +32,37 @@ import MonthYear from "./components/modals/ModalMonthYear";
 import { INITIAL_EVENTS, createEventId } from "./assets/Events";
 import SuccessAlert from "./components/alerts/SuccessAlert";
 import { ResponsiveContainer } from "recharts";
+import { useCalendar } from "@modules/Calendar/hooks/useCalendar";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
-  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear } = useCalendarStore();
+  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate, setDetails } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
+  const { isFetching, data } = useCalendar();
 
   const handleEventClick = (clickInfo: EventClickArg) => {
+    const ev = clickInfo.event._def
+    if (ev.title != '') {
+      const date = new Date((ev.extendedProps as any).entry.date);
+      const dateOptions: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      };
+      const timeOptions: Intl.DateTimeFormatOptions = {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      };
+      // Format the date and time
+      const formattedDate = date.toLocaleDateString('en-US', dateOptions);
+      const formattedTime = date.toLocaleTimeString('en-US', timeOptions).toLowerCase();
+      setDetails({ ...(ev.extendedProps as any)?.entry, date: formattedDate, time: `${formattedTime}` })
+    }
+
     setEventInfo({ ...clickInfo.event._def });
     setPublicId(clickInfo.event.id);
     setDateStart(clickInfo.event.start!);
@@ -78,6 +100,19 @@ export default function index() {
     const api = calendarRef!.current?.getApi() as CalendarApi;
     if (api) {
       setType(api.view.type);
+      const date = new Date(api.getDate());
+      const formatter = new Intl.DateTimeFormat('en-PH', {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+      const parts = formatter.formatToParts(date);
+      const year = parts.find(p => p.type === 'year')?.value;
+      const month = parts.find(p => p.type === 'month')?.value;
+      const day = parts.find(p => p.type === 'day')?.value;
+      const formattedDate = `${year}${month}${day}`;
+      setCurrentDate(formattedDate)
     }
   };
 
@@ -86,6 +121,7 @@ export default function index() {
       <title>Calendar</title>
       <ResponsiveContainer width="100%" height="100%">
         <FullCalendar
+          events={data}
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
           headerToolbar={{
@@ -115,7 +151,7 @@ export default function index() {
           eventClassNames="custom-event"
           initialView="dayGridMonth"
           dayMaxEvents={true}
-          initialEvents={filteredEvents}
+          initialEvents={data}
           eventContent={renderEventContent}
           eventClick={handleEventClick}
         />

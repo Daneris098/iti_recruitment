@@ -163,15 +163,14 @@ export const useApplicants = () => {
             });
 
             // Find the maximum length of any stage
-            // const maxLength = Math.max(
-            //     stageGroup.applied.length,
-            //     stageGroup.forInterview.length,
-            //     stageGroup.offered.length,
-            //     stageGroup.hired.length,
-            //     stageGroup.archived.length
-            // );
+            const maxLength = Math.max(
+                stageGroup.applied.length,
+                stageGroup.forInterview.length,
+                stageGroup.offered.length,
+                stageGroup.hired.length,
+                stageGroup.archived.length
+            );
 
-            const maxLength = 10;
             const fillWithNullCandidates = (stage: Candidate[], length: number): Candidate[] => {
                 const fillCount = length - stage.length;
                 const nullCandidates = Array(fillCount).fill({ id: null });
@@ -197,6 +196,7 @@ export const useApplicants = () => {
                 acc[stage] = validItems.length;
                 return acc;
             }, {} as { [key: string]: number });
+
             setCounts(stageCounts);
             const endTime = performance.now();
             const executionTime = (endTime - startTime) / 1000;

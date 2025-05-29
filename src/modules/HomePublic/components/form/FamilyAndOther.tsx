@@ -58,6 +58,7 @@ export default function index() {
 
         }
     });
+
     const onSubmit = async (form: FamilyBackground) => {
         setApplicationForm({ ...applicationForm, familyBackground: { ...form, otherInformation: { ...form.otherInformation, specialTechnicalSkills: technicalSkills.toString() } } })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
@@ -114,7 +115,7 @@ export default function index() {
                 };
             }
             if (!invalid) {
-                formRef.current.requestSubmit(); 
+                formRef.current.requestSubmit();
             }
         }
         return (setSubmit(false))
@@ -153,7 +154,7 @@ export default function index() {
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
-            <div className="text-[#6D6D6D] flex flex-col gap-4">
+            <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">Family Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
@@ -168,13 +169,14 @@ export default function index() {
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
+
                 {applicationForm.familyBackground.siblings.map((_, index) => (
-                    <div className="flex flex-col sm:flex-row gap-4 items-end" >
-                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
-                        <NumberInput classNames={{ input: 'poppins text-[#6D6D6D]' }} min={1} hideControls   {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
-                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                        <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
-                        {index === applicationForm.familyBackground.siblings.length - 1 && index != 0 && (<div>
+                    <div className="flex flex-col sm:flex-row gap-4 items-end">
+                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key(`siblings.${index}.fullname`)} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
+                        <NumberInput classNames={{ input: 'poppins text-[#6D6D6D]' }} min={1} hideControls key={form.key(`siblings.${index}.age`)} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                        <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} key={form.key(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
+                        <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                        {(<div>
                             <IconCircleMinus size={35} className="" onClick={() => { removeField(index) }} />
                         </div>)}
                     </div>
