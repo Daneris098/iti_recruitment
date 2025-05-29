@@ -80,7 +80,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
         placeholder="Select Area"
         defaultValue={String(editDepartment.values.division.id)}
         onChange={(value) => {
-          const selectedItem = divisions.data?.items.find((item) => item.id.toString() === value);
+          const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editDepartment.setFieldValue("division.id", selectedItem.id);
             editDepartment.setFieldValue("division.name", selectedItem.name);

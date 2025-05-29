@@ -5,9 +5,9 @@ export enum Step {
 }
 
 export enum Submodule {
-  profile = 'profile',
-  organization = 'organization',
-  hiring = 'hiring',
+  profile = "profile",
+  organization = "organization",
+  hiring = "hiring",
 }
 
 export interface AccountSetupState {
@@ -18,55 +18,59 @@ export interface AccountSetupState {
   setAlert: (alert: string) => void;
   setAccountSetupForm: (form: accountSetupForm) => void;
   setActiveStepper: (activeStepper: number) => void;
+
+  forms: Record<string, Record<string, any>>;
+  updateForm: (formKey: string, values: Record<string, any>) => void;
+  getForm: (formKey: string) => Record<string, any> | undefined;
 }
 export interface company {
-  id: number
-  code: string
-  name: string
+  id: number;
+  code: string;
+  name: string;
 }
 
 export interface branch {
-  id: number
-  code: string
-  name: string
-  location: string
-  area: string
-  status: string
-  description: string
+  id: number;
+  code: string;
+  name: string;
+  location: string;
+  area: string;
+  status: string;
+  description: string;
 }
 
 export interface division {
-  id: number
-  code: string
-  name: string
-  status: string
-  description: string
+  id: number;
+  code: string;
+  name: string;
+  status: string;
+  description: string;
 }
 
 export interface interviewStage {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 export interface interviewer {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
 
 export enum AlertType {
-  save = 'save',
-  saved = 'saved',
-  nextStep = 'nextStep',
+  save = "save",
+  saved = "saved",
+  nextStep = "nextStep",
 }
 
 /* Stepper Parents */
 
 export interface profile {
   name: {
-    lastName: string
-    firstName: string
-    middleName: string
-    suffix: string
-  }
+    lastName: string;
+    firstName: string;
+    middleName: string;
+    suffix: string;
+  };
 }
 
 export interface SubModuleRef {
@@ -74,22 +78,22 @@ export interface SubModuleRef {
 }
 
 export interface organization {
-  companyList: company[]
-  branchList: branch[]
-  divisionList: division[]
+  companyList: company[];
+  branchList: branch[];
+  divisionList: division[];
 }
 export interface hiring {
-  offerResponsePeriod: number | null
+  offerResponsePeriod: number | null;
   applicationSettings: {
-    allowReApply: boolean | null
-    alloweReApplyAfer: number | null
-  }
-  interviewStages: interviewStage[]
-  interviewers: interviewer[]
+    allowReApply: boolean | null;
+    alloweReApplyAfer: number | null;
+  };
+  interviewStages: interviewStage[];
+  interviewers: interviewer[];
 }
 
 export interface accountSetupForm {
-  profile: profile
-  organization: organization
-  hiring: hiring
+  profile: profile;
+  organization: organization;
+  hiring: hiring;
 }

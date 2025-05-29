@@ -4,12 +4,16 @@ import { OrganizationSettingsStore } from "../store";
 import { Panel } from "../assets/Enum";
 
 export const useFetchOrganizationSettings = () => {
-  const { sortBy, activePanel, setTime, page, pageSize } = OrganizationSettingsStore();
+  const { sortBy, activePanel, setTime, page, pageSize, ascDesc } = OrganizationSettingsStore();
+
+  let isAscOrDesc: string = ascDesc ? "+" : "-";
+
   const formattedFilters: Record<string, any> = {
-    SortBy: sortBy === "" ? null : sortBy,
+    SortBy: sortBy === "" ? null : `${isAscOrDesc}${sortBy}`,
     Page: page === 1 ? null : page,
     PageSize: pageSize === 15 ? null : pageSize,
   };
+
   const sortFilter = Object.fromEntries(Object.entries(formattedFilters).filter(([_, value]) => value !== null));
   const branches = useQuery({
     queryKey: ["org_branch", { ...sortFilter }],
@@ -21,7 +25,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-
     enabled: activePanel === Panel.branch,
     staleTime: 1000 * 60 * 5,
   });
@@ -36,7 +39,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-
     enabled: activePanel === Panel.companyList,
     staleTime: 1000 * 60 * 5,
   });
@@ -51,7 +53,7 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.departments,
+    enabled: activePanel === Panel.departments || activePanel === Panel.section,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -65,7 +67,7 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.division,
+    enabled: activePanel === Panel.division || activePanel === Panel.section,
     staleTime: 1000 * 60 * 5,
   });
 
