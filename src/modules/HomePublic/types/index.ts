@@ -23,7 +23,13 @@ export type FilterState = {
   setIsFiltered: (isFiltered: boolean) => void;
   setFilterDrawer: (filterDrawer: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
-}
+
+  storedFilters: Record<string, any>;
+  setStoredFilters(filters: Record<string, any>): void;
+
+  searchParams: string;
+  setSearchParams: (searchParams: string) => void;
+};
 
 export interface HomeState {
   selectedData: VacancyType;
@@ -46,10 +52,10 @@ export interface PhotoRef {
 export interface ApplicationState {
   activeStepper: number;
   submit: boolean;
-  applicationForm: ApplicationForm
+  applicationForm: ApplicationForm;
   isPhotoCaptured: boolean;
   isPhotoCapture: boolean;
-  submitLoading: boolean,
+  submitLoading: boolean;
 
   setSubmitLoading: (submitLoading: boolean) => void;
   setIsPhotoCapture: (submit: boolean) => void;
@@ -58,7 +64,6 @@ export interface ApplicationState {
   setApplicationForm: (applicationForm: ApplicationForm) => void;
   setActiveStepper: (activeStepper: number) => void;
 }
-
 
 export interface FilterType {
   dateFrom?: string;
@@ -96,7 +101,7 @@ export interface GeneralInformation {
       middleName: string;
       lastName: string;
       suffix: string;
-    }
+    };
     presentAddress: {
       unitNo: string;
       houseNo: string;
@@ -106,7 +111,7 @@ export interface GeneralInformation {
       city: string;
       zipCode: string;
       livingArrangement: string;
-    }
+    };
     permanentAddress: {
       unitNo: string;
       houseNo: string;
@@ -116,7 +121,7 @@ export interface GeneralInformation {
       city: string;
       zipCode: string;
       livingArrangement: string;
-    }
+    };
     governmentIdOrNumber: {
       sssNo: string;
       gsisNo: string;
@@ -126,7 +131,7 @@ export interface GeneralInformation {
       rdoCode: string;
       driversLicense: string;
       passport: string;
-    }
+    };
     dateOfBirth: string;
     placeOfBirth: string;
     age: number;
@@ -138,7 +143,7 @@ export interface GeneralInformation {
     mobileNumber: string;
     workingEmailAddress: string;
     landlineNumber: string;
-  }
+  };
 }
 
 export interface EducationBackground {
@@ -149,7 +154,7 @@ export interface EducationBackground {
   yearsAttended: {
     from: Date | string | null;
     to: Date | string | null;
-  }
+  };
   professionalLicenses: string;
   certfications: string;
 }
@@ -167,26 +172,26 @@ export interface FamilyBackground {
     age: number;
     occupation: string;
     contactNumber: string;
-  }
+  };
   mother: {
     fullname: string;
     age: number;
     occupation: string;
     contactNumber: string;
-  }
+  };
 
-  siblings: Siblings[]
+  siblings: Siblings[];
 
   spouse?: {
     fullname: string;
     age: number;
     occupation: string;
     contactNumber: string;
-  }
+  };
   children: {
     numberOfChildren: number;
     ageRange: string;
-  }
+  };
 
   otherInformation: {
     specialTechnicalSkills: string;
@@ -194,7 +199,7 @@ export interface FamilyBackground {
     isBeenHospitalizedDetails: string;
     medicalConditionDetails: string;
     relativeWorkingWithUsDetails: string;
-  }
+  };
 }
 
 export interface CharacterReference {
@@ -221,9 +226,9 @@ export interface ApplicationSource {
 }
 
 export interface Reference {
-  characterReference: CharacterReference[]
-  employmentReference: EmploymentReference[]
-  applicationSource: ApplicationSource
+  characterReference: CharacterReference[];
+  employmentReference: EmploymentReference[];
+  applicationSource: ApplicationSource;
 }
 
 export interface EducationalAndEmployment {
@@ -246,12 +251,12 @@ export enum Step {
   Reference,
   Photo,
   Preview,
-  Oath
+  Oath,
 }
 
 export enum AlertType {
-  applicationSuccesfull = 'applicationSuccessfull',
-  cancelApplication = 'cancelApplication',
-  cancelledApplication = 'cancelledApplication',
-  submitResponse = 'submitResponse',
+  applicationSuccesfull = "applicationSuccessfull",
+  cancelApplication = "cancelApplication",
+  cancelledApplication = "cancelledApplication",
+  submitResponse = "submitResponse",
 }

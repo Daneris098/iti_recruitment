@@ -6,16 +6,14 @@ import { ApplicationFormVal as ApplicationFormCleanVal } from "@src/modules/Home
 export const HomeStore = create<HomeState>((set) => ({
   selectedData: selectedDataVal,
   applicationFormModal: false,
-  alert: '',
-  alertBody: '',
+  alert: "",
+  alertBody: "",
 
   setAlertBody: (alertBody: string) => set({ alertBody: alertBody }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
   setSelectedData: (selectedData: VacancyType) => set({ selectedData: selectedData }),
 }));
-
-
 
 export const FilterStore = create<FilterState>((set) => ({
   clearFilter: false,
@@ -27,8 +25,13 @@ export const FilterStore = create<FilterState>((set) => ({
   setFilter: (filter: FilterType) => set({ filter: filter }),
   setFilterDrawer: (filterDrawer: boolean) => set({ filterDrawer: filterDrawer }),
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
-}));
 
+  storedFilters: {},
+  setStoredFilters: (filter: Record<string, any>) => set({ storedFilters: filter }),
+
+  searchParams: "",
+  setSearchParams: (searchParams: string) => set({ searchParams: searchParams }),
+}));
 
 export const ApplicationStore = create<ApplicationState>((set) => ({
   activeStepper: 0,
@@ -45,4 +48,3 @@ export const ApplicationStore = create<ApplicationState>((set) => ({
   setApplicationForm: (applicationForm: ApplicationForm) => set({ applicationForm: applicationForm }),
   setActiveStepper: (activeStepper: number) => set({ activeStepper: activeStepper }),
 }));
-
