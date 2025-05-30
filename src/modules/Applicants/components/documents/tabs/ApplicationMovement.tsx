@@ -31,6 +31,12 @@ export default function ApplicationMovement({ applicantName, status,
             : []
     );
 
+    console.log('ap movement applicantId: ', applicantId)
+    console.log('ap movement applicantsById: ', applicantsById)
+    console.log('ap movement records: ', records)
+    console.log('ap movement filteredRecords: ', filteredRecords)
+    console.log('ap movement movementsRecords: ', movementsRecords)
+
     const allowedAccessors = ['applicationDate', 'movement', 'comments'];
 
     if (status === 'Archived') {

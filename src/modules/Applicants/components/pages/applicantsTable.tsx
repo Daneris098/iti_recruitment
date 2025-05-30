@@ -68,7 +68,7 @@ export default function index() {
   };
 
   const handleRowClick = async (applicant: any) => {
-    console.log('applicant: ', applicant)
+    console.log('applicant from row : ', applicant)
     setSelectedApplicant(applicant);
     setApplicantId(applicant.id);
     setIsViewApplicant(true);

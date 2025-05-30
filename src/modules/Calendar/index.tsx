@@ -14,7 +14,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 //--- Calendar Assets
 import "./assets/index.css";
 //--- Calendar Store
@@ -24,6 +24,8 @@ import renderEventContent from "./components/RenderContent";
 import DrawerFilter from "./components/DrawerFilter";
 //--- Calendar Modals
 import ViewApplicant from "./components/modals/ModalViewApplicant";
+import ViewApplicantShared from "@modules/Shared/components/viewApplicants/index";
+
 import ViewEvent from "./components/modals/ModalEvent";
 import Reschedule from "./components/modals/ModalReschedule";
 import MonthYear from "./components/modals/ModalMonthYear";
@@ -33,9 +35,14 @@ import { INITIAL_EVENTS, createEventId } from "./assets/Events";
 import SuccessAlert from "./components/alerts/SuccessAlert";
 import { ResponsiveContainer } from "recharts";
 import { useCalendar } from "@modules/Calendar/hooks/useCalendar";
+import { ApplicantStore } from "@modules/Vacancies/store/index"
+import { useSharedApplicantStore } from "../Shared/store";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
+  const { setIsViewApplicant, isViewApplicant } = ApplicantStore();
+  const { selectedApplicant, setSelectedApplicant } = useSharedApplicantStore();
+
   const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate, setDetails } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
@@ -167,6 +174,29 @@ export default function index() {
       {/* Modal Year and Month */}
       <MonthYear calendarRef={calendarRef} viewType={type} />
       {/* Modal Succes Update */}
+
+      <ModalWrapper
+        isOpen={isViewApplicant}
+        overlayClassName="modal-overlay"
+        contentClassName="modal-content"
+        onClose={() => setIsViewApplicant(false)}
+      >
+        <ViewApplicantShared
+          applicantName={selectedApplicant?.nameResponse?.normalName}
+          Position={selectedApplicant?.positionsApplied[0].name}
+          Status={
+            selectedApplicant?.applicationMovements[selectedApplicant?.applicationMovements.length - 1]?.status?.name
+          }
+          Email={selectedApplicant?.contact?.email}
+          Phone={selectedApplicant?.contact?.mobileNo}
+          Skills={selectedApplicant?.skills}
+          Remarks={selectedApplicant?.applicationMovements}
+          Application_Date={selectedApplicant?.applicationDate}
+          IsJobOffer={selectedApplicant?.isJobOffer}
+          onClose={() => setIsViewApplicant(false)}
+        />
+      </ModalWrapper>
+
       <SuccessAlert />
     </Stack>
   );

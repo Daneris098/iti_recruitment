@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
 import { VacancyType } from "@src/modules/Vacancies/types";
-import { FilterStore, DataTableStore } from "@modules/Vacancies/store";
+import { FilterStore, DataTableStore, FilterItemsStore } from "@modules/Vacancies/store";
 
 export const useVacancies = () => {
     const {
@@ -12,6 +12,8 @@ export const useVacancies = () => {
     } = DataTableStore();
 
     const { filter, isFiltered } = FilterStore();
+    const { companies, departments, interviewers, status, vacancies } = FilterItemsStore();
+
     const fetchData = async () => {
 
         try {
@@ -20,60 +22,78 @@ export const useVacancies = () => {
             url += sortVal;
 
             if (filter.company.length) {
-                // url += `?Name=[${filter.company}]`;
+                const filtered = companies
+                    .filter((item) => filter.company.includes(item.value))
+                    .map((item) => item.id);
+                url += `?CopmpanyIds=[${filtered}]`;
             }
             if (filter.vacancy.length) {
-                // url += `?Name=[${filter.vacancy}]`;
+                const filtered = vacancies
+                    .filter((item) => filter.vacancy.includes(item.value))
+                    .map((item) => item.id);
+                url += `?VacancyIds=[${filtered}]`;
             }
             if (filter.dateFrom) {
-                // url += `?dateFrom=${filter.dateFrom}`;
+                url += `?DateFrom=${filter.dateFrom}`;
             }
             if (filter.dateTo) {
-                // url += `?dateFrom=${filter.dateTo}`;
-            }
-            if (filter.interviewer.length) {
-                // url += `?Name=[${filter.interviewer}]`;
+                url += `?DateTo=${filter.dateTo}`;
             }
             if (filter.department.length) {
-                // url += `?Name=[${filter.department}]`;
+                const filtered = departments
+                    .filter((item) => filter.department.includes(item.value))
+                    .map((item) => item.id);
+                url += `?DepartmentIds=[${filtered}]`;
             }
             if (filter.status.length) {
                 // url += `?Name=[${filter.status}]`;
+                const filtered = status
+                    .filter((item) => filter.status.includes(item.value))
+                    .map((item) => item.id);
+                url += `?StatusIds=[${filtered}]`;
             }
 
-            const startTime = performance.now();
-            const res = await axiosInstance.get(url);
+            console.log('url: ', url)
 
-            if (res.status === 200 && Array.isArray(res.data.items)) {
-                const mapped = res.data.items.map((item: any) => ({
-                    ...item,
-                    mustHaveSkills: item.skills,
-                    company: item.companyResponse.name,
-                    branch: item.branchResponse.name,
-                    division: item.divisionResponse.name,
-                    experienceLevel: item.experienceLevelResponse.name,
-                    vacancyType: item.vacancyTypeResponse.name,
-                    section: item.sectionResponse.name,
-                    employmentType: item.employmentTypeResponse.name,
-                    workplace: item.workplaceTypeResponse.name,
-                    vacancyDuration: { start: item.vacancyDurationResponse.dateStart, end: item.vacancyDurationResponse.dateEnd },
-                    id: item.id,
-                    position: item.positionTitleResponse,
-                    datePublish: item.vacancyDurationResponse?.dateStart,
-                    interviewer: "N/A",
-                    department: item.departmentResponse?.name || "-",
-                    quantity: item.availableSlot,
-                    totalApplicant: item.availableSlot,
-                    status: "Published",
-                }));
-                const endTime = performance.now();
-                const executionTime = (endTime - startTime) / 1000;
-                setTime(executionTime.toFixed(3).toString());
-                return mapped;
-            } else {
-                console.error("Unexpected response format:", res.data);
-                return [];
-            }
+            // const startTime = performance.now();
+            // const res = await axiosInstance.get(url);
+
+            // if (res.status === 200 && Array.isArray(res.data.items)) {
+            //     console.log(res.data.items)
+            //     const mapped = res.data.items.map((item: any) => ({
+            //         ...item,
+            //         mustHaveSkills: item.skills,
+            //         company: item.company.name,
+            //         branch: item.branch.name,
+            //         division: item.division.name,
+            //         experienceLevel: item.experienceLevel.name,
+            //         vacancyType: item.vacancyType.name,
+            //         section: item.section.name,
+            //         employmentType: item.employmentType.name,
+            //         workplace: item.workplaceType.name,
+            //         vacancyDuration: { start: item.vacancyDuration.dateStart, end: item.vacancyDuration.dateEnd },
+            //         id: item.id,
+            //         position: item.position,
+            //         datePublish: item.vacancyDuration?.dateStart,
+            //         interviewer: "N/A",
+            //         department: item.department?.name || "-",
+            //         quantity: item.availableSlot,
+            //         totalApplicant: item.availableSlot,
+            //         status: item.status.name,
+            //     }));
+            //     const endTime = performance.now();
+            //     const executionTime = (endTime - startTime) / 1000;
+            //     setTime(executionTime.toFixed(3).toString());
+            //     return mapped;
+            // }
+
+            // else {
+            //     console.error("Unexpected response format:", res.data);
+            //     return [];
+            // }
+            return [];
+
+
         } catch (error: any) {
             console.error("Error fetching data:", error.response || error);
             throw error;

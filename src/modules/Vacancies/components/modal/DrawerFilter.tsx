@@ -1,26 +1,138 @@
 import { Button, Divider, Drawer, Flex, MultiSelect, Text, useMatches, } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 // import { useMediaQuery } from "@mantine/hooks";
-import { FilterStore } from "@modules/Vacancies/store";
+import { FilterStore, FilterItemsStore } from "@modules/Vacancies/store";
 import { filterVal } from "@modules/Vacancies/values";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DateRange } from "../DateRange";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
+import axiosInstance from "@src/api";
+import { queryClient } from "@src/client/queryClient";
 
 export default function DrawerFilter() {
   // const [value, setValue] = useState<Date | null>(null);
   // const { value, setValue } = useDateRangeStore();
   // const isMobile = useMediaQuery("(max-width: 425px)");
-  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
+
+  const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered, } = FilterStore();
+  const { companies, departments, interviewers, status, vacancies, setCompanies, setDepartments, setInterviewers, setStatus, setVacancies } = FilterItemsStore();
   const { value, setValue } = useDateRangeStore();
+
   // useEffect(() => {
   //   // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
   // }, [value])
 
-  useEffect(() => {
-    // setValue([null, null])
-  }, [])
+  // useEffect(() => {
+  // setValue([null, null])
+  // }, [])
 
+  // const [companies, setCompanies] = useState([]);
+  // const [companies, setCompanies] = useState([
+  //   { id: 1, value: 'Company A', label: 'Company A' },
+  //   { id: 2, value: 'Company B', label: 'Company B' },
+  //   { id: 3, value: 'Company C', label: 'Company C' },
+  //   { id: 4, value: 'Company D', label: 'Company D' },
+  // ]);
+  // const [departments, setDepartments] = useState([]);
+  // const [interviewers, setInterviewers] = useState([]);
+  // const [status, setStatus] = useState([]);
+  // const [vacancies, setVacancies] = useState([]);
+
+  const fetchLookups = async () => {
+    await axiosInstance
+      .get("/recruitment/organization/companies")
+      .then((response) => {
+        const map = response.data.items.map((item: any) => {
+          return {
+            id: item.id,
+            value: item.name,
+            label: item.name,
+          }
+        });
+        setCompanies(map)
+      })
+      .catch((error) => {
+        const message = error.response.data.errors[0].message;
+        console.error(message)
+      });
+
+    await axiosInstance
+      .get("/recruitment/organization/departments")
+      .then((response) => {
+        const map = response.data.items.map((item: any) => {
+          return {
+            id: item.id,
+            value: item.name,
+            label: item.name,
+          }
+        });
+        setDepartments(map)
+      })
+      .catch((error) => {
+        const message = error.response.data.errors[0].message;
+        console.error(message)
+      });
+
+    await axiosInstance
+      .get("/recruitment/hiring/interviewers")
+      .then((response) => {
+        const map = response.data.items.map((item: any) => {
+          return {
+            id: item.id,
+            value: item.name,
+            label: item.name,
+          }
+        });
+        setInterviewers(map)
+      })
+      .catch((error) => {
+        const message = error.response.data.errors[0].message;
+        console.error(message)
+      });
+
+    await axiosInstance
+      .get("/general/vacancy-status")
+      .then((response) => {
+        const map = response.data.items.map((item: any) => {
+          return {
+            id: item.id,
+            value: item.name,
+            label: item.name,
+          }
+        });
+        setStatus(map)
+      })
+      .catch((error) => {
+        const message = error.response.data.errors[0].message;
+        console.error(message)
+      });
+
+    await axiosInstance
+      .get("/recruitment/vacancies")
+      .then((response) => {
+        console.log('respiii:')
+        const map = response.data.items.map((item: any) => {
+          return {
+            id: item.id,
+            value: item.position,
+            label: item.position,
+          }
+        });
+        const uniqueMap = map.filter((item: any, index: any, self: any) =>
+          index === self.findIndex((t: any) => t.value === item.value)
+        );
+        setVacancies(uniqueMap)
+      })
+      .catch((error) => {
+        const message = error.response.data.errors[0].message;
+        console.error(message)
+      });
+
+  };
+
+  useEffect(() => {
+    // fetchLookups()
+  }, [])
 
   const clear = () => {
     setFilter(filterVal)
@@ -114,7 +226,7 @@ export default function DrawerFilter() {
             label="Company"
             placeholder={filter.company.length > 0 ? '' : "Company"}
             radius={8}
-            data={["Company 1", "Company 2", "Company 3"]}
+            data={companies}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
@@ -126,7 +238,7 @@ export default function DrawerFilter() {
             label="Vacancy"
             placeholder={filter.vacancy.length > 0 ? '' : "Vacancy"}
             radius={8}
-            data={["Web Dev", "DevOps", "Mobile Dev"]}
+            data={vacancies}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
@@ -145,19 +257,6 @@ export default function DrawerFilter() {
             lPlaceholder="End Date"
             isColumn
           />
-          <Divider size={0.5} color="#edeeed" className="w-full" />
-          <MultiSelect
-            value={filter.interviewer}
-            size={inputSize}
-            label="Interviewer"
-            placeholder={filter.interviewer.length > 0 ? '' : "Interviewer"}
-            radius={8}
-            data={["John", "Jane", "Paul"]}
-            rightSection={<IconCaretDownFilled size='18' />}
-            className="border-none w-full text-sm"
-            styles={{ label: { color: "#6d6d6d" } }}
-            onChange={(value) => setFilter({ ...filter, interviewer: value })}
-          />
 
           <Divider size={0.5} color="#edeeed" className="w-full" />
           <MultiSelect
@@ -166,7 +265,7 @@ export default function DrawerFilter() {
             placeholder={filter.department.length > 0 ? "" : "Department"}
             label="Department"
             radius={8}
-            data={["IT", "Accounting"]}
+            data={departments}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full text-sm"
             styles={{ label: { color: "#6d6d6d" } }}
@@ -180,7 +279,7 @@ export default function DrawerFilter() {
             placeholder={filter.status.length > 0 ? "" : "Select Status"}
             label="Status"
             radius={8}
-            data={["Publish", "Close", "Overdue"]}
+            data={status}
             rightSection={<IconCaretDownFilled size='18' />}
             className="border-none w-full"
             styles={{ label: { color: "#6d6d6d" } }}
@@ -200,7 +299,11 @@ export default function DrawerFilter() {
             children={<Text fw={500} className="text-sm">CLEAR</Text>}
           />
           <Button
-            onClick={() => { setIsFiltered(true); setFilterDrawer(false) }}
+            onClick={() => {
+              setIsFiltered(true);
+              setFilterDrawer(false);
+              queryClient.refetchQueries({ queryKey: ["recruitment/vacancies"], type: 'active' });
+            }}
             variant="transparent"
             className="br-gradient border-none"
             size={buttonSize}

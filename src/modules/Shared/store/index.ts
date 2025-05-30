@@ -11,6 +11,9 @@ export const useApplicantIdStore = create<ApplicantId>((set) => ({
 }))
 
 export const useSharedApplicantStore = create<SharedApplicantStore>((set) => ({
+    selectedApplicant: null,
+    setSelectedApplicant: (selectedApplicant: any) => set({ selectedApplicant }),
+
     records: [],
     setSharedApplicantRecords: (rows) => set({ records: rows }),
     updateApplicantStatus: (id, newStatus) =>

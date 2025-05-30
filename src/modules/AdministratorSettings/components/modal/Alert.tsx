@@ -7,7 +7,7 @@ import { AlertType } from "@modules/AdministratorSettings/types";
 import { IconX, IconHelpCircle } from "@tabler/icons-react";
 
 
-export default function AlertModals({ selectedAccountRef }: { selectedAccountRef: React.RefObject<{ submit: () => void;    }> }) {
+export default function AlertModals({ selectedAccountRef }: { selectedAccountRef: React.RefObject<{ submit: () => void; }> }) {
     const { setAlert, alert, newlyAddedUser, resetCredentials } = AdministratorSettingsStore();
     const AlertAutoClose: Record<AlertType, boolean> = {
         [AlertType.cancel]: false,
@@ -126,7 +126,7 @@ export default function AlertModals({ selectedAccountRef }: { selectedAccountRef
                             .catch(err => {
                                 console.error("Failed to copy: ", err);
                             });
-                        }}>COPY CREDENTIALS</Button>
+                    }}>COPY CREDENTIALS</Button>
                 </div>
             </Modal>
 

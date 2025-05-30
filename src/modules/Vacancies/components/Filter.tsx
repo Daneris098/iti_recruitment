@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
+
   useEffect(() => {
     if (filter === filterVal) {
       setIsFiltered(false)
@@ -102,6 +103,9 @@ export default function Filter() {
     let updatedFilter = { ...filter };
     const camelCaseLabel = toCamelCase(label);
     const filterValue = (updatedFilter as any)[camelCaseLabel];
+
+    // console.log('filterValue: ', filterValue)
+    // console.log('item: ', item)
 
     // If it's an array, filter the item out
     if (Array.isArray(filterValue)) {
