@@ -20,8 +20,10 @@ export default function index() {
         { id: 2, value: 'Web Developer', label: 'Web Developer' },
     ]);
     const [cities, setCities] = useState([
-        { id: 1, value: 'Caloocan City', label: 'Caloocan City' },
-        { id: 2, value: 'Quezon City', label: 'Quezon City' },
+    ]);
+    const [barangay, setBarangay] = useState([
+    ]);
+    const [barangay2, setBarangay2] = useState([
     ]);
 
     const form = useForm({
@@ -29,6 +31,7 @@ export default function index() {
         initialValues: applicationForm.generalInformation,
         validate: {
             firstChoice: (value: string) => value === null || value === '' ? "First choice is required" : null,
+            secondChoice: (value: string) => value === null || value === '' ? "First choice is required" : null,
             desiredSalary: (value: number) => value <= 0 ? "Desired salary must be greater than 0" : null,
             startDateAvailability: (value: string) => value.length === 0 ? "Start date availability is required" : null,
 
@@ -75,14 +78,14 @@ export default function index() {
                 landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
 
                 governmentIdOrNumber: {
-                    sssNo: (value: string) => value.length != 10 ? "Please input a valid SSS Number" : null,
-                    gsisNo: (value: string) => value.length != 11 ? "Please input a valid GSIS Number" : null,
-                    pagibigNo: (value: string) => value.length != 11 ? "Please input a valid GSIS Number" : null,
-                    driversLicense: (value: string) => value.length != 11 ? "Please input a valid Driver's License Number" : null,
-                    philhealthNo: (value: string) => value.length != 12 ? "Please input a valid Philhealth Number" : null,
-                    passport: (value: string) => value.length != 12 ? "Please input a valid Passport Number" : null,
-                    tinNo: (value: string) => !(9 <= value.length && value.length <= 12) ? "Please input a valid Tin Number" : null,
-                    rdoCode: (value: string) => value.length != 3 ? "RDO Code is required" : null,
+                    sssNo: (value: string) => value && value.length !== 10 ? "Please input a valid SSS Number" : null,
+                    gsisNo: (value: string) => value && value.length !== 11 ? "Please input a valid GSIS Number" : null,
+                    pagibigNo: (value: string) => value && value.length !== 11 ? "Please input a valid Pag-IBIG Number" : null,
+                    driversLicense: (value: string) => value && value.length !== 11 ? "Please input a valid Driver's License Number" : null,
+                    philhealthNo: (value: string) => value && value.length !== 12 ? "Please input a valid Philhealth Number" : null,
+                    passport: (value: string) => value && value.length !== 12 ? "Please input a valid Passport Number" : null,
+                    tinNo: (value: string) => value && (value.length < 9 || value.length > 12) ? "Please input a valid Tin Number" : null,
+                    rdoCode: (value: string) => value && value.length !== 3 ? "RDO Code is required" : null,
                 }
 
             }
@@ -151,18 +154,49 @@ export default function index() {
                         value: item.name,
                         label: item.name,
                     }));
-
+                console.log('map: ', map)
                 setCities(map);
             })
             .catch((error) => {
                 const message = error.response.data.errors[0].message;
                 console.error(message)
             });
+
     };
 
     useEffect(() => {
         fetchLookups()
     }, [])
+
+    const fetchBarangays = async (cityId: number, mode: number = 1) => {
+        await axiosInstance
+            .get(`/general/cities/${cityId}/barangays`)
+            .then((response) => {
+                console.log('barangays: ', response)
+                const seen = new Set();
+                const map = response.data.items
+                    .filter((item: any) => {
+                        if (seen.has(item.name)) return false;
+                        seen.add(item.name);
+                        return true;
+                    })
+                    .map((item: any) => ({
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }));
+                if (mode == 1) {
+                    setBarangay(map);
+                }
+                else {
+                    setBarangay2(map);
+                }
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    }
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
@@ -244,19 +278,9 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <Select
-                        {...form.getInputProps("personalInformation.presentAddress.barangay")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Barangay"}
-                        radius={8}
-                        data={["1", "2", "3", "4"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
                     <Autocomplete
                         {...form.getInputProps("personalInformation.presentAddress.city")}
+                        // key={form.key('personalInformation.presentAddress.city')}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
                         radius={8}
@@ -265,18 +289,28 @@ export default function index() {
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
+                        onChange={((val) => {
+                            const selectedCity = cities.find(city => city.value === val);
+                            console.log('Selected city ID:', selectedCity?.id);
+                            fetchBarangays(selectedCity?.id ?? 1, 1)
+                            form.setFieldValue("personalInformation.presentAddress.city", val);
+                        })}
                     />
-                    {/* <Select
-                        {...form.getInputProps("personalInformation.presentAddress.city")}
+
+                    <Select
+                        {...form.getInputProps("personalInformation.presentAddress.barangay")}
+                        key={form.key('personalInformation.presentAddress.barangay')}
                         w={isMobile ? '25%' : '100%'}
-                        placeholder={"City"}
+                        placeholder={"Barangay"}
                         radius={8}
-                        data={["Caloocan City", "Quezon City", "Manila City"]}
+                        data={barangay}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
-                    /> */}
+
+                    />
+
                     <Select
                         {...form.getInputProps("personalInformation.presentAddress.zipCode")}
                         w={isMobile ? '25%' : '100%'}
@@ -301,6 +335,7 @@ export default function index() {
                     />
                     {/* <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" /> */}
                 </div>
+
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative">
                     <div className={cn("w-[100%]", isMobile && "w-[25%]  bg-green-400")}>
                         <Checkbox
@@ -309,6 +344,7 @@ export default function index() {
                             classNames={{ label: 'poppins' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
                             onChange={(value) => {
+                                console.log('form.getValues().personalInformation.presentAddress: ', form.getValues().personalInformation.presentAddress)
                                 setSameAsPresent(value.target.checked);
                                 if (value.target.checked) {
                                     form.setValues({
@@ -327,24 +363,12 @@ export default function index() {
                     <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
                     <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.subdivision")} key={form.key('personalInformation.permanentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
                 </div>
+
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <Select
-                        disabled={sameAsPresent}
-                        key={form.key('personalInformation.permanentAddress.barangay')}
-                        {...form.getInputProps("personalInformation.permanentAddress.barangay")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Barangay"}
-                        radius={8}
-                        data={["1", "2", "3", "4"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
                     <Autocomplete
                         disabled={sameAsPresent}
                         key={form.key('personalInformation.permanentAddress.city')}
-                        {...form.getInputProps("personalInformation.presentAddress.city")}
+                        {...form.getInputProps("personalInformation.permanentAddress.city")}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
                         radius={8}
@@ -353,7 +377,28 @@ export default function index() {
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
+                        onChange={((val) => {
+                            const selectedCity = cities.find(city => city.value === val);
+                            console.log('Selected city ID:', selectedCity?.id);
+                            fetchBarangays(selectedCity?.id ?? 1, 2)
+                            form.setFieldValue("personalInformation.permanentAddress.city", val);
+                        })}
                     />
+
+                    <Select
+                        disabled={sameAsPresent}
+                        key={form.key('personalInformation.permanentAddress.barangay')}
+                        {...form.getInputProps("personalInformation.permanentAddress.barangay")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"Barangay"}
+                        radius={8}
+                        data={sameAsPresent ? barangay : barangay2}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+
                     <Select
                         disabled={sameAsPresent}
                         key={form.key('personalInformation.permanentAddress.zipCode')}
@@ -445,7 +490,7 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.governmentIdOrNumber.sssNo")} radius='md' w={isMobile ? '33%' : '100%'} label="Government ID Number(s)" placeholder="SSS No." />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.sssNo")} radius='md' w={isMobile ? '33%' : '100%'} label="Government ID Number(s)" placeholder="SSS No." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.gsisNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="GSIS No." />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.governmentIdOrNumber.pagibigNo")} radius='md' w={isMobile ? '33%' : '100%'} placeholder="Pagibig-No." />
                 </div>

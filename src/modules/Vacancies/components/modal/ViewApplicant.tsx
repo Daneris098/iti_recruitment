@@ -1,5 +1,5 @@
 import { Divider, Modal } from "@mantine/core";
-import { ApplicantStore, ViewApplicantsDataTableStore } from "../../store";
+import { ApplicantStore, ViewApplicantsDataTableStore } from "@modules/Vacancies/store/index";
 import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
 import { VacancyType } from "../../types";
@@ -8,9 +8,12 @@ import { DataTable } from "mantine-datatable";
 import { Badge } from '@mantine/core';
 import "@modules/Vacancies/style.css"
 import { useApplicants } from "@modules/Vacancies/hooks/useApplicants";
+import { useApplicantIdStore } from "@modules/Applicants/store";
+import { applicantsByIdService } from "@src/modules/Shared/components/api/UserService";
 
 export default function index() {
-    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant, selectedApplicant } = ApplicantStore();
+    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
+    const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
         columnAccessor: "position", // Use a valid key from VacancyType
@@ -31,6 +34,14 @@ export default function index() {
         setHiredCount(counts['hired'] || 0);
         setArchivedCount(counts['archived'] || 0);
     }, [counts]);
+
+    const handleRowClick = async (id: number) => {
+        const { data: applicantDetails } = await applicantsByIdService.getById(id);
+        // console.log('applicantDetails: ', applicantDetails)
+        setApplicantId(id);
+        setSelectedApplicant(applicantDetails)
+        setIsViewApplicant(true)
+    }
 
     return (
         <>
@@ -112,19 +123,7 @@ export default function index() {
                             onPageChange={setPage}
                             sortStatus={sortStatus}
                             onCellClick={(val) => {
-                                setSelectedApplicant({
-                                    applicantId: val.record[val.column.accessor]?.applicantId ?? 0,
-                                    Applicant_Name: val.record[val.column.accessor]['name'],
-                                    Position: 'Data Analyst',
-                                    // position: val.record[val.column.accessor]?.position ?? "NA",
-                                    Status: val.record[val.column.accessor]['status'],
-                                    Email: 'maxineramsey@pearlessa.com',
-                                    Phone: '+63 (856) 555-3987',
-                                    Skills: '',
-                                    Remarks: '',
-                                    Application_Date: 'September 20, 2025'
-                                })
-                                setIsViewApplicant(true)
+                                handleRowClick(val.record[val.column.accessor]?.applicantId)
                             }}
                             onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
                         />

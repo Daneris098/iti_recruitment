@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider } from "@mantine/core";
 import profileImage from "@src/assets/jane.png";
 import { ViewApplicantsProps } from "@modules/Shared/types";
@@ -39,6 +39,12 @@ export default function ViewApplicant({
   const [isViewPDF, togglePDF] = useState(false);
   const displayStatus = getDisplayStatus(Status);
   const changeTabs = getTabs({ applicantName, status: Status, remarks: Remarks });
+
+  useEffect(() => {
+    console.log('applicantName: ', applicantName)
+    console.log('Status: ', Status)
+    console.log('Remarks: ', Remarks)
+  }, [applicantName, Status, Remarks])
 
   return (
     <div className="h-screen w-full p-4">

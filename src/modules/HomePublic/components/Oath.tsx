@@ -121,7 +121,7 @@ export default function Index() {
                                 fromWordOfMouth: applicationForm.reference.applicationSource.wordOfMouth,
                                 walkIn: applicationForm.reference.applicationSource.walkin,
                                 others: applicationForm.reference.applicationSource.others,
-                                description: '',
+                                description: applicationForm.reference.applicationSource.description,
                             },
                             religion: {
                                 id: 1,

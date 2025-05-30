@@ -1,4 +1,4 @@
-import { Divider, MultiSelect, NumberInput, Popover, TextInput } from "@mantine/core";
+import { Divider, Flex, MultiSelect, NumberInput, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
@@ -7,14 +7,31 @@ import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground }
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import dayjs from "dayjs";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 
 export default function index() {
     const { isMobile } = GlobalStore()
+    const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
 
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [profesionalLicenses, setProfesionalLicenses] = useState<string[][]>([[]]);
     const [certifications, setCertifications] = useState<string[][]>([[]]);
+
+
+    const [opened, setOpened] = useState(false);
+    const [opened2, setOpened2] = useState(false);
+    const togglePopover = (index: number, isStart: boolean) => {
+        setOpened((prev: any) => ({
+            ...prev,
+            [index]: isStart ? !prev[index] : false,
+        }));
+        setOpened2((prev: any) => ({
+            ...prev,
+            [index]: isStart ? false : !prev[index],
+        }));
+    };
+
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -260,6 +277,13 @@ export default function index() {
         });
     }, [applicationForm])
 
+    useEffect(() => {
+        if (vacancyDuration[0] != null && vacancyDuration[1] != null) {
+            setOpened(false)
+            setOpened2(false)
+        }
+    }, [vacancyDuration])
+
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4">
@@ -389,67 +413,86 @@ export default function index() {
                                 placeholder="Position Held"
                             />
                             <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]">
-                                {/* Inclusive Date From */}
-                                <Popover position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
-                                    <Popover.Target>
-                                        <TextInput
-                                            key={form.key(`employmentRecord.${index}.inclusiveDate.from`)}
-                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.from`)}
-                                            radius='md'
-                                            w={isMobile ? '25%' : '100%'}
-                                            readOnly
-                                            label="Inclusive Date"
-                                            placeholder="From"
-                                            className="w-full cursor-default"
-                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                                            rightSection={<IconCalendarMonth />}
-                                            styles={{ label: { color: "#6d6d6d" } }}
-                                        />
-                                    </Popover.Target>
-                                    <Popover.Dropdown className="w-full">
-                                        <DatePicker
-                                            firstDayOfWeek={0}
-                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.from`)}
-                                            onChange={(value: Date | null) => {
-                                                form.setFieldValue(
-                                                    `employmentRecord.${index}.inclusiveDate.from`,
-                                                    value ? dayjs(value).format("YYYY-MM-DD") : ''
-                                                );
-                                            }}
-                                        />
-                                    </Popover.Dropdown>
-                                </Popover>
 
-                                {/* Inclusive Date To */}
-                                <Popover position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
-                                    <Popover.Target>
-                                        <TextInput
-                                            key={form.key(`employmentRecord.${index}.inclusiveDate.to`)}
-                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.to`)}
-                                            radius='md'
-                                            w={isMobile ? '25%' : '100%'}
-                                            readOnly
-                                            label=""
-                                            placeholder="To"
-                                            className="w-full cursor-default"
-                                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                                            rightSection={<IconCalendarMonth />}
-                                            styles={{ label: { color: "#6d6d6d" } }}
-                                        />
-                                    </Popover.Target>
-                                    <Popover.Dropdown className="w-full">
-                                        <DatePicker
-                                            firstDayOfWeek={0}
-                                            {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.to`)}
-                                            onChange={(value: Date | null) => {
-                                                form.setFieldValue(
-                                                    `employmentRecord.${index}.inclusiveDate.to`,
-                                                    value ? dayjs(value).format("YYYY-MM-DD") : ''
-                                                );
-                                            }}
-                                        />
-                                    </Popover.Dropdown>
-                                </Popover>
+                                <Flex
+                                    direction="row"
+                                    justify="space-between"
+                                    gap={12}
+                                    className="w-full items-end"
+                                >
+
+                                    <Popover opened={(opened as any)[index]} position="bottom" shadow="md" trapFocus returnFocus>
+                                        <Popover.Target>
+                                            <TextInput
+                                                required
+                                                radius="md"
+                                                size="sm"
+                                                readOnly
+                                                label="Vacancy Duration"
+                                                placeholder="Start Date"
+                                                className="w-full cursor-default"
+                                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                                rightSection={<IconCalendarMonth />}
+                                                styles={{ label: { color: "#6d6d6d" } }}
+                                                {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.from`)}
+                                                key={form.key(`employmentRecord.${index}.inclusiveDate.from`)}
+                                                onClick={() => togglePopover(index, true)}
+                                            />
+                                        </Popover.Target>
+                                        <Popover.Dropdown className="w-full">
+                                            <DatePicker
+                                                firstDayOfWeek={0}
+                                                numberOfColumns={2}
+                                                type="range"
+                                                value={vacancyDuration}
+                                                onChange={(e) => {
+                                                    if (e[0])
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
+                                                    if (e[1])
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, DateTimeUtils.dayWithDate(e[1].toString()));
+                                                    setVacancyDuration(e);
+                                                }}
+                                            />
+                                        </Popover.Dropdown>
+                                    </Popover>
+
+                                    <Popover opened={(opened2 as any)[index]} position="bottom" shadow="md">
+                                        <Popover.Target>
+                                            <TextInput
+                                                required
+                                                radius="md"
+                                                size="sm"
+                                                readOnly
+                                                label=""
+                                                placeholder="End Date"
+                                                rightSection={<IconCalendarMonth />}
+                                                className="w-full"
+                                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                                styles={{ label: { color: "#6d6d6d" } }}
+                                                {...form.getInputProps(`employmentRecord.${index}.inclusiveDate.to`)}
+                                                key={form.key(`employmentRecord.${index}.inclusiveDate.to`)}
+                                                onClick={() => togglePopover(index, false)}
+                                            />
+                                        </Popover.Target>
+                                        <Popover.Dropdown>
+                                            <DatePicker
+                                                numberOfColumns={2}
+                                                type="range"
+                                                value={vacancyDuration}
+                                                onChange={(e) => {
+                                                    if (e[0])
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
+                                                    if (e[1])
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, DateTimeUtils.dayWithDate(e[1].toString()));
+                                                    setVacancyDuration(e);
+                                                }}
+                                            />
+                                        </Popover.Dropdown>
+                                    </Popover>
+
+
+                                </Flex>
+
                             </div>
                         </div>
 

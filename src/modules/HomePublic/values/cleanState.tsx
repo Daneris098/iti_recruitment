@@ -282,6 +282,7 @@ export const referenceValue: Reference = {
     wordOfMouth: false,
     walkin: false,
     others: false,
+    description: ''
   },
 };
 
@@ -310,6 +311,7 @@ export const referenceValue2: Reference = {
     wordOfMouth: false,
     walkin: false,
     others: false,
+    description: ''
   },
 };
 
