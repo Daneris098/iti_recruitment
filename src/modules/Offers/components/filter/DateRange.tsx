@@ -17,7 +17,8 @@ interface DateRangeProps {
   isColumn?: boolean;
   isMobile?: boolean;
   gapValue?: number
-  size?: string
+  size?: string;
+  disabled?: boolean;
 }
 
 export const DateRange = ({
@@ -30,7 +31,8 @@ export const DateRange = ({
   isColumn = false,
   isMobile = false,
   gapValue,
-  size
+  size,
+  disabled = false
 }: DateRangeProps) => {
 
   const [opened, setOpened] = useState(false);
@@ -60,6 +62,7 @@ export const DateRange = ({
             radius="md"
             size={size ?? 'xs'}
             readOnly
+            disabled={disabled}
             label={fLabel}
             placeholder={fPlaceholder}
             className="w-full cursor-default"
@@ -93,6 +96,7 @@ export const DateRange = ({
             radius="md"
             size={size ?? 'xs'}
             readOnly
+            disabled={disabled}
             label={lLabel}
             placeholder={lPlaceholder}
             rightSection={<IconCalendarMonth />}

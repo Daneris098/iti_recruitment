@@ -1,22 +1,29 @@
-import { PDFViewer } from "@react-pdf/renderer";
 import { ModalsProps } from "@modules/Shared/types";
+import { useApplicantIdStore } from "@modules/Applicants/store";
 import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
-import PDFDocument from "@modules/Applicants/components/documents/pdf/ApplicantsPDF";
+import { useSingleAcceptedOffer } from "@src/modules/Shared/hooks/useSharedApplicants";
 import UpdateStatus from "@src/modules/Applicants/components/documents/buttons/UpdateStatus";
-import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
 import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer";
+import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
 
 export default function Modals({
-  Position, Remarks,
   Status, IsJobOffer,
   onClosePDF, applicantName,
-  Acknowledgement, Department,
   onCloseAll, onCloseUpdateStatus,
   isGenerateNewOfferOpen, isViewPDFOpen,
   isUpdateStatusOpen, isTransferPositionOpen,
   onCloseTransferPosition, onCloseGenerateNewOffer,
 }: ModalsProps) {
+
+  const applicantId = useApplicantIdStore((state) => state.id);
+  const { data: acceptedOffer } = useSingleAcceptedOffer(applicantId);
+
+  // const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
+  // const fileUrl = `${FILE_BASE_URL}/${acceptedOffer?.data?.[0]?.path}`;
+  const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
+  const filePath = acceptedOffer?.data?.[0]?.path.replace(/^files\//, '');
+  const fileUrl = `${FILE_BASE_URL}${filePath}`;
 
   return (
     <>
@@ -70,19 +77,12 @@ export default function Modals({
       {/* PDF Viewer Modal */}
       {isViewPDFOpen && (
         <ViewPDF isOpen onClose={onClosePDF}>
-          <PDFViewer
+          <iframe
+            src={fileUrl}
             width="100%"
             height="891"
             style={{ border: "1px solid #ccc", borderRadius: "8px" }}
-          >
-            <PDFDocument
-              applicantName={applicantName}
-              Position={Position}
-              Remarks={Remarks}
-              Acknowledgement={Acknowledgement}
-              Department={Department}
-            />
-          </PDFViewer>
+          />
         </ViewPDF>
       )}
     </>

@@ -105,15 +105,15 @@ export const STATUS_MAP: Record<string, JobOfferStatus> = {
 
 export const APPLICANT_FIELDS: Record<string, (applicant: any) => string | undefined> = {
     id: (applicant) => String(applicant.id),
-    applicantName: (applicant) => `${applicant.nameResponse.firstName} ${applicant.nameResponse.lastName}`,
-    dateGenerated: (applicant) => DateTimeUtils.dateDefaultToWord(applicant.dateApplied) ?? "",
-    dateLastUpdated: (applicant) => DateTimeUtils.dateDefaultToWord(applicant.applicationMovements.at(-1)?.audit?.date) ?? "",
-    remarks: (applicant) => applicant.applicationMovements.at(-1)?.comment ?? "",
+    applicantName: (applicant) => applicant.applicantName,
+    dateGenerated: (applicant) => DateTimeUtils.dateDefaultToWord(applicant.generalApplicant.dateApplied) ?? "",
+    dateLastUpdated: (applicant) => DateTimeUtils.dateDefaultToWord(applicant.generalApplicant.applicationMovements.at(-1)?.audit?.date) ?? "",
+    remarks: (applicant) => applicant.generalApplicant.applicationMovements.at(-1)?.comment,
     status: (applicant) => {
-        const lastStatus = applicant.applicationMovements.at(-1)?.status?.name;
+        const lastStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
         return lastStatus ? STATUS_MAP[lastStatus] ?? "Unknown" : "Unknown";
     },
-    attachments: () => "",
+    attachments: (applicant) => applicant.acceptedOffer?.data?.[0]?.name ?? ''
 };
 
 export interface JobOffersColumns {
@@ -142,6 +142,8 @@ export interface Applicant {
     feedback?: string;
     movement: string;
     comments: string;
+    generalApplicant: any;
+    singlePosition: any;
 }
 
 export interface SharedApplicantStore {
@@ -344,3 +346,9 @@ export type ModalsProps = {
     Acknowledgement: string;
     Department: string;
 };
+
+export type AcceptedOffer = {
+    path: string;
+    name: string;
+    isUploaded: boolean;
+}[];

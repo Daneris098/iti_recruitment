@@ -10,6 +10,8 @@ export const filterVal: ApplicantStatus = {
     applicationDateValue: "",
     position: [],
     status: [],
+    dateUpdated: undefined,
+    setDateUpdated: undefined
 }
 
 export const selectedVal: Applicants = {

@@ -52,6 +52,9 @@ export interface AllJobOffersFilterType {
   dateLastUpdatedTo: string | null;
   remarks: string[];
   dateRange?: [string | null, string | null];
+  dateGenerated?: any;
+  dateLastUpdated?: any;
+  dateArchived?: any;
 }
 
 //#region PDF PROPS
@@ -73,9 +76,14 @@ export interface PDFProps {
   acknowledgement: string;
 }
 
+export interface ExtendedPDFProps extends Partial<PDFProps> {
+  applicantId?: number;
+}
+
 export type JobOfferRecord = Partial<PDFProps> & {
   status: "Pending" | "Accepted" | "Archived" | string;
   id?: string;
+  applicantName: string;
   dateGenerated?: string;
   dateLastUpdated?: string;
   attachments: string | null;

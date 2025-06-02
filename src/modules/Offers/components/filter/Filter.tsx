@@ -1,16 +1,19 @@
-import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
-import { ListFilter } from "lucide-react";
-import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { useEffect } from "react";
-import { FilterStore } from '@src/modules/Offers/store'
-import { useJobOfferDateRangeStore, useGeneratedOfferStore, useArchivedStore, useDateUpdatedStore } from "@shared/hooks/useDateRange";
+import { ListFilter } from "lucide-react";
+import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
+import { FilterStore, useDateRangeStore } from '@src/modules/Offers/store'
+import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
+import { useGeneratedOfferStore, useArchivedStore } from "@shared/hooks/useDateRange";
 
 export default function Filter() {
-  const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
-  const { Offervalue: jobOfferDateValue } = useJobOfferDateRangeStore();
-  const { generatedOfferValue: generatedOfferValue } = useGeneratedOfferStore();
+  const {
+    setFilterDrawer, filter,
+    setFilter, setClearFilter,
+    isFiltered, setIsFiltered } = FilterStore();
+
   const { archivedValue: archiveValue } = useArchivedStore();
-  const { dateUpdatedValue: dateUpdatedValue } = useDateUpdatedStore();
+  const { dateGenerated, dateLastUpdated } = useDateRangeStore();
+  const { generatedOfferValue: generatedOfferValue } = useGeneratedOfferStore();
 
   useEffect(() => {
     const hasActiveFilters = Object.values(filter).some(value => value !== '' && value !== null);
@@ -55,7 +58,7 @@ export default function Filter() {
       </div>
     );
   };
-  
+
   const toCamelCase = (str: string): string => {
     return str
       .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
@@ -120,8 +123,8 @@ export default function Filter() {
             {filter.remarks && filter.remarks.length > 0 && renderPills('Remarks', filter.remarks)}
             {filter.department && renderSinglePill('Department', filter.department)}
             {filter.interviewer && renderSinglePill('Interviewer', filter.interviewer)}
-            {renderDateRangePills(dateUpdatedValue, 'Generated')}
-            {renderDateRangePills(jobOfferDateValue, 'Updated')}
+            {renderDateRangePills(dateGenerated, 'Generated')}
+            {renderDateRangePills(dateLastUpdated, 'Updated')}
             {renderDateRangePills(generatedOfferValue, 'Generated')}
             {renderDateRangePills(archiveValue, 'Archive')}
           </div>

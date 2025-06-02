@@ -28,7 +28,8 @@ export default function ViewApplicant({
 
   const applicantId = useApplicantIdStore((state) => state.id);
   const { data: applicantsById } = useApplicantsById(applicantId);
-  console.log('applicantId: ', applicantId)
+
+
   const {
     isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
     isGenerateNewOffer, setIsGenerateNewOffer,

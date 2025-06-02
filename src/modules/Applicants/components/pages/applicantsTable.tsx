@@ -4,7 +4,7 @@ import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
-import { usePositionFilterStore } from "@modules/Shared/store";
+import { usePositionFilterStore, useStatusFilterStore, } from "@modules/Shared/store";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
 import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
@@ -20,9 +20,11 @@ import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
 import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
+import dayjs from "dayjs";
 
 export default function index() {
-  const { selectedPositionIds } = usePositionFilterStore();
+  const { selectedStatusId } = useStatusFilterStore();
+  const { selectedPositionId } = usePositionFilterStore();
 
   const { filter } = FilterStore();
 
@@ -80,16 +82,31 @@ export default function index() {
     };
   }, [searchParams]);
 
+  const queryParams: Record<string, any> = {};
+  if (filter.applicantName) { queryParams.Name = filter.applicantName; }
+  if (selectedPositionId) { queryParams.PositionIds = selectedPositionId; }
+  if (selectedStatusId) { queryParams.StatusIds = selectedStatusId; }
+
+  if (filter.dateUpdated?.[0] || filter.dateUpdated?.[1]) {
+    const from = filter.dateUpdated[0]
+      ? dayjs(filter.dateUpdated[0]).format('YYYYMMDD')
+      : '';
+    const to = filter.dateUpdated[1]
+      ? dayjs(filter.dateUpdated[1]).format('YYYYMMDD')
+      : '';
+
+    if (from && to) {
+      queryParams.DateField = "DateTransaction";
+      queryParams.DateFrom = from;
+      queryParams.DateTo = to;
+    }
+  }
+
   const { data: getApplicants, isLoading } = useApplicants(
     page,
     pageSize,
     0,
-    {
-      Name: filter.applicantName,
-      PositionIds: selectedPositionIds,
-      dateUpdatedFrom: filter.dateUpdated?.[0] ?? null,
-      dateUpdatedTo: filter.dateUpdated?.[1] ?? null,
-    },
+    queryParams,
     setLoadTime
   );
 
@@ -148,8 +165,13 @@ export default function index() {
       filtered = transformToTransferredStatus(filtered);
     }
 
-    setRecords(filtered);
-  }, [getApplicants, location.pathname]);
+    //client-side pagination
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    const paginatedApplicants = filtered.slice(startIndex, endIndex);
+
+    setRecords(paginatedApplicants);
+  }, [getApplicants, location.pathname, page, pageSize]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
