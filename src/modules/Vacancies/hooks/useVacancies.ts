@@ -61,8 +61,6 @@ export const useVacancies = () => {
                 url += filtered;
             }
 
-            console.log('url: ', url)
-
             const startTime = performance.now();
             const res = await axiosInstance.get(url, {
                 params: {
@@ -72,7 +70,6 @@ export const useVacancies = () => {
             });
 
             if (res.status === 200 && Array.isArray(res.data.items)) {
-                console.log(res.data.items)
                 const mapped = res.data.items.map((item: any) => ({
                     ...item,
                     mustHaveSkills: item.skills,

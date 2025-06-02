@@ -149,7 +149,6 @@ export default function DrawerFilter() {
           <MultiSelect label="Company" placeholder="Select a Company" data={companies} value={selectedCompanyObjects.map((obj) => obj.value)}
             onChange={(values: string[]) => {
               const selectedObjects = companies.filter((item) => values.includes(item.value));
-              console.log('selectedObjects: ', selectedObjects)
               setSelectedCompanyObjects(selectedObjects);
             }} />
 

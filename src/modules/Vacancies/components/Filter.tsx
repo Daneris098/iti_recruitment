@@ -104,8 +104,6 @@ export default function Filter() {
     const camelCaseLabel = toCamelCase(label);
     const filterValue = (updatedFilter as any)[camelCaseLabel];
 
-    // console.log('filterValue: ', filterValue)
-    // console.log('item: ', item)
 
     // If it's an array, filter the item out
     if (Array.isArray(filterValue)) {

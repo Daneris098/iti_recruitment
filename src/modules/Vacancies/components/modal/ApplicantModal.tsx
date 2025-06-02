@@ -2,26 +2,8 @@ import { ApplicantStore } from "@modules/Vacancies/store/index"
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 // import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
 import ViewApplicant from "@modules/Shared/components/viewApplicants/index";
-import { useEffect } from "react";
 export default function index() {
     const { setIsViewApplicant, selectedApplicant, isViewApplicant } = ApplicantStore();
-
-    useEffect(() => {
-        console.log('selectedApplicant: ', selectedApplicant)
-    }, [selectedApplicant])
-
-    // const Applicant = {
-    //     ApplicantId: selectedApplicant.applicantId,
-    //     applicantName: selectedApplicant.applicantName,
-    //     position: selectedApplicant.position,
-    //     status: selectedApplicant.status,
-    //     skills: selectedApplicant.skills,
-    //     email: selectedApplicant.email,
-    //     phone: selectedApplicant.phone,
-    //     remarks: selectedApplicant.remarks,
-    //     applicationDate: selectedApplicant.applicationDate,
-    //     isJobOffer: selectedApplicant.isJobOffer
-    // }
 
     return (
         <ModalWrapper

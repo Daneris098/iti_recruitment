@@ -37,7 +37,6 @@ export default function index() {
 
     const handleRowClick = async (id: number) => {
         const { data: applicantDetails } = await applicantsByIdService.getById(id);
-        // console.log('applicantDetails: ', applicantDetails)
         setApplicantId(id);
         setSelectedApplicant(applicantDetails)
         setIsViewApplicant(true)

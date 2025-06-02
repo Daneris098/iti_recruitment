@@ -110,7 +110,6 @@ export default function DrawerFilter() {
     await axiosInstance
       .get("/recruitment/vacancies")
       .then((response) => {
-        console.log('respiii:')
         const map = response.data.items.map((item: any) => {
           return {
             id: item.id,

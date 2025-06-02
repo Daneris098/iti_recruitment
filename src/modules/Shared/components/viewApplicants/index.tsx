@@ -40,12 +40,6 @@ export default function ViewApplicant({
   const displayStatus = getDisplayStatus(Status);
   const changeTabs = getTabs({ applicantName, status: Status, remarks: Remarks });
 
-  useEffect(() => {
-    console.log('applicantName: ', applicantName)
-    console.log('Status: ', Status)
-    console.log('Remarks: ', Remarks)
-  }, [applicantName, Status, Remarks])
-
   return (
     <div className="h-screen w-full p-4">
 

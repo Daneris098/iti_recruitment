@@ -154,7 +154,6 @@ export default function index() {
                         value: item.name,
                         label: item.name,
                     }));
-                console.log('map: ', map)
                 setCities(map);
             })
             .catch((error) => {
@@ -172,7 +171,6 @@ export default function index() {
         await axiosInstance
             .get(`/general/cities/${cityId}/barangays`)
             .then((response) => {
-                console.log('barangays: ', response)
                 const seen = new Set();
                 const map = response.data.items
                     .filter((item: any) => {
@@ -291,7 +289,6 @@ export default function index() {
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={((val) => {
                             const selectedCity = cities.find(city => city.value === val);
-                            console.log('Selected city ID:', selectedCity?.id);
                             fetchBarangays(selectedCity?.id ?? 1, 1)
                             form.setFieldValue("personalInformation.presentAddress.city", val);
                         })}
