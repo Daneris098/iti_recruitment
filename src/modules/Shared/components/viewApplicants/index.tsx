@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider } from "@mantine/core";
 import profileImage from "@src/assets/jane.png";
 import { ViewApplicantsProps } from "@modules/Shared/types";
@@ -28,7 +28,7 @@ export default function ViewApplicant({
 
   const applicantId = useApplicantIdStore((state) => state.id);
   const { data: applicantsById } = useApplicantsById(applicantId);
-  console.log(applicantId)
+  console.log('applicantId: ', applicantId)
   const {
     isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
     isGenerateNewOffer, setIsGenerateNewOffer,

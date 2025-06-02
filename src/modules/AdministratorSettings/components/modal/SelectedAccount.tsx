@@ -1,5 +1,5 @@
 import { Button, Checkbox, Modal, PasswordInput, Select, TextInput } from '@mantine/core';
-import {  forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { AdministratorSettingsStore } from "@modules/AdministratorSettings/store";
 import { ResetCredentialFormVal, selectedDataInitialVal } from '@modules/AdministratorSettings/value';
 import avatar from "@assets/avatar.png";
@@ -45,7 +45,7 @@ const SelectedAccount = forwardRef((_, ref) => {
         form.setFieldValue('email', selectedUser.email)
     }, [selectedUser])
 
-    const form = useForm({  
+    const form = useForm({
         mode: 'uncontrolled',
         initialValues: ResetCredentialFormVal,
         validate: {
@@ -94,7 +94,6 @@ const SelectedAccount = forwardRef((_, ref) => {
                 formValues,
                 setAlert,
                 onSuccess: () => {
-                    setAlert(AlertType.editSuccess);
                     queryClient.refetchQueries({ queryKey: ["auth/users"], type: 'active' });
                     handleClose()
                 }
@@ -122,7 +121,7 @@ const SelectedAccount = forwardRef((_, ref) => {
         else if (isResetCredential) {
             form.validate();
             setResetCredentials(form.getValues());
-            setAlert(AlertType.resetConfirmation);   
+            setAlert(AlertType.resetConfirmation);
         }
         else {
             setAlert(AlertType.saved);
@@ -223,7 +222,7 @@ const SelectedAccount = forwardRef((_, ref) => {
                                                 checked={isGenerated}
                                                 onChange={(event) => setIsGenerated(event.currentTarget.checked)}
                                                 label="Generate Password"
-                                            />  
+                                            />
                                         </div>
                                     </div>
                                 </form>

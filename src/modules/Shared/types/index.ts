@@ -145,6 +145,8 @@ export interface Applicant {
 }
 
 export interface SharedApplicantStore {
+    selectedApplicant: any,
+    setSelectedApplicant: (setSelectedApplicant: any) => void;
     records: Applicant[];
     setSharedApplicantRecords: (rows: Applicant[]) => void;
     updateApplicantStatus: (id: string, newStatus: string) => void;

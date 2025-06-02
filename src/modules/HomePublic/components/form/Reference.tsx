@@ -1,6 +1,6 @@
 import { Divider, Checkbox, TextInput, NumberInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";
@@ -11,6 +11,8 @@ export default function index() {
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
+    const [isAlreadyCheck, setIsAlreadyCheck] = useState(false)
+    const [activeSource, setActiveSource] = useState<string | null>(null);
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -31,6 +33,17 @@ export default function index() {
         },
     });
 
+
+    useEffect(() => {
+        const hasTrue = Object.values(form.getValues().applicationSource).some(value => value === true);
+        setIsAlreadyCheck(hasTrue);
+        const found = Object.entries(form.getValues().applicationSource).find(([_, value]) => value === true);
+        setActiveSource(found ? found[0] : null);
+    }, [form.getValues()])
+
+    useEffect(() => {
+        console.log('activeSource: ', activeSource)
+    }, [activeSource])
 
     const onSubmit = async (form: Reference) => {
         setApplicationForm({ ...applicationForm, reference: form })
@@ -189,19 +202,22 @@ export default function index() {
 
                 <p className="font-bold">Application Source</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <p>How did you learn about our vacancy? How did you apply in our company? *</p>
+                <p>Let us know how did you find our company <span className="text-red-500">*</span></p>
                 <div className="flex gap-2 sm:gap-0">
                     <Checkbox
+                        disabled={isAlreadyCheck && activeSource != 'employeeReferal'}
                         {...form.getInputProps(`applicationSource.employeeReferal`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Employee Refereal"
                     />
                     <Checkbox
+                        disabled={isAlreadyCheck && activeSource != 'jobStreet'}
                         {...form.getInputProps(`applicationSource.jobStreet`, { type: 'checkbox' })}
                         className="w-[33%] "
                         label="Jobstreet"
                     />
                     <Checkbox
+                        disabled={isAlreadyCheck && activeSource != 'headHunter'}
                         {...form.getInputProps(`applicationSource.headHunter`, { type: 'checkbox' })}
                         className="w-[33%] truncate"
                         label="Headhunter"
@@ -209,20 +225,34 @@ export default function index() {
                 </div>
                 <div className="flex  gap-2 sm:gap-0">
                     <Checkbox
+                        disabled={isAlreadyCheck && activeSource != 'wordOfMouth'}
                         {...form.getInputProps(`applicationSource.wordOfMouth`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Word of Mouth"
                     />
                     <Checkbox
+                        disabled={isAlreadyCheck && activeSource != 'walkin'}
                         {...form.getInputProps(`applicationSource.walkin`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Walk-in"
                     />
-                    <Checkbox
-                        {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
-                        className="w-[33%]"
-                        label="Others"
-                    />
+                    <div className="flex items-center gap-3">
+                        <Checkbox
+                            disabled={isAlreadyCheck && activeSource != 'others'}
+                            {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
+                            className="w-[33%]"
+                            label="Others"
+                        />
+
+                        {activeSource === 'others' &&
+                            (<TextInput
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps(`applicationSource.description`)}
+                                radius="md"
+                                w={isMobile ? '25%' : '100%'}
+                                placeholder="Description"
+                            />)}
+                    </div>
                 </div>
             </div>
         </form>

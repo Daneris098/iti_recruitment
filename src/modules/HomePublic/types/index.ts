@@ -223,6 +223,7 @@ export interface ApplicationSource {
   wordOfMouth: boolean;
   walkin: boolean;
   others: boolean;
+  description: string;
 }
 
 export interface Reference {
