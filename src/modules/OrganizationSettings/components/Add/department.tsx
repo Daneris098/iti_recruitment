@@ -126,7 +126,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
               styles={{ label: { color: "#6d6d6d" } }}
               placeholder="Select Division"
               onChange={(value) => {
-                const selectedItem = divisions.data?.items.find((item) => item.id.toString() === value);
+                const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                 if (selectedItem) {
                   addDepartment.setFieldValue("division.id", selectedItem.id);
                   addDepartment.setFieldValue("division.name", selectedItem.name);

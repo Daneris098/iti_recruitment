@@ -8,10 +8,21 @@ import { IconX } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { OrganizationSettingsStore } from "@modules/OrganizationSettings/store";
 import { Panel } from "@src/modules/OrganizationSettings/assets/Enum";
+import { useAccountSetupAPI } from "../../services";
 
 export default function AlertModals() {
   const { setAlert, alert, setActiveStepper } = AccountSetupStore();
   const { setActivePanel, setReroute } = OrganizationSettingsStore();
+
+  const { profileSetup, branchSetup, companySetup, divisionSetup, otherSettingsSetup, interviewStageSetup, interviewerSetup } = useAccountSetupAPI();
+  const ProfileInfo = AccountSetupStore((state) => state.getForm("profileSetup"));
+  const BranchData = AccountSetupStore((state) => state.getForm("branchSetup"));
+  const CompanyData = AccountSetupStore((state) => state.getForm("companySetup"));
+  const DivisionData = AccountSetupStore((state) => state.getForm("divisionSetup"));
+  const OtherSettingsData = AccountSetupStore((state) => state.getForm("otherSettingsSetup"));
+  const InterviewStageData = AccountSetupStore((state) => state.getForm("interviewStageSetup"));
+  const InterviewerData = AccountSetupStore((state) => state.getForm("interviewerSetup"));
+
   const navigate = useNavigate();
   const AlertAutoClose: Record<AlertType, boolean> = {
     [AlertType.save]: false,
@@ -42,15 +53,24 @@ export default function AlertModals() {
     lg: "30%",
   });
 
+  const submitAll = () => {
+    profileSetup(ProfileInfo!);
+    companySetup(CompanyData!);
+    branchSetup(BranchData!);
+    divisionSetup(DivisionData!);
+    otherSettingsSetup(OtherSettingsData!);
+    interviewStageSetup(InterviewStageData!);
+    interviewerSetup(InterviewerData!);
+    setAlert(AlertType.saved);
+  };
+
   return (
     <>
       <Modal
         opened={alert === AlertType.save}
         withCloseButton={false}
         onClose={() => setAlert("")}
-        styles={{
-          title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
-        }}
+        styles={{ title: { color: "#559CDA", fontSize: 22, fontWeight: 600 } }}
         centered
         size={modalSize}
         padding={30}>
@@ -65,34 +85,17 @@ export default function AlertModals() {
           <HelpCircle color="#559cda" size={70} strokeWidth={1} />
           <Text className="text-xl font-bold text-center">Do you want to save all the account details you've entered?</Text>
           <div className="flex gap-2 w-[80%]">
-            <Button
-              className="w-[50%] rounded-md "
-              variant="outline"
-              onClick={() => {
-                setAlert("");
-              }}>
+            <Button className="w-[50%] rounded-md " variant="outline" onClick={() => setAlert("")}>
               NO
             </Button>
-            <Button
-              className="w-[50%] rounded-md br-gradient border-none"
-              onClick={() => {
-                setAlert(AlertType.saved);
-              }}>
+            <Button className="w-[50%] rounded-md br-gradient border-none" onClick={submitAll}>
               YES
             </Button>
           </div>
         </div>
       </Modal>
 
-      <Modal
-        opened={alert === AlertType.saved}
-        withCloseButton={false}
-        onClose={() => {
-          setAlert("");
-        }}
-        centered
-        size={modalSize}
-        padding={30}>
+      <Modal opened={alert === AlertType.saved} withCloseButton={false} onClose={() => setAlert("")} centered size={modalSize} padding={30}>
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
             <p className="text-2xl text-[#559CDA] font-semibold">Account Set-up Successful</p>
