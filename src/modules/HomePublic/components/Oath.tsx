@@ -8,9 +8,13 @@ export default function Index() {
     const [consent, setConsent] = useState('');
     const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, setSubmitLoading } = ApplicationStore();
     const { setApplicationFormModal, setAlert, setAlertBody } = HomeStore();
+    const [vacancies, setVacancies] = useState([
+        { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
+    ]);
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
+
             if (consent === 'true') {
                 setSubmitLoading(true);
                 (async () => {
@@ -53,6 +57,8 @@ export default function Index() {
                                 }
                             }
                         };
+
+
                         appendFormData({
                             name: applicationForm.generalInformation.personalInformation.fullname,
                             Photo: file,
@@ -96,12 +102,16 @@ export default function Index() {
                                     contactNo: applicationForm.familyBackground.mother.contactNumber,
                                     occupation: applicationForm.familyBackground.mother.occupation,
                                 },
-                                spouse: {
-                                    name: applicationForm.familyBackground.spouse?.fullname,
-                                    age: applicationForm.familyBackground.spouse?.age,
-                                    contactNo: applicationForm.familyBackground.spouse?.contactNumber,
-                                    occupation: applicationForm.familyBackground.spouse?.occupation,
-                                },
+                                ...(applicationForm.familyBackground.spouse?.fullname?.trim()
+                                    ? {
+                                        spouse: {
+                                            name: applicationForm.familyBackground.spouse.fullname,
+                                            age: applicationForm.familyBackground.spouse.age,
+                                            contactNo: applicationForm.familyBackground.spouse.contactNumber,
+                                            occupation: applicationForm.familyBackground.spouse.occupation,
+                                        }
+                                    }
+                                    : {}),
                                 siblings: applicationForm.familyBackground.siblings
                                     .filter(item => !(item.fullname === '' && item.age === 0 && item.occupation === '' && item.contactNumber === ''))
                                     .map(item => ({
@@ -173,18 +183,22 @@ export default function Index() {
                             ],
                             positions: [
                                 {
-                                    id: 1,
-                                    name: applicationForm.generalInformation.firstChoice,
+                                    id: applicationForm.generalInformation.firstChoice,
+                                    companyId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).company.id,
+                                    name: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).position,
                                     salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 1, name: 'First Choice' },
                                     availableDateStart: applicationForm.generalInformation.startDateAvailability,
+                                    departmentId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).department.id,
                                 },
                                 {
-                                    id: 2,
-                                    name: applicationForm.generalInformation.secondChoice,
+                                    id: applicationForm.generalInformation.secondChoice,
+                                    companyId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.secondChoice))) as any).company.id,
+                                    name: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.secondChoice))) as any).position,
                                     salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 2, name: 'Second Choice' },
                                     availableDateStart: applicationForm.generalInformation.startDateAvailability,
+                                    departmentId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.secondChoice))) as any).department.id,
                                 },
                             ],
                             questionnaires: [
@@ -206,22 +220,28 @@ export default function Index() {
                                     yearTo: formatDate(item.yearsAttended.to)
                                 }
                             }),
-                            previousEmployments: applicationForm.educationAndEmployment.employmentRecord.map((item) => {
-                                const formatDate = (date: any) => {
-                                    const d = new Date(date);
-                                    return d.toISOString().split('T')[0];
-                                };
-                                return {
-                                    company: item.employerCompany,
-                                    location: item.location,
-                                    position: item.positionHeld,
-                                    dateFrom: formatDate(item.inclusiveDate.from),
-                                    dateTo: formatDate(item.inclusiveDate.to),
-                                    salary: item.salary,
-                                    reason: item.reasonForLeaving
 
+                            ...(applicationForm.educationAndEmployment.employmentRecord.some(item => item.employerCompany?.trim())
+                                ? {
+                                    previousEmployments: applicationForm.educationAndEmployment.employmentRecord.map((item) => {
+                                        const formatDate = (date: any) => {
+                                            const d = new Date(date);
+                                            return d.toISOString().split('T')[0];
+                                        };
+                                        return {
+                                            company: item.employerCompany,
+                                            location: item.location,
+                                            position: item.positionHeld,
+                                            dateFrom: formatDate(item.inclusiveDate.from),
+                                            dateTo: formatDate(item.inclusiveDate.to),
+                                            salary: item.salary,
+                                            reason: item.reasonForLeaving
+
+                                        }
+                                    }),
                                 }
-                            }),
+                                : {}),
+
                             skills: applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(',').map((item) => {
                                 return { keyword: item }
                             }),
@@ -256,6 +276,24 @@ export default function Index() {
         }
         return () => setSubmit(false);
     }, [submit]);
+
+    const fetchLookups = async () => {
+        await axiosInstance
+            .get("/recruitment/vacancies")
+            .then((response) => {
+                setVacancies(response.data.items)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    useEffect(() => {
+        if (activeStepper === Step.Oath) {
+            fetchLookups()
+        }
+    }, [activeStepper])
 
     return (
         <div className="text-center text-[#6D6D6D] flex flex-col gap-7">

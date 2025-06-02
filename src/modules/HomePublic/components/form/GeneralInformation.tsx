@@ -20,10 +20,13 @@ export default function index() {
         { id: 2, value: 'Web Developer', label: 'Web Developer' },
     ]);
     const [cities, setCities] = useState([
+        { id: 1, value: 'MANILA', label: 'MANILA' },
     ]);
     const [barangay, setBarangay] = useState([
+        { id: 1, value: 'BRGY 12', label: 'BRGY 12' },
     ]);
     const [barangay2, setBarangay2] = useState([
+        { id: 1, value: 'BRGY 12', label: 'BRGY 12' },
     ]);
 
     const form = useForm({
@@ -129,10 +132,12 @@ export default function index() {
                 const map = response.data.items.map((item: any) => {
                     return {
                         id: item.id,
-                        value: item.positionTitleResponse,
-                        label: item.positionTitleResponse,
+                        value: `${item.id}`,
+                        label: item.position,
                     }
                 });
+                console.log('response: ', response.data.items)
+                console.log('map: ', map)
                 setVacancies(map)
             })
             .catch((error) => {
@@ -151,7 +156,7 @@ export default function index() {
                     })
                     .map((item: any) => ({
                         id: item.id,
-                        value: item.name,
+                        value: `${item.id}`,
                         label: item.name,
                     }));
                 setCities(map);
@@ -288,7 +293,7 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={((val) => {
-                            const selectedCity = cities.find(city => city.value === val);
+                            const selectedCity = cities.find(city => city.label === val);
                             fetchBarangays(selectedCity?.id ?? 1, 1)
                             form.setFieldValue("personalInformation.presentAddress.city", val);
                         })}
@@ -341,7 +346,6 @@ export default function index() {
                             classNames={{ label: 'poppins' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
                             onChange={(value) => {
-                                console.log('form.getValues().personalInformation.presentAddress: ', form.getValues().personalInformation.presentAddress)
                                 setSameAsPresent(value.target.checked);
                                 if (value.target.checked) {
                                     form.setValues({
@@ -375,8 +379,7 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={((val) => {
-                            const selectedCity = cities.find(city => city.value === val);
-                            console.log('Selected city ID:', selectedCity?.id);
+                            const selectedCity = cities.find(city => city.label === val);
                             fetchBarangays(selectedCity?.id ?? 1, 2)
                             form.setFieldValue("personalInformation.permanentAddress.city", val);
                         })}

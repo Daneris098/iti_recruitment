@@ -20,11 +20,14 @@ export default function index() {
     }, [])
 
     const handleChange = (value: any) => {
+        form.setFieldValue('otherInformation.specialTechnicalSkills', applicationForm.familyBackground.otherInformation.specialTechnicalSkills);
+        console.log('form.getValues', form.getValues())
         setTechnicalSkills(value);
     };
     const handleKeyDown = (event: any) => {
         if (event.key === 'Enter' && event.target.value) {
             const newValue = event.target.value.trim();
+            form.setFieldValue('otherInformation.specialTechnicalSkills', newValue);
             if (!technicalSkills.includes(newValue)) {
                 setTechnicalSkills((prev) => [...prev, newValue]);
                 (myRef as any).current.value = "";
@@ -34,7 +37,7 @@ export default function index() {
     };
 
     const form = useForm({
-        mode: 'uncontrolled',
+        mode: 'controlled',
         initialValues: applicationForm.familyBackground,
         validate: {
             father: {
@@ -50,6 +53,7 @@ export default function index() {
                 contactNumber: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
             otherInformation: {
+                specialTechnicalSkills: (value: string) => !value.trim() ? "Required" : null,
                 isConvictedCrimeDetails: (value: string) => !value.trim() ? "Required" : null,
                 isBeenHospitalizedDetails: (value: string) => !value.trim() ? "Required" : null,
                 medicalConditionDetails: (value: string) => !value.trim() ? "Required" : null,
@@ -146,6 +150,8 @@ export default function index() {
                     },
                 ];
 
+                console.log('application form :', applicationForm)
+                console.log('form.getValues', form.getValues())
 
                 setApplicationForm({
                     ...applicationForm,
@@ -254,7 +260,7 @@ export default function index() {
 
                 <p className="font-bold">Other Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <MultiSelect ref={myRef} classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]' }} className='w-full' label="Special Technical Skills" radius='md' placeholder="Enter Keyword to add skills" data={[]} searchable value={technicalSkills} onChange={handleChange} onKeyDown={handleKeyDown} />
+                <MultiSelect ref={myRef} key={form.key('otherInformation.specialTechnicalSkills')}  {...form.getInputProps("otherInformation.specialTechnicalSkills")} classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]' }} className='w-full' label="Special Technical Skills" radius='md' placeholder="Enter Keyword to add skills" data={[]} searchable value={technicalSkills} onChange={handleChange} onKeyDown={handleKeyDown} />
                 <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isConvictedCrimeDetails")} radius='md' w={'100%'} label="Have you ever been convicted of a crime ? if yes, please give details." placeholder="if you answer yes, please give details." />
                 <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isBeenHospitalizedDetails")} radius='md' w={'100%'} label="Have you ever been hospitalized ? if yes, please give details." placeholder="if you answer yes, please give details." />
                 <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.medicalConditionDetails")} radius='md' w={'100%'} label="Do you have any medical condition that may prevent  you from performing certain types of jobs ? please specify." placeholder="if you answer yes, please give details." />
