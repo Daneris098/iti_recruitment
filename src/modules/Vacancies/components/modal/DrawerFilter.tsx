@@ -131,7 +131,7 @@ export default function DrawerFilter() {
   };
 
   useEffect(() => {
-    // fetchLookups()
+    fetchLookups()
   }, [])
 
   const clear = () => {

@@ -12,7 +12,7 @@ export const useVacancies = () => {
     } = DataTableStore();
 
     const { filter, isFiltered } = FilterStore();
-    const { companies, departments, interviewers, status, vacancies } = FilterItemsStore();
+    const { companies, departments, status, vacancies } = FilterItemsStore();
 
     const fetchData = async () => {
 
@@ -24,75 +24,86 @@ export const useVacancies = () => {
             if (filter.company.length) {
                 const filtered = companies
                     .filter((item) => filter.company.includes(item.value))
-                    .map((item) => item.id);
-                url += `?CopmpanyIds=[${filtered}]`;
+                    .map((item) => `&CompanyIds=${item.id}`)
+                    .join('');
+                url += filtered;
             }
+
             if (filter.vacancy.length) {
                 const filtered = vacancies
                     .filter((item) => filter.vacancy.includes(item.value))
-                    .map((item) => item.id);
-                url += `?VacancyIds=[${filtered}]`;
+                    .map((item) => `&VacancyIds=${item.id}`)
+                    .join('');
+                url += filtered;
             }
+
             if (filter.dateFrom) {
-                url += `?DateFrom=${filter.dateFrom}`;
+                url += `&DateFrom=${filter.dateFrom}`;
             }
+
             if (filter.dateTo) {
-                url += `?DateTo=${filter.dateTo}`;
+                url += `&DateTo=${filter.dateTo}`;
             }
+
             if (filter.department.length) {
                 const filtered = departments
                     .filter((item) => filter.department.includes(item.value))
-                    .map((item) => item.id);
-                url += `?DepartmentIds=[${filtered}]`;
+                    .map((item) => `&DepartmentIds=${item.id}`)
+                    .join('');
+                url += filtered;
             }
+
             if (filter.status.length) {
-                // url += `?Name=[${filter.status}]`;
                 const filtered = status
                     .filter((item) => filter.status.includes(item.value))
-                    .map((item) => item.id);
-                url += `?StatusIds=[${filtered}]`;
+                    .map((item) => `&StatusIds=${item.id}`)
+                    .join('');
+                url += filtered;
             }
 
             console.log('url: ', url)
 
-            // const startTime = performance.now();
-            // const res = await axiosInstance.get(url);
+            const startTime = performance.now();
+            const res = await axiosInstance.get(url, {
+                params: {
+                    pageSize,
+                    page,
+                },
+            });
 
-            // if (res.status === 200 && Array.isArray(res.data.items)) {
-            //     console.log(res.data.items)
-            //     const mapped = res.data.items.map((item: any) => ({
-            //         ...item,
-            //         mustHaveSkills: item.skills,
-            //         company: item.company.name,
-            //         branch: item.branch.name,
-            //         division: item.division.name,
-            //         experienceLevel: item.experienceLevel.name,
-            //         vacancyType: item.vacancyType.name,
-            //         section: item.section.name,
-            //         employmentType: item.employmentType.name,
-            //         workplace: item.workplaceType.name,
-            //         vacancyDuration: { start: item.vacancyDuration.dateStart, end: item.vacancyDuration.dateEnd },
-            //         id: item.id,
-            //         position: item.position,
-            //         datePublish: item.vacancyDuration?.dateStart,
-            //         interviewer: "N/A",
-            //         department: item.department?.name || "-",
-            //         quantity: item.availableSlot,
-            //         totalApplicant: item.availableSlot,
-            //         status: item.status.name,
-            //     }));
-            //     const endTime = performance.now();
-            //     const executionTime = (endTime - startTime) / 1000;
-            //     setTime(executionTime.toFixed(3).toString());
-            //     return mapped;
-            // }
+            if (res.status === 200 && Array.isArray(res.data.items)) {
+                console.log(res.data.items)
+                const mapped = res.data.items.map((item: any) => ({
+                    ...item,
+                    mustHaveSkills: item.skills,
+                    company: item.company.name,
+                    branch: item.branch.name,
+                    division: item.division.name,
+                    experienceLevel: item.experienceLevel.name,
+                    vacancyType: item.vacancyType.name,
+                    section: item.section.name,
+                    employmentType: item.employmentType.name,
+                    workplace: item.workplaceType.name,
+                    vacancyDuration: { start: item.vacancyDuration.dateStart, end: item.vacancyDuration.dateEnd },
+                    id: item.id,
+                    position: item.position,
+                    datePublish: item.vacancyDuration?.dateStart,
+                    interviewer: "N/A",
+                    department: item.department?.name || "-",
+                    quantity: item.availableSlot,
+                    totalApplicant: item.availableSlot,
+                    status: item.status.name,
+                }));
+                const endTime = performance.now();
+                const executionTime = (endTime - startTime) / 1000;
+                setTime(executionTime.toFixed(3).toString());
+                return mapped;
+            }
 
-            // else {
-            //     console.error("Unexpected response format:", res.data);
-            //     return [];
-            // }
-            return [];
-
+            else {
+                console.error("Unexpected response format:", res.data);
+                return [];
+            }
 
         } catch (error: any) {
             console.error("Error fetching data:", error.response || error);
