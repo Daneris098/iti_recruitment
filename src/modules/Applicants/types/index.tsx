@@ -293,3 +293,8 @@ export const statusTransitions: Record<ApplicantMovementStatus, readonly Applica
     [ApplicantMovementStatus.Transferred]: [],
     [ApplicantMovementStatus.Archived]: [],
 };
+
+export type interviewStagesOption = {
+    value: number;
+    label: string;
+};

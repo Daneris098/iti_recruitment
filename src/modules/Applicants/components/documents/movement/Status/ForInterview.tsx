@@ -1,10 +1,28 @@
+import { useEffect, useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
+import { interviewStagesOption } from "@modules/Applicants/types";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import DatePicker from "@modules/Applicants/components/picker/DatePicker"
 import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 import interviewJSON from "@modules/Applicants/constants/json/interview.json";
+import { useViewInterviewStages } from "@modules/Shared/hooks/useSharedApplicants"
+
 export default function ForInterview() {
+
+    const { data: getInterviewStages } = useViewInterviewStages();
+    const [interviewStagesOptions, setInterviewStagesOptions] = useState<interviewStagesOption[]>([]);
+
+    useEffect(() => {
+        if (!getInterviewStages) return;
+
+        const options = getInterviewStages.stages.map((stage: any) => ({
+            value: stage.id,
+            label: stage.name,
+        }));
+
+        setInterviewStagesOptions(options);
+    }, [getInterviewStages]);
 
     const {
         getInterviewer, setInterviewer,
@@ -14,18 +32,13 @@ export default function ForInterview() {
         setInterviewStagesId, interviewStages,
         interviewLocation, setInterviewLocation
     } = useDropDownOfferedStore();
-    const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption(), })
-    const interviewStagesComboBox = useCombobox({ onDropdownClose: () => interviewStagesComboBox.resetSelectedOption(), })
+    const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption() })
+    const interviewStagesComboBox = useCombobox({ onDropdownClose: () => interviewStagesComboBox.resetSelectedOption() })
 
     const interviewerOptions = interviewJSON[0].interviewer.map((interviewer) => ({
         value: interviewer.id,
         label: interviewer.name
     }));
-
-    const interviewStagesOptions = interviewJSON[0].interviewStages.map((interviewStages) => ({
-        value: interviewStages.id,
-        label: interviewStages.name
-    }))
 
     const defaultLocation = "12 Catanduanes, Quezon City, 1105 Metro Manila";
 
@@ -34,6 +47,7 @@ export default function ForInterview() {
             setInterviewLocation(defaultLocation);
         }
     };
+
     return (
         <div>
             <div>
@@ -45,7 +59,6 @@ export default function ForInterview() {
                         <TextInput
                             value={interviewStages}
                             onChange={(e) => setInterviewStages(e.currentTarget.value)}
-                            // onFocus={() => interviewerCombobox.openDropdown()}
                             onFocus={(e) => {
                                 if (document.activeElement === e.currentTarget) {
                                     interviewStagesComboBox.openDropdown();
@@ -168,6 +181,6 @@ export default function ForInterview() {
                     required
                 />
             </div>
-        </div>
+        </div >
     )
 }

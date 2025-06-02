@@ -1,12 +1,13 @@
-import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
-import { ListFilter } from "lucide-react";
-import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
-import { useEffect, } from "react";
-import { FilterStore, useDateUpdatedRangeStore, useApplicationDateStore } from '@modules/Applicants/store';
-import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import dayjs from "dayjs";
+import { useEffect, } from "react";
+import { ListFilter } from "lucide-react";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { IconCirclePlus, IconTrash } from "@tabler/icons-react";
+import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
+import { FilterStore, useDateUpdatedRangeStore, useApplicationDateStore } from '@modules/Applicants/store';
 
 export default function Filter() {
+
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
   const { dateUpdated: dateUpdatedRange } = useDateUpdatedRangeStore();
   const { applicationDateValue: applicationDateRange } = useApplicationDateStore();
@@ -40,21 +41,6 @@ export default function Filter() {
     );
   };
 
-  // const renderPills = (label: any, items: any) => {
-  //   return (
-  //     <div className="flex flex-row items-center  gap-2" >
-  //       <Text className="text-xs 2xl:text-[1rem]">{label}:</Text>
-  //       <div className="flex  h-full items-center space-x-1">
-  //         {items.map((item: string, index: number) => (
-  //           <div className="">
-  //             <Pill key={index} withRemoveButton onRemove={() => removeFilter(label, item)} className="2xl:text-md bg-[#D9D9D9] text-[#6D6D6D] font-semibold" >{item}</Pill>
-  //           </div>
-  //         ))}
-  //       </div>
-  //       <Text size="xl" c="#eeeeee">|</Text>
-  //     </div>
-  //   );
-  // };
   const renderPills = (label: string, items: string[]) => {
     return (
       <div className="flex flex-row items-center gap-2">
@@ -76,7 +62,6 @@ export default function Filter() {
       </div>
     );
   };
-
 
 
   const toCamelCase = (str: string): string => {
@@ -115,7 +100,7 @@ export default function Filter() {
       date ? renderSinglePill(
         `${label} ${index === 0 ? 'From' : 'To'}`,
         DateTimeUtils.dateDefaultToHalfMonthWord(
-          dayjs(date).format("YYYY-MM-DD")  // convert Date -> string "YYYY-MM-DD"
+          dayjs(date).format("YYYY-MM-DD")
         )
       ) : null
     );
@@ -134,13 +119,9 @@ export default function Filter() {
       {isFiltered && (
         <div className="flex w-full max-h-[39px] overflow-hidden">
           <div className="scrollbar flex flex-wrap gap-2 px-4 py-1 w-full max-h-fit overflow-y-auto">
-
-            {filter.company && filter.company.length > 0 && renderPills('Company', filter.company)}
             {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}
-
             {renderDateRangePills(applicationDateRange, 'Date')}
             {renderDateRangePills(dateUpdatedRange, 'Applied')}
-
             {filter.position && filter.position.length > 0 && renderPills('Position', filter.position)}
             {filter.status && filter.status.length > 0 && renderPills('Status', filter.status)}
           </div>

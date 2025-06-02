@@ -71,3 +71,26 @@ export const useViewAcceptedOfferId = create<ApplicantId>((set) => ({
   id: 0,
   setApplicantId: (id) => set({ id }),
 }))
+
+
+interface DateRangeState {
+  dateGenerated: [Date | null, Date | null];
+  setDateGenerated: (newValue: [Date | null, Date | null]) => void,
+
+  dateLastUpdated: [Date | null, Date | null];
+  setDateLastUpdated: (newValue: [Date | null, Date | null]) => void,
+
+  dateArchived: [Date | null, Date | null];
+  setDateArchived: (newValue: [Date | null, Date | null]) => void,
+}
+
+export const useDateRangeStore = create<DateRangeState>((set) => ({
+  dateGenerated: [null, null],
+  setDateGenerated: (newValue) => set({ dateGenerated: newValue }),
+
+  dateLastUpdated: [null, null],
+  setDateLastUpdated: (newValue) => set({ dateLastUpdated: newValue }),
+
+  dateArchived: [null, null],
+  setDateArchived: (newValue) => set({ dateArchived: newValue }),
+}))

@@ -61,12 +61,22 @@ export const useSelectedApplicantsStore = create<SelectedApplicantsStore>((set) 
         set((state) => ({ selectedIds: state.selectedIds.filter((selectedId) => selectedId !== id) })),
 }));
 
+interface StatusFilterStore {
+    selectedStatusId: number;
+    SetSelectedStatusId: (id: number) => void;
+}
+
+export const useStatusFilterStore = create<StatusFilterStore>((set) => ({
+    selectedStatusId: 0,
+    SetSelectedStatusId: (id) => set({ selectedStatusId: id }),
+}))
+
 interface PositionFilterStore {
-    selectedPositionIds: string[];
-    setSelectedPositionIds: (ids: string[]) => void;
+    selectedPositionId: number;
+    setSelectedPositionId: (id: number) => void;
 }
 
 export const usePositionFilterStore = create<PositionFilterStore>((set) => ({
-    selectedPositionIds: [],
-    setSelectedPositionIds: (ids) => set({ selectedPositionIds: ids }),
+    selectedPositionId: 0,
+    setSelectedPositionId: (id) => set({ selectedPositionId: id }),
 }));

@@ -32,6 +32,6 @@
       "@assets/*": ["src/assets/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "proxy.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

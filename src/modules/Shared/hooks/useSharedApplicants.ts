@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import {
     ArchiveForm,
     HiredForm, OfferForm,
@@ -8,8 +8,7 @@ import {
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
 import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
-import { applicantsByIdService, viewApplicantOfferService } from "@modules/Shared/components/api/UserService"
-import { useSharedUserService, useSharedTransferredPosition } from "@modules/Shared/api/useSharedUserService";
+import { applicantsByIdService, viewApplicantOfferService, useViewInterviewStagesHiring } from "@modules/Shared/components/api/UserService"
 import {
     applicationMovementHired,
     applicationMovementArchive, applicationMovementForTransfer,
@@ -19,6 +18,7 @@ import {
 import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { payloadMapper } from "@modules/Shared/utils/payloadMapper";
+import { useSharedUserService, useSharedTransferredPosition, useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -64,7 +64,6 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
     const [firstPositionApplied, secondPositionApplied] = positionsApplied;
     const mapComments = applicationMovements.map((item: any) => item.comment)
     const mapApplicationMovements = applicationMovements.map((item: any) => item.status.name);
-    // debugger;
     return {
         name: nameResponse.normalName,
         generalInformation: {
@@ -220,11 +219,20 @@ export const useViewOfferedApplicants = (id: string | number) => {
         select: (data) => formatApplicantById(data),
     })
 }
-// debugger;
-export const formatApplicant = (applicant: any, page: number, pageSize: number, total: number): Applicant => {
+
+export const formatApplicant = (
+    applicant: any,
+    page: number,
+    pageSize: number,
+    total: number,
+    // acceptedOffers: any[]
+): Applicant => {
     const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
-    const position = applicant.positionsApplied?.[applicant.positionsApplied.length - 1];
     const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
+    const firstTwoPositions = applicant.positionsApplied?.slice(0, 2) || [];
+    const positionNames = firstTwoPositions.map((pos: any) => pos.name).join(", ");
+    const singlePosition = applicant.positionsApplied?.[applicant.positionsApplied.length - 1] || null;
+    // const acceptedOffer = acceptedOffers.find((offer) => offer.applicantId === applicant.id);
 
     let movement;
     if (applicant.applicationMovements?.length === 1) {
@@ -236,20 +244,23 @@ export const formatApplicant = (applicant: any, page: number, pageSize: number, 
     return {
         id: applicant.id,
         applicantName: `${applicant.nameResponse.firstName} ${applicant.nameResponse.lastName}`,
-        applicationDate: new Date(applicant.dateApplied).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
+        applicationDate: new Date(applicant.dateApplied).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
         }),
         phone: applicant.contact.mobileNo,
         email: applicant.contact.emailAddress,
-        position: position?.name,
+        position: positionNames,
         status: movement?.status?.name,
         page,
         pageSize,
         total,
         movement: mapApplicationMovements,
         comments: mapComments,
+        generalApplicant: applicant,
+        singlePosition,
+        // acceptedOffer
     };
 };
 
@@ -294,25 +305,107 @@ export const useTransferPositionLookup = (
     };
 };
 
-export const useApplicants = (
-    page: number = 0,
-    pageSize: number = 0,
-    statusId?: number,                        // single statusId
-    filters: Record<string, any> = {},
-    setTime?: (time: number) => void
+export const useViewInterviewStages = (
 ) => {
     return useQuery({
-        queryKey: sharedApplicantKeys.list({ page, pageSize, statusId, ...filters }),
+        queryKey: sharedApplicantKeys.list({
+        }),
+        queryFn: async () => {
+            const apiFilters: Record<string, any> = {
+            };
+            const data = await useViewInterviewStagesHiring.getAll(apiFilters);
+            const stages = data.items.map((item: any) => ({
+                id: item.id,
+                name: item.name,
+                sequenceNo: item.sequenceNo,
+                isActive: item.isActive,
+            }));
+
+            return {
+                stages,
+                total: data.total,
+            };
+        },
+    });
+};
+
+const DEFAULT_FETCH_ALL_PAGE = 1;
+const DEFAULT_FETCH_ALL_PAGE_SIZE = 60;
+
+// export const useViewAcceptedOffer = (id: string | number) => {
+//     return useQuery({
+//         queryKey: sharedApplicantKeys.list({}),
+//         queryFn: async () => {
+//             const data = await useSharedViewAcceptedOffer.getAcceptedOfferId(id)
+//             // debugger;
+//             return data
+//         },
+//         enabled: !!id
+//     })
+
+// }
+// export const useViewAcceptedOffer = (id: string | number) => {
+//     return useQuery({
+//         queryKey: ['accepted-offer', id],
+//         queryFn: async () => {
+//             return await useSharedViewAcceptedOffer.getAcceptedOfferId(id);
+//         },
+//         enabled: !!id,
+//     });
+// };
+
+export const useViewAcceptedOffer = (ids: (string | number)[]) => {
+    return useQueries({
+        queries: ids.map(id => ({
+            queryKey: ['accepted-offer', id],
+            queryFn: async () => {
+                return await useSharedViewAcceptedOffer.getAcceptedOfferId(id);
+            },
+            enabled: !!id,
+        })),
+    });
+};
+
+export const useSingleAcceptedOffer = (id: string | number) => {
+    return useQuery({
+        queryKey: ['accepted-offer', id],
+        queryFn: async () => await useSharedViewAcceptedOffer.getAcceptedOfferId(id),
+        enabled: !!id,
+    });
+};
+
+export const useApplicants = (
+    page: number = 1,
+    pageSize: number = 30,
+    statusId?: number,
+    filters: Record<string, any> = {},
+    setTime?: (time: number) => void,
+    fetchAll: boolean = true,
+    // acceptedOffers: any[]
+) => {
+    return useQuery({
+        queryKey: sharedApplicantKeys.list({
+            page: fetchAll ? DEFAULT_FETCH_ALL_PAGE : page,
+            pageSize: fetchAll ? DEFAULT_FETCH_ALL_PAGE_SIZE : pageSize,
+            statusId,
+            ...filters,
+        }),
         queryFn: async () => {
             const start = performance.now();
-            const apiFilters: Record<string, any> = { page, pageSize, ...filters };
+
+            const apiFilters: Record<string, any> = {
+                ...filters,
+                page: fetchAll ? DEFAULT_FETCH_ALL_PAGE : page,
+                pageSize: fetchAll ? DEFAULT_FETCH_ALL_PAGE_SIZE : pageSize,
+            };
+
             if (statusId !== undefined) {
-                apiFilters.statusId = statusId;     // include in API call if defined
+                apiFilters.statusId = statusId;
             }
 
             const data = await useSharedUserService.getAll(apiFilters);
-
             const end = performance.now();
+
             if (setTime) setTime((end - start) / 1000);
 
             const applicants = data.items.map(item =>
@@ -321,11 +414,10 @@ export const useApplicants = (
 
             return {
                 applicants,
+                total: data.total,
                 page,
                 pageSize,
-                total: data.total,
-                items: data.items,
-                statusId,                            // expose the same statusId for consumer use
+                statusId,
             };
         },
         staleTime: 60 * 1000,
