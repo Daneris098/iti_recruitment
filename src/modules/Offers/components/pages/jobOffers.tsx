@@ -1,33 +1,31 @@
 //#region IMPORTS
+import dayjs from "dayjs";
 import { DataTable } from "mantine-datatable";
 import { PDFViewer } from "@react-pdf/renderer";
 import { Pagination, Tabs } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { useStatusFilterStore } from "@modules/Shared/store";
 import Filter from "@modules/Offers/components/filter/Filter";
-import { IconFileCheck, IconFileX } from "@tabler/icons-react";
+import { useApplicantIdStore } from "@modules/Applicants/store";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import PDFDocument from "@modules/Offers/components/documents/PDF";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
 import { useApplicants } from "@modules/Shared/hooks/useSharedApplicants";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
-import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey } from "@modules/Offers/types";
+import { useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
-import { useJobOfferStore, useSortStore, FilterStore, useViewAcceptedOfferId } from "@src/modules/Offers/store";
+import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
+import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey, ExtendedPDFProps } from "@modules/Offers/types";
 
-import { useApplicantIdStore } from "@modules/Applicants/store";
-interface ExtendedPDFProps extends PDFProps {
-    applicantId?: number;
-}
 export default function index() {
-    const applicantId = useApplicantIdStore((state) => state.id);
-    const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 
-    console.log(applicantId)
-
-
+    const { filter } = FilterStore();
+    const { selectedStatusId } = useStatusFilterStore();
     const [searchParams, setSearchParams] = useSearchParams();
+    const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+    const [loadTime, setLoadTime] = useState<number | null>(null);
 
     const { page, pageSize } = useMemo(() => {
         return {
@@ -44,6 +42,56 @@ export default function index() {
             return params;
         })
     }
+    
+    const queryParams: Record<string, any> = {};
+    if (filter.applicantName) { queryParams.Name = filter.applicantName }
+    if (selectedStatusId) { queryParams.StatusIds = selectedStatusId }
+
+    if (filter.dateGenerated?.[0] || filter.dateGenerated?.[1]) {
+        const generatedFrom = filter.dateGenerated[0] ? dayjs(filter.dateGenerated[0]).format("YYYYMMDD") : '';
+        const generatedTo = filter.dateGenerated[1] ? dayjs(filter.dateGenerated[1]).format("YYYYMMDD") : '';
+
+        if (generatedFrom && generatedTo) {
+            queryParams.DateField = "DateTransaction";
+            queryParams.DateFrom = generatedFrom;
+            queryParams.DateTo = generatedTo
+        }
+    }
+
+    if (filter.dateLastUpdated?.[0] || filter.dateLastUpdated?.[1]) {
+        const updatedFrom = filter.dateLastUpdated[0] ? dayjs(filter.dateLastUpdated[0]).format("YYYYMMDD") : '';
+        const updatedTo = filter.dateLastUpdated[1] ? dayjs(filter.dateLastUpdated[1]).format("YYYYMMDD") : '';
+
+        if (updatedFrom && updatedTo) {
+            queryParams.DateField = "DateTransaction";
+            queryParams.DateFrom = updatedFrom;
+            queryParams.DateTo = updatedTo
+        }
+    }
+
+    if (filter.dateArchived?.[0] || filter.dateArchived?.[1]) {
+        const archivedFrom = filter.dateArchived[0] ? dayjs(filter.dateArchived[0]).format("YYYYMMDD") : '';
+        const archivedTo = filter.dateArchived[1] ? dayjs(filter.dateArchived[1]).format("YYYYMMDD") : '';
+
+        if (archivedFrom && archivedTo) {
+            queryParams.DateField = 'DateTransaction';
+            queryParams.DateFrom = archivedFrom;
+            queryParams.DateTo = archivedTo
+        }
+    }
+
+    const { data: sharedApplicants } = useApplicants(
+        page,
+        pageSize,
+        0,
+        queryParams,
+        setLoadTime
+    );
+
+    const hiredApplicantIds = sharedApplicants?.applicants
+        ?.filter(a => a.status === 'Hired')
+        ?.map(a => a.id) || [];
+
     const filterRecords = (tab: TabKey, records: JobOfferRecord[]) => {
         if (tab === "All_offers") return records
         return records.filter(record => record.status === tab);
@@ -53,43 +101,69 @@ export default function index() {
     const { sortedRecords, setSort } = useSortStore();
     const { activeTab, setActiveTab } = FilterStore();
     const { records, loadCandidates } = useJobOfferStore();
-    const [loadTime, setLoadTime] = useState<number | null>(null);
-    const { data: sharedApplicants } = useApplicants(page, pageSize, {}, setLoadTime);
     const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
-    //#endregion
 
+    //#endregion
     const filteredRecords = filterRecords(activeTab!, sortedRecords.length > 0 ? sortedRecords : records);
     const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
 
+    const [acceptedOffers, setAcceptedOffers] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (!hiredApplicantIds.length) return;
+
+        Promise.all(hiredApplicantIds.map(id => useSharedViewAcceptedOffer.getAcceptedOfferId(id)))
+            .then(setAcceptedOffers)
+            .catch(console.error);
+    }, [hiredApplicantIds]);
+
     // HOOKS
     useEffect(() => {
-        if (!sharedApplicants?.items) return;
+        if (!sharedApplicants?.applicants || !acceptedOffers.length || !hiredApplicantIds.length) return;
 
-        // Transform the applicants into an array of JobOffersColumns objects
-        const transformedApplicants: JobOffersColumns[] = sharedApplicants.items
+        const startTime = performance.now();
+
+        // Build a map of applicantId -> acceptedOffer using hiredApplicantIds
+        const offerMap = hiredApplicantIds.reduce((map, id, index) => {
+            map[id] = acceptedOffers[index]; // acceptedOffers[i] corresponds to hiredApplicantIds[i]
+            return map;
+        }, {} as Record<number | string, any>);
+
+        // Merge each applicant with their accepted offer
+        const applicantsWithOffers = sharedApplicants.applicants.map(applicant => ({
+            ...applicant,
+            acceptedOffer: offerMap[applicant.id] ?? null,
+        }));
+
+        // Transform the merged applicant data
+        const transformed: JobOffersColumns[] = applicantsWithOffers
             .filter(applicant => {
-                const lastStatus = applicant.applicationMovements.at(-1)?.status.name;
-                return lastStatus && lastStatus in STATUS_MAP;
+                const lastStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
+                return !!lastStatus && lastStatus in STATUS_MAP;
             })
             .map(applicant => {
-
-                // Create an object that matches the JobOffersColumns type
                 const result = {} as JobOffersColumns;
 
-                // Populate the object with transformed fields and ensure no undefined values
-                Object.entries(APPLICANT_FIELDS).forEach(([key, transformFn]) => {
+                for (const key in APPLICANT_FIELDS) {
+                    if (key === 'status') {
+                        const rawStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
+                        result.status = STATUS_MAP[rawStatus as keyof typeof STATUS_MAP];
+                    } else if (key === 'attachments') {
+                        // Assign accepted offer filename if exists
+                        result.attachments = applicant.acceptedOffer?.data?.[0]?.name ?? '';
+                    } else {
+                        result[key as keyof JobOffersColumns] = APPLICANT_FIELDS[key](applicant) ?? '';
+                    }
+                }
 
-                    // Cast the key to keyof JobOffersColumns to access the property
-                    const typedKey = key as keyof JobOffersColumns;
-
-                    // Assign the value to the result object
-                    result[typedKey] = transformFn(applicant) ?? '';
-                });
                 return result;
             });
 
-        loadCandidates(transformedApplicants);
-    }, [sharedApplicants]);
+        loadCandidates(transformed);
+
+        const endTime = performance.now();
+        setLoadTime((endTime - startTime) / 1000);
+    }, [sharedApplicants?.applicants, acceptedOffers]);
 
     // #region CONSTANTS
     const TABS = [
@@ -102,7 +176,7 @@ export default function index() {
     const columnSets: Record<TabKey, string[]> = {
         Pending: ["id", "applicantName", "dateGenerated", "dateLastUpdated", "status"],
         Accepted: ["id", "applicantName", "dateGenerated", "dateLastUpdated", "status", "attachments"],
-        All_offers: ["id", "applicantName", "dateGenerated", "dateLastUpdated", "status", "attachments"],
+        All_offers: ["id", "applicantName", "dateGenerated", "dateLastUpdated", "remarks", "status", "attachments"],
         Archived: ["id", "applicantName", "dateGenerated", "dateLastUpdated", "status", "remarks", "attachments"],
     };
     //#endregion
@@ -112,20 +186,8 @@ export default function index() {
         setApplicantId(row.applicantId!);
         setSelectedRow(row);
     };
-    debugger;
 
     const renderCell = (col: { accessor: string }, row: Row) => {
-        if (col.accessor === "attachments") {
-            if (!row.attachments) return null;
-            const isPending = row.status?.toLowerCase() === 'pending';
-            const Icon = isPending ? IconFileX : IconFileCheck;
-
-            return (
-                <span className="flex justify-center mr-5">
-                    <Icon className="text-gray-600 w-[34px] h-[34px] stroke-1" />
-                </span>
-            );
-        }
 
         let content = col.accessor === "status" ? checkStatus(row.status) : row[col.accessor as keyof Row];
 

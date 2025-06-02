@@ -1,5 +1,7 @@
 import { apiClient } from "@shared/services/apiClient";
 import { ApplicantResponseById } from "@modules/Shared/types";
+import { BaseService } from "@shared/services/baseService";
+import { ApplicantResponse } from "@modules/Shared/types";
 
 export const applicantsByIdService = {
     getById: (idOrGuid: string | number) =>
@@ -10,3 +12,5 @@ export const viewApplicantOfferService = {
     getById: (idOrGuid: string | number) =>
         apiClient.get<ApplicantResponseById>(`recruitment/applicants/${idOrGuid}`),
 }
+
+export const useViewInterviewStagesHiring = new BaseService<ApplicantResponse>(apiClient, "/recruitment/hiring/interview-stages");

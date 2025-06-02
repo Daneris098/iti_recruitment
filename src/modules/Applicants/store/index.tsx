@@ -14,7 +14,8 @@ interface Applicant {
   status: string;
   feedback?: string;
   movement: any;
-  comments: any;
+  comments: string;
+  singlePosition: any;
 }
 
 interface ApplicantStore {
