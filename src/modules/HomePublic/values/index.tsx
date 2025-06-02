@@ -178,6 +178,7 @@ export const referenceValue: Reference = {
     wordOfMouth: false,
     walkin: false,
     others: false,
+    description: ''
   },
 };
 

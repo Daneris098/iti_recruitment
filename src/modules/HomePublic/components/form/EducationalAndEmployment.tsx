@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
-import dayjs from "dayjs";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 
 export default function index() {

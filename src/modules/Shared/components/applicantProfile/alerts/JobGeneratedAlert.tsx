@@ -87,21 +87,21 @@ export default function JobGeneratedAlert({ title, onClose }: JobGeneratedAlertP
                 <Modal size={'65%'} opened={isViewPDF} onClose={() => setIsViewPDF(false)} title={title === "Offered" ? "Generate Offer" : "Job Offer"}>
                     <PDFViewer width="100%" height="710" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
                         <MyDocument
-                            Applicant_Name=""
-                            Position=""
-                            Department=""
-                            Remarks=""
-                            Salary_Monthly=""
-                            Salary_Yearly=""
-                            Note_Salary=""
-                            Merit_Increase=""
-                            Description_VL=""
-                            Description_SL=""
-                            Description_BL=""
-                            Benefit_Paternity=""
-                            Benefit_Maternity=""
-                            Description_Transpo=""
-                            Acknowledgement=""
+                            applicantName=""
+                            position=""
+                            department=""
+                            remarks=""
+                            salaryMonthly=""
+                            salaryYearly=""
+                            noteSalary=""
+                            meritIncrease=""
+                            descriptionVL=""
+                            descriptionSL=""
+                            descriptionBL=""
+                            benefitPaternity=""
+                            benefitMaternity=""
+                            descriptionTranspo=""
+                            acknowledgement=""
                         />
                     </PDFViewer>
                     <div className="py-9 flex justify-center space-x-9">
