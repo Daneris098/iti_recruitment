@@ -8,7 +8,10 @@ import {
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
 import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
-import { applicantsByIdService, viewApplicantOfferService, useViewInterviewStagesHiring } from "@modules/Shared/components/api/UserService"
+import {
+applicantsByIdService,
+    viewApplicantOfferService, useViewInterviewStagesHiring
+} from "@modules/Shared/components/api/UserService"
 import {
     applicationMovementHired,
     applicationMovementArchive, applicationMovementForTransfer,
