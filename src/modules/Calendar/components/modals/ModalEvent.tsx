@@ -13,10 +13,18 @@ import Modal from "@shared/template/container/Modal";
 import { ModalViewEventProps } from "../../assets/Types";
 //--- Calendar Store
 import { useCalendarStore } from "../../store";
+import { applicantsByIdService } from "@src/modules/Shared/components/api/UserService";
+import { ApplicantStore } from "@modules/Vacancies/store/index";
+import { useApplicantIdStore } from "@modules/Applicants/store";
+import { useSharedApplicantStore } from "@src/modules/Shared/store";
 
 
 export default function ModalViewEvent(_: ModalViewEventProps) {
   const { onViewEvent, setOnViewEvent, setOnViewApplicant, setOnViewResched, details } = useCalendarStore();
+  const { selectedData, setSelectedData, setIsViewApplicant } = ApplicantStore();
+  const { selectedApplicant, setSelectedApplicant } = useSharedApplicantStore();
+
+  const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 
   const propsFunc = {
     opened: onViewEvent,
@@ -29,9 +37,14 @@ export default function ModalViewEvent(_: ModalViewEventProps) {
     setOnViewResched(true);
   };
 
-  const handleOpenApplicant = () => {
-    setOnViewEvent(false);
-    setOnViewApplicant(true);
+  const handleOpenApplicant = async () => {
+    const { data: applicantDetails } = await applicantsByIdService.getById(details.applicant.id);
+    console.log('applicantDetails: ', applicantDetails)
+    setApplicantId(details.applicant.id);
+    setSelectedApplicant(applicantDetails)
+    setIsViewApplicant(true)
+    // setOnViewEvent(false);
+    // setOnViewApplicant(true);
   };
 
   return (
@@ -46,15 +59,15 @@ export default function ModalViewEvent(_: ModalViewEventProps) {
         <Flex w="100%" display="flex" dir="row" mb={30}>
           <Container w="50%">
             <Text c="#6d6d6d" fw={700} size="18px">
-              {details.date} 
+              {details.date}
             </Text>
             <Text c="#424242" size="16px">
-              {details.time} 
+              {details.time}
             </Text>
           </Container>
           <Container w="50%">
             <Text c="#6d6d6d" fw={700} size="18px">
-              {details.applicant.name} 
+              {details.applicant.name}
             </Text>
             <Text c="#424242" size="16px">
               {details.applicant.position.name}

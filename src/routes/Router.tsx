@@ -89,13 +89,13 @@ const isAuthenticated = () => {
 
 // Authentication wrapper
 const RequireAuth: React.FC = () => {
-  // return <Outlet />;      
+  // return <Outlet />;
   return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 // Redirect wrapper for public routes
 const RedirectIfAuthenticated: React.FC = () => {
-  // return <Outlet />;      
+  // return <Outlet />;
   return isAuthenticated() ? <Navigate to="/home" replace /> : <Outlet />;
 };
 

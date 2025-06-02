@@ -56,7 +56,7 @@ export const DataTableStore = create<DataTableState>((set) => ({
   search: '',
   totalRecords: 0,
   page: 1,
-  pageSize: 20,
+  pageSize: 3,
   sortStatus: { columnAccessor: 'id', direction: 'desc' },
 
   setSortStatus: (status: any) => set({ sortStatus: status }),
@@ -103,3 +103,57 @@ export const useApplicantIdStore = create<ApplicantId>((set) => ({
   id: 0,
   setApplicantId: (id) => set({ id }),
 }))
+
+
+interface OptionItem {
+  id: number;
+  value: string;
+  label: string;
+}
+
+interface AppState {
+  companies: OptionItem[];
+  departments: OptionItem[];
+  interviewers: OptionItem[];
+  status: OptionItem[];
+  vacancies: OptionItem[];
+
+  setCompanies: (companies: OptionItem[]) => void;
+  setDepartments: (departments: OptionItem[]) => void;
+  setInterviewers: (interviewers: OptionItem[]) => void;
+  setStatus: (status: OptionItem[]) => void;
+  setVacancies: (vacancies: OptionItem[]) => void;
+}
+
+export const FilterItemsStore = create<AppState>((set) => ({
+  companies: [
+    { id: 1, value: 'Company A', label: 'Company A' },
+    { id: 2, value: 'Company B', label: 'Company B' },
+    { id: 3, value: 'Company C', label: 'Company C' },
+    { id: 4, value: 'Company D', label: 'Company D' },
+  ],
+  departments: [
+    { id: 1, value: 'HR', label: 'HR' },
+    { id: 2, value: 'Engineering', label: 'Engineering' },
+    { id: 3, value: 'Marketing', label: 'Marketing' },
+  ],
+  interviewers: [
+    { id: 1, value: 'Alice', label: 'Alice' },
+    { id: 2, value: 'Bob', label: 'Bob' },
+  ],
+  status: [
+    { id: 1, value: 'Pending', label: 'Pending' },
+    { id: 2, value: 'Interviewed', label: 'Interviewed' },
+    { id: 3, value: 'Hired', label: 'Hired' },
+  ],
+  vacancies: [
+    { id: 1, value: 'Frontend Dev', label: 'Frontend Dev' },
+    { id: 2, value: 'Backend Dev', label: 'Backend Dev' },
+  ],
+
+  setCompanies: (companies) => set({ companies }),
+  setDepartments: (departments) => set({ departments }),
+  setInterviewers: (interviewers) => set({ interviewers }),
+  setStatus: (status) => set({ status }),
+  setVacancies: (vacancies) => set({ vacancies }),
+}));
