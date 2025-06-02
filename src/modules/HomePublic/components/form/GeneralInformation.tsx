@@ -1,18 +1,28 @@
-import { Divider, Select, TextInput, Popover, Checkbox, NumberInput } from "@mantine/core";
+import { Divider, Select, TextInput, Popover, Checkbox, NumberInput, Autocomplete } from "@mantine/core";
 import { useForm } from '@mantine/form';
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore } from "@modules/HomePublic/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Step, GeneralInformation } from '@modules/HomePublic/types';
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
+import axiosInstance from "@src/api";
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
+    const [sameAsPresent, setSameAsPresent] = useState(false);
+    const [vacancies, setVacancies] = useState([
+        { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
+        { id: 2, value: 'Web Developer', label: 'Web Developer' },
+    ]);
+    const [cities, setCities] = useState([
+        { id: 1, value: 'Caloocan City', label: 'Caloocan City' },
+        { id: 2, value: 'Quezon City', label: 'Quezon City' },
+    ]);
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -63,6 +73,18 @@ export default function index() {
                 mobileNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
                 landlineNumber: (value: string) => value.length < 10 ? "Enter a valid mobile number" : null,
+
+                governmentIdOrNumber: {
+                    sssNo: (value: string) => value.length != 10 ? "Please input a valid SSS Number" : null,
+                    gsisNo: (value: string) => value.length != 11 ? "Please input a valid GSIS Number" : null,
+                    pagibigNo: (value: string) => value.length != 11 ? "Please input a valid GSIS Number" : null,
+                    driversLicense: (value: string) => value.length != 11 ? "Please input a valid Driver's License Number" : null,
+                    philhealthNo: (value: string) => value.length != 12 ? "Please input a valid Philhealth Number" : null,
+                    passport: (value: string) => value.length != 12 ? "Please input a valid Passport Number" : null,
+                    tinNo: (value: string) => !(9 <= value.length && value.length <= 12) ? "Please input a valid Tin Number" : null,
+                    rdoCode: (value: string) => value.length != 3 ? "RDO Code is required" : null,
+                }
+
             }
         }
     });
@@ -95,6 +117,53 @@ export default function index() {
         // setApplicationForm({ ...applicationForm, generalInformation: { ...applicationForm.generalInformation, personalInformation: { ...applicationForm.generalInformation.personalInformation, age: age } } });
     }, [form.getValues().personalInformation.dateOfBirth]);
 
+
+
+    const fetchLookups = async () => {
+        await axiosInstance
+            .get("/recruitment/vacancies")
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        value: item.positionTitleResponse,
+                        label: item.positionTitleResponse,
+                    }
+                });
+                setVacancies(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+        await axiosInstance
+            .get("/general/cities")
+            .then((response) => {
+                const seen = new Set();
+                const map = response.data.items
+                    .filter((item: any) => {
+                        if (seen.has(item.name)) return false;
+                        seen.add(item.name);
+                        return true;
+                    })
+                    .map((item: any) => ({
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }));
+
+                setCities(map);
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    useEffect(() => {
+        fetchLookups()
+    }, [])
+
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
@@ -108,7 +177,7 @@ export default function index() {
                         label="Position Applying for - First Choice"
                         placeholder={"First Choice"}
                         radius={8}
-                        data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                        data={vacancies}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
@@ -121,7 +190,7 @@ export default function index() {
                         label="Position Applying for - Second Choice"
                         placeholder={"Second Choice"}
                         radius={8}
-                        data={["Software Engineer", "Web Developer", "Mobile Developer", "QA"]}
+                        data={vacancies}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
@@ -153,7 +222,7 @@ export default function index() {
                             />
                         </Popover.Target>
                         <Popover.Dropdown className="w-full">
-                            <DatePicker firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => { form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            <DatePicker minDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => { form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
                         </Popover.Dropdown>
                     </Popover>
                 </div>
@@ -186,7 +255,18 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
-                    <Select
+                    <Autocomplete
+                        {...form.getInputProps("personalInformation.presentAddress.city")}
+                        w={isMobile ? '25%' : '100%'}
+                        placeholder={"City"}
+                        radius={8}
+                        data={cities}
+                        rightSection={<IconCaretDownFilled size='18' />}
+                        className="border-none w-full text-sm"
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                    />
+                    {/* <Select
                         {...form.getInputProps("personalInformation.presentAddress.city")}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
@@ -196,7 +276,7 @@ export default function index() {
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
-                    />
+                    /> */}
                     <Select
                         {...form.getInputProps("personalInformation.presentAddress.zipCode")}
                         w={isMobile ? '25%' : '100%'}
@@ -224,10 +304,12 @@ export default function index() {
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative">
                     <div className={cn("w-[100%]", isMobile && "w-[25%]  bg-green-400")}>
                         <Checkbox
+                            checked={sameAsPresent}
                             label="Same as Present Address"
                             classNames={{ label: 'poppins' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
                             onChange={(value) => {
+                                setSameAsPresent(value.target.checked);
                                 if (value.target.checked) {
                                     form.setValues({
                                         ...form.getValues(),
@@ -239,14 +321,15 @@ export default function index() {
                                 }
                             }}
                         />
-                        <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
+                        <TextInput disabled={sameAsPresent} withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
                     </div>
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.subdivision")} key={form.key('personalInformation.permanentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
+                    <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
+                    <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
+                    <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.subdivision")} key={form.key('personalInformation.permanentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <Select
+                        disabled={sameAsPresent}
                         key={form.key('personalInformation.permanentAddress.barangay')}
                         {...form.getInputProps("personalInformation.permanentAddress.barangay")}
                         w={isMobile ? '25%' : '100%'}
@@ -258,19 +341,21 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
-                    <Select
+                    <Autocomplete
+                        disabled={sameAsPresent}
                         key={form.key('personalInformation.permanentAddress.city')}
-                        {...form.getInputProps("personalInformation.permanentAddress.city")}
+                        {...form.getInputProps("personalInformation.presentAddress.city")}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
                         radius={8}
-                        data={["Caloocan City", "Quezon City", "Manila City"]}
+                        data={cities}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
+                        disabled={sameAsPresent}
                         key={form.key('personalInformation.permanentAddress.zipCode')}
                         {...form.getInputProps("personalInformation.permanentAddress.zipCode")}
                         w={isMobile ? '25%' : '100%'}
@@ -283,6 +368,7 @@ export default function index() {
                         styles={{ label: { color: "#6d6d6d" } }}
                     />
                     <Select
+                        disabled={sameAsPresent}
                         key={form.key('personalInformation.permanentAddress.livingArrangement')}
                         {...form.getInputProps("personalInformation.permanentAddress.livingArrangement")}
                         w={isMobile ? '25%' : '100%'}
@@ -319,7 +405,7 @@ export default function index() {
                             />
                         </Popover.Target>
                         <Popover.Dropdown className="w-full">
-                            <DatePicker firstDayOfWeek={0}  {...form.getInputProps("personalInformation.dateOfBirth")} onChange={(value: Date | null) => { form.setFieldValue("personalInformation.dateOfBirth", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            <DatePicker maxDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("personalInformation.dateOfBirth")} onChange={(value: Date | null) => { form.setFieldValue("personalInformation.dateOfBirth", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
                         </Popover.Dropdown>
                     </Popover>
 

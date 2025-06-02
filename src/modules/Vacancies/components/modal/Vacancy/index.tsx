@@ -30,6 +30,12 @@ export default function index() {
     const [opened, setOpened] = useState(false);
     const [opened2, setOpened2] = useState(false);
     const queryClient = useQueryClient();
+    const [companies, setCompanies] = useState([]);
+    const [branch, setBranches] = useState([]);
+    const [division, setDivision] = useState([]);
+    const [department, setDepartment] = useState([]);
+    const [section, setSection] = useState([]);
+
     useEffect(() => {
         if (vacancyDuration[0] != null && vacancyDuration[1] != null) {
             setOpened(false)
@@ -219,7 +225,7 @@ export default function index() {
                 },
                 vacancyDuration: {
                     dateStart: toPHISOString(form.duration.start),
-                    dateEnd: toPHISOString(form.duration.end),  
+                    dateEnd: toPHISOString(form.duration.end),
                 },
                 availableSlot: parseInt(form.noOfOpenPosition.replace(/[^\d]/g, '')) || 0,
                 jobDescription: form.jobDescription, // Remove HTML tags
@@ -313,7 +319,7 @@ export default function index() {
                     dateEnd: new Date(form.duration.end).toISOString(),
                 },
                 availableSlot: form.noOfOpenPosition || 0,
-                jobDescription: form.jobDescription, 
+                jobDescription: form.jobDescription,
                 skills: updatedSkills,
                 qualifications: [
                     {
@@ -344,7 +350,7 @@ export default function index() {
             await axiosInstance
                 .post("recruitment/vacancies", payload)
                 .then(async (response) => {
-                    if (response.status === 201) {   
+                    if (response.status === 201) {
                         queryClient.refetchQueries({ queryKey: ['recruitment/vacancies'] });
                         resetVacancy()
                     }
@@ -352,7 +358,7 @@ export default function index() {
                 .catch((error) => {
                     console.error(error)
                 })
-                
+
         }
         else if (action == Action.Edit) {
             await axiosInstance
@@ -370,6 +376,98 @@ export default function index() {
         form.setValues(vacancyFormInitialData)
         setAlert(action === Action.Edit ? AlertType.updateSuccessfully : AlertType.vacancyAddedSuccesfull)
     }
+
+
+    const fetchLookups = async () => {
+        await axiosInstance
+            .get("/recruitment/organization/companies")
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }
+                });
+                setCompanies(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+
+        await axiosInstance
+            .get("/recruitment/organization/branches")
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }
+                });
+                setBranches(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+
+        await axiosInstance
+            .get("/recruitment/organization/divisions")
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }
+                });
+                setDivision(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+
+        await axiosInstance
+            .get("/recruitment/organization/departments")
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }
+                });
+                setDepartment(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+
+        await axiosInstance
+            .get("/recruitment/organization/sections")
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        value: item.name,
+                        label: item.name,
+                    }
+                });
+                setSection(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    useEffect(() => {
+        fetchLookups()
+    }, [])
 
     return (
         <Modal radius="lg" size={'80%'} opened={action != Action.Null} withCloseButton={false} centered onClose={() => {
@@ -398,20 +496,21 @@ export default function index() {
                 <div className='px-10 h-[80%] overflow-y-auto scrollbar2 relative'>
 
                     <form ref={formRef} onSubmit={form.onSubmit(onSubmit)} className='flex flex-col gap-5  w-full'>
-                        <TextInput key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
-                        <Select key={form.key('company')} {...form.getInputProps("company")} label="Company" placeholder={"Select Company"} radius={8} data={["Cloud Innovations Ltd.", "Business Solutions Inc.", "Tech Innovations Inc.", "Innovate Solutions Ltd.", "Data Insights Corp.", "Creative Marketing Agency"]}
+                        <TextInput required key={form.key('positionTitle')} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("positionTitle")} radius='md' size="lg" label="Position Title" placeholder={"Type Position Title"} />
+                        <Select required key={form.key('company')} {...form.getInputProps("company")} label="Company" placeholder={"Select Company"} radius={8} data={companies}
                             rightSection={<IconCaretDownFilled size='18' />} className="border-none w-full text-sm" classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }} size='lg'
                         />
 
                         <div className='flex flex-col lg:flex-row gap-4  w-full'>
                             <Select
+                                required
                                 {...form.getInputProps("branch")}
                                 key={form.key('branch')}
                                 label="Branch"
                                 placeholder={"Select Branch"}
                                 radius={8}
-                                data={["Remote Team", "San Francisco", "New Yorks"]}
+                                data={branch}
                                 rightSection={<IconCaretDownFilled size='18' />}
                                 className="border-none w-full text-sm"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -419,12 +518,13 @@ export default function index() {
                                 size='lg'
                             />
                             <Select
+                                required
                                 {...form.getInputProps("division")}
                                 key={form.key('division')}
                                 label="Division"
                                 placeholder={"Select Division"}
                                 radius={8}
-                                data={["Software Engineer", "Web Developer", "Mobile Developer", "QA", "Analytics"]}
+                                data={division}
                                 rightSection={<IconCaretDownFilled size='18' />}
                                 className="border-none w-full text-sm "
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -435,12 +535,13 @@ export default function index() {
 
                         <div className='flex gap-4  w-full flex-col sm:flex-row'>
                             <Select
+                                required
                                 {...form.getInputProps("department")}
                                 key={form.key('department')}
                                 label="Department"
                                 placeholder={"Select Department"}
                                 radius={8}
-                                data={["Business"]}
+                                data={department}
                                 rightSection={<IconCaretDownFilled size='18' />}
                                 className="border-none w-full text-sm"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -448,12 +549,13 @@ export default function index() {
                                 size='lg'
                             />
                             <Select
+                                required
                                 {...form.getInputProps("section")}
                                 key={form.key('section')}
                                 label="Section"
                                 placeholder={"Select Section"}
                                 radius={8}
-                                data={["Network Management", "Content Creation", "Business Analysis"]}
+                                data={section}
                                 rightSection={<IconCaretDownFilled size='18' />}
                                 className="border-none w-full text-sm"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D] ', dropdown: 'poppins text-[#6D6D6D]' }}
@@ -464,6 +566,7 @@ export default function index() {
 
                         <div className='flex gap-4  w-full flex-col sm:flex-row'>
                             <Select
+                                required
                                 {...form.getInputProps("employmentType")}
                                 key={form.key('employmentType')}
                                 label="Employment Type"
@@ -477,6 +580,7 @@ export default function index() {
                                 size='lg'
                             />
                             <Select
+                                required
                                 {...form.getInputProps("workplaceType")}
                                 key={form.key('workplaceType')}
                                 label="Workplace Type"
@@ -493,6 +597,7 @@ export default function index() {
 
                         <div className='flex gap-4 flex-col sm:flex-row'>
                             <Select
+                                required
                                 {...form.getInputProps("vacancyType")}
                                 key={form.key('vacancyType')}
                                 label="Vacancy Type"
@@ -506,6 +611,7 @@ export default function index() {
                                 size='lg'
                             />
                             <Select
+                                required
                                 {...form.getInputProps("experienceLevel")}
                                 key={form.key('experienceLevel')}
                                 label="Experience Level"
@@ -531,6 +637,7 @@ export default function index() {
                                     <Popover opened={opened} position="bottom" shadow="md" trapFocus={true} returnFocus={true}>
                                         <Popover.Target>
                                             <TextInput
+                                                required
                                                 radius="md"
                                                 size={'lg'}
                                                 readOnly
@@ -555,7 +662,6 @@ export default function index() {
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
-                                                    console.log('e: ',e)
                                                     if (e[0] != null)
                                                         form.setFieldValue('duration.start', DateTimeUtils.dayWithDate(`${e[0]?.toString()}`))
                                                     if (e[1] != null)
@@ -568,6 +674,7 @@ export default function index() {
                                     <Popover opened={opened2} position="bottom" shadow="md">
                                         <Popover.Target>
                                             <TextInput
+                                                required
                                                 radius="md"
                                                 size={'lg'}
                                                 readOnly
@@ -602,12 +709,12 @@ export default function index() {
                                     </Popover>
                                 </Flex>
                             </div>
-                            <TextInput className='w-1/2 text-[#6D6D6D]' classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
+                            <TextInput required className='w-1/2 text-[#6D6D6D]' classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key('noOfOpenPosition')} {...form.getInputProps("noOfOpenPosition")} radius='md' size="lg" label="No. of Open Positions" placeholder="Specify the number of open position here." />
                         </div>
-                        <p className='poppins text-[#6D6D6D] p-1 m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label text-lg'>Job Description</p>
+                        <p className='poppins text-[#6D6D6D] p-1 m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label text-lg'>Job Description <span className='text-red-400'>*</span></p>
                         {/* <p className='text-[#6D6D6D] ' >Job Description</p> */}
                         <div className={`border ${form.errors.jobDescription ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
-                            <RichTextEditor editor={editor}>
+                            <RichTextEditor editor={editor} >
                                 <RichTextEditor.Toolbar sticky>
                                     <RichTextEditor.ControlsGroup>
                                         <RichTextEditor.Bold />
@@ -663,7 +770,7 @@ export default function index() {
 
                         </div>
 
-                        <MultiSelect radius='md' size="lg" label="Must-have Skills" ref={myRef}
+                        <MultiSelect radius='md' size="lg" label="Must-have Skills" ref={myRef} required
                             {...form.getInputProps("mustHaveSkills")}
                             key={form.key('mustHaveSkills')}
                             classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]', pill: 'poppins text-[#6D6D6D]' }}
@@ -676,7 +783,7 @@ export default function index() {
                             onKeyDown={handleKeyDown}
                         />
 
-                        <p className='poppins text-[#6D6D6D] p-1 m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label text-lg'>Qualification</p>
+                        <p className='poppins text-[#6D6D6D] p-1 m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label text-lg'>Qualification <span className='text-red-400'>*</span></p>
                         <div className={`border ${form.errors.qualification ? 'border-red-500' : 'border-gray-300'} rounded-md transition-colors duration-200 relative`}>
                             <RichTextEditor editor={editor2}>
                                 <RichTextEditor.Toolbar sticky>

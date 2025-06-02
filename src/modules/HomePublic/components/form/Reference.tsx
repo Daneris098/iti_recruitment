@@ -5,12 +5,12 @@ import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";
 import { IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
+import { employmentRecordVal } from "../../values/cleanState";
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -135,52 +135,58 @@ export default function index() {
 
                 </div>
 
-                <div>
-                    <p className="font-bold">Employment Reference (NOT FAMILY MEMBERS)</p>
-                </div>
-                <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col gap-4">
-                    {applicationForm.reference.employmentReference.map((_, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
-                            <TextInput
-                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                {...form.getInputProps(`employmentReference.${index}.fullname`)}
-                                radius="md"
-                                w={isMobile ? '25%' : '100%'}
-                                label={`Employment Reference ${index + 1}`}
-                                placeholder="Full Name"
-                                withAsterisk
-                            />
-                            <TextInput
-                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                {...form.getInputProps(`employmentReference.${index}.company`)}
-                                radius="md"
-                                w={isMobile ? '25%' : '100%'}
-                                placeholder="Company"
-                            />
-                            <TextInput
-                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                {...form.getInputProps(`employmentReference.${index}.positionHeld`)}
-                                radius="md"
-                                w={isMobile ? '25%' : '100%'}
-                                placeholder="Position Held"
-                            />
-                            <NumberInput
-                                hideControls
-                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
-                                radius="md"
-                                w={isMobile ? '25%' : '100%'}
-                                placeholder="Contact Number"
-                            />
-                            {index === applicationForm.reference.employmentReference.length - 1 && index > 0 && (<div>
-                                <IconCircleMinus size={35} className="" onClick={() => { removeFieldEmployment(index) }} />
-                            </div>)}
-                        </div>
-                    ))}
-                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldEmployment}><IconCirclePlus size={20} />ADD EMPLOYMENT REFERENCE</p>
+                {(!(applicationForm.educationAndEmployment.employmentRecord.length == 1 && applicationForm.educationAndEmployment.employmentRecord[0] == employmentRecordVal[0])) && (<div >
+                    <div>
+                        <p className="font-bold">Employment Reference (NOT FAMILY MEMBERS)</p>
+                    </div>
+                    <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
+                    <div className="flex flex-col gap-4">
 
+                        {applicationForm.reference.employmentReference.map((_, index) => (
+                            <div key={index} className="flex flex-col sm:flex-row gap-4 items-end">
+                                <TextInput
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    {...form.getInputProps(`employmentReference.${index}.fullname`)}
+                                    radius="md"
+                                    w={isMobile ? '25%' : '100%'}
+                                    label={`Employment Reference ${index + 1}`}
+                                    placeholder="Full Name"
+                                    withAsterisk
+                                />
+                                <TextInput
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    {...form.getInputProps(`employmentReference.${index}.company`)}
+                                    radius="md"
+                                    w={isMobile ? '25%' : '100%'}
+                                    placeholder="Company"
+                                />
+                                <TextInput
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    {...form.getInputProps(`employmentReference.${index}.positionHeld`)}
+                                    radius="md"
+                                    w={isMobile ? '25%' : '100%'}
+                                    placeholder="Position Held"
+                                />
+                                <NumberInput
+                                    hideControls
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
+                                    radius="md"
+                                    w={isMobile ? '25%' : '100%'}
+                                    placeholder="Contact Number"
+                                />
+                                {index === applicationForm.reference.employmentReference.length - 1 && index > 0 && (<div>
+                                    <IconCircleMinus size={35} className="" onClick={() => { removeFieldEmployment(index) }} />
+                                </div>)}
+                            </div>
+                        ))}
+
+                        <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldEmployment}><IconCirclePlus size={20} />ADD EMPLOYMENT REFERENCE</p>
+
+                    </div>
                 </div>
+                )}
+
                 <p className="font-bold">Application Source</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <p>How did you learn about our vacancy? How did you apply in our company? *</p>

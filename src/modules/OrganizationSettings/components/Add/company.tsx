@@ -82,7 +82,6 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
               classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
               styles={{ label: { color: "#6d6d6d" } }}
               {...addCompany.getInputProps("isActive")}
-              error={addCompany.values.isActive === null ? "Required" : undefined}
               value={addCompany.values.isActive ? "Active" : "Inactive"}
               onChange={(value) => {
                 addCompany.setFieldValue("isActive", value === "Active");

@@ -5,7 +5,8 @@
 
 import { create } from "zustand";
 //--- Calendar Types
-import { CalendarStoreType, RescheduleStoreType, EventInfo, MonthYearStoreType } from "../assets/Types";
+import { CalendarStoreType, RescheduleStoreType, EventInfo, MonthYearStoreType, EventDetails } from "../assets/Types";
+import { initialDetails } from "../assets/values";
 
 export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewEvent: false,
@@ -14,7 +15,17 @@ export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewUpdate: false,
   onViewFilter: false,
   onMonthYear: false,
+  currentDate: '',
+  details: initialDetails,
+  filterDepartmentIds: [],
+  filterCompanyId: [],
+  filterInterviewer: [],
 
+  setDetails: (date: EventDetails) => set({ details: date }),
+  setCurrentDate: (date: boolean) => set({ currentDate: date }),
+  setFilterDepartmentIds: (data: number[]) => set({ filterDepartmentIds: data }),
+  setFilterCompanyId: (data: number[]) => set({ filterCompanyId: data }),
+  setFilterInterviewer: (data: number[]) => set({ filterInterviewer: data }),
   setOnMonthYear: (my: boolean) => set({ onMonthYear: my }),
   setOnViewFilter: (filter: boolean) => set({ onViewFilter: filter }),
   setOnViewEvent: (event: boolean) => set({ onViewEvent: event }),

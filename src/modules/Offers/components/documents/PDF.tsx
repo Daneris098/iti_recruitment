@@ -10,7 +10,6 @@ import { PDFProps } from "@modules/Offers/types"
 Font.register({
   family: 'Poppins',
   fonts: [
-    { src: PoppinsRegular, fontWeight: 'normal' }, // Regular weight
     { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
   ],
 });

@@ -16,17 +16,28 @@ export const HiringSettingsStore = create<HiringSettingsState>((set) => ({
 export const FeedbackStore = create<FeedbackStoreState>((set) => ({
   applicantFeedback: applicantInitialData.slice(0, PAGE_SIZE),
   hiringFeedback: hiringInitialData.slice(0, PAGE_SIZE),
+  sortStatusApplicant: { columnAccessor: 'id', direction: false },
+  sortStatusHiring: { columnAccessor: 'id', direction: false },
+
+  setSortStatusApplicant: (status: any) => set({ sortStatusApplicant: status }),
+  setSortStatusHiring: (status: any) => set({ sortStatusHiring: status }),
   setApplicantFeedback: (applicantFeedback: feedback[]) => set({ applicantFeedback: applicantFeedback }),
   setHiringFeedback: (hiringFeedback: feedback[]) => set({ hiringFeedback: hiringFeedback }),
 }));
 
 export const InteviewStagesStore = create<InterviewStageseState>((set) => ({
   interviewStage: interviewStagesInitialData,
+  sortStatus: { columnAccessor: 'id', direction: 'desc' },
+
+  setSortStatus: (status: any) => set({ sortStatus: status }),
   setInterviewStage: (interviewStage: interviewStage[]) => set({ interviewStage: interviewStage }),
 }));
 
 export const InteviewerStore = create<InterviewerState>((set) => ({
   interviewers: interviewerInitialData,
+  sortStatus: { columnAccessor: 'id', direction: 'desc' },
+
+  setSortStatus: (status: any) => set({ sortStatus: status }),
   setInterviewers: (interviewers: interviewer[]) => set({ interviewers: interviewers }),
 }));
 

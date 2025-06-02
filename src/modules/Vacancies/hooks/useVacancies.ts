@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
-import { DataTableStore } from "@src/modules/Vacancies/store";
 import { VacancyType } from "@src/modules/Vacancies/types";
+import { FilterStore, DataTableStore } from "@modules/Vacancies/store";
+
 export const useVacancies = () => {
     const {
         page,
@@ -10,15 +11,38 @@ export const useVacancies = () => {
         setTime
     } = DataTableStore();
 
+    const { filter, isFiltered } = FilterStore();
     const fetchData = async () => {
+
         try {
+            let url = "recruitment/vacancies";
+            const sortVal = `?${sortStatus.direction === 'asc' ? '+' : '-'}${sortStatus.columnAccessor}`
+            url += sortVal;
+
+            if (filter.company.length) {
+                // url += `?Name=[${filter.company}]`;
+            }
+            if (filter.vacancy.length) {
+                // url += `?Name=[${filter.vacancy}]`;
+            }
+            if (filter.dateFrom) {
+                // url += `?dateFrom=${filter.dateFrom}`;
+            }
+            if (filter.dateTo) {
+                // url += `?dateFrom=${filter.dateTo}`;
+            }
+            if (filter.interviewer.length) {
+                // url += `?Name=[${filter.interviewer}]`;
+            }
+            if (filter.department.length) {
+                // url += `?Name=[${filter.department}]`;
+            }
+            if (filter.status.length) {
+                // url += `?Name=[${filter.status}]`;
+            }
+
             const startTime = performance.now();
-            const res = await axiosInstance.get('recruitment/vacancies', {
-                params: {
-                    page,
-                    sortBy: sortStatus.columnAccessor,
-                },
-            });
+            const res = await axiosInstance.get(url);
 
             if (res.status === 200 && Array.isArray(res.data.items)) {
                 const mapped = res.data.items.map((item: any) => ({
@@ -57,7 +81,7 @@ export const useVacancies = () => {
     };
 
     return useQuery<VacancyType[]>({
-        queryKey: ["recruitment/vacancies", { page, pageSize, sortStatus }],
+        queryKey: ["recruitment/vacancies", { page, pageSize, sortStatus, isFiltered, }],
         queryFn: fetchData,
         staleTime: 60 * 1000, // Data is fresh for 5 minutes
     });

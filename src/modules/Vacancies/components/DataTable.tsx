@@ -50,7 +50,6 @@ export default function index() {
                     accessor: 'datePublish', title: 'Publish Date', textAlign: "left", sortable: true,
                     render: ({ datePublish }) => formatDate(datePublish)
                 },
-                { accessor: 'interviewer', title: 'Interviewer', textAlign: "left", sortable: true },
                 { accessor: 'department', title: 'Department', textAlign: "left", sortable: true },
                 { accessor: 'quantity', title: 'Quantity', textAlign: "center", sortable: true },
                 { accessor: 'totalApplicant', title: 'Total Applicant', textAlign: "center", sortable: true },

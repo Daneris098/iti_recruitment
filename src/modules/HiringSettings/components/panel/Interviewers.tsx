@@ -1,18 +1,29 @@
 import { IconCaretDownFilled, IconCirclePlus, IconCircleX, IconPencil, IconTrashFilled } from "@tabler/icons-react";
 import { InteviewerStore, HiringSettingsStore } from "@modules/HiringSettings/store"
-import { useState, forwardRef, useImperativeHandle } from "react";
-import { AlertType, interviewer, Operation } from "@modules/HiringSettings/types"
+import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
+import { AlertType, interviewer, Operation, panel } from "@modules/HiringSettings/types"
 import { DataTable } from "mantine-datatable";
 import { Select, TextInput } from "@mantine/core";
+import axiosInstance from "@src/api";
 
 const Interviewers = forwardRef((_, ref) => {
-    const { setValidationMessage, setAlert } = HiringSettingsStore();
-    const { interviewers, setInterviewers } = InteviewerStore()
+    const { setValidationMessage, setAlert, activePanel } = HiringSettingsStore();
+    const { interviewers, setInterviewers, setSortStatus, sortStatus } = InteviewerStore()
     const [interviewStagesEditMode, setInterviewStagesEditMode] = useState<{ [key: number]: boolean }>({});
     const [interviewStagesEditableData, setInterviewStagesEditableData] = useState<{ [key: number]: Partial<interviewer> }>({});
     const [interviewStagesNewRows, setInterviewStagesNewRows] = useState<interviewer[]>([]);
     const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
     const [operation, SetOperation] = useState(Operation.noOperation)
+    const sortMap = {
+        id: 'id',
+        name: 'name',
+        lastModified: 'dateModified',
+        status: 'isActive',
+    }
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    };
 
     const columns: any =
         [
@@ -36,7 +47,7 @@ const Interviewers = forwardRef((_, ref) => {
                         styles={{ label: { color: "#6d6d6d" } }}
                         value={interviewStagesEditableData[data.id]?.lastModified || data.lastModified}
                     />
-                    : <p>{data.lastModified}</p>
+                    : <p>{formatDate(data.lastModified)}</p>
             },
             {
                 accessor: 'status', title: 'Status', sortable: true,
@@ -69,13 +80,13 @@ const Interviewers = forwardRef((_, ref) => {
                     <div className='flex justify-between'>
                         <p>{data.status}</p>
                         <div className="cursor-pointer" onClick={() => {
-                        if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
-                            return
-                        }
-                        setSelectedRowId(data.id)
-                        setExpandedRowIds([data.id])
-                        toggleEditMode(data.id)
-                        setInterviewStagesNewRows([]);
+                            if (!checkEditIsValid() || (operation != Operation.noOperation && operation != Operation.edit)) {
+                                return
+                            }
+                            setSelectedRowId(data.id)
+                            setExpandedRowIds([data.id])
+                            toggleEditMode(data.id)
+                            setInterviewStagesNewRows([]);
                         }}>
                             <IconPencil />
                         </div>
@@ -83,13 +94,12 @@ const Interviewers = forwardRef((_, ref) => {
                 ,
             },
         ];
-    
+
     const checkEditIsValid = () => {
         const fieldsToCheck = ['name'];
-        return !Object.entries(interviewStagesEditableData).some(([key, data]) =>
+        return !Object.entries(interviewStagesEditableData).some(([_, data]) =>
             fieldsToCheck.some(field => {
                 const value = (data as any)[field];
-                console.log('value: ', value)
                 if ((typeof value === 'string' && value.trim() === '') || value == null) {
                     setValidationMessage(`${field} is empty`);
                     setAlert(AlertType.validation)
@@ -110,7 +120,7 @@ const Interviewers = forwardRef((_, ref) => {
             day: 'numeric',
         });
         const newRow: interviewer = {
-            id: Math.max(...interviewers.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)), 
+            id: Math.max(...interviewers.map(r => r.id), 0) + (Math.floor(Math.random() * 101 + 1)),
             fieldStatus: 'new',
             name: '',
             status: 'ACTIVE',
@@ -119,6 +129,7 @@ const Interviewers = forwardRef((_, ref) => {
         setInterviewStagesNewRows(prev => [...prev, newRow]);
         setInterviewStagesEditMode(prev => ({ ...prev, [newRow.id]: true }));
         setInterviewStagesEditableData(prev => ({ ...prev, [newRow.id]: newRow }));
+        SetOperation(Operation.add)
     };
 
 
@@ -157,13 +168,31 @@ const Interviewers = forwardRef((_, ref) => {
         }
     };
 
+
     const saveAll = () => {
-        const result = [...interviewers, ...interviewStagesNewRows].map((record) => {
-            const merged = interviewStagesEditableData[record.id] ? { ...record, ...interviewStagesEditableData[record.id] } : record;
-            const { fieldStatus, ...rest } = merged;
-            return rest;
-        }); 
-        setInterviewers(result);
+        if (!checkEditIsValid()) {
+            return
+        }
+        if (operation == Operation.add) {
+            if (interviewStagesEditableData && Object.keys(interviewStagesEditableData).length > 0) {
+                addInterviewer({
+                    name: Object.values(interviewStagesEditableData)[0]?.name,
+                    isActive: Object.values(interviewStagesEditableData)[0]?.status === 'ACTIVE'
+                })
+            }
+        }
+        else if (operation == Operation.edit) {
+            if (interviewStagesEditableData && Object.keys(interviewStagesEditableData).length > 0) {
+                updateInterviewStage({
+                    name: Object.values(interviewStagesEditableData)[0]?.name,
+                    isActive: Object.values(interviewStagesEditableData)[0]?.status === 'ACTIVE',
+                    id: Object.values(interviewStagesEditableData)[0]?.id,
+                    guid: Object.values(interviewStagesEditableData)[0]?.guid
+                })
+            }
+        }
+
+
         setInterviewStagesNewRows([]);
         setInterviewStagesEditMode({});
         setInterviewStagesEditableData({});
@@ -199,7 +228,7 @@ const Interviewers = forwardRef((_, ref) => {
             onRecordIdsChange: setExpandedRowIds,
         },
         expandable: ({ record: { isNewField } }: any) => { return (!isNewField) },
-        content: ({ record: { name, id, code, status, lastModified } }: any) => {
+        content: ({ record: { id, status, lastModified } }: any) => {
             return (
                 <div className=' flex gap-2 relative  '>
                     <TextInput
@@ -233,6 +262,81 @@ const Interviewers = forwardRef((_, ref) => {
         },
     };
 
+    useEffect(() => {
+        fetchData()
+    }, [sortStatus])
+
+    const fetchData = async () => {
+        let url = "/recruitment/hiring/interviewers"
+        const sortVal = `?SortBy=${sortStatus.direction === 'asc' ? '+' : '-'}${(sortMap as any)[sortStatus.columnAccessor]}`
+        url += sortVal;
+        await axiosInstance
+            .get(url)
+            .then((response) => {
+                const map = response.data.items.map((item: any) => {
+                    return {
+                        id: item.id,
+                        guid: item.guid,
+                        name: item.name,
+                        status: item.isActive ? 'ACTIVE' : 'INACTIVE',
+                        lastModified: item.dateModified
+                    }
+                });
+                setInterviewers(map)
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    const addInterviewer = async (formVal: any) => {
+        const payload = {
+            name: formVal.name,
+            isActive: formVal.isActive
+        };
+        await axiosInstance
+            .post("/recruitment/hiring/interviewers", payload)
+            .then((response) => {
+                fetchData()
+                setAlert(AlertType.saved);
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+    const updateInterviewStage = async (formVal: any) => {
+        const payload = {
+            id: formVal.id,
+            guid: formVal.guid,
+            name: formVal.name,
+            sequenceNo: formVal.sequenceNo,
+            isActive: formVal.isActive
+        };
+        await axiosInstance
+            .post(`/recruitment/hiring/interviewers/${formVal.id}/update`, payload)
+            .then((response) => {
+                fetchData()
+            })
+            .catch((error) => {
+                const message = error.response.data.title;
+                setValidationMessage(message);
+                setAlert(AlertType.validation)
+                console.error(message);
+            });
+    };
+
+
+    useEffect(() => {
+        if (activePanel === panel.interviewers) {
+            fetchData()
+        }
+    }, [activePanel])
+
 
     return (
         <div className="flex flex-col gap-8 h-[100%]">
@@ -261,10 +365,14 @@ const Interviewers = forwardRef((_, ref) => {
                     },
                 }}
                 withTableBorder
-                records={[...interviewers, ...interviewStagesNewRows]}
+                records={[...interviewStagesNewRows, ...interviewers]}
                 columns={columns}
                 rowClassName={(row) => row.id === selectedRowId ? "bg-[#DEECFF]" : ""}
                 rowExpansion={rowExpansion1}
+                sortStatus={sortStatus}
+                onSortStatusChange={(sort) => {
+                    setSortStatus(sort as { columnAccessor: any; direction: "asc" | "desc" })
+                }}
             />
         </div>
     )

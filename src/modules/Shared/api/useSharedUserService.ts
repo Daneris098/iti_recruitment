@@ -7,7 +7,7 @@ export const useSharedUserService = new BaseService<ApplicantResponse>(apiClient
 
 export const useSharedTransferredPosition = new BaseService<JobOpenings>(apiClient, "recruitment/vacancies");
 
-export const useSharedOrgService = (endpoint?: string) => new BaseService<Partial<Organization>>(apiClient, `/recruitment/organization${endpoint}`);
+export const useSharedOrgService = (endpoint?: string) => new BaseService(apiClient, `/recruitment/organization${endpoint}`);
 
 export const useSharedGeneralService = (endpoint?: string) => new BaseService<any>(apiClient, `/general${endpoint}`);
 

@@ -74,14 +74,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
       sortable: true,
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addDivision.getInputProps("description")}
-              error={addDivision.values.code === "" ? "Required" : undefined}
-            />
-          );
+          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Name" {...addDivision.getInputProps("description")} />;
         }
         return row.description;
       },
@@ -102,7 +95,6 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
               classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
               styles={{ label: { color: "#6d6d6d" } }}
               {...addDivision.getInputProps("isActive")}
-              error={addDivision.values.isActive === null ? "Required" : undefined}
               value={addDivision.values.isActive ? "Active" : "Inactive"}
               onChange={(value) => {
                 if (value === "Active") {

@@ -3,7 +3,7 @@ import React from "react";
 import { jwtDecode } from "jwt-decode";
 import { GlobalStore, userDetailsValue } from "@src/utils/GlobalStore";
 import { getRefreshTokenFromCookie } from "@src/utils/Auth";
-import axiosInstance from "@src/api";
+import axiosInstance from "@src/api/authApi";
 
 // Layout
 import ProtectedLayout from "@src/layout/protected/Layout";
@@ -31,20 +31,28 @@ import Hired from "@src/modules/Applicants/components/pages/hired";
 import ForTransferee from "@src/modules/Applicants/components/pages/forTransfer";
 import Transferred from "@src/modules/Applicants/components/pages/transferred";
 import Archived from "@src/modules/Applicants/components/pages/archived";
+import useFetchUserDetails from "@src/utils/FetchUserDetails";
+const isValidJWT = (token: string | null): boolean => {
+  return typeof token === "string" && token.split(".").length === 3;
+};
 
 const isAuthenticated = () => {
   const { setUserDetails, userDetails } = GlobalStore();
+  const fetchUserDetails = useFetchUserDetails();
+  const token = sessionStorage.getItem("accessToken");
+  if (!isValidJWT(token)) {
+    return
+  }
   // use access token if exist
-  if (Boolean(sessionStorage.getItem("accessTokenFlash"))) {
-    const token = sessionStorage.getItem("accessTokenFlash");
+  if (Boolean(sessionStorage.getItem("accessToken"))) {
     const decodedToken = token != null ? jwtDecode(token) : userDetailsValue;
-    if (!userDetails.name) {
-      setUserDetails(decodedToken);
+    if (!userDetails.userId) {
+      fetchUserDetails();
     }
     const expirationTime = (decodedToken as any).exp * 1000;
     const currentTime = Date.now();
     if (currentTime > expirationTime) {
-      sessionStorage.removeItem("accessTokenFlash");
+      sessionStorage.removeItem("accessToken");
       return false;
     }
     return true;
@@ -55,15 +63,16 @@ const isAuthenticated = () => {
       refreshToken: getRefreshTokenFromCookie(),
     };
     (async () => {
+      ``
       await axiosInstance
-        .post("refreshToken", payload)
+        .post("auth/refresh", payload)
         .then((response) => {
-          if (response.status === 200) {
-            const { accessToken } = response.data;
-            const decodedToken = jwtDecode(accessToken);
-            setUserDetails(decodedToken);
-            sessionStorage.setItem("accessTokenFlash", accessToken);
-          }
+          // if (response.status === 200) {
+          const { accessToken } = response.data;
+          const decodedToken = jwtDecode(accessToken);
+          setUserDetails(decodedToken);
+          sessionStorage.setItem("accessToken", accessToken);
+          // }
         })
         .catch((error) => {
           console.error(error);
@@ -80,13 +89,14 @@ const isAuthenticated = () => {
 
 // Authentication wrapper
 const RequireAuth: React.FC = () => {
-  // return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
-  return <Outlet />;
+  // return <Outlet />;      
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 // Redirect wrapper for public routes
 const RedirectIfAuthenticated: React.FC = () => {
-  return isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Outlet />;
+  // return <Outlet />;      
+  return isAuthenticated() ? <Navigate to="/home" replace /> : <Outlet />;
 };
 
 const router = createBrowserRouter([

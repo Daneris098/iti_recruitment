@@ -57,8 +57,8 @@ export const GeneralInformationVal: GeneralInformation = {
 };
 
 export const GeneralInformationVal2: GeneralInformation = {
-  firstChoice: 'Web Developer',
-  secondChoice: 'Mobile Developer',
+  firstChoice: '',
+  secondChoice: '',
   desiredSalary: 40000,
   startDateAvailability: '2025-03-02',
   personalInformation: {
@@ -74,7 +74,7 @@ export const GeneralInformationVal2: GeneralInformation = {
       street: 'Urban',
       subdivision: 'Deca Homes',
       barangay: '3',
-      city: 'Caloocan City',
+      city: '',
       zipCode: '1400',
       livingArrangement: 'OWNED'
     },
@@ -84,20 +84,22 @@ export const GeneralInformationVal2: GeneralInformation = {
       street: 'Urban',
       subdivision: 'Deca Homes',
       barangay: '3',
-      city: 'Caloocan City',
+      city: '',
       zipCode: '1400',
       livingArrangement: 'OWNED'
     },
+
     governmentIdOrNumber: {
-      sssNo: '',
-      gsisNo: '',
-      pagibigNo: '',
-      philhealthNo: '',
-      tinNo: '',
-      rdoCode: '',
-      driversLicense: '',
-      passport: '',
+      sssNo: '1234567890',
+      gsisNo: '12345678901',
+      pagibigNo: '98765432109',
+      driversLicense: 'DLN12345678',
+      philhealthNo: '123456789012',
+      passport: 'PA1234567890',
+      tinNo: '123456789',
+      rdoCode: '041',
     },
+
     dateOfBirth: '2000-03-01',
     placeOfBirth: 'Quezon City, PH',
     age: 30,
@@ -172,7 +174,7 @@ export const educationAndEmploymentVal: EducationalAndEmployment = {
 
 export const educationAndEmploymentVal2: EducationalAndEmployment = {
   educationBackground: educationBackgroundVal2,
-  employmentRecord: employmentRecordVal2
+  employmentRecord: employmentRecordVal
 }
 
 export const familyBackgroundVal: FamilyBackground = {

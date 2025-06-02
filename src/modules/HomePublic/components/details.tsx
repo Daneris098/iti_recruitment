@@ -2,6 +2,7 @@ import { HomeStore } from "@src/modules/HomePublic/store";
 import { Button, MantineSize, Pill } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useMatches } from '@mantine/core';
+import { useEffect } from "react";
 
 export default function Details() {
   const { selectedData, setApplicationFormModal } = HomeStore();
@@ -37,15 +38,17 @@ export default function Details() {
       <div className=" flex flex-col gap-4 2xl:gap-6  hover:overflow-y-auto">
 
         <p className="text-gray-500 text-sm font-semibold 2xl:text-2xl">Job Description</p>
-        <p className="text-gray-500 text-xs 2xl:text-xl">{selectedData.jobDescription}</p>
+        <div dangerouslySetInnerHTML={{ __html: selectedData.jobDescription }} />
         <p className="text-gray-500 text-sm font-semibold 2xl:text-2xl">Qualification</p>
-        {selectedData.requirements.map((requirement: string) => {
-          return <p className="text-gray-500 text-xs 2xl:text-xl">• {requirement}</p>;
+        {(selectedData as any).qualifications.map((requirement: string) => {
+          return <>
+            <div dangerouslySetInnerHTML={{ __html: (requirement as any).keyword }} />
+          </>
         })}
         <p className="text-gray-500 text-sm font-semibold 2xl:text-xl">Skills</p>
         <Pill.Group >
-          {selectedData.skills.map((skill: string) => {
-            return <Pill className="text-gray-600 text-xs 2xl:text-lg" size={pillSize}><p >{skill}</p></Pill>;
+          {selectedData.skills.map((skill: any) => {
+            return <Pill className="text-gray-600 text-xs 2xl:text-lg" size={pillSize}><p >{skill.keyword}</p></Pill>;
           })}
         </Pill.Group>
         {/* <p className="text-gray-500 text-xl">Benefits</p>
