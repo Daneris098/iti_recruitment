@@ -15,21 +15,14 @@ export default function index() {
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const { selectedData } = HomeStore();
+    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
-    const [sameAsPresent, setSameAsPresent] = useState(false);
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
         { id: 2, value: 'Web Developer', label: 'Web Developer' },
     ]);
     const [cities, setCities] = useState([
         { id: 1, value: 'MANILA', label: 'MANILA' },
-    ]);
-    const [barangay, setBarangay] = useState([
-        { id: 1, value: 'BRGY 12', label: 'BRGY 12' },
-    ]);
-    const [barangay2, setBarangay2] = useState([
-        { id: 1, value: 'BRGY 12', label: 'BRGY 12' },
     ]);
 
     const form = useForm({
@@ -103,6 +96,17 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
+
+    useEffect(() => {
+        if (activeStepper === Step.GeneralInformation) {
+            console.log('applicationForm: ', applicationForm)
+            console.log('activeStepper: ', activeStepper)
+            form.setFieldValue("firstChoice", String(applicationForm.generalInformation.firstChoice));
+            form.setFieldValue("secondChoice", String(applicationForm.generalInformation.secondChoice));
+        }
+
+    }, [activeStepper])
+
     useEffect(() => {
         const dateOfBirth = form.getValues().personalInformation.dateOfBirth;
 
@@ -172,10 +176,10 @@ export default function index() {
                         label: item.name,
                     }));
                 if (mode == 1) {
-                    setBarangay(map);
+                    setBarangays(map);
                 }
                 else {
-                    setBarangay2(map);
+                    setBarangays2(map);
                 }
             })
             .catch((error) => {
@@ -210,7 +214,7 @@ export default function index() {
                         label="Position Applying for - Second Choice"
                         placeholder={"Second Choice"}
                         radius={8}
-                        data={vacancies}
+                        data={form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.value != form.getValues().firstChoice)}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
@@ -287,7 +291,7 @@ export default function index() {
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"Barangay"}
                         radius={8}
-                        data={barangay}
+                        data={barangays}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
@@ -372,7 +376,7 @@ export default function index() {
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"Barangay"}
                         radius={8}
-                        data={sameAsPresent ? barangay : barangay2}
+                        data={sameAsPresent ? barangays : barangays2}
                         rightSection={<IconCaretDownFilled size='18' />}
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
