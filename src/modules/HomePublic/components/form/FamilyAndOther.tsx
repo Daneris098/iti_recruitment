@@ -40,18 +40,18 @@ export default function index() {
         mode: 'controlled',
         initialValues: applicationForm.familyBackground,
         validate: {
-            father: {
-                fullname: (value: string) => !value.trim() ? "Fullname is required" : null,
-                age: (value: number) => value <= 0 ? "Age is required" : null,
-                occupation: (value: string) => !value.trim() ? "Occupation is required" : null,
-                contactNumber: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
-            },
-            mother: {
-                fullname: (value: string) => !value.trim() ? "Fullname is required" : null,
-                age: (value: number) => value <= 0 ? "Age is required" : null,
-                occupation: (value: string) => !value.trim() ? "Occupation is required" : null,
-                contactNumber: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
-            },
+            // father: {
+            //     fullname: (value: string) => !value.trim() ? "Fullname is required" : null,
+            //     age: (value: number) => value <= 0 ? "Age is required" : null,
+            //     occupation: (value: string) => !value.trim() ? "Occupation is required" : null,
+            //     contactNumber: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+            // },
+            // mother: {
+            //     fullname: (value: string) => !value.trim() ? "Fullname is required" : null,
+            //     age: (value: number) => value <= 0 ? "Age is required" : null,
+            //     occupation: (value: string) => !value.trim() ? "Occupation is required" : null,
+            //     contactNumber: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+            // },
             otherInformation: {
                 specialTechnicalSkills: (value: string) => !value.trim() ? "Required" : null,
                 isConvictedCrimeDetails: (value: string) => !value.trim() ? "Required" : null,

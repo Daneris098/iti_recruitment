@@ -140,7 +140,7 @@ export interface GeneralInformation {
     weight: number | null;
     civilStatus: string;
     religion: string;
-    mobileNumber: string;
+    mobileNumber: number;
     workingEmailAddress: string;
     landlineNumber: string;
   };

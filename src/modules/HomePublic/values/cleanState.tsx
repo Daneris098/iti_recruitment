@@ -50,7 +50,7 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: null,
     civilStatus: '',
     religion: '',
-    mobileNumber: '',
+    mobileNumber: 0,
     workingEmailAddress: '',
     landlineNumber: ''
   }
@@ -108,9 +108,9 @@ export const GeneralInformationVal2: GeneralInformation = {
     weight: 60,
     civilStatus: 'Single',
     religion: 'Roman Catholic',
-    mobileNumber: '93872283802',
-    workingEmailAddress: 'jane@microsoft.com',
-    landlineNumber: '+44 20 7123 4567'
+    mobileNumber: 0,
+    workingEmailAddress: '',
+    landlineNumber: ''
   }
 };
 

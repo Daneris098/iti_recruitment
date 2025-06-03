@@ -1,4 +1,5 @@
 import { EducationBackground, FilterType, GeneralInformation, VacancyType, EmploymentRecord, FamilyBackground, Reference, ApplicationForm, EducationalAndEmployment } from "@modules/HomePublic/types";
+import { educationAndEmploymentVal2, familyBackgroundVal2, GeneralInformationVal2, referenceValue2 } from "./cleanState";
 
 export const selectedDataVal: VacancyType = {
   id: 0,
@@ -76,7 +77,7 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: 60,
     civilStatus: 'Single',
     religion: 'Roman Catholic',
-    mobileNumber: '+63 93 8722 8380',
+    mobileNumber: 0,
     workingEmailAddress: 'jane@microsoft.com',
     landlineNumber: '+44 20 7123 4567'
   }
@@ -188,5 +189,13 @@ export const ApplicationFormVal: ApplicationForm = {
   educationAndEmployment: educationAndEmploymentVal,
   familyBackground: familyBackgroundVal,
   reference: referenceValue,
+  photo: ''
+}
+
+export const ApplicationFormValClean: ApplicationForm = {
+  generalInformation: GeneralInformationVal2,
+  educationAndEmployment: educationAndEmploymentVal2,
+  familyBackground: familyBackgroundVal2,
+  reference: referenceValue2,
   photo: ''
 }

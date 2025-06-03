@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";
 import axiosInstance from "@src/api";
-import { ApplicationFormVal } from "../values";
+import { ApplicationFormVal, ApplicationFormValClean } from "../values";
+import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+
 export default function Index() {
     const [consent, setConsent] = useState('');
     const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, setSubmitLoading } = ApplicationStore();
     const { setApplicationFormModal, setAlert, setAlertBody } = HomeStore();
-    const [vacancies, setVacancies] = useState([
-        { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
-    ]);
+    const { data: vacanciesData } = useVacancies();
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
@@ -19,6 +19,7 @@ export default function Index() {
                 setSubmitLoading(true);
                 (async () => {
                     try {
+                        // console.log(' (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any): ', (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.firstChoice)) as any))
                         const formData = new FormData();
                         const split = applicationForm.photo.split('/');
                         const mimeToExtension = (mimeType: string): string => {
@@ -184,22 +185,24 @@ export default function Index() {
                             positions: [
                                 {
                                     id: applicationForm.generalInformation.firstChoice,
-                                    companyId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).company.id,
-                                    name: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).position,
+                                    companyId: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).companyDetails.id,
+                                    name: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).position,
                                     salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 1, name: 'First Choice' },
                                     availableDateStart: applicationForm.generalInformation.startDateAvailability,
-                                    departmentId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).department.id,
+                                    departmentId: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).departmentDetails.id,
                                 },
-                                {
-                                    id: applicationForm.generalInformation.secondChoice,
-                                    companyId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.secondChoice))) as any).company.id,
-                                    name: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.secondChoice))) as any).position,
-                                    salary: applicationForm.generalInformation.desiredSalary,
-                                    choice: { id: 2, name: 'Second Choice' },
-                                    availableDateStart: applicationForm.generalInformation.startDateAvailability,
-                                    departmentId: (vacancies.find((item) => item.id == (Number(applicationForm.generalInformation.secondChoice))) as any).department.id,
-                                },
+                                (Number(applicationForm.generalInformation.secondChoice) !== 0
+                                    ? [{
+                                        id: applicationForm.generalInformation.secondChoice,
+                                        companyId: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).companyDetails.id,
+                                        name: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).position,
+                                        salary: applicationForm.generalInformation.desiredSalary,
+                                        choice: { id: 2, name: 'Second Choice' },
+                                        availableDateStart: applicationForm.generalInformation.startDateAvailability,
+                                        departmentId: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).departmentDetails.id,
+                                    }]
+                                    : []),
                             ],
                             questionnaires: [
                                 { id: 1, Question: 'Have you ever been convicted of a crime?', Answer: applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails },
@@ -251,13 +254,15 @@ export default function Index() {
                                 'Content-Type': 'multipart/form-data',
                             },
                         })
+                        console.log(response)
                         if (response.status == 201) {
-                            setApplicationForm(ApplicationFormVal)
+                            setApplicationForm(ApplicationFormValClean)
                             setApplicationFormModal(false);
                             setActiveStepper(Step.GeneralInformation);
                             setAlert(AlertType.applicationSuccesfull);
                         }
                     } catch (error: any) {
+                        console.log(error)
                         setAlert(AlertType.submitResponse);
                         const errorText = JSON.parse(error.request.responseText);
                         const errorTitle = errorText.title;
@@ -276,24 +281,6 @@ export default function Index() {
         }
         return () => setSubmit(false);
     }, [submit]);
-
-    const fetchLookups = async () => {
-        await axiosInstance
-            .get("/recruitment/vacancies")
-            .then((response) => {
-                setVacancies(response.data.items)
-            })
-            .catch((error) => {
-                const message = error.response.data.errors[0].message;
-                console.error(message)
-            });
-    };
-
-    useEffect(() => {
-        if (activeStepper === Step.Oath) {
-            fetchLookups()
-        }
-    }, [activeStepper])
 
     return (
         <div className="text-center text-[#6D6D6D] flex flex-col gap-7">
