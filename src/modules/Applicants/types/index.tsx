@@ -218,6 +218,7 @@ export interface ViewApplicantById {
         civilStatus: string;
         skills?: string[];
         status?: string[];
+        applicationDate?: string;
     };
 
     governmentIdInformation: {

@@ -99,10 +99,10 @@ export interface Row {
 export type TabKey = "Pending" | "Accepted" | "All_offers" | "Archived";
 
 export enum TABSKey {
-  AllOffers = "All_offers",
   Pending = "Pending",
   Accepted = "Accepted",
-  Archived = "Archived"
+  Archived = "Archived",
+  AllOffers = "All_offers",
 }
 
 //#region SORT

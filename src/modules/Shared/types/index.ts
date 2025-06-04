@@ -143,7 +143,8 @@ export interface Applicant {
     movement: string;
     comments: string;
     generalApplicant: any;
-    singlePosition: any;
+    location?: string;
+    singlePosition: string;
 }
 
 export interface SharedApplicantStore {
@@ -316,14 +317,15 @@ export type TextRendererProps = {
 
 export interface ViewApplicantsProps extends Partial<PDFProps> {
     applicantName: string;
-    Position: string;
-    Status: string;
-    Email: string;
-    Phone: string;
-    Skills: string;
-    Remarks: string;
-    Application_Date: string;
+    position: string;
+    status: string;
+    email: string;
+    phone: string;
+    skills: string;
+    remarks: string;
+    applicationDate: string;
     IsJobOffer: any;
+    location?: string;
     onClose: () => void;
 }
 

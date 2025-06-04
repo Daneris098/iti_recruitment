@@ -1,7 +1,7 @@
-import { ApplicantStore } from "@modules/Vacancies/store/index"
-import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
-// import ViewApplicant from "@src/modules/Applicants/components/documents/main/ViewApplicant";
+import { ApplicantStore } from "@modules/Vacancies/store/index";
 import ViewApplicant from "@modules/Shared/components/viewApplicants/index";
+import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+
 export default function index() {
     const { setIsViewApplicant, selectedApplicant, isViewApplicant } = ApplicantStore();
 
@@ -13,18 +13,18 @@ export default function index() {
             onClose={() => setIsViewApplicant(false)}
         >
             <ViewApplicant
-                applicantName={selectedApplicant.applicantName}
-                Position={selectedApplicant.position}
-                Status={selectedApplicant.status}
-                Email={selectedApplicant.email}
-                Phone={selectedApplicant.phone}
-                Skills={selectedApplicant.skills}
-                Remarks={selectedApplicant.remarks}
-                Application_Date={selectedApplicant.applicationDate}
+                applicantName={`${selectedApplicant.nameResponse?.firstName} ${selectedApplicant.nameResponse?.lastName}`}
+                location={selectedApplicant.addresses?.[0]?.zipCode?.name}
+                position={selectedApplicant.position}
+                status={selectedApplicant.applicationMovements?.at(-1)?.status.name ?? "N/A"}
+                email={selectedApplicant.contact?.emailAddress}
+                phone={selectedApplicant.contact?.mobileNo}
+                skills={selectedApplicant.skills}
+                remarks={selectedApplicant.remarks}
+                applicationDate={selectedApplicant.applicationDate}
                 IsJobOffer={selectedApplicant.isJobOffer}
                 onClose={() => setIsViewApplicant(false)}
             />
         </ModalWrapper>
-        // <ApplicantProfile applicant={Applicant} setIsOpen={setIsViewApplicant} isOpen={isViewApplicant} onClose={() => setIsViewApplicant(false)} />
     )
 }

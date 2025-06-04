@@ -1,55 +1,61 @@
-import { useApplicantIdStore, useApplicantStore } from "@modules/Applicants/store";
 import { DataTable } from "mantine-datatable";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
-// import { useApplicantsById } from "@src/modules/Applicants/hooks/useApplicant";
+import { useApplicantIdStore } from "@modules/Applicants/store";
+import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import { useApplicantsById } from "@modules/Shared/hooks/useSharedApplicants";
+import {
+    FEEDBACK, MOVEMENT,
+    TRANSFERRED, READY_FOR_TRANSFER,
+    ALLOWED_ACCESSORS_BASE, ARCHIVED,
+} from "@modules/Shared/utils/constants";
 
-interface ViewApplicantsProps {
-    applicantName: string;
-    status: string;
-    remarks: string;
-    feedback?: string;
-}
-export default function ApplicationMovement({ applicantName, status,
-    // remarks
-}: ViewApplicantsProps) {
-    const { records } = useApplicantStore();
+export default function ApplicationMovement({
+    status, applicantName: _applicantName, remarks: _remarks
+}: { status: string, applicantName: string, remarks: string }) {
+
     const applicantId = useApplicantIdStore((state) => state.id);
     const { data: applicantsById } = useApplicantsById(applicantId);
+
     const setApplicationMovements = applicantsById?.applicationMovements?.movements || [];
     const setCommentsMovement = applicantsById?.commentsByID || [];
-    const filteredRecords = records.filter(record => record.applicantName === applicantName);
 
-    const movementsRecords = filteredRecords.flatMap(record =>
-        Array.isArray(setApplicationMovements) && Array.isArray(setCommentsMovement)
-            ? setApplicationMovements.reverse().map((movement: any, index: number) => ({
-                ...record,
-                id: `${record.id}-${index}`,
-                movement: movement === "Ready for Transfer" ? "Transferred" : movement,
-                comments: setCommentsMovement[index] || null,
-            }))
-            : []
-    );
+    function formatMovement(movement: string): string {
+        const replacements: Record<string, string> = {
 
-    const allowedAccessors = ['applicationDate', 'movement', 'comments'];
-
-    if (status === 'Archived') {
-        allowedAccessors.push('feedback');
+            [READY_FOR_TRANSFER]: TRANSFERRED
+        };
+        return replacements[movement] || movement
     }
 
-    const filterColumns = applicantsColumns.filter(col =>
-        allowedAccessors.includes(col.accessor)
-    );
+    const movementsRecords =
+        Array.isArray(setApplicationMovements) && Array.isArray(setCommentsMovement)
+            ? setApplicationMovements.reverse().map((movement: any, index: number) => ({
+                id: `${applicantId}-${index}`,
+                movement: formatMovement(movement),
+                comments: setCommentsMovement[index] || null,
+                applicationDate: applicantsById?.generalInformation?.applicationDate || null,
+            }))
+            : [];
+
+    const allowedAccessors = [...ALLOWED_ACCESSORS_BASE];
+
+    if (status === ARCHIVED) {
+        allowedAccessors.push(FEEDBACK);
+    }
+
+    const allColumns = getCombinedColumns({ includeApplicants: true });
+
+    const filteredColumns = allColumns.filter(col => allowedAccessors.includes(col.accessor));
 
     const columnsWithComments = [
-        ...filterColumns.filter(col => col.accessor !== 'movement'),
-        ...filterColumns.filter(col => col.accessor === 'movement')
+        ...filteredColumns.filter(col => col.accessor !== MOVEMENT),
+        ...filteredColumns.filter(col => col.accessor === MOVEMENT),
     ];
 
     return (
         <div className="pt-1 pb-40 poppins">
             <div>
-                <DataTable columns={columnsWithComments}
+                <DataTable
+                    columns={columnsWithComments}
                     records={movementsRecords}
                     sortIcons={{
                         sorted: <span></span>,

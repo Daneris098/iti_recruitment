@@ -9,19 +9,21 @@ import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
 import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
 import {
-applicantsByIdService,
+    applicantsByIdService,
     viewApplicantOfferService, useViewInterviewStagesHiring
 } from "@modules/Shared/components/api/UserService"
 import {
-    applicationMovementHired,
+    applicationMovementHired, transferApplicantPosition,
     applicationMovementArchive, applicationMovementForTransfer,
     applicationMovementOffered, applicationMovementForInterview,
-    transferApplicantPosition
 } from "@modules/Applicants/api/userService";
 import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { payloadMapper } from "@modules/Shared/utils/payloadMapper";
-import { useSharedUserService, useSharedTransferredPosition, useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    useSharedUserService,
+    useSharedTransferredPosition, useSharedViewAcceptedOffer
+} from "@modules/Shared/api/useSharedUserService";
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -67,6 +69,7 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
     const [firstPositionApplied, secondPositionApplied] = positionsApplied;
     const mapComments = applicationMovements.map((item: any) => item.comment)
     const mapApplicationMovements = applicationMovements.map((item: any) => item.status.name);
+    const dateApplied = applicant.data.dateApplied
     return {
         name: nameResponse.normalName,
         generalInformation: {
@@ -85,6 +88,7 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
             religion: religion.name,
             civilStatus: civilStatus.name,
             skills: skills.map((skill: any) => skill.keyword),
+            applicationDate: DateTimeUtils.dateDefaultToHalfMonthWord(dateApplied)
         },
         governmentIdInformation: {
             gsisNo: identification.gsisNo,
@@ -228,14 +232,14 @@ export const formatApplicant = (
     page: number,
     pageSize: number,
     total: number,
-    // acceptedOffers: any[]
 ): Applicant => {
-    const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
-    const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
+    const dateApplied = applicant.dateApplied;
+    const location = applicant.addresses?.[0]?.zipCode?.name;
     const firstTwoPositions = applicant.positionsApplied?.slice(0, 2) || [];
     const positionNames = firstTwoPositions.map((pos: any) => pos.name).join(", ");
+    const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
     const singlePosition = applicant.positionsApplied?.[applicant.positionsApplied.length - 1] || null;
-    // const acceptedOffer = acceptedOffers.find((offer) => offer.applicantId === applicant.id);
+    const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
 
     let movement;
     if (applicant.applicationMovements?.length === 1) {
@@ -247,11 +251,7 @@ export const formatApplicant = (
     return {
         id: applicant.id,
         applicantName: `${applicant.nameResponse.firstName} ${applicant.nameResponse.lastName}`,
-        applicationDate: new Date(applicant.dateApplied).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        }),
+        applicationDate: DateTimeUtils.dateDefaultToHalfMonthWord(dateApplied),
         phone: applicant.contact.mobileNo,
         email: applicant.contact.emailAddress,
         position: positionNames,
@@ -262,8 +262,8 @@ export const formatApplicant = (
         movement: mapApplicationMovements,
         comments: mapComments,
         generalApplicant: applicant,
+        location,
         singlePosition,
-        // acceptedOffer
     };
 };
 
@@ -334,28 +334,6 @@ export const useViewInterviewStages = (
 
 const DEFAULT_FETCH_ALL_PAGE = 1;
 const DEFAULT_FETCH_ALL_PAGE_SIZE = 60;
-
-// export const useViewAcceptedOffer = (id: string | number) => {
-//     return useQuery({
-//         queryKey: sharedApplicantKeys.list({}),
-//         queryFn: async () => {
-//             const data = await useSharedViewAcceptedOffer.getAcceptedOfferId(id)
-//             // debugger;
-//             return data
-//         },
-//         enabled: !!id
-//     })
-
-// }
-// export const useViewAcceptedOffer = (id: string | number) => {
-//     return useQuery({
-//         queryKey: ['accepted-offer', id],
-//         queryFn: async () => {
-//             return await useSharedViewAcceptedOffer.getAcceptedOfferId(id);
-//         },
-//         enabled: !!id,
-//     });
-// };
 
 export const useViewAcceptedOffer = (ids: (string | number)[]) => {
     return useQueries({
