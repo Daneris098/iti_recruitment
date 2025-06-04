@@ -320,6 +320,7 @@ export default function index() {
                                             value
                                         );
                                     }}
+                                    maxDate={new Date()}
                                 />
 
                                 <YearPickerInput
@@ -427,7 +428,7 @@ export default function index() {
                                                 radius="md"
                                                 size="sm"
                                                 readOnly
-                                                label="Vacancy Duration"
+                                                label="Inclusive Dates"
                                                 placeholder="Start Date"
                                                 className="w-full cursor-default"
                                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}

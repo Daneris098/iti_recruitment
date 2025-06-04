@@ -5,15 +5,17 @@ import { ApplicationStore, HomeStore } from "@modules/HomePublic/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { Step, GeneralInformation } from '@modules/HomePublic/types';
-import { DatePicker } from "@mantine/dates";
+import { DateInput, DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+import { useCities } from "@modules/HomePublic/hooks/useCities";
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
+    // const { data: citiesData } = useCities();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -24,9 +26,10 @@ export default function index() {
     const [cities, setCities] = useState([
         { id: 1, value: 'MANILA', label: 'MANILA' },
     ]);
-
+    const [startDateAvailabilityOpened, setStartDateAvailabilityOpened] = useState(false);
+    const [datedOfBirthOpened, setDatedOfBirthOpenedOpened] = useState(false);
     const form = useForm({
-        mode: 'controlled',
+        mode: 'uncontrolled',
         initialValues: applicationForm.generalInformation,
         validate: {
             firstChoice: (value: string) => value === null || value === '' ? "First choice is required" : null,
@@ -38,24 +41,18 @@ export default function index() {
                     lastName: (value: string) => !value.trim() ? "Last name is required" : null,
                 },
                 presentAddress: {
-                    unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
                     houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
                     street: (value: string) => value.length === 0 ? "Street is required" : null,
-                    subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
                     barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
                     city: (value: string) => value.length === 0 ? "City is required" : null,
-                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
                     livingArrangement: (value: string) => value.length === 0 ? "Living arrangement is required" : null,
                 },
 
                 permanentAddress: {
-                    unitNo: (value: string) => value.length === 0 ? "Unit No is required" : null,
                     houseNo: (value: string) => value.length === 0 ? "House No is required" : null,
                     street: (value: string) => value.length === 0 ? "Street is required" : null,
-                    subdivision: (value: string) => value.length === 0 ? "Subdivision is required" : null,
                     barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
                     city: (value: string) => value.length === 0 ? "City is required" : null,
-                    zipCode: (value: string) => value.length === 0 ? "Zip code is required" : null,
                     livingArrangement: (value: string) => value.length === 0 ? "Address type is required" : null,
                 },
 
@@ -65,7 +62,7 @@ export default function index() {
                 age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
                 gender: (value: string) => value.length === 0 ? "Gender is required" : null,
                 civilStatus: (value: string) => value.length === 0 ? "Civil Status is required" : null,
-                mobileNumber: (value: number) => value.toString().length !== 10 ? "Enter a valid mobile number" : null,
+                mobileNumber: (value: number) => value.toString().length !== 11 ? "Enter a valid mobile number" : null,
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
                 landlineNumber: (value: string) => value && value.length != 8 ? "Enter a valid landline mobile number" : null,
 
@@ -96,15 +93,11 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
-
     useEffect(() => {
         if (activeStepper === Step.GeneralInformation) {
-            console.log('applicationForm: ', applicationForm)
-            console.log('activeStepper: ', activeStepper)
             form.setFieldValue("firstChoice", String(applicationForm.generalInformation.firstChoice));
             form.setFieldValue("secondChoice", String(applicationForm.generalInformation.secondChoice));
         }
-
     }, [activeStepper])
 
     useEffect(() => {
@@ -119,8 +112,6 @@ export default function index() {
             age--;
         }
         form.setFieldValue('personalInformation.age', age);
-        // form.setValues({ ...form.getValues(), personalInformation: { ...form.getValues().personalInformation, age: age } });
-        // setApplicationForm({ ...applicationForm, generalInformation: { ...applicationForm.generalInformation, personalInformation: { ...applicationForm.generalInformation.personalInformation, age: age } } });
     }, [form.getValues().personalInformation.dateOfBirth]);
 
     const fetchLookups = async () => {
@@ -145,21 +136,57 @@ export default function index() {
                 const message = error.response.data.errors[0].message;
                 console.error(message)
             });
-
     };
 
     useEffect(() => {
-        const map = vacanciesData?.map((item) => ({
+        // const mapVacancies = vacanciesData?.map((item) => ({
+        //     id: item.id,
+        //     value: String(item.id),
+        //     label: item.position,
+        // })) ?? [];
+        // setVacancies(mapVacancies)
+        // if (selectedData.id != 0) {
+        //     form.setFieldValue("firstChoice", String(selectedData.id));
+        // }
+
+        // const mapCitiesData = citiesData?.map((item: any) => ({
+        //     id: item.id,
+        //     value: `${item.id}`,
+        //     label: item.name,
+        // })) ?? [{ id: 1, value: 'MANILA', label: 'MANILA' },];
+        // setCities(mapCitiesData);
+
+        // console.log('mapCitiesData: ', mapCitiesData)
+        // console.log('citiesData: ', citiesData)
+
+        fetchLookups()
+        // debugger
+        // console.log('form val: ', form.getValues())
+    }, [])
+
+    useEffect(() => {
+        const mapVacancies = vacanciesData?.map((item) => ({
             id: item.id,
             value: String(item.id),
             label: item.position,
         })) ?? [];
-        setVacancies(map)
-        form.setFieldValue("firstChoice", String(selectedData.id));
-        fetchLookups()
-    }, [])
+        setVacancies(mapVacancies)
+        if (selectedData.id != 0) {
+            form.setFieldValue("firstChoice", String(selectedData.id));
+        }
+    }, [vacanciesData])
+
+    // useEffect(() => {
+    //     const mapCitiesData = citiesData?.map((item: any) => ({
+    //         id: item.id,
+    //         value: `${item.id}`,
+    //         label: item.name,
+    //     })) ?? [{ id: 1, value: 'MANILA', label: 'MANILA' },];
+    //     setCities(mapCitiesData);
+    // }, [citiesData])
 
     const fetchBarangays = async (cityId: number, mode: number = 1) => {
+        console.log('cityId: ', cityId)
         await axiosInstance
             .get(`/general/cities/${cityId}/barangays`)
             .then((response) => {
@@ -175,6 +202,7 @@ export default function index() {
                         value: item.name,
                         label: item.name,
                     }));
+                console.log('map sheesh: ', map)
                 if (mode == 1) {
                     setBarangays(map);
                 }
@@ -186,6 +214,10 @@ export default function index() {
                 const message = error.response.data.errors[0].message;
                 console.error(message)
             });
+    }
+
+    const checkIfContactExist = () => {
+        return true
     }
 
     return (
@@ -224,11 +256,19 @@ export default function index() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
                     <NumberInput withAsterisk hideControls min={1} {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
+                    {/* <DateInput
+                        className="w-full cursor-default"
+                        classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                        // {...form.getInputProps("startDateAvailability")}
+                        // key={form.key('startDateAvailability')}
+                        label="Availability to Start"
+                        placeholder="Select Date"
+                    /> */}
                     <Popover
                         position="bottom"
                         shadow="md"
-                        trapFocus={true}
-                        returnFocus={true}
+                        opened={startDateAvailabilityOpened}
+                        onChange={setStartDateAvailabilityOpened}
                     >
                         <Popover.Target>
                             <TextInput
@@ -240,12 +280,19 @@ export default function index() {
                                 placeholder='Select Date'
                                 className="w-full cursor-default"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                rightSection={<IconCalendarMonth />}
-                                styles={{ label: { color: "#6d6d6d" } }}
+                                rightSection={
+                                    <IconCalendarMonth onClick={() => setStartDateAvailabilityOpened((o) => !o)} className="cursor-pointer" />
+                                }
+                                styles={{ label: { color: "#6d6d6d" } }} onClick={() => setStartDateAvailabilityOpened((o) => !o)}
                             />
                         </Popover.Target>
                         <Popover.Dropdown className="w-full">
-                            <DatePicker minDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => { form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            <DatePicker minDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("startDateAvailability")} onChange={(value: Date | null) => {
+                                if (value != null) {
+                                    setStartDateAvailabilityOpened(false)
+                                }
+                                form.setFieldValue("startDateAvailability", value ? dayjs(value).format("YYYY-MM-DD") : '')
+                            }} />
                         </Popover.Dropdown>
                     </Popover>
                 </div>
@@ -270,6 +317,7 @@ export default function index() {
                     <Autocomplete
                         {...form.getInputProps("personalInformation.presentAddress.city")}
                         // key={form.key('personalInformation.presentAddress.city')}
+                        limit={250}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
                         radius={8}
@@ -279,13 +327,15 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={((val) => {
+                            console.log('cities123: ', cities)
+                            console.log('val123: ', val)
                             const selectedCity = cities.find(city => city.label === val);
                             fetchBarangays(selectedCity?.id ?? 1, 1)
                             form.setFieldValue("personalInformation.presentAddress.city", val);
                         })}
                     />
 
-                    <Select
+                    <Autocomplete
                         {...form.getInputProps("personalInformation.presentAddress.barangay")}
                         key={form.key('personalInformation.presentAddress.barangay')}
                         w={isMobile ? '25%' : '100%'}
@@ -296,7 +346,9 @@ export default function index() {
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
-
+                        onChange={((val) => {
+                            form.setFieldValue("personalInformation.presentAddress.barangay", val);
+                        })}
                     />
 
                     <TextInput
@@ -351,8 +403,9 @@ export default function index() {
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <Autocomplete
+                        limit={250}
                         disabled={sameAsPresent}
-                        key={form.key('personalInformation.permanentAddress.city')}
+                        // key={form.key('personalInformation.permanentAddress.city')}
                         {...form.getInputProps("personalInformation.permanentAddress.city")}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
@@ -414,7 +467,9 @@ export default function index() {
                         position="bottom"
                         shadow="md"
                         trapFocus={true}
-                        returnFocus={true}
+                        returnFocus={false}
+                        opened={datedOfBirthOpened}
+                        onChange={setDatedOfBirthOpenedOpened}
                     >
                         <Popover.Target>
                             <TextInput
@@ -427,12 +482,18 @@ export default function index() {
                                 placeholder='Select Date'
                                 className="w-full cursor-default"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                                rightSection={<IconCalendarMonth />}
+                                rightSection={<IconCalendarMonth onClick={() => setDatedOfBirthOpenedOpened((o) => !o)} />}
                                 styles={{ label: { color: "#6d6d6d" } }}
+                                onClick={() => setDatedOfBirthOpenedOpened((o) => !o)}
                             />
                         </Popover.Target>
                         <Popover.Dropdown className="w-full">
-                            <DatePicker maxDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("personalInformation.dateOfBirth")} onChange={(value: Date | null) => { form.setFieldValue("personalInformation.dateOfBirth", value ? dayjs(value).format("YYYY-MM-DD") : '') }} />
+                            <DatePicker maxDate={new Date()} firstDayOfWeek={0}  {...form.getInputProps("personalInformation.dateOfBirth")} onChange={(value: Date | null) => {
+                                if (value != null) {
+                                    setDatedOfBirthOpenedOpened(false)
+                                }
+                                form.setFieldValue("personalInformation.dateOfBirth", value ? dayjs(value).format("YYYY-MM-DD") : '')
+                            }} />
                         </Popover.Dropdown>
                     </Popover>
 
@@ -459,12 +520,12 @@ export default function index() {
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.height")} radius='md' w={isMobile ? '25%' : '100%'} label="Height" placeholder="Height" />
                     <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.weight")} radius='md' w={isMobile ? '25%' : '100%'} label="Weight" placeholder="Weight" />
-                    <Select data={["Single", "Married", "Widowed", "Divorced"]} withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
+                    <Select data={["Single", "Married", "Widowed", "Divorced"]} rightSection={<IconCaretDownFilled size='18' />} withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.civilStatus")} radius='md' w={isMobile ? '25%' : '100%'} label="Civil Status" placeholder="Civil Status" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.religion")} radius='md' w={isMobile ? '25%' : '100%'} label="Religion" placeholder="Religion" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <NumberInput hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
+                    <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>

@@ -40,8 +40,8 @@ export default function index() {
                         <p className="text-[#0078EB] text-2xl font-bold">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
                         <p>{applicationForm.generalInformation.firstChoice}</p>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
-                            <p className="text-[#6D6D6D]">Email</p>
-                            <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.workingEmailAddress}</p>
+                            <p className="text-[#6D6D6D] ">Email</p>
+                            <p className="text-[#6D6D6D] font-bold truncate">{applicationForm.generalInformation.personalInformation.workingEmailAddress}</p>
                         </div>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
                             <p className="text-[#6D6D6D]">Phone</p>
@@ -283,7 +283,7 @@ export default function index() {
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Salary</p>
-                                        <p className="text-[#6D6D6D] font-bold">PHP {employment.salary}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{employment.salary === 0 ? ` ` : `PHP ${employment.salary}`}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Reason for Leaving</p>

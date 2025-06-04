@@ -1,14 +1,14 @@
 .scrollbar {
-    /* scrollbar-width: thin; 
+  /* scrollbar-width: thin; 
     scrollbar-color: #888 #f1f1f1;  */
-    /* display: block; */
-    /* width: 10em; */
-    /* overflow: auto;
+  /* display: block; */
+  /* width: 10em; */
+  /* overflow: auto;
     height: 2em;
     padding: 1em;
     margin: 1em auto;
     outline: 2px dashed cornflowerblue; */
-    /* scrollbar-width: thin;  */
+  /* scrollbar-width: thin;  */
 }
 
 .scrollbar::-webkit-scrollbar-button {
@@ -26,19 +26,24 @@
 }
 
 .scrollbar2::-webkit-scrollbar {
- display: none;
+  display: none;
 }
 
 .mantine-Stepper-stepIcon[data-progress] {
   background: #228be6 !important;
-  color: white ;
+  color: white;
 }
 .mantine-Stepper-stepIcon[data-completed] {
   background: #228be6 !important;
-  color: white ;
+  color: white;
 }
 
 .mantine-Stepper-stepIcon[data-completed] svg {
   width: 40% !important;
   height: 50% !important;
+}
+
+.input {
+  outline: 2px solid #fe0d45;
+  outline-offset: -2px;
 }

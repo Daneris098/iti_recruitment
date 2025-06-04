@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";
 import axiosInstance from "@src/api";
-import { ApplicationFormVal, ApplicationFormValClean } from "../values";
+import { ApplicationFormValClean } from "../values";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 
 export default function Index() {
@@ -61,7 +61,12 @@ export default function Index() {
 
 
                         appendFormData({
-                            name: applicationForm.generalInformation.personalInformation.fullname,
+                            name: {
+                                firstName: applicationForm.generalInformation.personalInformation.fullname.firstName,
+                                middleName: applicationForm.generalInformation.personalInformation.fullname.middleName?.trim() || 'N/A',
+                                lastName: applicationForm.generalInformation.personalInformation.fullname.lastName,
+                                suffix: applicationForm.generalInformation.personalInformation.fullname.suffix?.trim() || 'N/A',
+                            },
                             Photo: file,
                             birthDate: applicationForm.generalInformation.personalInformation.dateOfBirth,
                             birthPlace: applicationForm.generalInformation.personalInformation.placeOfBirth,
@@ -92,16 +97,16 @@ export default function Index() {
                             },
                             family: {
                                 father: {
-                                    name: applicationForm.familyBackground.father.fullname,
+                                    name: applicationForm.familyBackground.father.fullname?.trim() || 'N/A',
                                     age: applicationForm.familyBackground.father.age,
-                                    contactNo: applicationForm.familyBackground.father.contactNumber,
-                                    occupation: applicationForm.familyBackground.father.occupation,
+                                    contactNo: applicationForm.familyBackground.father.contactNumber?.trim() || 'N/A',
+                                    occupation: applicationForm.familyBackground.father.occupation?.trim() || 'N/A',
                                 },
                                 mother: {
-                                    name: applicationForm.familyBackground.mother.fullname,
+                                    name: applicationForm.familyBackground.mother.fullname?.trim() || 'N/A',
                                     age: applicationForm.familyBackground.mother.age,
-                                    contactNo: applicationForm.familyBackground.mother.contactNumber,
-                                    occupation: applicationForm.familyBackground.mother.occupation,
+                                    contactNo: applicationForm.familyBackground.mother.contactNumber?.trim() || 'N/A',
+                                    occupation: applicationForm.familyBackground.mother.occupation?.trim() || 'N/A',
                                 },
                                 ...(applicationForm.familyBackground.spouse?.fullname?.trim()
                                     ? {
@@ -136,18 +141,21 @@ export default function Index() {
                             },
                             religion: {
                                 id: 1,
-                                name: applicationForm.generalInformation.personalInformation.religion,
+                                name: applicationForm.generalInformation.personalInformation.religion?.trim() || 'N/A',
                             },
                             characterReferences: [
-                                ...applicationForm.reference.employmentReference.map((item) => {
-                                    return {
-                                        name: item.fullname,
-                                        company: item.company,
-                                        contactNo: item.ContactNo,
-                                        position: item.positionHeld,
-                                        isEmploymentReference: true
-                                    };
-                                }),
+                                ((applicationForm.reference.employmentReference).length > 0
+                                    ? [...applicationForm.reference.employmentReference.map((item) => {
+                                        return {
+                                            name: item.fullname,
+                                            company: item.company,
+                                            contactNo: item.ContactNo,
+                                            position: item.positionHeld,
+                                            isEmploymentReference: true
+                                        };
+                                    }),]
+                                    : []),
+
                                 ...applicationForm.reference.characterReference.map((item) => {
                                     return {
                                         name: item.fullname,

@@ -84,6 +84,46 @@ export default function index() {
     useEffect(() => {
         if (submit === true && activeStepper === Step.FamilyAndOther && formRef.current) {
             let invalid = false
+            const father = form.getValues().father
+            const mother = form.getValues().mother
+
+            if (father.fullname != '' || father.age > 0 || father.occupation != '' || father.contactNumber.toString() != '') {
+                if (father.fullname === '') {
+                    form.setFieldError(`father.fullname`, 'Fullname is required');
+                    invalid = true
+                }
+                if (father.age <= 0) {
+                    form.setFieldError(`father.age`, 'Age is required');
+                    invalid = true
+                }
+                if (father.occupation === '') {
+                    form.setFieldError(`father.occupation`, 'Occupation is required');
+                    invalid = true
+                }
+                if (father.contactNumber.toString() === '') {
+                    form.setFieldError(`father.contactNumber`, 'Contact Number is required');
+                    invalid = true
+                }
+            }
+            if (mother.fullname != '' || mother.age > 0 || mother.occupation != '' || mother.contactNumber.toString() != '') {
+                if (mother.fullname === '') {
+                    form.setFieldError(`mother.fullname`, 'Fullname is required');
+                    invalid = true
+                }
+                if (mother.age <= 0) {
+                    form.setFieldError(`mother.age`, 'Age is required');
+                    invalid = true
+                }
+                if (mother.occupation === '') {
+                    form.setFieldError(`mother.occupation`, 'Occupation is required');
+                    invalid = true
+                }
+                if (father.contactNumber.toString() === '') {
+                    form.setFieldError(`mother.contactNumber`, 'Contact Number is required');
+                    invalid = true
+                }
+            }
+
             form.getValues().siblings.forEach((item, index) => {
                 if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString().length < 11)) {
                     if (item.fullname === '') {
@@ -198,14 +238,14 @@ export default function index() {
                 <p className="font-bold">Family Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
-                    <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={1} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father </p>} placeholder="Full Name" />
+                    <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={0} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother <span className="text-red-500">*</span> <span className="text-[#A8A8A8]">(Write N/A if not applicable)</span></p>} placeholder="Full Name" />
-                    <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={1}  {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother </p>} placeholder="Full Name" />
+                    <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={0}  {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
@@ -213,7 +253,7 @@ export default function index() {
                 {applicationForm.familyBackground.siblings.map((_, index) => (
                     <div className="flex flex-col sm:flex-row gap-4 items-end">
                         <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key(`siblings.${index}.fullname`)} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
-                        <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} min={1} hideControls key={form.key(`siblings.${index}.age`)} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                        <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} min={0} hideControls key={form.key(`siblings.${index}.age`)} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                         <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} key={form.key(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                         <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                         {(<div>
@@ -260,11 +300,11 @@ export default function index() {
 
                 <p className="font-bold">Other Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <MultiSelect ref={myRef} key={form.key('otherInformation.specialTechnicalSkills')}  {...form.getInputProps("otherInformation.specialTechnicalSkills")} classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]' }} className='w-full' label="Special Technical Skills" radius='md' placeholder="Enter Keyword to add skills" data={[]} searchable value={technicalSkills} onChange={handleChange} onKeyDown={handleKeyDown} />
-                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isConvictedCrimeDetails")} radius='md' w={'100%'} label="Have you ever been convicted of a crime ? if yes, please give details." placeholder="if you answer yes, please give details." />
-                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isBeenHospitalizedDetails")} radius='md' w={'100%'} label="Have you ever been hospitalized ? if yes, please give details." placeholder="if you answer yes, please give details." />
-                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.medicalConditionDetails")} radius='md' w={'100%'} label="Do you have any medical condition that may prevent  you from performing certain types of jobs ? please specify." placeholder="if you answer yes, please give details." />
-                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.relativeWorkingWithUsDetails")} radius='md' w={'100%'} label="Do you have any relatives/family/people in a relationship with you, who are working with us?" placeholder="Answer yes or no." />
+                <MultiSelect rightSection ref={myRef} key={form.getValues().otherInformation.specialTechnicalSkills}  {...form.getInputProps("otherInformation.specialTechnicalSkills")} classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]' }} className='w-full' label={<p>Special Technical Skills <span className="text-[#F14336]">*</span></p>} radius='md' placeholder="Enter Keyword to add skills" data={[]} searchable value={technicalSkills} onChange={handleChange} onKeyDown={handleKeyDown} />
+                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isConvictedCrimeDetails")} radius='md' w={'100%'} label={<p>Have you ever been convicted of a crime ? if yes, please give details. <span className="text-[#F14336]">*</span></p>} placeholder="if you answer yes, please give details." />
+                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isBeenHospitalizedDetails")} radius='md' w={'100%'} label={<p>Have you ever been hospitalized?if yes, please give details. <span className="text-[#F14336]">*</span></p>} placeholder="if you answer yes, please give details." />
+                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.medicalConditionDetails")} radius='md' w={'100%'} label={<p>Do you have any medical condition that may prevent  you from performing certain types of jobs?please specify. <span className="text-[#F14336]">*</span></p>} placeholder="if you answer yes, please give details." />
+                <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.relativeWorkingWithUsDetails")} radius='md' w={'100%'} label={<p>Do you have any relatives/family/people in a relationship with you, who are working with us? <span className="text-[#F14336]">*</span></p>} placeholder="Answer yes or no." />
 
             </div>
         </form>
