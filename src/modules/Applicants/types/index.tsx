@@ -162,6 +162,7 @@ type Employment = {
 type ApplicationMovements = {
     name: string;
     comments: string;
+    dates: string;
 };
 
 type Comments = {
@@ -218,7 +219,6 @@ export interface ViewApplicantById {
         civilStatus: string;
         skills?: string[];
         status?: string[];
-        applicationDate?: string;
     };
 
     governmentIdInformation: {
@@ -263,6 +263,7 @@ export interface ViewApplicantById {
     },
     applicationMovements: {
         movements: ApplicationMovements[];
+        movementLastModifiedDate?: string;
     },
     commentsByID: {
         item: Comments;

@@ -1,9 +1,11 @@
 //#region Application Movements
 export const ARCHIVED = 'Archived';
 export const FEEDBACK = 'feedback';
-export const MOVEMENT = 'movement'
+export const MOVEMENT = 'movement';
+export const COLUMN_HEADER_DATE = 'Date';
 export const TRANSFERRED = 'Transferred';
 export const READY_FOR_TRANSFER = 'Ready For Transfer';
+export const COLUMN_ACCESSOR_DATE_APPLIED = 'applicationDate';
 export const ALLOWED_ACCESSORS_BASE = ['applicationDate', 'movement', 'comments'];
 
 //#region JobOffers 

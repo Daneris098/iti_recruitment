@@ -1,29 +1,28 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
 import {
     ArchiveForm,
     HiredForm, OfferForm,
     Applicant, ForInterviewForm,
     TransferApplicationPositionForm
 } from "@modules/Shared/types";
-import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
-import { ViewApplicantById } from "@modules/Applicants/types"
-import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
-import {
-    applicantsByIdService,
-    viewApplicantOfferService, useViewInterviewStagesHiring
-} from "@modules/Shared/components/api/UserService"
 import {
     applicationMovementHired, transferApplicantPosition,
     applicationMovementArchive, applicationMovementForTransfer,
     applicationMovementOffered, applicationMovementForInterview,
 } from "@modules/Applicants/api/userService";
-import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
-import { payloadMapper } from "@modules/Shared/utils/payloadMapper";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    applicantsByIdService,
+    viewApplicantOfferService, useViewInterviewStagesHiring
+} from "@modules/Shared/components/api/UserService";
 import {
     useSharedUserService,
     useSharedTransferredPosition, useSharedViewAcceptedOffer
 } from "@modules/Shared/api/useSharedUserService";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { ViewApplicantById } from "@modules/Applicants/types"
+import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
+import { payloadMapper } from "@modules/Shared/utils/payloadMapper";
+import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
+import { useMutation, useQueryClient, useQuery, useQueries } from "@tanstack/react-query";
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -69,7 +68,9 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
     const [firstPositionApplied, secondPositionApplied] = positionsApplied;
     const mapComments = applicationMovements.map((item: any) => item.comment)
     const mapApplicationMovements = applicationMovements.map((item: any) => item.status.name);
-    const dateApplied = applicant.data.dateApplied
+    const dateApplied = applicationMovements.map((item: any) =>
+        DateTimeUtils.dateDefaultToHalfMonthWord(item.audit.date));
+
     return {
         name: nameResponse.normalName,
         generalInformation: {
@@ -88,7 +89,6 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
             religion: religion.name,
             civilStatus: civilStatus.name,
             skills: skills.map((skill: any) => skill.keyword),
-            applicationDate: DateTimeUtils.dateDefaultToHalfMonthWord(dateApplied)
         },
         governmentIdInformation: {
             gsisNo: identification.gsisNo,
@@ -204,12 +204,13 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
             }
         },
         applicationMovements: {
-            movements: mapApplicationMovements
+            movements: mapApplicationMovements,
+            movementLastModifiedDate: dateApplied
         },
         commentsByID: mapComments
     };
 };
-
+debugger;
 export const useApplicantsById = (id: string | number) => {
     return useQuery({
         queryKey: sharedApplicantKeys.lists(),
