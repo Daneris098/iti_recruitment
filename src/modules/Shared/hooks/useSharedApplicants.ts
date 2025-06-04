@@ -210,7 +210,7 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
         commentsByID: mapComments
     };
 };
-debugger;
+
 export const useApplicantsById = (id: string | number) => {
     return useQuery({
         queryKey: sharedApplicantKeys.lists(),

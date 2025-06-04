@@ -2,9 +2,9 @@
 import dayjs from "dayjs";
 import { DataTable } from "mantine-datatable";
 import { PDFViewer } from "@react-pdf/renderer";
-import { Pagination, Tabs } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { Pagination, Tabs, Tooltip } from "@mantine/core";
 import { useStatusFilterStore } from "@modules/Shared/store";
 import Filter from "@modules/Offers/components/filter/Filter";
 import { useApplicantIdStore } from "@modules/Applicants/store";
@@ -150,7 +150,10 @@ export default function index() {
             acceptedOffer: offerMap[applicant.id] ?? null,
         }));
 
-        // Transform the merged applicant data
+        function truncateText(text: string, maxLength: number): string {
+            return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+        }
+
         const transformed: JobOffersColumns[] = applicantsWithOffers
             .filter(applicant => {
                 const lastStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
@@ -164,9 +167,14 @@ export default function index() {
                         const rawStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
                         result.status = STATUS_MAP[rawStatus as keyof typeof STATUS_MAP];
                     } else if (key === ATTACHMENTS) {
-                        
+                        const attachmentsCharacterLimit = applicant.acceptedOffer?.data?.[0]?.name ?? '';
+                        const truncatedAttachmentStrings = truncateText(attachmentsCharacterLimit, 20);
                         // Assign accepted offer filename if exists
-                        result.attachments = applicant.acceptedOffer?.data?.[0]?.name ?? '';
+                        result.attachments = (
+                            <Tooltip label={attachmentsCharacterLimit} withArrow>
+                                <span>{truncatedAttachmentStrings}</span>
+                            </Tooltip>
+                        )
                     } else {
                         result[key as keyof JobOffersColumns] = APPLICANT_FIELDS[key](applicant) ?? '';
                     }

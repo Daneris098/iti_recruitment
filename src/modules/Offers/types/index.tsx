@@ -1,3 +1,5 @@
+import React from "react";
+
 //#region OFFER
 export interface OfferColumns {
   applicantName: string;
@@ -86,13 +88,13 @@ export type JobOfferRecord = Partial<PDFProps> & {
   applicantName: string;
   dateGenerated?: string;
   dateLastUpdated?: string;
-  attachments: string | null;
+  attachments: string | null | React.ReactNode;
 };
 
 //#region ROW
 export interface Row {
   status: string;
-  attachments: string | null;
+  attachments: string | null | React.ReactNode;
 }
 
 //#region TABKEYs
@@ -122,7 +124,7 @@ export interface JobOffersColumns {
   dateLastUpdated: string;
   remarks: string;
   status: string;
-  attachments: string;
+  attachments: string | React.ReactNode;
 }
 
 export interface JobOffersStore {

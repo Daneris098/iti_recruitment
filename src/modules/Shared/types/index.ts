@@ -1,4 +1,5 @@
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import React from "react";
 export interface ApplicantResponseById {
     id: number[];
 }
@@ -123,7 +124,7 @@ export interface JobOffersColumns {
     dateLastUpdated: string;
     remarks: string;
     status: string;
-    attachments: string;
+    attachments: string | React.ReactNode;
 }
 
 export interface ApplicantId {
