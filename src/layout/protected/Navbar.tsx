@@ -1,7 +1,18 @@
 import { AppShell, Divider, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconUsers, IconHome, IconCalendarWeek, IconFileDescription, IconArchive, IconTransfer, IconUserPlus, IconBriefcase, IconMessageCircleUser, IconUser } from '@tabler/icons-react';
-import { Search, Files, FileUp, FileUser } from "lucide-react";
+import {
+    IconUser,
+    IconUsers, IconHome,
+    IconArchive, IconUserPlus,
+    IconBriefcase, IconMessageCircleUser,
+    IconCalendarWeek, IconFileDescription,
+    // IconTransfer,
+} from '@tabler/icons-react';
+import {
+    FileUser,
+    Search, Files,
+    // FileUp,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@src/lib/utils";
 import { useEffect, useState } from "react";
@@ -35,8 +46,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleMobile, toggleDesktop, desktopOpe
         { to: "interview", icon: <IconMessageCircleUser />, label: "FOR INTERVIEW" },
         { to: "offered", icon: <IconBriefcase />, label: "OFFERED" },
         { to: "hired", icon: <IconUserPlus />, label: "HIRED" },
-        { to: "transferee", icon: <IconTransfer />, label: "FOR TRANSFER" },
-        { to: "transferred", icon: <FileUp />, label: "TRANSFERRED" },
+        // { to: "transferee", icon: <IconTransfer />, label: "FOR TRANSFER" },
+        // { to: "transferred", icon: <FileUp />, label: "TRANSFERRED" },
         { to: "archive", icon: <IconArchive />, label: "ARCHIVED" },
     ];
 
