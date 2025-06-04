@@ -36,12 +36,14 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Code"
-              {...addDivision.getInputProps("code")}
-              error={addDivision.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Code"
+                {...addDivision.getInputProps("code")}
+                error={addDivision.values.code === "" ? "Code is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -56,12 +58,14 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addDivision.getInputProps("name")}
-              error={addDivision.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Name"
+                {...addDivision.getInputProps("name")}
+                error={addDivision.values.name === "" ? "Name is Required" : undefined}
+              />
+            </div>
           );
         }
         return row.name;
@@ -74,7 +78,11 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
       sortable: true,
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Name" {...addDivision.getInputProps("description")} />;
+          return (
+            <div className="relative">
+              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Name" {...addDivision.getInputProps("description")} />
+            </div>
+          );
         }
         return row.description;
       },
@@ -97,11 +105,8 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
               {...addDivision.getInputProps("isActive")}
               value={addDivision.values.isActive ? "Active" : "Inactive"}
               onChange={(value) => {
-                if (value === "Active") {
-                  addDivision.setFieldValue("isActive", true);
-                } else {
-                  addDivision.setFieldValue("isActive", false);
-                }
+                if (value === "Active") addDivision.setFieldValue("isActive", true);
+                else addDivision.setFieldValue("isActive", false);
               }}
             />
             <IconCircleMinus className="cursor-pointer" onClick={closeAddRow} />

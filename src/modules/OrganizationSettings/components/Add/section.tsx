@@ -25,10 +25,10 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addSection = useForm<AddSectionProps>({
     initialValues: {
-      code: "S-1",
-      name: "Section 1",
+      code: "",
+      name: "",
       isActive: true,
-      description: "Section 1 Description",
+      description: "",
       division: {
         id: 0,
         name: "",
@@ -51,7 +51,6 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
     setNewRows([]);
   };
 
-  console.log(addSection.values);
   return [
     {
       accessor: "code",
@@ -61,12 +60,14 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Code"
-              {...addSection.getInputProps("code")}
-              error={addSection.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Code"
+                {...addSection.getInputProps("code")}
+                error={addSection.values.code === "" ? "Code is required" : null}
+              />
+            </div>
           );
         }
 
@@ -81,12 +82,9 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addSection.getInputProps("name")}
-              error={addSection.values.name === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Name" error={addSection.values.name === "" ? "Name is required" : null} />
+            </div>
           );
         }
 
@@ -101,25 +99,28 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <Select
-              radius={8}
-              data={divisions.data?.items.map((division: any) => ({
-                value: String(division.id),
-                label: division.name,
-              }))}
-              rightSection={<IconCaretDownFilled size="18" />}
-              className="border-none text-sm w-full"
-              classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-              styles={{ label: { color: "#6d6d6d" } }}
-              placeholder="Select Division"
-              onChange={(value) => {
-                const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                if (selectedItem) {
-                  addSection.setFieldValue("division.id", selectedItem.id);
-                  addSection.setFieldValue("division.name", selectedItem.name);
-                }
-              }}
-            />
+            <div className="relative">
+              <Select
+                radius={8}
+                data={divisions.data?.items.map((division: any) => ({
+                  value: String(division.id),
+                  label: division.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Division"
+                error={addSection.values.division.name === "" ? "Division is required" : null}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addSection.setFieldValue("division.id", selectedItem.id);
+                    addSection.setFieldValue("division.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
           );
         }
 
@@ -134,25 +135,28 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <Select
-              radius={8}
-              data={departments.data?.items.map((division: any) => ({
-                value: String(division.id),
-                label: division.name,
-              }))}
-              rightSection={<IconCaretDownFilled size="18" />}
-              className="border-none text-sm w-full"
-              classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-              styles={{ label: { color: "#6d6d6d" } }}
-              placeholder="Select Division"
-              onChange={(value) => {
-                const selectedItem: { id: number; name: string } = departments.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                if (selectedItem) {
-                  addSection.setFieldValue("department.id", selectedItem.id);
-                  addSection.setFieldValue("department.name", selectedItem.name);
-                }
-              }}
-            />
+            <div className="relative">
+              <Select
+                radius={8}
+                data={departments.data?.items.map((division: any) => ({
+                  value: String(division.id),
+                  label: division.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Division"
+                error={addSection.values.department.name === "" ? "Department is required" : null}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = departments.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addSection.setFieldValue("department.id", selectedItem.id);
+                    addSection.setFieldValue("department.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
           );
         }
 
@@ -166,7 +170,11 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
       width: "20%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addSection.getInputProps("description")} />;
+          return (
+            <div className="relative">
+              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addSection.getInputProps("description")} />
+            </div>
+          );
         }
 
         return row.description;
@@ -191,7 +199,10 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
               classNames={{ label: "p-1", input: "poppins text-[#6D6Ddepartments6D]" }}
               styles={{ label: { color: "#6d6d6d" } }}
               defaultValue={row.isActive ? "Inactive" : "Active"}
-              onChange={(value) => addSection.setFieldValue("isActive", Boolean(value))}
+              onChange={(value) => {
+                if (value === "Active") addSection.setFieldValue("isActive", true);
+                else addSection.setFieldValue("isActive", false);
+              }}
             />
             <IconCircleMinus className="cursor-pointer" onClick={closeAddRow} />
           </div>
