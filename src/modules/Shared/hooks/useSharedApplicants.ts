@@ -308,7 +308,7 @@ export const useTransferPositionLookup = (
         allVacancies: queryResult.data?.items
     };
 };
-debugger;
+
 export const useViewInterviewStages = (
 ) => {
     return useQuery({

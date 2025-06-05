@@ -1,3 +1,303 @@
+//#region View Applicant PDF
+export interface ApplicantId {
+    id: number
+    setApplicantId: (id: number) => void
+}
+
+export interface Applicant {
+    id: any;
+    applicantName: string;
+    applicationDate: string;
+    phone: string;
+    email: string;
+    position: string;
+    status: string;
+    feedback?: string;
+    movement: any;
+    comments: string;
+    singlePosition: any;
+}
+export interface ViewApplicantsProps extends Partial<PDFProps> {
+    applicantName: string;
+    Position: string;
+    Status: string;
+    Email: string;
+    Phone: string;
+    Skills: string;
+    Remarks: string;
+    Application_Date: string;
+    IsJobOffer: any;
+    onClose: () => void;
+}
+
+export interface ApplicantStore {
+    records: Applicant[];
+    setApplicantRecords: (rows: Applicant[]) => void;
+    updateApplicantStatus: (id: string, newStatus: string) => void;
+}
+
+//#region Sort State
+export interface SortState {
+    columnAccessor: string;
+    direction: "asc" | "desc";
+    sortedRecords: Applicant[];
+
+    setSort: (column: string, records: Applicant[]) => void;
+    setRecords: (records: Applicant[]) => void;
+}
+
+//#region Pagination State
+export interface PaginationState {
+    page: number;
+    pageSize: number;
+    setPageSize: (size: number) => void;
+    setPage: (page: number) => void;
+    getPaginatedRecords: (records: Applicant[]) => Applicant[];
+}
+
+//#region MODALS
+
+
+
+//#region Dropdown offered modal
+export interface ModalState {
+    isopen: boolean;
+    closeModal: () => void;
+    openModal: () => void;
+}
+
+export interface UpdateApplicantState {
+    status: string;
+    applicantId: string | null; // Add applicantId
+    setStatus: (newStatus: string) => void;
+    setApplicantId: (id: string) => void;
+}
+
+export interface useDropDownOfferedState {
+    status: string;
+    setStatus: (status: string) => void;
+
+    getSalaryTypes: string;
+    setSalaryTypes: (type: string) => void;
+
+    paymentSchemeId: number;
+    setPaymentSchemeId: (paymentSchemeId: number) => void;
+
+    fullName: string;
+    setFullName: (name: string) => void;
+
+    amount: number;
+    setAmount: (amount: number) => void;
+
+    position: string;
+    setPosition: (position: string) => void;
+
+    positionId: number;
+    setPositionId: (positionId: number) => void;
+
+    department: string;
+    setDepartment: (department: string) => void;
+
+    departmentId: number;
+    setDepartmentId: (departmentId: number) => void;
+
+    comments: string;
+    setComments: (comments: string) => void;
+
+    getInterviewer: string;
+    setInterviewer: (interviewer: string) => void;
+
+    interviewerId: number;
+    setInterviewerID: (interviewerId: number) => void;
+
+    interviewStages: string;
+    setInterviewStages: (interviewStages: string) => void;
+
+    interviewStagesId: number;
+    setInterviewStagesId: (interviewStagesId: number) => void;
+
+    interviewLocation: string;
+    setInterviewLocation: (interviewPosition: string) => void;
+
+    interviewDate: string;
+    setInterviewDate: (interviewDate: string) => void;
+
+    interviewTime: string;
+    setInterviewTime: (interviewTime: string) => void;
+}
+
+//#region Archived modal
+export interface Feedbacks {
+
+    feedback: string;
+    setFeedback: (feedback: string) => void;
+
+    feedbacks: string[];
+    addFeedback: (newFeedback: string) => void;
+
+    status: string;
+    setStatus: (status: string) => void;
+
+    comments: string;
+    setComments: (comments: string) => void;
+
+    applicantFeedback: string;
+    setApplicantFeedback: (applicantFeedback: string) => void;
+}
+
+//#region Close Modal
+export interface CloseModal {
+    isModalOpen: boolean;
+    setIsModalOpen: (isOpen: boolean) => void;
+
+    isFeedbackSent: boolean;
+    setIsFeedbackSent: (isOpen: boolean) => void;
+
+    isViewPDF: boolean;
+    setIsViewPDF: (isOpen: boolean) => void;
+
+    isUpdateSuccessful: boolean;
+    setIsUpdateSuccessful: (isOpen: boolean) => void;
+
+    isJobGeneratedOpen: boolean,
+    setIsJobGeneratedOpen: (isOpen: boolean) => void;
+
+    isScheduleInterview: boolean;
+    setIsScheduleInterview: (isOpen: boolean) => void;
+
+    isForTransfer: boolean;
+    setisForTransfer: (isOpen: boolean) => void;
+
+    transferred: boolean;
+    setTransferred: (isOpen: boolean) => void;
+
+    isDropdownOpen: boolean;
+    setIsDropdownOpen: (isOpen: boolean) => void;
+
+    isAddtoCalendar: boolean;
+    setIsAddtoCalendar: (isOpen: boolean) => void;
+
+    isContactApplicant: boolean;
+    setIsContactApplicant: (isOpen: boolean) => void;
+
+    resetTransferState: () => void;
+
+    isUpdated: boolean;
+    setIsUpdated: (isOpen: boolean) => void;
+
+    isDefaultUpdated: boolean;
+    setIsDefaultUpdated: (isOpen: boolean) => void;
+
+    isJobGeneratedAlertOpen: boolean;
+    setIsJobGeneratedAlertOpen: (isOpen: boolean) => void;
+
+    isUpdatedStatusModalOpen: boolean;
+    setIsUpdatedStatusModalOpen: (isOpen: boolean) => void;
+
+    isUpdateStatusButtonModalOpen: boolean;
+    setIsUpdateStatusButtonModalOpen: (isOpen: boolean) => void;
+
+    isApplicantNotReachable: boolean;
+    setIsApplicantNotReachable: (isOpen: boolean) => void;
+
+    isViewApplicant: boolean;
+    setIsViewApplicant: (isOpen: boolean) => void;
+
+    isApplicantUnreachableArchive: boolean;
+    setIsApplicantUnreachableArchive: (isOpen: boolean) => void;
+
+    isForInterviewOpen: boolean;
+    setIsForInterviewOpen: (isOpen: boolean) => void;
+
+    isOffered: boolean;
+    setIsOffered: (isOffered: boolean) => void;
+
+    isUpdateStatus: boolean;
+    setIsUpdateStatus: (isOffered: boolean) => void;
+
+    isStatusUpdated: boolean;
+    setIsStatusUpdated: (isOffered: boolean) => void;
+
+    isForTransferLoader: boolean;
+    setIsForTransferLoader: (isOffered: boolean) => void;
+
+    isGenerateNewOffer: boolean;
+    setIsGenerateNewOffer: (isOffered: boolean) => void;
+
+    isTransferEmployee: boolean;
+    setIsTransferEmployee: (isOpen: boolean) => void;
+
+    isTransferEmployeePosition: boolean;
+    setIsTransferEmployeePosition: (isOpen: boolean) => void;
+
+    isForMultipleTransfer: boolean;
+    setIsForMultipleTransfer: (isMultipleTransfer: boolean) => void;
+
+    isTransferPosition: boolean;
+    setIsTransferPosition: (isTransferPosition: boolean) => void;
+}
+
+//#region Close update status modal
+export interface CloseUpdateStatusModal {
+    isModalOpen: boolean;
+    setIsModalOpen: (isOpen: boolean) => void;
+}
+
+//#region Applicant Status State
+export const statusOptions = {
+    Applied: ["For Interview", "Offered", "Archived"],
+    "For Interview": ["Offered", "Archived"],
+    Offered: ["Hired", "Archived"],
+    Hired: [],
+    "For Transfer": ["Transferred", "Archived"],
+    Transferred: [],
+    Archived: [],
+} as const;
+
+export type DropDownStatus = keyof typeof statusOptions;
+export type StatusOption = "Offered" | "Archived" | "For Interview" | "Hired" | "Transferred";
+export interface ApplicantStatusState {
+    // Current state
+    currentStatus: DropDownStatus;
+    isModalOpen: boolean;
+    selectedStatus: StatusOption | null;
+    excludeForInterviewChoice: DropDownStatus[];
+
+    // Actions
+    setCurrentStatus: (status: DropDownStatus) => void;
+    setIsModalOpen: (isOpen: boolean) => void;
+    setSelectedStatus: (status: StatusOption | null) => void;
+    setExcludeForInterviewChoice: (statuses: DropDownStatus[]) => void;
+    handleStatusClick: (status: StatusOption) => void;
+    resetSelectedStatus: () => void;
+
+    // Computed
+    getAvailableStatuses: () => readonly string[];
+}
+
+
+//#region Date picker
+export interface DatePickerState {
+    isOpen: boolean;
+    setIsOpen: (open: boolean) => void;
+}
+
+export interface ApplicationDateRangeState {
+    applicationDateValue: [Date | null, Date | null];
+    setApplicationDateValue: (newValue: [Date | null, Date | null]) => void;
+}
+
+export interface DateUpdatedRangeState {
+    dateUpdated: [Date | null, Date | null];
+    setDateUpdated: (newValue: [Date | null, Date | null]) => void;
+}
+
+//#region Selected Applicant
+export interface SelectedApplicantState {
+    selectedIds: number[];
+    setSelectedIds: (ids: number[]) => void;
+    clearSelectedIds: () => void;
+}
 export interface ApplicantStatus {
     company: string[];
     applicantName: string;

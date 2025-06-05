@@ -1,5 +1,5 @@
 import { DataTable } from "mantine-datatable";
-import { useApplicantIdStore } from "@modules/Applicants/store";
+import { useApplicantIdStore } from "@modules/Shared/store";
 import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import { useApplicantsById } from "@modules/Shared/hooks/useSharedApplicants";
 import {
@@ -14,7 +14,6 @@ export default function ApplicationMovement({
 }: { status: string, applicantName: string, remarks: string }) {
 
     const allowedAccessors = [...ALLOWED_ACCESSORS_BASE];
-    
     const applicantId = useApplicantIdStore((state) => state.id);
     const { data: applicantsById } = useApplicantsById(applicantId);
 
@@ -25,13 +24,20 @@ export default function ApplicationMovement({
     const setApplicationDates = applicantsById?.applicationMovements?.movementLastModifiedDate || [];
 
     const movementsRecords =
-        Array.isArray(setApplicationMovements) && Array.isArray(setCommentsMovement)
-            ? setApplicationMovements.reverse().map((movement: any, index: number) => ({
-                id: `${applicantId}-${index}`,
-                movement: formatMovement(movement),
-                comments: setCommentsMovement[index] || null,
-                applicationDate: setApplicationDates[index] || null,
-            })) : [];
+        Array.isArray(setApplicationMovements) &&
+            Array.isArray(setCommentsMovement) &&
+            Array.isArray(setApplicationDates)
+            ? setApplicationMovements
+                .slice()
+                .reverse()
+                .map((movement: any, index: number) => ({
+                    id: `${applicantId}-${index}`,
+                    movement: formatMovement(movement),
+                    comments: setCommentsMovement.slice().reverse()[index] || null,
+                    applicationDate: setApplicationDates.slice().reverse()[index] || null,
+                }))
+            : [];
+
 
     if (status === ARCHIVED) {
         allowedAccessors.push(FEEDBACK);

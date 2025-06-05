@@ -7,7 +7,7 @@ interface TabParams {
     status: string;
     remarks: string;
 }
-// debugger;
+
 export const getTabs = ({ applicantName, status, remarks }: TabParams) => [
     {
         value: "personal",
