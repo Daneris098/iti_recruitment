@@ -50,7 +50,7 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: null,
     civilStatus: '',
     religion: '',
-    mobileNumber: 0,
+    mobileNumber: 63,
     workingEmailAddress: '',
     landlineNumber: ''
   }
@@ -298,10 +298,10 @@ export const referenceValue2: Reference = {
   ],
   employmentReference: [
     {
-      fullname: 'Shane Santiago',
-      company: 'Intellismart',
-      positionHeld: 'Project Manager',
-      ContactNo: '+63 94 7744 3626',
+      fullname: '',
+      company: '',
+      positionHeld: '',
+      ContactNo: '',
     },
   ],
   applicationSource:

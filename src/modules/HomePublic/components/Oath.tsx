@@ -70,8 +70,8 @@ export default function Index() {
                             Photo: file,
                             birthDate: applicationForm.generalInformation.personalInformation.dateOfBirth,
                             birthPlace: applicationForm.generalInformation.personalInformation.placeOfBirth,
-                            height: applicationForm.generalInformation.personalInformation.height,
-                            weight: applicationForm.generalInformation.personalInformation.weight,
+                            height: applicationForm.generalInformation.personalInformation.height || 1,
+                            weight: applicationForm.generalInformation.personalInformation.weight || 1,
                             identification: {
                                 sssNo: applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo,
                                 hdmfNo: '',
@@ -98,13 +98,13 @@ export default function Index() {
                             family: {
                                 father: {
                                     name: applicationForm.familyBackground.father.fullname?.trim() || 'N/A',
-                                    age: applicationForm.familyBackground.father.age,
+                                    age: applicationForm.familyBackground.father.age || 0,
                                     contactNo: applicationForm.familyBackground.father.contactNumber?.trim() || 'N/A',
                                     occupation: applicationForm.familyBackground.father.occupation?.trim() || 'N/A',
                                 },
                                 mother: {
                                     name: applicationForm.familyBackground.mother.fullname?.trim() || 'N/A',
-                                    age: applicationForm.familyBackground.mother.age,
+                                    age: applicationForm.familyBackground.mother.age || 0,
                                     contactNo: applicationForm.familyBackground.mother.contactNumber?.trim() || 'N/A',
                                     occupation: applicationForm.familyBackground.mother.occupation?.trim() || 'N/A',
                                 },
@@ -168,24 +168,24 @@ export default function Index() {
                             ],
                             addresses: [
                                 {
-                                    unitNo: applicationForm.generalInformation.personalInformation.permanentAddress.unitNo,
+                                    unitNo: applicationForm.generalInformation.personalInformation.permanentAddress.unitNo?.trim() || 'N/A',
                                     houseNo: applicationForm.generalInformation.personalInformation.permanentAddress.houseNo,
                                     street: applicationForm.generalInformation.personalInformation.permanentAddress.street,
                                     subdivision: applicationForm.generalInformation.personalInformation.permanentAddress.subdivision?.trim() || 'N/A',
                                     barangay: applicationForm.generalInformation.personalInformation.permanentAddress.barangay,
                                     city: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.city },
-                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement },
+                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: true,
                                     zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.zipCode },
                                 },
                                 {
-                                    unitNo: applicationForm.generalInformation.personalInformation.presentAddress.unitNo,
+                                    unitNo: applicationForm.generalInformation.personalInformation.presentAddress.unitNo?.trim() || 'N/A',
                                     houseNo: applicationForm.generalInformation.personalInformation.presentAddress.houseNo,
                                     street: applicationForm.generalInformation.personalInformation.presentAddress.street,
                                     subdivision: applicationForm.generalInformation.personalInformation.presentAddress.subdivision?.trim() || 'N/A',
                                     barangay: applicationForm.generalInformation.personalInformation.presentAddress.barangay,
                                     city: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.city },
-                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement },
+                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: false,
                                     zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.zipCode },
                                 }

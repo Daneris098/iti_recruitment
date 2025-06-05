@@ -165,6 +165,7 @@ export default function index() {
             let invalid = false
             // form.validate();  
             form.getValues().employmentRecord.forEach((item, index) => {
+                console.log('item.salary : ', item.salary)
                 if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || item.salary > 0 || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
@@ -511,6 +512,7 @@ export default function index() {
                                 prefix="₱ "
                                 hideControls
                                 min={0}
+                                minLength={0}
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}

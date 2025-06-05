@@ -24,6 +24,10 @@ export default function index() {
     const [cities, setCities] = useState([
         { id: 1, value: 'MANILA', label: 'MANILA' },
     ]);
+    // const [presentCityKey, setPresentCityKey] = useState('');
+    // const [permanentCityKey, setPermanentCityKey] = useState('');
+    const [presentBarangayKey, setPresentBarangayKey] = useState('');
+    // const [permanentBarangayKey, setPermanentBarangayKey] = useState('');
     const [startDateAvailabilityOpened, setStartDateAvailabilityOpened] = useState(false);
     const [datedOfBirthOpened, setDatedOfBirthOpenedOpened] = useState(false);
     const form = useForm({
@@ -43,7 +47,7 @@ export default function index() {
                     street: (value: string) => value.length === 0 ? "Street is required" : null,
                     barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
                     city: (value: string) => value.length === 0 ? "City is required" : null,
-                    livingArrangement: (value: string) => value.length === 0 ? "Living arrangement is required" : null,
+                    // livingArrangement: (value: string) => value.length === 0 ? "Living arrangement is required" : null,
                 },
 
                 permanentAddress: {
@@ -51,7 +55,7 @@ export default function index() {
                     street: (value: string) => value.length === 0 ? "Street is required" : null,
                     barangay: (value: string) => value.length === 0 ? "Barangay is required" : null,
                     city: (value: string) => value.length === 0 ? "City is required" : null,
-                    livingArrangement: (value: string) => value.length === 0 ? "Address type is required" : null,
+                    // livingArrangement: (value: string) => value.length === 0 ? "Address type is required" : null,
                 },
 
 
@@ -60,7 +64,7 @@ export default function index() {
                 age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
                 gender: (value: string) => value.length === 0 ? "Gender is required" : null,
                 civilStatus: (value: string) => value.length === 0 ? "Civil Status is required" : null,
-                mobileNumber: (value: number) => value.toString().length !== 11 ? "Enter a valid mobile number" : null,
+                mobileNumber: (value: number) => value.toString().length !== 12 ? "Enter a valid mobile number" : null,
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
                 landlineNumber: (value: string) => value && value.length != 8 ? "Enter a valid landline mobile number" : null,
 
@@ -79,13 +83,60 @@ export default function index() {
         }
     });
 
-    const onSubmit = async (form: GeneralInformation) => {
-        if (checkIfContactExist()) {
+    const onSubmit = async (formData: GeneralInformation) => {
+
+
+        // form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!');
+        // form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!');
+        // form.clearFieldError('personalInformation.workingEmailAddress');
+
+        const emailAvailable = await checkIfAvailable('email')
+        const mobileAvailable = await checkIfAvailable('mobile')
+
+
+        console.log('emailAvailable: ', emailAvailable)
+        console.log('mobileAvailable: ', mobileAvailable)
+
+        if (!emailAvailable) {
+            form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!')
+        }
+
+        if (!mobileAvailable) {
+            form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
+        }
+
+        if (!emailAvailable || !mobileAvailable) {
             return
         }
-        setApplicationForm({ ...applicationForm, generalInformation: form })
+
+        setApplicationForm({ ...applicationForm, generalInformation: formData })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
+
+    const checkIfAvailable = async (type: string): Promise<boolean> => {
+        let payload = {};
+        if (type === 'email') {
+            payload = {
+                Email: form.getValues().personalInformation.workingEmailAddress,
+            };
+        } else {
+            payload = {
+                MobileNo: form.getValues().personalInformation.mobileNumber,
+            };
+        }
+
+        return await axiosInstance
+            .get(`/recruitment/applicants/check-availability`, { params: payload })
+            .then((response: any) => {
+                return response.data;
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message);
+                return false;
+            });
+    };
+
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.GeneralInformation && formRef.current) {
@@ -149,7 +200,6 @@ export default function index() {
     }, [vacanciesData])
 
     const fetchBarangays = async (cityId: number, mode: number = 1) => {
-        console.log('cityId: ', cityId)
         await axiosInstance
             .get(`/general/cities/${cityId}/barangays`)
             .then((response) => {
@@ -179,15 +229,6 @@ export default function index() {
             });
     }
 
-    const checkIfContactExist = () => {
-        // form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!');
-        // form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!');
-        // form.clearFieldError('personalInformation.workingEmailAddress');
-        // return true
-
-        return false
-    }
-
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
@@ -197,6 +238,7 @@ export default function index() {
                     <Select
                         withAsterisk
                         {...form.getInputProps("firstChoice")}
+                        key={form.key('firstChoice')}
                         w={isMobile ? '25%' : '100%'}
                         label="Position Applying for - First Choice"
                         placeholder={"First Choice"}
@@ -210,6 +252,7 @@ export default function index() {
 
                     <Select
                         {...form.getInputProps("secondChoice")}
+                        key={form.key('secondChoice')}
                         w={isMobile ? '25%' : '100%'}
                         label="Position Applying for - Second Choice"
                         placeholder={"Second Choice"}
@@ -284,7 +327,7 @@ export default function index() {
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <Autocomplete
                         {...form.getInputProps("personalInformation.presentAddress.city")}
-                        // key={form.key('personalInformation.presentAddress.city')}
+                        // key={presentCityKey}
                         limit={50}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
@@ -300,12 +343,15 @@ export default function index() {
                             const selectedCity = cities.find(city => city.label === val);
                             fetchBarangays(selectedCity?.id ?? 1, 1)
                             form.setFieldValue("personalInformation.presentAddress.city", val);
+                            form.setFieldValue("personalInformation.presentAddress.barangay", '');
+                            setPresentBarangayKey(val)
                         })}
                     />
 
                     <Autocomplete
                         {...form.getInputProps("personalInformation.presentAddress.barangay")}
-                        key={form.key('personalInformation.presentAddress.barangay')}
+                        key={presentBarangayKey}
+                        limit={50}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"Barangay"}
                         radius={8}
@@ -352,6 +398,8 @@ export default function index() {
                             onChange={(value) => {
                                 setSameAsPresent(value.target.checked);
                                 if (value.target.checked) {
+                                    // setPermanentCityKey(form.getValues().personalInformation.presentAddress.city)
+                                    // setPermanentBarangayKey(form.getValues().personalInformation.presentAddress.barangay)
                                     form.setValues({
                                         ...form.getValues(),
                                         personalInformation: {
@@ -362,73 +410,89 @@ export default function index() {
                                 }
                             }}
                         />
-                        <TextInput disabled={sameAsPresent} withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
+                        {!sameAsPresent ? (
+                            <TextInput disabled={sameAsPresent} withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.unitNo")} key={form.key('personalInformation.permanentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label="Permanent Address" placeholder="Unit no." />
+                        ) : (
+                            <p className="m_8fdc1311 mantine-InputWrapper-label mantine-TextInput-label">Permanent Address</p>
+                        )}
                     </div>
-                    <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
-                    <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
-                    <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.subdivision")} key={form.key('personalInformation.permanentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
+                    {!sameAsPresent && (
+                        <>
+                            <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.houseNo")} key={form.key('personalInformation.permanentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
+                            <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.street")} key={form.key('personalInformation.permanentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
+                            <TextInput disabled={sameAsPresent} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.permanentAddress.subdivision")} key={form.key('personalInformation.permanentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
+                        </>
+                    )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <Autocomplete
-                        limit={50}
-                        disabled={sameAsPresent}
-                        // key={form.key('personalInformation.permanentAddress.city')}
-                        {...form.getInputProps("personalInformation.permanentAddress.city")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"City"}
-                        radius={8}
-                        data={cities}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            const selectedCity = cities.find(city => city.label === val);
-                            fetchBarangays(selectedCity?.id ?? 1, 2)
-                            form.setFieldValue("personalInformation.permanentAddress.city", val);
-                        })}
-                    />
+                {!sameAsPresent && (
+                    <div className="flex flex-col sm:flex-row gap-4 items-end">
+                        <Autocomplete
+                            limit={50}
+                            disabled={sameAsPresent}
+                            // key={permanentCityKey}
+                            {...form.getInputProps("personalInformation.permanentAddress.city")}
+                            w={isMobile ? '25%' : '100%'}
+                            placeholder={"City"}
+                            radius={8}
+                            data={cities}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={((val) => {
+                                const selectedCity = cities.find(city => city.label === val);
+                                fetchBarangays(selectedCity?.id ?? 1, 2)
+                                form.setFieldValue("personalInformation.permanentAddress.city", val);
+                                form.setFieldValue("personalInformation.permanentAddress.barangay", '');
+                                // setPermanentBarangayKey(val)
+                            })}
+                        />
 
-                    <Select
-                        disabled={sameAsPresent}
-                        key={form.key('personalInformation.permanentAddress.barangay')}
-                        {...form.getInputProps("personalInformation.permanentAddress.barangay")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Barangay"}
-                        radius={8}
-                        data={sameAsPresent ? barangays : barangays2}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
+                        <Autocomplete
+                            limit={50}
+                            disabled={sameAsPresent}
+                            // key={permanentBarangayKey}
+                            {...form.getInputProps("personalInformation.permanentAddress.barangay")}
+                            w={isMobile ? '25%' : '100%'}
+                            placeholder={"Barangay"}
+                            radius={8}
+                            data={sameAsPresent ? barangays : barangays2}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={((val) => {
+                                form.setFieldValue("personalInformation.permanentAddress.barangay", val);
+                            })}
+                        />
 
-                    <TextInput
-                        disabled={sameAsPresent}
-                        key={form.key('personalInformation.permanentAddress.zipCode')}
-                        {...form.getInputProps("personalInformation.permanentAddress.zipCode")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Zip Code"}
-                        radius={8}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
-                    <Select
-                        disabled={sameAsPresent}
-                        key={form.key('personalInformation.permanentAddress.livingArrangement')}
-                        {...form.getInputProps("personalInformation.permanentAddress.livingArrangement")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Living Arrangement"}
-                        radius={8}
-                        data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
-                </div>
+                        <TextInput
+                            disabled={sameAsPresent}
+                            key={form.key('personalInformation.permanentAddress.zipCode')}
+                            {...form.getInputProps("personalInformation.permanentAddress.zipCode")}
+                            w={isMobile ? '25%' : '100%'}
+                            placeholder={"Zip Code"}
+                            radius={8}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                        />
+                        <Select
+                            disabled={sameAsPresent}
+                            key={form.key('personalInformation.permanentAddress.livingArrangement')}
+                            {...form.getInputProps("personalInformation.permanentAddress.livingArrangement")}
+                            w={isMobile ? '25%' : '100%'}
+                            placeholder={"Living Arrangement"}
+                            radius={8}
+                            data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                        />
+                    </div>
+                )}
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <Popover
@@ -502,7 +566,7 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
+                    <NumberInput prefix="+" maxLength={13} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
                     <TextInput maxLength={8} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>
