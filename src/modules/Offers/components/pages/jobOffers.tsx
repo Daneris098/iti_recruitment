@@ -39,6 +39,7 @@ export default function index() {
 
     const { filter } = FilterStore();
     const queryParams: Record<string, any> = {};
+
     const { selectedStatusId } = useStatusFilterStore();
     const [searchParams, setSearchParams] = useSearchParams();
     const [loadTime, setLoadTime] = useState<number | null>(null);
@@ -65,33 +66,6 @@ export default function index() {
             pageSize: parseInt(searchParams.get(PAGE_SIZE) || DEFAULT_PAGE_COUNT),
         };
     }, [searchParams]);
-
-    const { data: sharedApplicants } = useApplicants(
-        page,
-        pageSize,
-        0,
-        queryParams,
-        setLoadTime
-    );
-
-    const hiredApplicantIds = sharedApplicants?.applicants
-        ?.filter(a => a.status === STATUS_HIRED)
-        ?.map(a => a.id) || [];
-
-    const filterRecords = (tab: TabKey, records: JobOfferRecord[]) => {
-        if (tab === OFFERS_TAB) return records
-        return records.filter(record => record.status === tab);
-    };
-
-    //#region STATE & STORE
-    const { sortedRecords, setSort } = useSortStore();
-    const { activeTab, setActiveTab } = FilterStore();
-    const { records, loadCandidates } = useJobOfferStore();
-    const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
-
-    //#endregion
-    const filteredRecords = filterRecords(activeTab!, sortedRecords.length > 0 ? sortedRecords : records);
-    const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
 
     const handlePageChange = (newPage: number) => {
         setSearchParams(prev => {
@@ -138,6 +112,35 @@ export default function index() {
         }
     }
 
+    const { data: sharedApplicants } = useApplicants(
+        page,
+        pageSize,
+        // 0,
+        queryParams,
+        setLoadTime
+    );
+
+    const hiredApplicantIds = useMemo(() => {
+        return sharedApplicants?.applicants
+            ?.filter(a => a.status === STATUS_HIRED)
+            ?.map(a => a.id) || [];
+    }, [sharedApplicants?.applicants]);
+
+    const filterRecords = (tab: TabKey, records: JobOfferRecord[]) => {
+        if (tab === OFFERS_TAB) return records
+        return records.filter(record => record.status === tab);
+    };
+
+    //#region STATE & STORE
+    const { sortedRecords, setSort } = useSortStore();
+    const { activeTab, setActiveTab } = FilterStore();
+    const { records, loadCandidates } = useJobOfferStore();
+    const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
+
+    //#endregion
+    const filteredRecords = filterRecords(activeTab!, sortedRecords.length > 0 ? sortedRecords : records);
+    const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
+
     const createOfferMap = (hiredApplicantsIds: any[], acceptedOffers: any[]) => {
         return hiredApplicantsIds.reduce((map, id, index) => {
             map[id] = acceptedOffers[index];
@@ -181,30 +184,32 @@ export default function index() {
     }
 
     const [hasLoaded, setHasLoaded] = useState(false);
-    // HOOKS
+    const [acceptedOffers, setAcceptedOffers] = useState<any[]>([]);
+
     useEffect(() => {
-        if (hasLoaded || !sharedApplicants?.applicants || !hiredApplicantIds.length) return;
+        if (hiredApplicantIds.length === 0) return;
 
-        const fetchAndLoad = async () => {
-            const startTime = performance.now();
+        Promise.all(
+            hiredApplicantIds.map(id => useSharedViewAcceptedOffer.getAcceptedOfferId(id))
+        )
+            .then(setAcceptedOffers)
+            .catch(console.error);
+    }, [hiredApplicantIds]);
 
-            const accepted = await Promise.all(
-                hiredApplicantIds.map(id => useSharedViewAcceptedOffer.getAcceptedOfferId(id))
-            );
+    useEffect(() => {
+        setHasLoaded(false);
+    }, [page, pageSize, filter, selectedStatusId, activeTab]);
 
-            const offerMap = createOfferMap(hiredApplicantIds, accepted);
-            const applicantsWithOffers = mergeApplicantsWithOffers(sharedApplicants.applicants, offerMap);
-            const transformedColumns = transformApplicants(applicantsWithOffers);
+    useEffect(() => {
+        if (!sharedApplicants?.applicants || !acceptedOffers.length || hasLoaded) return;
 
-            loadCandidates(transformedColumns);
+        const offerMap = createOfferMap(hiredApplicantIds, acceptedOffers);
+        const applicantsWithOffers = mergeApplicantsWithOffers(sharedApplicants.applicants, offerMap);
+        const transformedColumns = transformApplicants(applicantsWithOffers);
 
-            const endTime = performance.now();
-            setLoadTime((endTime - startTime) / 1000);
-            setHasLoaded(true); // Prevent re-loading
-        };
-
-        fetchAndLoad().catch(console.error);
-    }, [sharedApplicants?.applicants, hiredApplicantIds, hasLoaded]);
+        loadCandidates(transformedColumns);
+        setHasLoaded(true);
+    }, [sharedApplicants?.applicants, acceptedOffers, hasLoaded]);
 
     //#region FUNCTIONS
     const handleRowClick = (row: ExtendedPDFProps) => {

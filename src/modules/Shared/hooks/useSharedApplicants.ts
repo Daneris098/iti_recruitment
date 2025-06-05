@@ -359,17 +359,14 @@ export const useSingleAcceptedOffer = (id: string | number) => {
 export const useApplicants = (
     page: number = 1,
     pageSize: number = 30,
-    statusId?: number,
     filters: Record<string, any> = {},
     setTime?: (time: number) => void,
     fetchAll: boolean = true,
-    // acceptedOffers: any[]
 ) => {
     return useQuery({
         queryKey: sharedApplicantKeys.list({
             page: fetchAll ? DEFAULT_FETCH_ALL_PAGE : page,
             pageSize: fetchAll ? DEFAULT_FETCH_ALL_PAGE_SIZE : pageSize,
-            statusId,
             ...filters,
         }),
         queryFn: async () => {
@@ -380,10 +377,6 @@ export const useApplicants = (
                 page: fetchAll ? DEFAULT_FETCH_ALL_PAGE : page,
                 pageSize: fetchAll ? DEFAULT_FETCH_ALL_PAGE_SIZE : pageSize,
             };
-
-            if (statusId !== undefined) {
-                apiFilters.statusId = statusId;
-            }
 
             const data = await useSharedUserService.getAll(apiFilters);
             const end = performance.now();
@@ -399,7 +392,6 @@ export const useApplicants = (
                 total: data.total,
                 page,
                 pageSize,
-                statusId,
             };
         },
         staleTime: 60 * 1000,

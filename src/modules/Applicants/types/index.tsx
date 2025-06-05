@@ -6,8 +6,8 @@ export interface ApplicantStatus {
     dateLastUpdatedFrom: string | null;
     dateLastUpdatedTo: string | null;
     applicationDateValue: string | null;
-    position: any;
-    status: any;
+    position: string[];
+    status: string[];
     dateUpdated: any;
     setDateUpdated: any;
 }
