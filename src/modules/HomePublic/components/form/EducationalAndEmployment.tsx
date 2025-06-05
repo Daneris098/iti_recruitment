@@ -424,7 +424,6 @@ export default function index() {
                                     <Popover opened={(opened as any)[index]} position="bottom" shadow="md" trapFocus returnFocus>
                                         <Popover.Target>
                                             <TextInput
-                                                required
                                                 radius="md"
                                                 size="sm"
                                                 readOnly
@@ -448,8 +447,14 @@ export default function index() {
                                                 onChange={(e) => {
                                                     if (e[0])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, null);
+
                                                     if (e[1])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, DateTimeUtils.dayWithDate(e[1].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, null);
+
                                                     setVacancyDuration(e);
                                                 }}
                                             />
@@ -480,10 +485,15 @@ export default function index() {
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
+                                                    console.log('e: ', e)
                                                     if (e[0])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, null);
                                                     if (e[1])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, DateTimeUtils.dayWithDate(e[1].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, null);
                                                     setVacancyDuration(e);
                                                 }}
                                             />

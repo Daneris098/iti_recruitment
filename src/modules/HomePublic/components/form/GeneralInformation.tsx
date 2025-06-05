@@ -5,17 +5,15 @@ import { ApplicationStore, HomeStore } from "@modules/HomePublic/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { Step, GeneralInformation } from '@modules/HomePublic/types';
-import { DateInput, DatePicker } from "@mantine/dates";
+import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
-import { useCities } from "@modules/HomePublic/hooks/useCities";
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
-    // const { data: citiesData } = useCities();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
@@ -82,12 +80,22 @@ export default function index() {
     });
 
     const onSubmit = async (form: GeneralInformation) => {
+        if (checkIfContactExist()) {
+            return
+        }
         setApplicationForm({ ...applicationForm, generalInformation: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.GeneralInformation && formRef.current) {
+            form.setValues({
+                ...form.getValues(),
+                personalInformation: {
+                    ...form.getValues().personalInformation,
+                    permanentAddress: form.getValues().personalInformation.presentAddress,
+                },
+            });
             formRef.current.requestSubmit(); // Programmatically trigger form submission
         }
         return (setSubmit(false))
@@ -100,21 +108,7 @@ export default function index() {
         }
     }, [activeStepper])
 
-    // useEffect(() => {
-    //     const dateOfBirth = form.getValues().personalInformation.dateOfBirth;
-
-    //     const birthDate = new Date(dateOfBirth);
-    //     let age = new Date().getFullYear() - birthDate.getFullYear();
-    //     const monthDifference = new Date().getMonth() - birthDate.getMonth();
-
-    //     // Adjust if the birthday hasn't occurred yet this year
-    //     if (monthDifference < 0 || (monthDifference === 0 && new Date().getDate() < birthDate.getDate())) {
-    //         age--;
-    //     }
-    //     form.setFieldValue('personalInformation.age', age);
-    // }, [form.getValues().personalInformation.dateOfBirth]);
-
-    const fetchLookups = async () => {
+    const fetchCities = async () => {
         await axiosInstance
             .get("/general/cities")
             .then((response) => {
@@ -139,29 +133,7 @@ export default function index() {
     };
 
     useEffect(() => {
-        // const mapVacancies = vacanciesData?.map((item) => ({
-        //     id: item.id,
-        //     value: String(item.id),
-        //     label: item.position,
-        // })) ?? [];
-        // setVacancies(mapVacancies)
-        // if (selectedData.id != 0) {
-        //     form.setFieldValue("firstChoice", String(selectedData.id));
-        // }
-
-        // const mapCitiesData = citiesData?.map((item: any) => ({
-        //     id: item.id,
-        //     value: `${item.id}`,
-        //     label: item.name,
-        // })) ?? [{ id: 1, value: 'MANILA', label: 'MANILA' },];
-        // setCities(mapCitiesData);
-
-        // console.log('mapCitiesData: ', mapCitiesData)
-        // console.log('citiesData: ', citiesData)
-
-        fetchLookups()
-        // debugger
-        // console.log('form val: ', form.getValues())
+        fetchCities()
     }, [])
 
     useEffect(() => {
@@ -175,15 +147,6 @@ export default function index() {
             form.setFieldValue("firstChoice", String(selectedData.id));
         }
     }, [vacanciesData])
-
-    // useEffect(() => {
-    //     const mapCitiesData = citiesData?.map((item: any) => ({
-    //         id: item.id,
-    //         value: `${item.id}`,
-    //         label: item.name,
-    //     })) ?? [{ id: 1, value: 'MANILA', label: 'MANILA' },];
-    //     setCities(mapCitiesData);
-    // }, [citiesData])
 
     const fetchBarangays = async (cityId: number, mode: number = 1) => {
         console.log('cityId: ', cityId)
@@ -217,7 +180,12 @@ export default function index() {
     }
 
     const checkIfContactExist = () => {
-        return true
+        // form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!');
+        // form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!');
+        // form.clearFieldError('personalInformation.workingEmailAddress');
+        // return true
+
+        return false
     }
 
     return (
