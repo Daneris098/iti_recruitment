@@ -237,9 +237,9 @@ export type ForInterviewForm = {
 
 export type HiredForm = {
     ApplicantId: number;
-    File: File | null;
+    FileAttachment: File | null;
     Order?: number;
-    DateStart: string;
+    DateStart: string | null;
 }
 
 export type OfferForm = {
@@ -355,3 +355,8 @@ export type AcceptedOffer = {
     name: string;
     isUploaded: boolean;
 }[];
+
+export interface SelectedDateStore {
+    selectedDate: string | null;
+    setSelectedDate: (date: string | null) => void;
+}

@@ -1,10 +1,9 @@
-import CustomDatePicker from "@modules/Applicants/components/picker/DatePicker"
-// import { IconCloudUpload } from "@tabler/icons-react";
-import { useState } from "react";
+import { useHiredStartDate } from "@modules/Shared/store";
 import DropZone from "@modules/Applicants/components/dropzone/Dropzone";
+import CustomDatePicker from "@modules/Applicants/components/picker/DatePicker";
 
 export default function Hired() {
-    const [selectedDate, setSelectedDate] = useState<string | null>(null);
+    const { selectedDate, setSelectedDate } = useHiredStartDate();
     return (
         <div>
             <div>

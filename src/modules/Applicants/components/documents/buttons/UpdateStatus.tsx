@@ -1,7 +1,8 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
+import { useHiredStartDate } from "@modules/Shared/store";
+import { useStatusStore } from "@src/modules/Applicants/store";
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { useStatusStore } from "@src/modules/Applicants/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
 import HiredStatus from "@modules/Applicants/components/documents/movement/Status/Hired";
@@ -31,11 +32,11 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   const { mutateAsync: movementArchive } = usePOSTArchive();
   const { mutateAsync: movementScheduleInterview } = usePOSTForInterview();
 
-  const hiredToday = new Date().toISOString().split("T")[0];
-
   const { file } = useFileUploadStore();
+  const { selectedDate } = useHiredStartDate();
   const { feedback, applicantFeedback } = useFeedbacksStore();
   const { selectedStatus, setSelectedStatus } = useStatusStore();
+
   const {
     interviewTime,
     comments, setComments,
@@ -45,19 +46,18 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   } = useDropDownOfferedStore();
 
   const {
-    setIsModalOpen,
-    isScheduleInterview,
-    setIsScheduleInterview,
     setIsViewApplicant,
     setIsAddtoCalendar,
+    isScheduleInterview,
     setIsGenerateNewOffer,
+    setIsScheduleInterview,
     isOffered, setIsOffered,
-    isDefaultUpdated, setIsDefaultUpdated,
+    isForTransfer, setIsModalOpen,
     setIsUpdateStatusButtonModalOpen,
     isFeedbackSent, setIsFeedbackSent,
     isDropdownOpen, setIsDropdownOpen,
+    isDefaultUpdated, setIsDefaultUpdated,
     setIsContactApplicant, isContactApplicant,
-    isForTransfer,
   } = useCloseModal();
 
   const applicantId = useApplicantIdStore((state) => state.id);
@@ -138,9 +138,9 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     handleClick = async () => {
       await movementHired({
         ApplicantId: applicantId,
-        File: file,
+        FileAttachment: file ?? null,
         Order: interviewStagesId,
-        DateStart: hiredToday
+        DateStart: selectedDate
       })
       setIsFeedbackSent(true);
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
