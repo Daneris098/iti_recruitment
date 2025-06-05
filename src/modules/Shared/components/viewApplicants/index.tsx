@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Divider } from "@mantine/core";
 import profileImage from "@src/assets/jane.png";
 import { ViewApplicantsProps } from "@modules/Shared/types";

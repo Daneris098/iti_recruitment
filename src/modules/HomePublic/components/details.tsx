@@ -2,7 +2,6 @@ import { HomeStore } from "@src/modules/HomePublic/store";
 import { Button, MantineSize, Pill } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useMatches } from '@mantine/core';
-import { useEffect } from "react";
 
 export default function Details() {
   const { selectedData, setApplicationFormModal } = HomeStore();

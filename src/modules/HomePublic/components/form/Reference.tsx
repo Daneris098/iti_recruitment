@@ -6,6 +6,7 @@ import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";
 import { IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
 import { employmentRecordVal } from "../../values/cleanState";
+import '../../styles/index.css';
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -13,6 +14,8 @@ export default function index() {
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [isAlreadyCheck, setIsAlreadyCheck] = useState(false)
     const [activeSource, setActiveSource] = useState<string | null>(null);
+    const [checkboxError, setCheckboxError] = useState(false);
+    const isNoEmploymentRecord = (applicationForm.educationAndEmployment.employmentRecord.length == 1 && applicationForm.educationAndEmployment.employmentRecord[0].employerCompany === '')
 
     const form = useForm({
         mode: 'uncontrolled',
@@ -25,14 +28,24 @@ export default function index() {
                 ContactNo: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
             employmentReference: {
-                fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
-                company: (value: string) => value.length === 0 ? "Company is required" : null,
-                positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                fullname: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Fullname is required" : null,
+                company: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Company is required" : null,
+                positionHeld: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Position Held is required" : null,
+                ContactNo: (value: string | number) => (!isNoEmploymentRecord) && !value.toString().trim() ? "Contact Number is required" : (!isNoEmploymentRecord) && value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
         },
     });
 
+
+    useEffect(() => {
+        if (activeStepper === Step.Reference) {
+            console.log('isNoEmploymentRecord: ', isNoEmploymentRecord)
+            console.log('!isNoEmploymentRecord: ', !isNoEmploymentRecord)
+            console.log('applicationForm.educationAndEmployment: ', applicationForm.educationAndEmployment.employmentRecord)
+            console.log('employmentRecordVal: ', employmentRecordVal)
+            console.log(applicationForm.educationAndEmployment.employmentRecord[0] == employmentRecordVal[0])
+        }
+    }, [activeStepper])
 
     useEffect(() => {
         const hasTrue = Object.values(form.getValues().applicationSource).some(value => value === true);
@@ -46,6 +59,12 @@ export default function index() {
     }, [activeSource])
 
     const onSubmit = async (form: Reference) => {
+
+        if (activeSource == null) {
+            setCheckboxError(true);
+            return;
+        }
+        setCheckboxError(false);
         setApplicationForm({ ...applicationForm, reference: form })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -138,6 +157,7 @@ export default function index() {
                                 radius="md"
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Contact Number"
+                                maxLength={11}
                             />
                             {index === applicationForm.reference.characterReference.length - 1 && index > 0 && (<div>
                                 <IconCircleMinus size={35} className="" onClick={() => { removeFieldCharacter(index) }} />
@@ -148,7 +168,7 @@ export default function index() {
 
                 </div>
 
-                {(!(applicationForm.educationAndEmployment.employmentRecord.length == 1 && applicationForm.educationAndEmployment.employmentRecord[0] == employmentRecordVal[0])) && (<div >
+                {(!(applicationForm.educationAndEmployment.employmentRecord.length == 1 && applicationForm.educationAndEmployment.employmentRecord[0].employerCompany === '')) && (<div >
                     <div>
                         <p className="font-bold">Employment Reference (NOT FAMILY MEMBERS)</p>
                     </div>
@@ -187,6 +207,7 @@ export default function index() {
                                     radius="md"
                                     w={isMobile ? '25%' : '100%'}
                                     placeholder="Contact Number"
+                                    maxLength={11}
                                 />
                                 {index === applicationForm.reference.employmentReference.length - 1 && index > 0 && (<div>
                                     <IconCircleMinus size={35} className="" onClick={() => { removeFieldEmployment(index) }} />
@@ -209,18 +230,21 @@ export default function index() {
                         {...form.getInputProps(`applicationSource.employeeReferal`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Employee Refereal"
+                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'jobStreet'}
                         {...form.getInputProps(`applicationSource.jobStreet`, { type: 'checkbox' })}
                         className="w-[33%] "
                         label="Jobstreet"
+                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'headHunter'}
                         {...form.getInputProps(`applicationSource.headHunter`, { type: 'checkbox' })}
                         className="w-[33%] truncate"
                         label="Headhunter"
+                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                 </div>
                 <div className="flex  gap-2 sm:gap-0">
@@ -229,12 +253,14 @@ export default function index() {
                         {...form.getInputProps(`applicationSource.wordOfMouth`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Word of Mouth"
+                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'walkin'}
                         {...form.getInputProps(`applicationSource.walkin`, { type: 'checkbox' })}
                         className="w-[33%]"
                         label="Walk-in"
+                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <div className="flex items-center gap-3">
                         <Checkbox
@@ -242,6 +268,7 @@ export default function index() {
                             {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
                             className="w-[33%]"
                             label="Others"
+                            classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                         />
 
                         {activeSource === 'others' &&

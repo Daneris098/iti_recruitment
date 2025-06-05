@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useImperativeHandle, forwardRef } from "react";
 // import headerImage from "@src/assets/intellismart-header.png";
-import { JobOfferExcelTemplateData } from "@modules/HiringSettings/constants/jobOfferExcelTemplateData"
+// import { JobOfferExcelTemplateData } from "@modules/HiringSettings/constants/jobOfferExcelTemplateData"
 // import Dropzone from "@modules/HiringSettings/components/Dropzone";
 // import SpreadsheetExportButton from "@modules/HiringSettings/components/excel/SpreadSheetExportButton";
 import { NumberInput, Select } from "@mantine/core";
@@ -10,14 +10,14 @@ import { HiringSettingsStore } from "../../store";
 import { useForm } from "@mantine/form";
 
 const OfferConfiguration = forwardRef((_, ref) => {
-    const [data] = useState(JobOfferExcelTemplateData)
+    // const [data] = useState(JobOfferExcelTemplateData)
     const { activePanel, setAlert } = HiringSettingsStore();
     const formRef = useRef<HTMLFormElement>(null);
     const [otherSettingsId, setOtherSettingsId] = useState({ id: '', guid: '' });
     const fetchData = async () => {
         await axiosInstance
             .get("/recruitment/hiring/other-settings")
-            .then((response) => {
+            .then((response: any) => {
                 form.setFieldValue('allowReApply', response.data.allowReApply ? 'Yes' : 'No');
                 form.setFieldValue('offerResponsePeriodInDays', response.data.offerResponsePeriodInDays);
                 form.setFieldValue('reApplyInMonths', response.data.reApplyInMonths);

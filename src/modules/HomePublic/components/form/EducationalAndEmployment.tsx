@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
-import dayjs from "dayjs";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 
 export default function index() {
@@ -166,6 +165,7 @@ export default function index() {
             let invalid = false
             // form.validate();  
             form.getValues().employmentRecord.forEach((item, index) => {
+                console.log('item.salary : ', item.salary)
                 if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || item.salary > 0 || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
@@ -321,6 +321,7 @@ export default function index() {
                                             value
                                         );
                                     }}
+                                    maxDate={new Date()}
                                 />
 
                                 <YearPickerInput
@@ -424,11 +425,10 @@ export default function index() {
                                     <Popover opened={(opened as any)[index]} position="bottom" shadow="md" trapFocus returnFocus>
                                         <Popover.Target>
                                             <TextInput
-                                                required
                                                 radius="md"
                                                 size="sm"
                                                 readOnly
-                                                label="Vacancy Duration"
+                                                label="Inclusive Dates"
                                                 placeholder="Start Date"
                                                 className="w-full cursor-default"
                                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
@@ -448,8 +448,14 @@ export default function index() {
                                                 onChange={(e) => {
                                                     if (e[0])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, null);
+
                                                     if (e[1])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, DateTimeUtils.dayWithDate(e[1].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, null);
+
                                                     setVacancyDuration(e);
                                                 }}
                                             />
@@ -480,10 +486,15 @@ export default function index() {
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
+                                                    console.log('e: ', e)
                                                     if (e[0])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, null);
                                                     if (e[1])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, DateTimeUtils.dayWithDate(e[1].toString()));
+                                                    else
+                                                        form.setFieldValue(`employmentRecord.${index}.inclusiveDate.to`, null);
                                                     setVacancyDuration(e);
                                                 }}
                                             />
@@ -501,6 +512,7 @@ export default function index() {
                                 prefix="₱ "
                                 hideControls
                                 min={0}
+                                minLength={0}
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 radius='md'
                                 w={isMobile ? '50%' : '100%'}

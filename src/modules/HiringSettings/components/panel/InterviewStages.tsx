@@ -163,11 +163,11 @@ const InterviewStage = forwardRef((_, ref) => {
         };
         await axiosInstance
             .post("/recruitment/hiring/interview-stages", payload)
-            .then((response) => {
+            .then(() => {
                 fetchData()
                 setAlert(AlertType.saved);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const message = error.response.data.title;
                 setValidationMessage(message);
                 setAlert(AlertType.validation)
@@ -185,10 +185,10 @@ const InterviewStage = forwardRef((_, ref) => {
         };
         await axiosInstance
             .post(`/recruitment/hiring/interview-stages/${formVal.id}/update`, payload)
-            .then((response) => {
+            .then(() => {
                 fetchData()
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const message = error.response.data.title;
                 setValidationMessage(message);
                 setAlert(AlertType.validation)
