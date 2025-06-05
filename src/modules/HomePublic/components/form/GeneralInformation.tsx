@@ -100,19 +100,19 @@ export default function index() {
         }
     }, [activeStepper])
 
-    useEffect(() => {
-        const dateOfBirth = form.getValues().personalInformation.dateOfBirth;
+    // useEffect(() => {
+    //     const dateOfBirth = form.getValues().personalInformation.dateOfBirth;
 
-        const birthDate = new Date(dateOfBirth);
-        let age = new Date().getFullYear() - birthDate.getFullYear();
-        const monthDifference = new Date().getMonth() - birthDate.getMonth();
+    //     const birthDate = new Date(dateOfBirth);
+    //     let age = new Date().getFullYear() - birthDate.getFullYear();
+    //     const monthDifference = new Date().getMonth() - birthDate.getMonth();
 
-        // Adjust if the birthday hasn't occurred yet this year
-        if (monthDifference < 0 || (monthDifference === 0 && new Date().getDate() < birthDate.getDate())) {
-            age--;
-        }
-        form.setFieldValue('personalInformation.age', age);
-    }, [form.getValues().personalInformation.dateOfBirth]);
+    //     // Adjust if the birthday hasn't occurred yet this year
+    //     if (monthDifference < 0 || (monthDifference === 0 && new Date().getDate() < birthDate.getDate())) {
+    //         age--;
+    //     }
+    //     form.setFieldValue('personalInformation.age', age);
+    // }, [form.getValues().personalInformation.dateOfBirth]);
 
     const fetchLookups = async () => {
         await axiosInstance
@@ -317,7 +317,7 @@ export default function index() {
                     <Autocomplete
                         {...form.getInputProps("personalInformation.presentAddress.city")}
                         // key={form.key('personalInformation.presentAddress.city')}
-                        limit={250}
+                        limit={50}
                         w={isMobile ? '25%' : '100%'}
                         placeholder={"City"}
                         radius={8}
@@ -403,7 +403,7 @@ export default function index() {
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <Autocomplete
-                        limit={250}
+                        limit={50}
                         disabled={sameAsPresent}
                         // key={form.key('personalInformation.permanentAddress.city')}
                         {...form.getInputProps("personalInformation.permanentAddress.city")}
@@ -493,6 +493,15 @@ export default function index() {
                                     setDatedOfBirthOpenedOpened(false)
                                 }
                                 form.setFieldValue("personalInformation.dateOfBirth", value ? dayjs(value).format("YYYY-MM-DD") : '')
+                                const dateOfBirth = dayjs(value).format("YYYY-MM-DD");
+                                const birthDate = new Date(dateOfBirth);
+                                let age = new Date().getFullYear() - birthDate.getFullYear();
+                                const monthDifference = new Date().getMonth() - birthDate.getMonth();
+                                // Adjust if the birthday hasn't occurred yet this year
+                                if (monthDifference < 0 || (monthDifference === 0 && new Date().getDate() < birthDate.getDate())) {
+                                    age--;
+                                }
+                                form.setFieldValue('personalInformation.age', age);
                             }} />
                         </Popover.Dropdown>
                     </Popover>
@@ -527,7 +536,7 @@ export default function index() {
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
+                    <TextInput maxLength={8} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
