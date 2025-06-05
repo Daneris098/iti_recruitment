@@ -175,8 +175,8 @@ export interface JobOpenings {
         name?: string;
     };
     id: string | number;
-    positionTitleResponse: string;
-    companyResponse: {
+    position: string;
+    company: {
         name: string;
         [key: string]: any;
     } | null;

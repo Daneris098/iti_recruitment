@@ -288,8 +288,8 @@ export const useTransferPositionLookup = (
             return {
                 jobOpenings: data.items.map(item => ({
                     id: item.id,
-                    position: item.positionTitleResponse,
-                    company: item.companyResponse,
+                    position: item.position,
+                    company: item.company,
                     slots: item.availableSlot,
                 })),
                 page: data.page,
@@ -308,7 +308,7 @@ export const useTransferPositionLookup = (
         allVacancies: queryResult.data?.items
     };
 };
-
+debugger;
 export const useViewInterviewStages = (
 ) => {
     return useQuery({
