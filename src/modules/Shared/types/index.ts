@@ -103,7 +103,7 @@ export const STATUS_MAP: Record<string, JobOfferStatus> = {
     Hired: JobOfferStatus.Accepted,
     Archived: JobOfferStatus.Archived
 }
-
+// debugger;
 export const APPLICANT_FIELDS: Record<string, (applicant: any) => string | undefined> = {
     id: (applicant) => String(applicant.id),
     applicantName: (applicant) => applicant.applicantName,

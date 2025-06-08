@@ -218,7 +218,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             >
                 <div className="flex justify-between items-center">
                     <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">
-                        Vacanciesss
+                        Vacancies
                     </h1>
                     <IconX
                         className="w-[15px] h-[15px] cursor-pointer"

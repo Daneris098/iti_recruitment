@@ -115,11 +115,10 @@ export default function index() {
     const { data: sharedApplicants } = useApplicants(
         page,
         pageSize,
-        // 0,
         queryParams,
         setLoadTime
     );
-
+    // debugger;
     const hiredApplicantIds = useMemo(() => {
         return sharedApplicants?.applicants
             ?.filter(a => a.status === STATUS_HIRED)
@@ -169,15 +168,17 @@ export default function index() {
             if (key === STATUS) {
                 const rawStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
                 result.status = STATUS_MAP[rawStatus as keyof typeof STATUS_MAP];
+
             } else if (key === ATTACHMENTS) {
                 result.attachments = applicant.acceptedOffer?.data?.[0]?.name ?? '';
             } else {
                 result[key as keyof JobOffersColumns] = APPLICANT_FIELDS[key](applicant) ?? '';
             }
+
         }
         return result;
     };
-
+    // debugger;
     const transformApplicants = (applicantsWithOffers: any[]): JobOffersColumns[] => {
         const validApplicants = filterValidApplicants(applicantsWithOffers);
         return validApplicants.map(transformApplicantToColumn)
