@@ -15,7 +15,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
   const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDivision = useForm<AddDivisionProps>({
-    initialValues: { code: "D-1", name: "Division 1", isActive: true, description: "Division 1 Description" },
+    initialValues: { code: "", name: "", isActive: true, description: "" },
   });
 
   useEffect(() => {

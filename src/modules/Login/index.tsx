@@ -71,8 +71,8 @@ export default function Login() {
       <div className=" w-full sm:w-1/2  ">
         <div className="h-full w-full flex flex-col">
           <img
-            src="logo.png "
-            className=" cursor-pointer w-36 2xl:w-48 pr-10 absolute py-10 self-end "
+            src="logoword.png"
+            className=" cursor-pointer w-64  2xl:w-48 pr-10 absolute py-10 self-end "
             alt="bg"
             onClick={() => {
               navigate("/");

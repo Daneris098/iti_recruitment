@@ -397,16 +397,10 @@ export default function index() {
       opened={action != Action.Null}
       withCloseButton={false}
       centered
-      onClose={() => {
-        resetVacancy();
-      }}
+      onClose={() => resetVacancy()}
       className="text-[#559CDA] scrollbar "
       classNames={{ content: "scrollbar" }}
-      styles={{
-        header: { width: "95%" },
-        title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
-        body: { padding: "0" },
-      }}>
+      styles={{ header: { width: "95%" }, title: { color: "#559CDA", fontSize: 22, fontWeight: 600 }, body: { padding: "0" } }}>
       <div className="poppins h-[85vh] flex flex-col gap-3 py-3 text-[#6D6D6D]">
         {/* header */}
         <div className="px-10 top-0 z-50 sticky  pt-4">

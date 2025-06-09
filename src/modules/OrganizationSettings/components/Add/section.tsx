@@ -83,7 +83,12 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
         if (row.id === "NEW" && addOrg) {
           return (
             <div className="relative">
-              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Name" error={addSection.values.name === "" ? "Name is required" : null} />
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                {...addSection.getInputProps("name")}
+                placeholder="Name"
+                error={addSection.values.name === "" ? "Name is required" : null}
+              />
             </div>
           );
         }
