@@ -14,7 +14,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { OfferAcceptanceProps } from "../assets/Types";
 import OfferAcceptanceTooltip from "../components/tooltip/CustomTooltip";
 import { monthData } from "../assets/sample-data";
-import DemoDataHover from "./tooltip/DemoData";
+// import DemoDataHover from "./tooltip/DemoData";
 
 export const OfferAcceptance: React.FC<OfferAcceptanceProps> = ({ data }) => {
   const fetchData: any = [];
@@ -23,9 +23,9 @@ export const OfferAcceptance: React.FC<OfferAcceptanceProps> = ({ data }) => {
       <Container className="w-full flex flex-row justify-between h-[15%]pl-5 pr-0">
         <Flex className="w-full flex flex-col md:flex-row justify-start items-center gap-2">
           <Text className="font-semibold text-[#559CDA] h-sm:text-xs text-[12px] md:text-lg">Offer Acceptance Rate</Text>
-          <DemoDataHover size="xs" fs="10px" />
+          {/* <DemoDataHover size="xs" fs="10px" /> */}
         </Flex>
-        <Flex className="w-full flex flex-col md:flex-row justify-end items-center gap-2 opacity-40">
+        <Flex className="w-full flex flex-col md:flex-row justify-end items-center gap-2">
           <select name="hello" id="" className="border-[1px] rounded-lg border-[#559CDA] w-[70px] text-[#559CDA] text-xs">
             {monthData.map((data, index) => (
               <option key={index} value={data.value}>
@@ -40,7 +40,7 @@ export const OfferAcceptance: React.FC<OfferAcceptanceProps> = ({ data }) => {
           </select>
         </Flex>
       </Container>
-      <Container className="w-full h-[85%]  relative opacity-40" p={0}>
+      <Container className="w-full h-[85%]  relative" p={0}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }} className="absolute -left-1 -bottom-2">
             <XAxis dataKey="month" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
