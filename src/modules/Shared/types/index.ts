@@ -360,3 +360,8 @@ export interface SelectedDateStore {
     selectedDate: string | null;
     setSelectedDate: (date: string | null) => void;
 }
+
+export type PDFViewerProps<T> = {
+    identifier: T;
+    getPdfPathFn: (identifier: T) => Promise<string>;
+};

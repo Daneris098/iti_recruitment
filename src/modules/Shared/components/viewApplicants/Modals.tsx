@@ -1,29 +1,28 @@
 import { ModalsProps } from "@modules/Shared/types";
 import { useApplicantIdStore } from "@modules/Applicants/store";
 import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
+import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
-import { useSingleAcceptedOffer } from "@src/modules/Shared/hooks/useSharedApplicants";
+import { getApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 import UpdateStatus from "@src/modules/Applicants/components/documents/buttons/UpdateStatus";
 import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer";
 import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
 
 export default function Modals({
-  Status, IsJobOffer,
-  onClosePDF, applicantName,
-  onCloseAll, onCloseUpdateStatus,
-  isGenerateNewOfferOpen, isViewPDFOpen,
-  isUpdateStatusOpen, isTransferPositionOpen,
-  onCloseTransferPosition, onCloseGenerateNewOffer,
+  Status,
+  IsJobOffer,
+  onClosePDF,
+  onCloseAll,
+  isViewPDFOpen,
+  applicantName,
+  isUpdateStatusOpen,
+  onCloseUpdateStatus,
+  isGenerateNewOfferOpen,
+  isTransferPositionOpen,
+  onCloseTransferPosition,
+  onCloseGenerateNewOffer,
 }: ModalsProps) {
-
   const applicantId = useApplicantIdStore((state) => state.id);
-  const { data: acceptedOffer } = useSingleAcceptedOffer(applicantId);
-
-  // const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
-  // const fileUrl = `${FILE_BASE_URL}/${acceptedOffer?.data?.[0]?.path}`;
-  const FILE_BASE_URL = import.meta.env.VITE_FILE_BASE_URL;
-  const filePath = acceptedOffer?.data?.[0]?.path.replace(/^files\//, '');
-  const fileUrl = `${FILE_BASE_URL}${filePath}`;
 
   return (
     <>
@@ -77,11 +76,9 @@ export default function Modals({
       {/* PDF Viewer Modal */}
       {isViewPDFOpen && (
         <ViewPDF isOpen onClose={onClosePDF}>
-          <iframe
-            src={fileUrl}
-            width="100%"
-            height="891"
-            style={{ border: "1px solid #ccc", borderRadius: "8px" }}
+          <PDFViewer
+            identifier={applicantId}
+            getPdfPathFn={getApplicantPDFPath}
           />
         </ViewPDF>
       )}
