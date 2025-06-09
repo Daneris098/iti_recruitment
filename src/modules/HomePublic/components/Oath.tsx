@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";
 import axiosInstance from "@src/api";
-import { ApplicationFormValClean } from "../values";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+import { ApplicationFormValClean } from "../values";
+import { ApplicationFormVal } from "../values/cleanState";
 
 export default function Index() {
     const [consent, setConsent] = useState('');
@@ -264,7 +265,7 @@ export default function Index() {
                         })
                         console.log(response)
                         if (response.status == 201) {
-                            setApplicationForm(ApplicationFormValClean)
+                            setApplicationForm(ApplicationFormVal)
                             setApplicationFormModal(false);
                             setActiveStepper(Step.GeneralInformation);
                             setAlert(AlertType.applicationSuccesfull);
