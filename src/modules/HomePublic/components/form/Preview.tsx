@@ -168,21 +168,21 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold">Government ID/Number</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">SSS</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo : 'N/A'}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Philhealth No.</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo : 'N/A'}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Driver License</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.philhealthNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.driversLicense != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.driversLicense : 'N/A'}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">GSIS No.</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.gsisNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.gsisNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.gsisNo : 'N/A'}</p>
                                 </div>
 
 
@@ -193,21 +193,21 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold"></p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Pag-ibig No.</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo : 'N/A'}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">TIN ID.</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.tinNo : 'N/A'}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">Passport</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.passport : 'N/A'}</p>
                                 </div>
 
                                 <div>
                                     <p className="text-[#6D6D6D]">RDO Code</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.rdoCode}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.rdoCode != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.rdoCode : 'N/A'}</p>
                                 </div>
 
                             </div>
@@ -338,6 +338,16 @@ export default function index() {
                         </div>
 
                         <div className="flex h-full w-full flex-wrap">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem]">
+                                <div>
+                                    <p className="text-[#6D6D6D]">Number Of Children</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.children.numberOfChildren}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Age Range</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.children.ageRange}</p>
+                                </div>
+                            </div>
                             {applicationForm.familyBackground.siblings.length > 0 && applicationForm.familyBackground.siblings != ApplicationFormVal.familyBackground.siblings && applicationForm.familyBackground.siblings.map((sibling, index) => (
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>

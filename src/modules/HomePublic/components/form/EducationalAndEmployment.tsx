@@ -166,7 +166,7 @@ export default function index() {
             // form.validate();  
             form.getValues().employmentRecord.forEach((item, index) => {
                 console.log('item.salary : ', item.salary)
-                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || item.salary > 0 || item.reasonForLeaving != '') {
+                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || (item.salary != '' && Number(item.salary) > 0) || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
                         invalid = true
@@ -212,6 +212,12 @@ export default function index() {
                     form.clearFieldError(`employmentRecord.${index}.inclusiveDate.reasonForLeaving`)
                 }
             });
+
+            form.getValues().employmentRecord.forEach((item) => {
+                if (item.salary === '') {
+                    item.salary = 0
+                }
+            })
 
             if (!invalid) {
                 formRef.current.requestSubmit();

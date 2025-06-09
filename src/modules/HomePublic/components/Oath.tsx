@@ -99,13 +99,13 @@ export default function Index() {
                                 father: {
                                     name: applicationForm.familyBackground.father.fullname?.trim() || 'N/A',
                                     age: applicationForm.familyBackground.father.age || 0,
-                                    contactNo: applicationForm.familyBackground.father.contactNumber?.trim() || 'N/A',
+                                    contactNo: applicationForm.familyBackground.father.contactNumber?.toString()?.trim() || 'N/A',
                                     occupation: applicationForm.familyBackground.father.occupation?.trim() || 'N/A',
                                 },
                                 mother: {
                                     name: applicationForm.familyBackground.mother.fullname?.trim() || 'N/A',
                                     age: applicationForm.familyBackground.mother.age || 0,
-                                    contactNo: applicationForm.familyBackground.mother.contactNumber?.trim() || 'N/A',
+                                    contactNo: applicationForm.familyBackground.mother.contactNumber?.toString()?.trim() || 'N/A',
                                     occupation: applicationForm.familyBackground.mother.occupation?.trim() || 'N/A',
                                 },
                                 ...(applicationForm.familyBackground.spouse?.fullname?.trim()
@@ -176,7 +176,7 @@ export default function Index() {
                                     city: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.city },
                                     arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: true,
-                                    zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.zipCode },
+                                    zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.zipCode.trim() || 'N/A' },
                                 },
                                 {
                                     unitNo: applicationForm.generalInformation.personalInformation.presentAddress.unitNo?.trim() || 'N/A',
@@ -187,7 +187,7 @@ export default function Index() {
                                     city: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.city },
                                     arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: false,
-                                    zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.zipCode },
+                                    zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.zipCode.trim() || 'N/A' },
                                 }
                             ],
                             positions: [

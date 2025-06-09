@@ -33,6 +33,12 @@ export default function index() {
                 positionHeld: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Position Held is required" : null,
                 ContactNo: (value: string | number) => (!isNoEmploymentRecord) && !value.toString().trim() ? "Contact Number is required" : (!isNoEmploymentRecord) && value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
+            applicationSource: {
+                description: (value: string, values) =>
+                    values.applicationSource?.others && value.length === 0
+                        ? 'Description is required'
+                        : null,
+            },
         },
     });
 
