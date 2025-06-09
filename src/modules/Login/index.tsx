@@ -47,9 +47,7 @@ export default function Login() {
           const decodedToken: JWTPayload = jwtDecode(accessToken);
           setData(decodedToken);
           document.cookie = `refreshToken=${refreshToken}; path=/; secure; SameSite=Strict`;
-          // check if account
           navigate("/home");
-          // navigate("/AccountSetup");
         }
       })
       .catch((error) => {
@@ -60,6 +58,7 @@ export default function Login() {
 
   return (
     <div className=" h-full flex">
+      <title>Login</title>
       <div className="bg-cover  w-1/2 hidden sm:block">
         <div style={{ backgroundImage: `url(${loginBg})` }} className="bg-cover h-full w-full flex flex-col p-4 ">
           <div className="flex flex-col gap-10 sm:h-[45%] sm:w-[80%] m-auto p-4 sm:p-0">
@@ -68,18 +67,14 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <div className=" w-full sm:w-1/2  ">
+      <div className=" w-full sm:w-1/2">
         <div className="h-full w-full flex flex-col">
-          <img
-            src="logoword.png"
-            className=" cursor-pointer w-64  2xl:w-48 pr-10 absolute py-10 self-end "
-            alt="bg"
-            onClick={() => {
-              navigate("/");
-            }}
-          />
-          <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[55%] m-auto p-4 sm:p-0">
-            <p className=" text-center font-semibold poppins text-5xl sm:text-6xl text-[#559CDA]">Admin Log-in</p>
+          <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[65%] m-auto p-4 sm:p-0">
+            <div className="w-full flex justify-center items-center">
+              <img src="logoword.png" className="cursor-pointer w-80" alt="bg" onClick={() => navigate("/")} />
+            </div>
+            <p className=" text-center font-medium poppins text-sm text-[#6d6d6d] w-full">HRDotNet isn't just a software: it's a commitment to better HR management.</p>
+
             <div className="w-full text-start text-slate-700 mt-6">
               <Text size="md" className="poppins text-[#6D6D6D]">
                 Username
@@ -116,6 +111,7 @@ export default function Login() {
                 {...form.getInputProps("password")}
               />
             </div>
+
             <Button type="submit" size="lg" className="br-gradient border-none bg-blue-300 mt-7">
               <Text className="poppins text-white ">Login Now</Text>
             </Button>
