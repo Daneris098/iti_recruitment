@@ -213,10 +213,12 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
 
 export const useApplicantsById = (id: string | number) => {
     return useQuery({
-        queryKey: sharedApplicantKeys.lists(),
+        queryKey: sharedApplicantKeys.detail(id),
         queryFn: () => applicantsByIdService.getById(id),
         select: (data) => formatApplicantById(data),
-
+        enabled: !!id,
+        staleTime: 0,
+        structuralSharing: false
     });
 };
 

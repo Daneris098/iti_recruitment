@@ -203,7 +203,7 @@ export default function index() {
 
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
-
+  // debugger;
   //#region MAIN
   // main
   return (
