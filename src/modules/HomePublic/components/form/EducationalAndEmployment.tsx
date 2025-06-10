@@ -7,17 +7,16 @@ import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground }
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
-
+    const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [profesionalLicenses, setProfesionalLicenses] = useState<string[][]>([[]]);
     const [certifications, setCertifications] = useState<string[][]>([[]]);
-
-
     const [opened, setOpened] = useState(false);
     const [opened2, setOpened2] = useState(false);
     const togglePopover = (index: number, isStart: boolean) => {
@@ -448,7 +447,7 @@ export default function index() {
                                         <Popover.Dropdown className="w-full">
                                             <DatePicker
                                                 firstDayOfWeek={0}
-                                                numberOfColumns={2}
+                                                numberOfColumns={isGreaterThanSp ? 2 : 1}
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
@@ -488,7 +487,7 @@ export default function index() {
                                         </Popover.Target>
                                         <Popover.Dropdown>
                                             <DatePicker
-                                                numberOfColumns={2}
+                                                numberOfColumns={isGreaterThanSp ? 2 : 1}
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {

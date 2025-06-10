@@ -272,3 +272,11 @@ export enum AlertType {
   cancelledApplication = "cancelledApplication",
   submitResponse = "submitResponse",
 }
+
+export enum StepperTitle {
+  "General and Personal Information",
+  "Education and Employment Record",
+  "Family Background and Other Information",
+  "Reference",
+  "Photo"
+}

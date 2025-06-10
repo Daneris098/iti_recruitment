@@ -4,7 +4,6 @@ import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
-import { ApplicationFormValClean } from "../values";
 import { ApplicationFormVal } from "../values/cleanState";
 
 export default function Index() {

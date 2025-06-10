@@ -125,7 +125,7 @@ export default function index() {
 
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
-            <div className="text-[#6D6D6D] flex flex-col gap-4 ">
+            <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <div>
                     <p className="font-bold">Character Reference (NOT FAMILY MEMBERS)</p>
                 </div>

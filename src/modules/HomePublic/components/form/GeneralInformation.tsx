@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -17,6 +18,7 @@ export default function index() {
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
+    const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
         { id: 2, value: 'Web Developer', label: 'Web Developer' },
@@ -310,86 +312,94 @@ export default function index() {
 
                 <p className="font-bold">Personal Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="First Name" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Middle Name" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Suffix(Jr. Sr. etc.)" />
+                <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' placeholder="First Name" />
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' placeholder="Middle Name" />
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' placeholder="Suffix(Jr. Sr. etc.)" />
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 items-end relative  ">
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="House no." />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.street")} key={form.key('personalInformation.presentAddress.street')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Street" />
-                    <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.subdivision")} key={form.key('personalInformation.presentAddress.subdivision')} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Subdivision" />
+                <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
+                    <div className="w-full sp:w-1/2 flex items-end gap-4">
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' placeholder="House no." />
+                    </div>
+                    <div className="w-full sp:w-1/2 flex flex-col sp:flex-row items-end gap-4">
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.street")} key={form.key('personalInformation.presentAddress.street')} radius='md' placeholder="Street" />
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.subdivision")} key={form.key('personalInformation.presentAddress.subdivision')} radius='md' placeholder="Subdivision" />
+                    </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <Autocomplete
-                        {...form.getInputProps("personalInformation.presentAddress.city")}
-                        // key={presentCityKey}
-                        limit={50}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"City"}
-                        radius={8}
-                        data={cities}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            console.log('cities123: ', cities)
-                            console.log('val123: ', val)
-                            const selectedCity = cities.find(city => city.label === val);
-                            fetchBarangays(selectedCity?.id ?? 1, 1)
-                            form.setFieldValue("personalInformation.presentAddress.city", val);
-                            form.setFieldValue("personalInformation.presentAddress.barangay", '');
-                            setPresentBarangayKey(val)
-                        })}
-                    />
 
-                    <Autocomplete
-                        {...form.getInputProps("personalInformation.presentAddress.barangay")}
-                        key={presentBarangayKey}
-                        limit={50}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Barangay"}
-                        radius={8}
-                        data={barangays}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            form.setFieldValue("personalInformation.presentAddress.barangay", val);
-                        })}
-                    />
+                    <div className="flex flex-col sp:flex-row gap-4  w-full sp:w-1/2">
+                        <Autocomplete
+                            {...form.getInputProps("personalInformation.presentAddress.city")}
+                            // key={presentCityKey}
+                            limit={50}
+                            placeholder={"City"}
+                            radius={8}
+                            data={cities}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full sp:w-1/2 text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={((val) => {
+                                console.log('cities123: ', cities)
+                                console.log('val123: ', val)
+                                const selectedCity = cities.find(city => city.label === val);
+                                fetchBarangays(selectedCity?.id ?? 1, 1)
+                                form.setFieldValue("personalInformation.presentAddress.city", val);
+                                form.setFieldValue("personalInformation.presentAddress.barangay", '');
+                                setPresentBarangayKey(val)
+                            })}
+                        />
 
-                    <TextInput
-                        {...form.getInputProps("personalInformation.presentAddress.zipCode")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Zip Code"}
-                        radius={8}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
-                    <Select
-                        {...form.getInputProps("personalInformation.presentAddress.livingArrangement")}
-                        w={isMobile ? '25%' : '100%'}
-                        placeholder={"Living Arrangement"}
-                        radius={8}
-                        data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                    />
+                        <Autocomplete
+                            {...form.getInputProps("personalInformation.presentAddress.barangay")}
+                            key={presentBarangayKey}
+                            limit={50}
+                            placeholder={"Barangay"}
+                            radius={8}
+                            data={barangays}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none w-full sp:w-1/2 text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                            onChange={((val) => {
+                                form.setFieldValue("personalInformation.presentAddress.barangay", val);
+                            })}
+                        />
+                    </div>
+
+                    <div className="flex gap-4  w-full sp:w-1/2">
+
+                        <TextInput
+                            {...form.getInputProps("personalInformation.presentAddress.zipCode")}
+                            placeholder={"Zip Code"}
+                            radius={8}
+                            className="border-none text-sm sp:w-1/2 w-[50%]"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                        />
+                        <Select
+                            {...form.getInputProps("personalInformation.presentAddress.livingArrangement")}
+                            placeholder={"Living Arrangement"}
+                            radius={8}
+                            data={["RELATIVES", "OWNED", "RENTED", "WILLING TO RELOCATE"]}
+                            rightSection={<IconCaretDownFilled size='18' />}
+                            className="border-none text-sm sp:w-1/2 w-[50%]"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                        />
+
+                    </div>
+
                     {/* <TextInput radius='md' w={isMobile ? '25%' : '100%'} placeholder="Living Arrangement" /> */}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative">
-                    <div className={cn("w-[100%]", isMobile && "w-[25%]  bg-green-400")}>
+                    <div className={cn("w-[100%]", isMobile && "w-[25%]  ")}>
                         <Checkbox
                             checked={sameAsPresent}
                             label="Same as Present Address"

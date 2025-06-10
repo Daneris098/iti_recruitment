@@ -13,7 +13,8 @@ function Layout() {
 
   useEffect(() => {
     const handleResize = () => {
-      const isMobile = window.innerWidth <= 768;
+      console.log('window.innerWidth: ', window.innerWidth)
+      const isMobile = window.innerWidth <= 769;
       setIsMobile(isMobile);
     };
 

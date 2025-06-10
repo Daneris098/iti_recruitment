@@ -1,6 +1,6 @@
-import { Divider, MultiSelect, NumberInput, Select, TextInput } from "@mantine/core";
+import { Divider, MultiSelect, NumberInput, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCaretDownFilled, IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
+import { IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 import { useEffect, useRef, useState } from "react";
