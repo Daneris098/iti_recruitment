@@ -157,6 +157,12 @@ interface useDropDownOfferedState {
   department: string;
   setDepartment: (department: string) => void;
 
+  division: string;
+  setDivision: (division: string) => void;
+
+  divisionId: number;
+  setDivisionId: (divisionId: number) => void;
+
   departmentId: number;
   setDepartmentId: (departmentId: number) => void;
 
@@ -235,7 +241,13 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   setInterviewDate: (interviewDate) => set({ interviewDate }),
 
   interviewTime: "",
-  setInterviewTime: (interviewTime) => set({ interviewTime })
+  setInterviewTime: (interviewTime) => set({ interviewTime }),
+
+  division: "",
+  setDivision: (division) => set({ division }),
+
+  divisionId: 0,
+  setDivisionId: (divisionId) => set({ divisionId })
 }))
 // End of DropDownOffered modal
 

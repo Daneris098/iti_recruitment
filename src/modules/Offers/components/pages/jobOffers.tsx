@@ -2,9 +2,9 @@
 import dayjs from "dayjs";
 import { DataTable } from "mantine-datatable";
 import { PDFViewer } from "@react-pdf/renderer";
+import { Pagination, Tabs } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { Pagination, Tabs } from "@mantine/core";
 import { useStatusFilterStore } from "@modules/Shared/store";
 import Filter from "@modules/Offers/components/filter/Filter";
 import { IconFileCheck, IconFileX } from "@tabler/icons-react";
@@ -118,7 +118,7 @@ export default function index() {
         queryParams,
         setLoadTime
     );
-    // debugger;
+
     const hiredApplicantIds = useMemo(() => {
         return sharedApplicants?.applicants
             ?.filter(a => a.status === STATUS_HIRED)
@@ -178,7 +178,7 @@ export default function index() {
         }
         return result;
     };
-    // debugger;
+
     const transformApplicants = (applicantsWithOffers: any[]): JobOffersColumns[] => {
         const validApplicants = filterValidApplicants(applicantsWithOffers);
         return validApplicants.map(transformApplicantToColumn)
@@ -202,7 +202,7 @@ export default function index() {
     }, [page, pageSize, filter, selectedStatusId, activeTab]);
 
     useEffect(() => {
-        if (!sharedApplicants?.applicants || !acceptedOffers.length || hasLoaded) return;
+        if (!sharedApplicants?.applicants || hasLoaded) return;
 
         const offerMap = createOfferMap(hiredApplicantIds, acceptedOffers);
         const applicantsWithOffers = mergeApplicantsWithOffers(sharedApplicants.applicants, offerMap);

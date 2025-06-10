@@ -2,7 +2,7 @@ import { Button } from "@mantine/core";
 
 export function ActionButton({ status, onPDFView, onTransfer }: { status: string, onPDFView: () => void, onTransfer: () => void }) {
     const isPDFView = ['Hired', 'Offered', 'For Transfer', 'Transferred'].includes(status);
-    const shouldShow = status !== 'Archived';
+    const shouldShow = status !== 'Archived' && status !== 'Offered';
 
     if (!shouldShow) return null;
 

@@ -11,10 +11,10 @@ import {
 } from "@modules/Applicants/api/userService";
 import {
     applicantsByIdService,
-    viewApplicantOfferService, useViewInterviewStagesHiring
+    viewApplicantOfferService, useViewInterviewStagesHiring,
 } from "@modules/Shared/components/api/UserService";
 import {
-    useSharedUserService,
+    useSharedUserService, useGetPositionLevels, useGetDepartments,
     useSharedTransferredPosition, useSharedViewAcceptedOffer
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
@@ -333,6 +333,32 @@ export const useViewInterviewStages = (
     });
 };
 
+export const useViewPositionLevels = () => {
+    return useQuery({
+        queryKey: ['position-levels'],
+        queryFn: async () => {
+            const apiFilters: Record<string, any> = {};
+
+            const data = await useGetPositionLevels.getAll(apiFilters);
+
+            return data.items;
+        }
+    })
+}
+
+export const useViewDepartments = () => {
+    return useQuery({
+        queryKey: ['departments'],
+        queryFn: async () => {
+            const departmentFilters: Record<string, any> = {};
+
+            const data = await useGetDepartments.getAll(departmentFilters);
+
+            return data.items
+        }
+    })
+}
+
 const DEFAULT_FETCH_ALL_PAGE = 1;
 const DEFAULT_FETCH_ALL_PAGE_SIZE = 60;
 
@@ -355,7 +381,7 @@ export const useSingleAcceptedOffer = (id: string | number) => {
         enabled: !!id,
     });
 };
-// debugger;
+
 export const useApplicants = (
     page: number = 1,
     pageSize: number = 30,

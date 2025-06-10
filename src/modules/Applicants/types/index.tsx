@@ -600,3 +600,15 @@ export type interviewStagesOption = {
     value: number;
     label: string;
 };
+
+//#region Position Levels
+export type PositionType = {
+    id: number;
+    guid: string;
+    code: string;
+    name: string;
+    description: string;
+    isActive: boolean;
+    createdById: number;
+    dateCreated: string;
+};
