@@ -3,18 +3,23 @@ import { useEffect, useState } from "react";
 import { ApplicationStore, HomeStore } from "../store";
 import { AlertType, EducationBackground, Step } from "../types";
 import axiosInstance from "@src/api";
-import { ApplicationFormVal } from "../values";
+import { ApplicationFormValClean } from "../values";
+import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+
 export default function Index() {
     const [consent, setConsent] = useState('');
     const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, setSubmitLoading } = ApplicationStore();
     const { setApplicationFormModal, setAlert, setAlertBody } = HomeStore();
+    const { data: vacanciesData } = useVacancies();
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
+
             if (consent === 'true') {
                 setSubmitLoading(true);
                 (async () => {
                     try {
+                        // console.log(' (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any): ', (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.firstChoice)) as any))
                         const formData = new FormData();
                         const split = applicationForm.photo.split('/');
                         const mimeToExtension = (mimeType: string): string => {
@@ -53,13 +58,20 @@ export default function Index() {
                                 }
                             }
                         };
+
+
                         appendFormData({
-                            name: applicationForm.generalInformation.personalInformation.fullname,
+                            name: {
+                                firstName: applicationForm.generalInformation.personalInformation.fullname.firstName,
+                                middleName: applicationForm.generalInformation.personalInformation.fullname.middleName?.trim() || 'N/A',
+                                lastName: applicationForm.generalInformation.personalInformation.fullname.lastName,
+                                suffix: applicationForm.generalInformation.personalInformation.fullname.suffix?.trim() || 'N/A',
+                            },
                             Photo: file,
                             birthDate: applicationForm.generalInformation.personalInformation.dateOfBirth,
                             birthPlace: applicationForm.generalInformation.personalInformation.placeOfBirth,
-                            height: applicationForm.generalInformation.personalInformation.height,
-                            weight: applicationForm.generalInformation.personalInformation.weight,
+                            height: applicationForm.generalInformation.personalInformation.height || 1,
+                            weight: applicationForm.generalInformation.personalInformation.weight || 1,
                             identification: {
                                 sssNo: applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo,
                                 hdmfNo: '',
@@ -85,23 +97,27 @@ export default function Index() {
                             },
                             family: {
                                 father: {
-                                    name: applicationForm.familyBackground.father.fullname,
-                                    age: applicationForm.familyBackground.father.age,
-                                    contactNo: applicationForm.familyBackground.father.contactNumber,
-                                    occupation: applicationForm.familyBackground.father.occupation,
+                                    name: applicationForm.familyBackground.father.fullname?.trim() || 'N/A',
+                                    age: applicationForm.familyBackground.father.age || 0,
+                                    contactNo: applicationForm.familyBackground.father.contactNumber?.trim() || 'N/A',
+                                    occupation: applicationForm.familyBackground.father.occupation?.trim() || 'N/A',
                                 },
                                 mother: {
-                                    name: applicationForm.familyBackground.mother.fullname,
-                                    age: applicationForm.familyBackground.mother.age,
-                                    contactNo: applicationForm.familyBackground.mother.contactNumber,
-                                    occupation: applicationForm.familyBackground.mother.occupation,
+                                    name: applicationForm.familyBackground.mother.fullname?.trim() || 'N/A',
+                                    age: applicationForm.familyBackground.mother.age || 0,
+                                    contactNo: applicationForm.familyBackground.mother.contactNumber?.trim() || 'N/A',
+                                    occupation: applicationForm.familyBackground.mother.occupation?.trim() || 'N/A',
                                 },
-                                spouse: {
-                                    name: applicationForm.familyBackground.spouse?.fullname,
-                                    age: applicationForm.familyBackground.spouse?.age,
-                                    contactNo: applicationForm.familyBackground.spouse?.contactNumber,
-                                    occupation: applicationForm.familyBackground.spouse?.occupation,
-                                },
+                                ...(applicationForm.familyBackground.spouse?.fullname?.trim()
+                                    ? {
+                                        spouse: {
+                                            name: applicationForm.familyBackground.spouse.fullname,
+                                            age: applicationForm.familyBackground.spouse.age,
+                                            contactNo: applicationForm.familyBackground.spouse.contactNumber,
+                                            occupation: applicationForm.familyBackground.spouse.occupation,
+                                        }
+                                    }
+                                    : {}),
                                 siblings: applicationForm.familyBackground.siblings
                                     .filter(item => !(item.fullname === '' && item.age === 0 && item.occupation === '' && item.contactNumber === ''))
                                     .map(item => ({
@@ -125,18 +141,21 @@ export default function Index() {
                             },
                             religion: {
                                 id: 1,
-                                name: applicationForm.generalInformation.personalInformation.religion,
+                                name: applicationForm.generalInformation.personalInformation.religion?.trim() || 'N/A',
                             },
                             characterReferences: [
-                                ...applicationForm.reference.employmentReference.map((item) => {
-                                    return {
-                                        name: item.fullname,
-                                        company: item.company,
-                                        contactNo: item.ContactNo,
-                                        position: item.positionHeld,
-                                        isEmploymentReference: true
-                                    };
-                                }),
+                                ((applicationForm.reference.employmentReference).length > 0
+                                    ? [...applicationForm.reference.employmentReference.map((item) => {
+                                        return {
+                                            name: item.fullname,
+                                            company: item.company,
+                                            contactNo: item.ContactNo,
+                                            position: item.positionHeld,
+                                            isEmploymentReference: true
+                                        };
+                                    }),]
+                                    : []),
+
                                 ...applicationForm.reference.characterReference.map((item) => {
                                     return {
                                         name: item.fullname,
@@ -149,43 +168,49 @@ export default function Index() {
                             ],
                             addresses: [
                                 {
-                                    unitNo: applicationForm.generalInformation.personalInformation.permanentAddress.unitNo,
+                                    unitNo: applicationForm.generalInformation.personalInformation.permanentAddress.unitNo?.trim() || 'N/A',
                                     houseNo: applicationForm.generalInformation.personalInformation.permanentAddress.houseNo,
                                     street: applicationForm.generalInformation.personalInformation.permanentAddress.street,
-                                    subdivision: applicationForm.generalInformation.personalInformation.permanentAddress.subdivision,
+                                    subdivision: applicationForm.generalInformation.personalInformation.permanentAddress.subdivision?.trim() || 'N/A',
                                     barangay: applicationForm.generalInformation.personalInformation.permanentAddress.barangay,
                                     city: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.city },
-                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement },
+                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: true,
                                     zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.zipCode },
                                 },
                                 {
-                                    unitNo: applicationForm.generalInformation.personalInformation.presentAddress.unitNo,
+                                    unitNo: applicationForm.generalInformation.personalInformation.presentAddress.unitNo?.trim() || 'N/A',
                                     houseNo: applicationForm.generalInformation.personalInformation.presentAddress.houseNo,
                                     street: applicationForm.generalInformation.personalInformation.presentAddress.street,
-                                    subdivision: applicationForm.generalInformation.personalInformation.presentAddress.subdivision,
+                                    subdivision: applicationForm.generalInformation.personalInformation.presentAddress.subdivision?.trim() || 'N/A',
                                     barangay: applicationForm.generalInformation.personalInformation.presentAddress.barangay,
                                     city: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.city },
-                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement },
+                                    arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: false,
                                     zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.zipCode },
                                 }
                             ],
                             positions: [
                                 {
-                                    id: 1,
-                                    name: applicationForm.generalInformation.firstChoice,
+                                    id: applicationForm.generalInformation.firstChoice,
+                                    companyId: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).companyDetails.id,
+                                    name: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).position,
                                     salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 1, name: 'First Choice' },
                                     availableDateStart: applicationForm.generalInformation.startDateAvailability,
+                                    departmentId: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).departmentDetails.id,
                                 },
-                                {
-                                    id: 2,
-                                    name: applicationForm.generalInformation.secondChoice,
-                                    salary: applicationForm.generalInformation.desiredSalary,
-                                    choice: { id: 2, name: 'Second Choice' },
-                                    availableDateStart: applicationForm.generalInformation.startDateAvailability,
-                                },
+                                (Number(applicationForm.generalInformation.secondChoice) !== 0
+                                    ? [{
+                                        id: applicationForm.generalInformation.secondChoice,
+                                        companyId: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).companyDetails.id,
+                                        name: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).position,
+                                        salary: applicationForm.generalInformation.desiredSalary,
+                                        choice: { id: 2, name: 'Second Choice' },
+                                        availableDateStart: applicationForm.generalInformation.startDateAvailability,
+                                        departmentId: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).departmentDetails.id,
+                                    }]
+                                    : []),
                             ],
                             questionnaires: [
                                 { id: 1, Question: 'Have you ever been convicted of a crime?', Answer: applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails },
@@ -206,22 +231,28 @@ export default function Index() {
                                     yearTo: formatDate(item.yearsAttended.to)
                                 }
                             }),
-                            previousEmployments: applicationForm.educationAndEmployment.employmentRecord.map((item) => {
-                                const formatDate = (date: any) => {
-                                    const d = new Date(date);
-                                    return d.toISOString().split('T')[0];
-                                };
-                                return {
-                                    company: item.employerCompany,
-                                    location: item.location,
-                                    position: item.positionHeld,
-                                    dateFrom: formatDate(item.inclusiveDate.from),
-                                    dateTo: formatDate(item.inclusiveDate.to),
-                                    salary: item.salary,
-                                    reason: item.reasonForLeaving
 
+                            ...(applicationForm.educationAndEmployment.employmentRecord.some(item => item.employerCompany?.trim())
+                                ? {
+                                    previousEmployments: applicationForm.educationAndEmployment.employmentRecord.map((item) => {
+                                        const formatDate = (date: any) => {
+                                            const d = new Date(date);
+                                            return d.toISOString().split('T')[0];
+                                        };
+                                        return {
+                                            company: item.employerCompany,
+                                            location: item.location,
+                                            position: item.positionHeld,
+                                            dateFrom: formatDate(item.inclusiveDate.from),
+                                            dateTo: formatDate(item.inclusiveDate.to),
+                                            salary: item.salary,
+                                            reason: item.reasonForLeaving
+
+                                        }
+                                    }),
                                 }
-                            }),
+                                : {}),
+
                             skills: applicationForm.familyBackground.otherInformation.specialTechnicalSkills.split(',').map((item) => {
                                 return { keyword: item }
                             }),
@@ -231,13 +262,15 @@ export default function Index() {
                                 'Content-Type': 'multipart/form-data',
                             },
                         })
+                        console.log(response)
                         if (response.status == 201) {
-                            setApplicationForm(ApplicationFormVal)
+                            setApplicationForm(ApplicationFormValClean)
                             setApplicationFormModal(false);
                             setActiveStepper(Step.GeneralInformation);
                             setAlert(AlertType.applicationSuccesfull);
                         }
                     } catch (error: any) {
+                        console.log(error)
                         setAlert(AlertType.submitResponse);
                         const errorText = JSON.parse(error.request.responseText);
                         const errorTitle = errorText.title;

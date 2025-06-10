@@ -19,6 +19,8 @@ export const useVacancies = () => {
       if (res.status === 200 && Array.isArray(res.data.items)) {
         const mapped = res.data.items.map((item: any) => ({
           ...item,
+          companyDetails: item.company,
+          departmentDetails: item.department,
           mustHaveSkills: item.skills,
           company: item.company.name,
           branch: item.branch.name,
@@ -36,7 +38,7 @@ export const useVacancies = () => {
           department: item.department?.name || "-",
           quantity: item.availableSlot,
           totalApplicant: item.availableSlot,
-          status: "Published",
+          status: item.status.name,
         }));
         const endTime = performance.now();
         const executionTime = (endTime - startTime) / 1000;

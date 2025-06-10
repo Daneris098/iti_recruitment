@@ -1,4 +1,3 @@
-import { Button } from "@mantine/core";
 import { JobOfferExcelTemplate } from "@modules/HiringSettings/components/excel/JobOfferExcelTemplate";
 import type { SpreadsheetCell } from "@modules/HiringSettings/constants/jobOfferExcelTemplateData";
 type Props = {

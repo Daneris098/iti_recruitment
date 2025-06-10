@@ -21,7 +21,7 @@ type DataExpandRow = {
 };
 
 export default function useEdit(): DataExpandRow {
-  const { activePanel } = OrganizationSettingsStore();
+  const { activePanel, setAddOrg, setNewRows, addOrg } = OrganizationSettingsStore();
   const expandedIds = OrganizationSettingsStore((state) => state.expandedIds);
   const setExpanded = OrganizationSettingsStore((state) => state.setExpanded);
   const resetExpandedRows = OrganizationSettingsStore((state) => state.reset);
@@ -30,41 +30,50 @@ export default function useEdit(): DataExpandRow {
     resetExpandedRows();
   }, [activePanel]);
 
+  const onHandleExpandRow = (ids: number[] | ((prev: number[]) => number[])) => {
+    setExpanded(ids);
+    if (addOrg) {
+      const oldRow = { id: "OLD" };
+      setAddOrg(false);
+      setNewRows([oldRow]);
+    }
+  };
+
   return {
     [Panel.branch]: {
       trigger: "never",
       allowMultiple: false,
-      expanded: { recordIds: expandedIds, onRecordIdsChange: setExpanded },
+      expanded: { recordIds: expandedIds, onRecordIdsChange: onHandleExpandRow },
       content: ({ record }) => <Branch record={record} />,
     },
     [Panel.companyList]: {
       trigger: "never",
       allowMultiple: false,
-      expanded: { recordIds: expandedIds, onRecordIdsChange: setExpanded },
+      expanded: { recordIds: expandedIds, onRecordIdsChange: onHandleExpandRow },
       content: ({ record }) => <Company record={record} />,
     },
     [Panel.departments]: {
       trigger: "never",
       allowMultiple: false,
-      expanded: { recordIds: expandedIds, onRecordIdsChange: setExpanded },
+      expanded: { recordIds: expandedIds, onRecordIdsChange: onHandleExpandRow },
       content: ({ record }) => <Department record={record} />,
     },
     [Panel.division]: {
       trigger: "never",
       allowMultiple: false,
-      expanded: { recordIds: expandedIds, onRecordIdsChange: setExpanded },
+      expanded: { recordIds: expandedIds, onRecordIdsChange: onHandleExpandRow },
       content: ({ record }) => <Division record={record} />,
     },
     [Panel.positionLevel]: {
       trigger: "never",
       allowMultiple: false,
-      expanded: { recordIds: expandedIds, onRecordIdsChange: setExpanded },
+      expanded: { recordIds: expandedIds, onRecordIdsChange: onHandleExpandRow },
       content: ({ record }) => <Position record={record} />,
     },
     [Panel.section]: {
       trigger: "never",
       allowMultiple: false,
-      expanded: { recordIds: expandedIds, onRecordIdsChange: setExpanded },
+      expanded: { recordIds: expandedIds, onRecordIdsChange: onHandleExpandRow },
       content: ({ record }) => <Section record={record} />,
     },
   };

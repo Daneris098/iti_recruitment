@@ -22,15 +22,15 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDepartment = useForm<AddDepartmentProps>({
     initialValues: {
-      code: "D-1",
-      name: "Department 1",
+      code: "",
+      name: "",
       isActive: true,
-      description: "Department 1 Description",
+      description: "",
       division: {
         id: 0,
         name: "",
       },
-      head: "Juan Dela Cruz",
+      head: "",
     },
   });
 
@@ -54,12 +54,14 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Code"
-              {...addDepartment.getInputProps("code")}
-              error={addDepartment.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Code"
+                {...addDepartment.getInputProps("code")}
+                error={addDepartment.values.code === "" ? "Code is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -74,12 +76,14 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addDepartment.getInputProps("name")}
-              error={addDepartment.values.name === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Name"
+                {...addDepartment.getInputProps("name")}
+                error={addDepartment.values.name === "" ? "Name is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -94,12 +98,14 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Department Head"
-              {...addDepartment.getInputProps("head")}
-              error={addDepartment.values.head === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Department Head"
+                {...addDepartment.getInputProps("head")}
+                error={addDepartment.values.head === "" ? "Department Head is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -114,25 +120,28 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <Select
-              radius={8}
-              data={divisions.data?.items.map((division: any) => ({
-                value: String(division.id),
-                label: division.name,
-              }))}
-              rightSection={<IconCaretDownFilled size="18" />}
-              className="border-none text-sm w-full"
-              classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-              styles={{ label: { color: "#6d6d6d" } }}
-              placeholder="Select Division"
-              onChange={(value) => {
-                const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                if (selectedItem) {
-                  addDepartment.setFieldValue("division.id", selectedItem.id);
-                  addDepartment.setFieldValue("division.name", selectedItem.name);
-                }
-              }}
-            />
+            <div className="relative">
+              <Select
+                radius={8}
+                data={divisions.data?.items.map((division: any) => ({
+                  value: String(division.id),
+                  label: division.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Division"
+                error={addDepartment.values.division.name === "" ? "Division is Required" : undefined}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addDepartment.setFieldValue("division.id", selectedItem.id);
+                    addDepartment.setFieldValue("division.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
           );
         }
 
@@ -147,12 +156,9 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Description"
-              {...addDepartment.getInputProps("description")}
-              error={addDepartment.values.description === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addDepartment.getInputProps("description")} />
+            </div>
           );
         }
 

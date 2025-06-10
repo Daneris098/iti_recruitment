@@ -50,7 +50,7 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: null,
     civilStatus: '',
     religion: '',
-    mobileNumber: '',
+    mobileNumber: 63,
     workingEmailAddress: '',
     landlineNumber: ''
   }
@@ -60,20 +60,21 @@ export const GeneralInformationVal2: GeneralInformation = {
   firstChoice: '',
   secondChoice: '',
   desiredSalary: 40000,
-  startDateAvailability: '2025-03-02',
+  // startDateAvailability: '2025-03-02',/
+  startDateAvailability: '',
   personalInformation: {
     fullname: {
       firstName: 'Jane',
-      middleName: 'N/A',
+      middleName: '',
       lastName: 'Cooper',
-      suffix: 'N/A'
+      suffix: ''
     },
     presentAddress: {
       unitNo: '0001',
       houseNo: '0987',
       street: 'Urban',
       subdivision: 'Deca Homes',
-      barangay: '3',
+      barangay: '',
       city: '',
       zipCode: '1400',
       livingArrangement: 'OWNED'
@@ -83,7 +84,7 @@ export const GeneralInformationVal2: GeneralInformation = {
       houseNo: '0987',
       street: 'Urban',
       subdivision: 'Deca Homes',
-      barangay: '3',
+      barangay: '',
       city: '',
       zipCode: '1400',
       livingArrangement: 'OWNED'
@@ -108,9 +109,9 @@ export const GeneralInformationVal2: GeneralInformation = {
     weight: 60,
     civilStatus: 'Single',
     religion: 'Roman Catholic',
-    mobileNumber: '93872283802',
-    workingEmailAddress: 'jane@microsoft.com',
-    landlineNumber: '+44 20 7123 4567'
+    mobileNumber: 0,
+    workingEmailAddress: '',
+    landlineNumber: ''
   }
 };
 
@@ -297,10 +298,10 @@ export const referenceValue2: Reference = {
   ],
   employmentReference: [
     {
-      fullname: 'Shane Santiago',
-      company: 'Intellismart',
-      positionHeld: 'Project Manager',
-      ContactNo: '+63 94 7744 3626',
+      fullname: '',
+      company: '',
+      positionHeld: '',
+      ContactNo: '',
     },
   ],
   applicationSource:
@@ -317,9 +318,9 @@ export const referenceValue2: Reference = {
 
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal2,
-  educationAndEmployment: educationAndEmploymentVal2,
-  familyBackground: familyBackgroundVal2,
-  reference: referenceValue2,
+  generalInformation: GeneralInformationVal,
+  educationAndEmployment: educationAndEmploymentVal,
+  familyBackground: familyBackgroundVal,
+  reference: referenceValue,
   photo: ''
 }

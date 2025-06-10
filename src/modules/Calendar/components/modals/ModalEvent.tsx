@@ -20,9 +20,9 @@ import { useSharedApplicantStore } from "@src/modules/Shared/store";
 
 
 export default function ModalViewEvent(_: ModalViewEventProps) {
-  const { onViewEvent, setOnViewEvent, setOnViewApplicant, setOnViewResched, details } = useCalendarStore();
-  const { selectedData, setSelectedData, setIsViewApplicant } = ApplicantStore();
-  const { selectedApplicant, setSelectedApplicant } = useSharedApplicantStore();
+  const { onViewEvent, setOnViewEvent, setOnViewResched, details } = useCalendarStore();
+  const { setIsViewApplicant } = ApplicantStore();
+  const { setSelectedApplicant } = useSharedApplicantStore();
 
   const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 

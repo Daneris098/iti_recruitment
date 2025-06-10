@@ -51,13 +51,14 @@ export const filterVal: FilterType = {
 
 export const selectedApplicantInitial: selectedApplicant = {
   applicantId: 0,
-  Applicant_Name: '',
-  Email: '',
-  Position: '',
-  Skills: '',
-  Status: '',
-  Remarks: '',
-  Phone: '',
-  Application_Date: '',
-  id: 0
+  applicantName: '',
+  email: '',
+  position: '',
+  skills: '',
+  status: '',
+  remarks: '',
+  phone: '',
+  applicationDate: '',
+  id: 0,
+  isJobOffer: ""
 }

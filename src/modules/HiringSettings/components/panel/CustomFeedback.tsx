@@ -70,11 +70,11 @@ const CustomFeedback = forwardRef((_, ref) => {
         };
         await axiosInstance
             .post("/recruitment/hiring/feedbacks", payload)
-            .then((response) => {
+            .then(() => {
                 fetchData()
                 setAlert(AlertType.saved);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const message = error.response.data.title;
                 setValidationMessage(message);
                 setAlert(AlertType.validation)
@@ -91,11 +91,11 @@ const CustomFeedback = forwardRef((_, ref) => {
         };
         await axiosInstance
             .post(`/recruitment/hiring/feedbacks/${formVal.id}/update`, payload)
-            .then((response) => {
+            .then(() => {
                 fetchData()
                 setAlert(AlertType.saved);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const message = error.response.data.title;
                 setValidationMessage(message);
                 setAlert(AlertType.validation)

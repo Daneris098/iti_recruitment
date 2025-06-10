@@ -62,9 +62,13 @@ export const OrganizationSettingsStore = create<OrganizationSettingsState>((set,
 
   toggleExpand: (id) => {
     const { expandedIds } = get();
+
+    const row = [] as any;
     set({
       expandedIds: expandedIds.includes(id) ? expandedIds.filter((i) => i !== id) : [id],
     });
+    set({ newRows: row });
+    set({ addOrg: false });
   },
 
   setExpanded: (ids) => {
@@ -96,9 +100,9 @@ export const OrganizationSettingsStore = create<OrganizationSettingsState>((set,
   newRows: [],
   setNewRows: (row: any[]) => set({ newRows: row }),
 
-  sortBy: "", // default
+  sortBy: "",
   setSortBy: (value) => set({ sortBy: value }),
-  ascDesc: true, // or false as default
+  ascDesc: true,
   setAscDesc: (value) => set({ ascDesc: value }),
   toggleAscDesc: () => set((state) => ({ ascDesc: !state.ascDesc })),
 

@@ -297,11 +297,11 @@ const Interviewers = forwardRef((_, ref) => {
         };
         await axiosInstance
             .post("/recruitment/hiring/interviewers", payload)
-            .then((response) => {
+            .then(() => {
                 fetchData()
                 setAlert(AlertType.saved);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const message = error.response.data.title;
                 setValidationMessage(message);
                 setAlert(AlertType.validation)
@@ -319,10 +319,10 @@ const Interviewers = forwardRef((_, ref) => {
         };
         await axiosInstance
             .post(`/recruitment/hiring/interviewers/${formVal.id}/update`, payload)
-            .then((response) => {
+            .then(() => {
                 fetchData()
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 const message = error.response.data.title;
                 setValidationMessage(message);
                 setAlert(AlertType.validation)

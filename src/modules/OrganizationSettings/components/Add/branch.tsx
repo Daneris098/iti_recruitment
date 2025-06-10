@@ -26,10 +26,10 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
 
   const addBranch = useForm<AddBranchProps>({
     initialValues: {
-      code: "B-1",
-      name: "Branch 1",
+      code: "",
+      name: "",
       isActive: true,
-      description: "Branch Description",
+      description: "",
       location: {
         id: 0,
         name: "",
@@ -55,18 +55,20 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
   return [
     {
       accessor: "code",
-      title: <div className="flex flex-row gap-3">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
+      title: <div className="flex flex-row gap-3 relative">Code {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
       width: "10%",
       sortable: true,
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Code"
-              {...addBranch.getInputProps("code")}
-              error={addBranch.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]", error: "relative" }}
+                placeholder="Code"
+                {...addBranch.getInputProps("code")}
+                error={addBranch.values.code === "" ? "Code is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -81,12 +83,14 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addBranch.getInputProps("name")}
-              error={addBranch.values.name === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Name"
+                {...addBranch.getInputProps("name")}
+                error={addBranch.values.name === "" ? "Name is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -101,26 +105,28 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <Select
-              radius={8}
-              data={locations.data?.items.map((division: any) => ({
-                value: String(division.id),
-                label: division.name,
-              }))}
-              rightSection={<IconCaretDownFilled size="18" />}
-              className="border-none text-sm w-full"
-              classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-              styles={{ label: { color: "#6d6d6d" } }}
-              placeholder="Select Location"
-              error={addBranch.values.location.name === "" ? "Required" : undefined}
-              onChange={(value) => {
-                const selectedItem: { id: number; name: string } = locations.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                if (selectedItem) {
-                  addBranch.setFieldValue("location.id", selectedItem.id);
-                  addBranch.setFieldValue("location.name", selectedItem.name);
-                }
-              }}
-            />
+            <div className="relative">
+              <Select
+                radius={8}
+                data={locations.data?.items.map((division: any) => ({
+                  value: String(division.id),
+                  label: division.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Location"
+                error={addBranch.values.location.name === "" ? "Location is Required" : undefined}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = locations.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addBranch.setFieldValue("location.id", selectedItem.id);
+                    addBranch.setFieldValue("location.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
           );
         }
 
@@ -135,26 +141,28 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <Select
-              radius={8}
-              data={areas.data?.items.map((area: any) => ({
-                value: String(area.id),
-                label: area.name,
-              }))}
-              rightSection={<IconCaretDownFilled size="18" />}
-              className="border-none text-sm w-full"
-              classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-              styles={{ label: { color: "#6d6d6d" } }}
-              placeholder="Select Area"
-              error={addBranch.values.area.name === "" ? "Required" : undefined}
-              onChange={(value) => {
-                const selectedItem: { id: number; name: string } = areas.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                if (selectedItem) {
-                  addBranch.setFieldValue("area.id", selectedItem.id);
-                  addBranch.setFieldValue("area.name", selectedItem.name);
-                }
-              }}
-            />
+            <div className="relative">
+              <Select
+                radius={8}
+                data={areas.data?.items.map((area: any) => ({
+                  value: String(area.id),
+                  label: area.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Area"
+                error={addBranch.values.area.name === "" ? "Area is Required" : undefined}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = areas.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addBranch.setFieldValue("area.id", selectedItem.id);
+                    addBranch.setFieldValue("area.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
           );
         }
 
@@ -168,7 +176,11 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       width: "25%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addBranch.getInputProps("description")} />;
+          return (
+            <div className="relative">
+              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addBranch.getInputProps("description")} />
+            </div>
+          );
         }
 
         return row.description;

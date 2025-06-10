@@ -31,12 +31,24 @@ export type FilterState = {
   setSearchParams: (searchParams: string) => void;
 };
 
+export type Barangay = {
+  id: number;
+  value: string;
+  label: string;
+};
+
 export interface HomeState {
   selectedData: VacancyType;
   applicationFormModal: boolean;
   alert: string;
   alertBody: string;
+  barangays: Barangay[];
+  barangays2: Barangay[];
+  sameAsPresent: boolean;
 
+  setSameAsPresent: (sameAsPresent: boolean) => void;
+  setBarangays: (barangays: Barangay[]) => void;
+  setBarangays2: (barangays2: Barangay[]) => void;
   setAlertBody: (alertBody: string) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
@@ -94,7 +106,6 @@ export interface GeneralInformation {
   secondChoice: string;
   desiredSalary: number;
   startDateAvailability: string;
-
   personalInformation: {
     fullname: {
       firstName: string;
@@ -140,7 +151,7 @@ export interface GeneralInformation {
     weight: number | null;
     civilStatus: string;
     religion: string;
-    mobileNumber: string;
+    mobileNumber: number;
     workingEmailAddress: string;
     landlineNumber: string;
   };

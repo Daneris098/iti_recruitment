@@ -3,12 +3,12 @@ import { HiringSettingsStore } from "@modules/HiringSettings/store"
 import Modals from "@src/modules/HiringSettings/components/modal"
 import { panel, AlertType, description, DataTableRefs, DataTableRef } from "@modules/HiringSettings/types/index"
 import CustomFeedback from "@modules/HiringSettings/components/panel/CustomFeedback"
-import OfferResponsePeriod from "@modules/HiringSettings/components/panel/OfferResponsePeriod"
-import ApplicationSettings from "@modules/HiringSettings/components/panel/ApplicationSettings"
+// import OfferResponsePeriod from "@modules/HiringSettings/components/panel/OfferResponsePeriod"
+// import ApplicationSettings from "@modules/HiringSettings/components/panel/ApplicationSettings"
 import InterviewStages from "@modules/HiringSettings/components/panel/InterviewStages"
 import Interviewers from "@modules/HiringSettings/components/panel/Interviewers"
-import JobOfferTemplate from "@modules/HiringSettings/components/panel/JobOfferTemplate"
-import ApplicationSource from "@modules/HiringSettings/components/panel/ApplicationSource";
+// import JobOfferTemplate from "@modules/HiringSettings/components/panel/JobOfferTemplate"
+// import ApplicationSource from "@modules/HiringSettings/components/panel/ApplicationSource";
 import bg2 from '@assets/bg2.png';
 import { useEffect, useRef } from "react";
 import OfferConfiguration from "./components/panel/OfferConfiguration";

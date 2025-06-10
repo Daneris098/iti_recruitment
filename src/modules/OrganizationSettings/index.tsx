@@ -10,7 +10,7 @@ import { useFetchOrganizationSettings } from "./services/data";
 
 export const OrganizationSettings = () => {
   const { branches, departments, companies, divisions, positions, sections } = useFetchOrganizationSettings();
-  const { setAlert, setActivePanel, activePanel, reroute, setReroute } = OrganizationSettingsStore();
+  const { setAlert, setActivePanel, activePanel, reroute, setReroute, addOrg, expandedIds, setValidationMessage } = OrganizationSettingsStore();
 
   const dataTableRef = useRef<{
     saveAll: () => void;
@@ -27,8 +27,21 @@ export const OrganizationSettings = () => {
     }
   }, []);
 
+  const handleChangeTab = (value: string) => {
+    if (addOrg) {
+      setAlert(AlertType.Validation);
+      setValidationMessage("Add row form is open, Please Fill up before you switch tab");
+    } else if (expandedIds.length === 1) {
+      setAlert(AlertType.Validation);
+      setValidationMessage("Edit row form is open, Please Fill up before you switch tab");
+    } else {
+      setActivePanel(value!);
+      dataTableRef.current?.cancelAll();
+    }
+  };
+
   return (
-    <div className="bg-white h-full">
+    <div className="bg-white h-full select-none">
       <title>Organization</title>
       <Modals dataTableRef={dataTableRef} />
       <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
@@ -57,15 +70,7 @@ export const OrganizationSettings = () => {
           </div>
         </div>
       </div>
-      <Tabs
-        key={activePanel}
-        defaultValue={activePanel}
-        variant="default"
-        className="h-[85%]  p-2"
-        onChange={(val) => {
-          setActivePanel(`${val}`);
-          dataTableRef.current?.cancelAll();
-        }}>
+      <Tabs key={activePanel} defaultValue={activePanel} variant="default" className="h-[85%]  p-2" onChange={(val) => handleChangeTab(val!)}>
         <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto">
           <Tabs.Tab value={Panel.companyList} className={` ${activePanel === Panel.companyList ? "text-[#559CDA]" : "text-gray-500"}`}>
             <Flex className="items-center">Company List {companies.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>

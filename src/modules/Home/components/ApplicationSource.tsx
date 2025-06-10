@@ -12,7 +12,7 @@ import { ApplicationSourceProps } from "../assets/Types";
 
 import ApplicationSourceTooltip from "../components/tooltip/CustomTooltip";
 import { monthData } from "../assets/sample-data";
-import DemoDataHover from "./tooltip/DemoData";
+// import DemoDataHover from "./tooltip/DemoData";
 
 export const ApplicationSource: React.FC<ApplicationSourceProps> = ({ data }) => {
   const fetchData: any = [];
@@ -21,9 +21,9 @@ export const ApplicationSource: React.FC<ApplicationSourceProps> = ({ data }) =>
       <Container className="flex flex-row w-full justify-between items-center h-[20%] gap-5">
         <Flex className="w-full flex flex-col md:flex-row items-center gap-2">
           <Text className="font-semibold text-[#559CDA] h-sm:text-xs sm:text-xs md:text-lg">Source Efficiency</Text>
-          <DemoDataHover size="xs" fs="10px" />
+          {/* <DemoDataHover size="xs" fs="10px" /> */}
         </Flex>
-        <Flex className="w-full flex flex-col md:flex-row gap-2 opacity-40">
+        <Flex className="w-full flex flex-col md:flex-row gap-2">
           <Container className="flex flex-row w-full justify-end gap-5">
             <Flex className="justify-center items-center gap-2">
               <div className="w-2.5 h-2.5 bg-[#559CDA] rounded-full" />
@@ -52,7 +52,7 @@ export const ApplicationSource: React.FC<ApplicationSourceProps> = ({ data }) =>
       </Container>
 
       {/* Application Source Efficiency Bar Chart Container  */}
-      <Stack className="w-full h-[80%] opacity-40">
+      <Stack className="w-full h-[80%]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical" className="absolute -left-10 -bottom-2">
             <YAxis type="category" dataKey="month" tick={{ textAnchor: "start", dx: -90 }} width={150} axisLine={false} className="text-[10px] font-bold" />
