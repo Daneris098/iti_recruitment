@@ -22,14 +22,13 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
     const selectedIds = useSelectedApplicantsStore((state) => state.selectedIds);
     const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
 
-
+    const [opened, setOpened] = useState(false);
+    const { setIsTransferPosition } = useCloseModal();
+    const [filterText, setFilterText] = useState("");
     const [isTransferred, setIsTransferred] = useState(false);
     const { comments, setComments } = useDropDownOfferedStore();
-    const { setIsTransferPosition } = useCloseModal();
     const [loadTime, setLoadTime] = useState<number | null>(null);
-    const [opened, setOpened] = useState(false);
     const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
-    const [filterText, setFilterText] = useState("");
     const [filterType, setFilterType] = useState<"position" | "company">("position");
 
     const handlePageChange = (newPage: number) => {
@@ -38,10 +37,10 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
 
     // Use localPage and localPageSize for fetching job openings
     const {
-        data: jobOpenings,
-        isLoading,
         total,
-        allVacancies
+        isLoading,
+        allVacancies,
+        data: jobOpenings,
     } = useTransferPositionLookup(localPage, localPageSize, {}, setLoadTime);
 
     // Filter slots based on filter text and type (position or company)
@@ -64,11 +63,11 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
 
         return data.map((item) => ({
             id: item.id,
-            positionTitleResponse: item.position,
-            companyResponse: item.company,
+            position: item.position,
+            company: item.company,
             availableSlot: item.slots,
             departmentResponse: item.departmentResponse ?? { id: 0 },
-            vacancyDurationResponse: item.vacancyDurationResponse ?? { dateStart: "" }, 
+            vacancyDurationResponse: item.vacancyDurationResponse ?? { dateStart: "" },
         }));
     };
 

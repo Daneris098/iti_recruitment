@@ -293,7 +293,7 @@ interface CloseModal {
 
   isGenerateNewOffer: boolean;
   setIsGenerateNewOffer: (isOffered: boolean) => void;
-  
+
 }
 
 export const useCloseModal = create<CloseModal>((set) => ({
@@ -419,50 +419,6 @@ export const useStatusStore = create<StatusState>((set) => ({
 }))
 // end for updating the selected status in update status modal
 
-
-// for proper displaying of status choices from drop drown
-// Define status options
-// export type StatusDropDown =
-//   | "Applied"
-//   | "For Interview"
-//   | "Offered"
-//   | "Hired"
-//   | "For Transfer"
-//   | "Transferred"
-//   | "Archived";
-
-// type StatusOption = "For Interview" | "Offered" | "Hired" | "Archived" | "Transferred";
-
-// interface DropDownStatusStore {
-//   dropdownSelectedStatus: StatusDropDown;
-//   availableStatuses: StatusOption[];
-//   setDropDownSelectedStatus: (status: StatusDropDown) => void;
-// }
-
-// // Status options mapping
-// const statusOptions: Record<StatusDropDown, StatusOption[]> = {
-//   Applied: ["For Interview", "Offered", "Archived"],
-//   "For Interview": ["Offered", "Archived"],
-//   Offered: ["Hired", "Archived"],
-//   Hired: [],
-//   "For Transfer": ["Transferred", "Archived"],
-//   Transferred: [],
-//   Archived: [],
-// };
-
-// // Zustand Store
-// export const useDropDownStatusStore = create<DropDownStatusStore>((set) => ({
-//   dropdownSelectedStatus: "Applied",
-//   availableStatuses: [...statusOptions["Applied"]], // ✅ FIX: Creating a new array instance
-
-//   setDropDownSelectedStatus: (status) => {
-//     set(() => ({
-//       dropdownSelectedStatus: status,
-//       availableStatuses: [...statusOptions[status]], // ✅ FIX: Ensuring a new array instance
-//     }));
-//   },
-// }));
-
 // Type definitions
 export const statusOptions = {
   Applied: ["For Interview", "Offered", "Archived"],
@@ -576,3 +532,12 @@ export const useDatePickerStore = create<DatePickerState>((set) => ({
   isOpen: false,
   setIsOpen: (open) => set({ isOpen: open }),
 }));
+
+interface ApplicantId {
+  id: number
+  setApplicantId: (id: number) => void
+}
+export const useApplicantIdStore = create<ApplicantId>((set) => ({
+  id: 0,
+  setApplicantId: (id) => set({ id }),
+}))

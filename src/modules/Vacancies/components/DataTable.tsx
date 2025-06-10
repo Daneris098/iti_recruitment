@@ -1,10 +1,11 @@
-import 'mantine-datatable/styles.layer.css';
-import { DataTable } from 'mantine-datatable';
 import { useEffect } from 'react';
 import { VacancyType } from '../types';
-import { VacancyStore, ApplicantStore, DataTableStore } from '../store';
-import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
+import 'mantine-datatable/styles.layer.css';
+import { DataTable } from 'mantine-datatable';
 import { useQueryClient } from '@tanstack/react-query';
+import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
+import { VacancyStore, ApplicantStore, DataTableStore } from '../store';
+
 import { selectedDataVal } from '../values';
 
 enum StatusColor {

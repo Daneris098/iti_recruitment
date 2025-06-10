@@ -16,30 +16,30 @@ import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus
 
 export default function ViewApplicant({
   applicantName,
-  Position,
-  Status,
-  Email,
-  Phone,
-  Remarks,
-  Application_Date,
+  position,
+  status,
+  email,
+  phone,
+  remarks,
+  applicationDate,
   onClose,
-  IsJobOffer
+  IsJobOffer,
+  location
 }: ViewApplicantsProps) {
 
   const applicantId = useApplicantIdStore((state) => state.id);
   const { data: applicantsById } = useApplicantsById(applicantId);
 
-
   const {
-    isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
+    setIsOffered,
+    isTransferPosition, setIsTransferPosition,
     isGenerateNewOffer, setIsGenerateNewOffer,
-    setIsOffered, isTransferPosition,
-    setIsTransferPosition
+    isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
   } = useCloseModal();
 
   const [isViewPDF, togglePDF] = useState(false);
-  const displayStatus = getDisplayStatus(Status);
-  const changeTabs = getTabs({ applicantName, status: Status, remarks: Remarks });
+  const displayStatus = getDisplayStatus(status);
+  const changeTabs = getTabs({ applicantName, status: status, remarks: remarks });
 
   return (
     <div className="h-screen w-full p-4">
@@ -66,20 +66,20 @@ export default function ViewApplicant({
               {applicantName}
             </TextRenderer>
             <TextRenderer as="p" className="text-[#6D6D6D] text-[12px] font-medium">
-              {Position}
+              {position}
             </TextRenderer>
           </div>
 
           <div className="mt-8 text-[12px] text-[#6D6D6D]">
             <TextRenderer as="h1" className="pb-1">Current Status</TextRenderer>
             <StatusBadge Status={displayStatus} />
-            {Status !== "Hired" && Status !== "Transferred" && (
+            {status !== "Hired" && status !== "Transferred" && (
               <p
-                className={`text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold mt-2 ${Status === "Archived" ? "cursor-not-allowed" : "cursor-pointer"
+                className={`text-white rounded-[10px] bg-[#559CDA] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold mt-2 ${status === "Archived" ? "cursor-not-allowed" : "cursor-pointer"
                   }`}
-                onClick={Status !== "Archived" ? () => setIsUpdateStatusButtonModalOpen(true) : undefined}
+                onClick={status !== "Archived" ? () => setIsUpdateStatusButtonModalOpen(true) : undefined}
               >
-                {Status === "Archived" ? "Inactive" : "Update Status"}
+                {status === "Archived" ? "Inactive" : "Update Status"}
               </p>
             )}
           </div>
@@ -87,17 +87,17 @@ export default function ViewApplicant({
           {/* Contact */}
           <div className="mt-8 text-[12px] text-[#6D6D6D] space-y-3">
             <TextRenderer as="h1">Location</TextRenderer>
-            <TextRenderer as="p" className="font-bold text-[14px]">United States</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px]">{location ?? "Address not found"}</TextRenderer>
 
             <TextRenderer as="h1">Email</TextRenderer>
-            <TextRenderer as="p" className="font-bold text-[14px] break-words">{Email ?? "No Data"}</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px] break-words">{email ?? "No Data"}</TextRenderer>
 
             <TextRenderer as="h1">Phone</TextRenderer>
-            <TextRenderer as="p" className="font-bold text-[14px]">{Phone ?? "No Data"}</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px]">{phone ?? "No Data"}</TextRenderer>
           </div>
 
           {/* Skills */}
-          <div className="mt-8 text-[12px] text-[#6D6D6D]">
+          <div className="mt-8 text-[12px] text-[#6D6D6D] pb-4">
             <TextRenderer as="h1">Skills</TextRenderer>
             <div className="flex gap-2 mt-2 flex-wrap">
               {applicantsById?.generalInformation?.skills?.length ? (
@@ -111,10 +111,10 @@ export default function ViewApplicant({
           </div>
 
           {/* Start Date */}
-          {(Status === "For Transfer" || Status === "Transferred" || Status === "Hired") && (
+          {(status === "For Transfer" || status === "Transferred" || status === "Hired") && (
             <div className="mt-3 text-[12px] text-[#6D6D6D]">
               <TextRenderer as="h1">Start Date</TextRenderer>
-              <p className="font-semibold mt-1">{Application_Date}</p>
+              <p className="font-semibold mt-1">{applicationDate}</p>
             </div>
           )}
 
@@ -125,15 +125,15 @@ export default function ViewApplicant({
           )}
 
           {/* Actions */}
-          {(IsJobOffer === "Yes" || Status !== "Archived") && (
+          {(IsJobOffer === "Yes" || status !== "Archived") && (
             <ActionButton
-              status={Status}
+              status={status}
               onPDFView={() => togglePDF(true)}
               onTransfer={() => setIsTransferPosition(true)}
             />
           )}
 
-          {Status === "Offered" && (
+          {status === "Offered" && (
             <p
               className="text-white rounded-[10px] bg-[#6D6D6D] text-[10px] w-[194px] h-[30px] flex items-center justify-center font-semibold cursor-pointer mt-2"
               onClick={() => setIsGenerateNewOffer(true)}
@@ -167,10 +167,10 @@ export default function ViewApplicant({
         onCloseGenerateNewOffer={() => setIsGenerateNewOffer(false)}
         onClosePDF={() => togglePDF(false)}
         applicantName={applicantName}
-        Status={Status}
+        Status={status}
         IsJobOffer={IsJobOffer}
-        Position={Position}
-        Remarks={Remarks}
+        Position={position}
+        Remarks={remarks}
         Acknowledgement={""}
         Department={""}
       />

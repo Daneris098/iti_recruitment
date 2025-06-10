@@ -19,3 +19,7 @@ export const useSharedViewAcceptedOffer = {
     getAcceptedOfferId: (idOrGuid: string | number) =>
         apiClient.get<AcceptedOffer>(`recruitment/applicants/${idOrGuid}/view-accepted-offer`),
 }
+
+export const useGetPositionLevels = new BaseService(apiClient, "/recruitment/organization/position-levels");
+
+export const useGetDepartments = new BaseService(apiClient, "/recruitment/organization/departments");

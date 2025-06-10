@@ -1,28 +1,31 @@
 //#region IMPORTS
+import dayjs from "dayjs";
 import { Divider } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
-import { usePositionFilterStore, useStatusFilterStore, } from "@modules/Shared/store";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
-import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
-import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
-import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import {
+  useSelectedApplicantsStore,
   FilterStore, useCloseModal,
   useSortStore, useApplicantStore,
-  usePaginationStore, useApplicantIdStore, useSelectedApplicantsStore,
+  usePaginationStore, useApplicantIdStore,
 } from "@modules/Applicants/store";
 import Filter from "@src/modules/Applicants/components/filter/Filter";
+import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
+import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
+import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
+import { usePositionFilterStore, useStatusFilterStore, } from "@modules/Shared/store";
+import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
-import dayjs from "dayjs";
 
 export default function index() {
+  const allColumns = getCombinedColumns({ includeApplicants: true });
+
   const { selectedStatusId } = useStatusFilterStore();
   const { selectedPositionId } = usePositionFilterStore();
 
@@ -105,7 +108,6 @@ export default function index() {
   const { data: getApplicants, isLoading } = useApplicants(
     page,
     pageSize,
-    0,
     queryParams,
     setLoadTime
   );
@@ -176,8 +178,8 @@ export default function index() {
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
   // it is also responsible for sorting the records based on the selected column.
-  const extendedColumn = applicantsColumns
-
+  // const extendedColumn = applicantsColumns
+  const extendedColumn = allColumns
     // Exclude Feedback Column from the JSON object
     .filter((col: any) => col.accessor !== "feedback" && col.accessor !== 'movement' && col.accessor !== "comments")
     .map((col) => {
@@ -290,14 +292,15 @@ export default function index() {
         onClose={() => setIsViewApplicant(false)}
       >
         <ViewApplicant
+          location={selectedApplicant?.location}
           applicantName={selectedApplicant?.applicantName}
-          Position={selectedApplicant?.position}
-          Status={selectedApplicant?.status}
-          Email={selectedApplicant?.email}
-          Phone={selectedApplicant?.phone}
-          Skills={selectedApplicant?.skills}
-          Remarks={selectedApplicant?.remarks}
-          Application_Date={selectedApplicant?.applicationDate}
+          position={selectedApplicant?.position}
+          status={selectedApplicant?.status}
+          email={selectedApplicant?.email}
+          phone={selectedApplicant?.phone}
+          skills={selectedApplicant?.skills}
+          remarks={selectedApplicant?.remarks}
+          applicationDate={selectedApplicant?.applicationDate}
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />

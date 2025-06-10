@@ -1,50 +1,65 @@
-import { useApplicantStore } from "@modules/Applicants/store";
 import { DataTable } from "mantine-datatable";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
+import { useApplicantIdStore } from "@modules/Shared/store";
+import { getCombinedColumns } from "@src/modules/Shared/components/columns";
+import { useApplicantsById } from "@modules/Shared/hooks/useSharedApplicants";
+import {
+    FEEDBACK, MOVEMENT,
+    TRANSFERRED, READY_FOR_TRANSFER,
+    ALLOWED_ACCESSORS_BASE, ARCHIVED,
+    COLUMN_ACCESSOR_DATE_APPLIED, COLUMN_HEADER_DATE
+} from "@modules/Shared/utils/constants";
 
-interface ViewApplicantsProps {
-    Applicant_Name: string;
-    Status: string;
-    Remarks: string;
-    Feedback?: string;
-}
+export default function ApplicationMovement({
+    status, applicantName: _applicantName, remarks: _remarks
+}: { status: string, applicantName: string, remarks: string }) {
 
-export default function ApplicationMovement({ Applicant_Name, Status, Remarks }: ViewApplicantsProps) {
-    const { records } = useApplicantStore();
+    const allowedAccessors = [...ALLOWED_ACCESSORS_BASE];
 
-    // Filter records based on props (Applicant_Name & Status)
-    const filteredRecords = records.filter(record =>
-        record.applicantName === Applicant_Name && record.status === Status
-    );
+    const applicantId = useApplicantIdStore((state) => state.id);
+    const { data: applicantsById } = useApplicantsById(applicantId);
 
-    // Filter columns to only include Application_Date, Status, and Remarks (Comments)
-    const filterColumns = applicantsColumns.filter(col =>
-        ['Application_Date', 'Status'].includes(col.accessor) ||
-        (col.accessor === 'Feedback' && Status === 'Archived')
-    );
+    const setCommentsMovement = applicantsById?.commentsByID || [];
+    const allColumns = getCombinedColumns({ includeApplicants: true });
+    const setApplicationMovements = applicantsById?.applicationMovements?.movements || [];
+    const filteredColumns = allColumns.filter(col => allowedAccessors.includes(col.accessor));
+    const setApplicationDates = applicantsById?.applicationMovements?.movementLastModifiedDate || [];
 
-    // Add Comments column manually via props
+    const movementsRecords =
+        Array.isArray(setApplicationMovements) && Array.isArray(setCommentsMovement)
+            ? setApplicationMovements.reverse().map((movement: any, index: number) => ({
+                id: `${applicantId}-${index}`,
+                movement: formatMovement(movement),
+                comments: setCommentsMovement[index] || null,
+                applicationDate: setApplicationDates[index] || null,
+            })) : [];
+
+    if (status === ARCHIVED) {
+        allowedAccessors.push(FEEDBACK);
+    }
+
     const columnsWithComments = [
-        ...filterColumns.filter(col => col.accessor !== 'status'), // All columns except Status
-        {
-            accessor: 'remarks',
-            title: <span className='job-offers-table'>Comments</span>,
-            render: () => <span>{Remarks}</span>,
-        },
-        ...filterColumns.filter(col => col.accessor === 'status') // Move Status to the end
-    ];
+        ...filteredColumns.filter(col => col.accessor !== MOVEMENT),
+        ...filteredColumns.filter(col => col.accessor === MOVEMENT),
+    ].map(col => col.accessor === COLUMN_ACCESSOR_DATE_APPLIED ? { ...col, title: COLUMN_HEADER_DATE } : col) // Replace the Column header to "Date";
 
+    function formatMovement(movement: string): string {
+        const replacements: Record<string, string> = {
+            [READY_FOR_TRANSFER]: TRANSFERRED
+        };
+        return replacements[movement] || movement
+    }
 
     return (
-        <div className="pt-1">
+        <div className="pt-1 pb-40 poppins">
             <div>
-                <DataTable columns={columnsWithComments}
-                    records={filteredRecords}
+                <DataTable
+                    columns={columnsWithComments}
+                    records={movementsRecords}
                     sortIcons={{
-                        sorted: <span></span>,  // Empty element to remove default icon
+                        sorted: <span></span>,
                         unsorted: <span></span>,
                     }}
-                    className="p-0"
+                    className="poppins font-medium text-[#6D6D6D] text-[14px]"
                 />
             </div>
         </div>

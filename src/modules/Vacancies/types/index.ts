@@ -150,19 +150,34 @@ export enum AlertType {
 }
 
 export interface selectedApplicant {
+  nameResponse: {
+    firstName: string;
+    lastName: string;
+    formalName: string;
+  };
+  contact: {
+    emailAddress: string;
+    mobileNo: string;
+  };
+  applicationMovements: {
+    status: { name: string };
+  }[];
+  addresses: {
+    zipCode: {
+      name: string;
+    };
+  }[];
+
   id: number;
   applicantId: number;
-  applicantName: string,
-  position: string,
-  status: string,
-  email: string,
-  phone: string,
-  skills: string,
-  remarks: string,
-  applicationDate: string,
-  isJobOffer: string
+  position: string;
+  email: string;
+  phone: string;
+  skills: string;
+  remarks: string;
+  applicationDate: string;
+  isJobOffer: string;
 }
-
 
 export interface Candidate {
   applicantId: number;
