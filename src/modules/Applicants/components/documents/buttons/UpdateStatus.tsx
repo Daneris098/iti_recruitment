@@ -1,7 +1,8 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
+import { useHiredStartDate } from "@modules/Shared/store";
+import { useStatusStore } from "@src/modules/Applicants/store";
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-import { useStatusStore } from "@src/modules/Applicants/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
 import HiredStatus from "@modules/Applicants/components/documents/movement/Status/Hired";
@@ -31,11 +32,11 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   const { mutateAsync: movementArchive } = usePOSTArchive();
   const { mutateAsync: movementScheduleInterview } = usePOSTForInterview();
 
-  const hiredToday = new Date().toISOString().split("T")[0];
-
   const { file } = useFileUploadStore();
+  const { selectedDate } = useHiredStartDate();
   const { feedback, applicantFeedback } = useFeedbacksStore();
   const { selectedStatus, setSelectedStatus } = useStatusStore();
+
   const {
     interviewTime,
     comments, setComments,
@@ -45,19 +46,19 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   } = useDropDownOfferedStore();
 
   const {
-    setIsModalOpen,
-    isScheduleInterview,
-    setIsScheduleInterview,
     setIsViewApplicant,
     setIsAddtoCalendar,
+    isScheduleInterview,
     setIsGenerateNewOffer,
+    setIsScheduleInterview,
     isOffered, setIsOffered,
-    isDefaultUpdated, setIsDefaultUpdated,
+    isForTransfer, setIsModalOpen,
     setIsUpdateStatusButtonModalOpen,
     isFeedbackSent, setIsFeedbackSent,
-    isDropdownOpen, setIsDropdownOpen,
+    // isDropdownOpen,
+    setIsDropdownOpen,
+    isDefaultUpdated, setIsDefaultUpdated,
     setIsContactApplicant, isContactApplicant,
-    isForTransfer,
   } = useCloseModal();
 
   const applicantId = useApplicantIdStore((state) => state.id);
@@ -67,10 +68,10 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   };
 
   // For Interview 
-  const handleDropdownToggle = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  // const handleDropdownToggle = (event: React.MouseEvent) => {
+  //   event.stopPropagation();
+  //   setIsDropdownOpen(!isDropdownOpen);
+  // };
 
   let handleClick = () => { };
   let buttonText = "Update"
@@ -102,8 +103,8 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   }
 
   else if (selectedStatus === "For Interview") {
-    buttonText = "Schedule Interview";
-
+    // buttonText = "Schedule Interview";
+    buttonText = "Add to Calendar";
     handleClick = async () => {
       try {
         await movementScheduleInterview({
@@ -138,9 +139,9 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     handleClick = async () => {
       await movementHired({
         ApplicantId: applicantId,
-        File: file,
+        FileAttachment: file ?? null,
         Order: interviewStagesId,
-        DateStart: hiredToday
+        DateStart: selectedDate
       })
       setIsFeedbackSent(true);
       setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
@@ -331,17 +332,17 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
                   className="custom-gradient text-white px-6 py-1 rounded-lg font-medium text-[14px] poppins"
                 >
                   {buttonText.toUpperCase()}
-                  {selectedStatus === "For Interview" && (
+                  {/* {selectedStatus === "For Interview" && (
                     <span onClick={(e) => handleDropdownToggle(e)}>
                       <IconCaretDownFilled size={20} className="ml-1 cursor-pointer hover:text-[#559CDA]" />
                     </span>
-                  )}
+                  )} */}
                 </Button>
 
                 {/* Dropdown Menu */}
                 {/* For dropdown menu of schedule interview */}
                 {/* This dropdown button is only visible when the selected status is "For Interview" under the "Schedule Interview" button */}
-                {isDropdownOpen && (
+                {/* {isDropdownOpen && (
                   <div className=" w-full border-[#559CDA] pt-1 poppins">
                     <Button
                       className="poppins w-full px-4 bg-white border border-[#559CDA] text-[#559CDA] text-[14px] font-medium rounded-lg hover:bg-white hover:text-[#559CDA]"
@@ -352,7 +353,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
                       Add to Calendar
                     </Button>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           )}

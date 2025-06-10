@@ -48,6 +48,14 @@ export default function ForInterview() {
         }
     };
 
+    useEffect(() => {
+        if (interviewStagesOptions.length > 0) {
+            setInterviewStages(interviewStagesOptions[0].label);
+            setInterviewStagesId(interviewStagesOptions[0].value);
+        }
+    }, [interviewStagesOptions]);
+
+
     return (
         <div>
             <div>

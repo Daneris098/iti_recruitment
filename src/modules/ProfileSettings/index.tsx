@@ -19,7 +19,7 @@ export const ProfileSettings = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const formRef2 = useRef<HTMLFormElement>(null);
   // State to hold the uploaded image
-  const [image, setImage] = useState<string>(avatar);
+  const [image, setImage] = useState<string>("");
   // Create refs for both tabs
   const profileDetailsTabRef = useRef(null);
   const changePasswordTabRef = useRef(null);
@@ -169,8 +169,8 @@ export const ProfileSettings = () => {
       form.setFieldValue("nameExtension", userDetails.extension);
       form.setFieldValue("email", userDetails.email);
       form.setFieldValue("username", userDetails.username);
-      const photoVal = `http://10.0.1.26:7011/Uploads/photo/${userDetails.photo}`;
-      setImage(photoVal);
+      const photoVal = `${import.meta.env.VITE_AUTH_BASE_URL}Uploads/photo/${userDetails.photo}`;
+      setImage(photoVal === "" ? avatar : photoVal);
     }
   }, [userDetails]);
 
@@ -230,24 +230,11 @@ export const ProfileSettings = () => {
           </div>
 
           <div className="place-self-center bg-gray-300 w-40 h-40 rounded-full overflow-hidden flex items-center justify-center relative">
-            <img
-              src={image} // Use the uploaded image
-              alt="Profile Avatar"
-              className="cursor-pointer h-full w-full object-cover"
-            />
-            <Button
-              className="absolute bottom-2 right-2 text-xs bg-[#559CDA] text-white rounded-full"
-              onClick={() => document.getElementById("image-upload")?.click()} // Trigger file input click
-            >
+            <img src={image} alt="Profile Avatar" className="cursor-pointer h-full w-full object-cover" />
+            <Button className="absolute bottom-2 right-2 text-xs bg-[#559CDA] text-white rounded-full" onClick={() => document.getElementById("image-upload")?.click()}>
               <IconCamera />
             </Button>
-            <input
-              type="file"
-              id="image-upload"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageUpload} // Handle file upload
-            />
+            <input type="file" id="image-upload" accept="image/*" className="hidden" onChange={handleImageUpload} />
           </div>
 
           <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>

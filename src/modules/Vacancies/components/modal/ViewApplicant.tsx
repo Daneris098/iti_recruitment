@@ -14,6 +14,7 @@ import { applicantsByIdService } from "@src/modules/Shared/components/api/UserSe
 export default function index() {
     const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
     const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+
     const [page, setPage] = useState(1);
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
         columnAccessor: "position", // Use a valid key from VacancyType

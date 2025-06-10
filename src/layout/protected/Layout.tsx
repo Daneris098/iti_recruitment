@@ -1,15 +1,15 @@
-import { AppShell } from '@mantine/core';
-import Header from './Header';
+import { AppShell } from "@mantine/core";
+import Header from "./Header";
 import Main from "./Main";
-import Navbar from './Navbar';
-import { useDisclosure } from '@mantine/hooks';
-import { useEffect } from 'react';
-import { GlobalStore } from '@src/utils/GlobalStore';
+import Navbar from "./Navbar";
+import { useDisclosure } from "@mantine/hooks";
+import { useEffect } from "react";
+import { GlobalStore } from "@src/utils/GlobalStore";
 
 function Layout() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-  const { setIsMobile, setIsDrawerOpened } = GlobalStore()
+  const { setIsMobile, setIsDrawerOpened } = GlobalStore();
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,18 +19,16 @@ function Layout() {
     };
 
     handleResize(); // Set the initial value
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, [setIsMobile]); // Make sure `setIsMobile` is stable
 
   useEffect(() => {
-    setIsDrawerOpened(desktopOpened)
-  }, [desktopOpened])
-
-
+    setIsDrawerOpened(desktopOpened);
+  }, [desktopOpened]);
 
   return (
     <AppShell
@@ -38,17 +36,12 @@ function Layout() {
       header={{ height: 60 }}
       navbar={{
         width: desktopOpened ? 250 : 70,
-        breakpoint: 'sm',
+        breakpoint: "sm",
         collapsed: { mobile: !mobileOpened },
       }}
-      padding="md"
-    >
-      <div className='h-screen'>
-        <Header
-          desktopOpened
-          toggleMobile={toggleMobile}
-          toggleDesktop={toggleDesktop}
-        />
+      padding="md">
+      <div className="h-screen">
+        <Header desktopOpened toggleMobile={toggleMobile} toggleDesktop={toggleDesktop} />
         <Navbar toggleMobile={toggleMobile} toggleDesktop={toggleDesktop} desktopOpened={desktopOpened} />
         <Main />
       </div>

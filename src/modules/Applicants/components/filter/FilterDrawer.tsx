@@ -34,7 +34,7 @@ export default function DrawerFilter() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [localApplicantName, setLocalApplicantName] = useState(filter.applicantName || "");
-  const [localPositionFilter, setLocalPositionFilter] = useState<any>(filter.position || []);
+  const [localPositionFilter, setLocalPositionFilter] = useState<any>(filter.position || 0);
 
   const [statusFilter, setStatusFilter] = useState<any>(filter.status || []);
 
@@ -119,7 +119,25 @@ export default function DrawerFilter() {
   const handleApplyFilters = () => {
     let formattedFrom: string | null = null;
     let formattedTo: string | null = null;
+    const statusId = statusFilter.find((label: any) => STATUS_LABEL_ID_MAP[label]);
 
+    const matchingIds = filterPositions
+      .filter((item) => localPositionFilter.includes(item.label))
+      .flatMap((item) => item.ids);
+
+    if (matchingIds.length > 0) {
+      setSelectedPositionId(Number(matchingIds[0]));
+    } else {
+      setSelectedPositionId(0);
+    }
+
+    if (statusId) {
+      SetSelectedStatusId(STATUS_LABEL_ID_MAP[statusId])
+    }
+    else {
+      SetSelectedStatusId(0);
+    }
+    
     if (dateUpdated?.[0]) {
       formattedFrom = dayjs(dateUpdated[0]).format("YYYYMMDD");
     }
@@ -157,33 +175,10 @@ export default function DrawerFilter() {
 
   const handleStatusChange = (selectedLabels: string[]) => {
     setStatusFilter(selectedLabels);
-
-    const matchingIds = filterStatus
-      .filter((item) => selectedLabels.includes(item.label))
-      .flatMap((item) => item.ids);
-
-    const statusId = selectedLabels.find((label) => STATUS_LABEL_ID_MAP[label]);
-    if (statusId) {
-      SetSelectedStatusId(STATUS_LABEL_ID_MAP[statusId]);
-    } else if (matchingIds.length > 0) {
-
-      SetSelectedStatusId(Number(matchingIds[0]));
-    } else {
-      setStatusFilter([]);
-    }
   };
 
   const handlePositionChange = (selectedLabels: string[]) => {
     setLocalPositionFilter(selectedLabels);
-
-    const matchingIds = filterPositions
-      .filter((item) => selectedLabels.includes(item.label))
-      .flatMap((item) => item.ids);
-    if (matchingIds.length > 0) {
-      setSelectedPositionId(Number(matchingIds[0]));
-    } else {
-      setSelectedPositionId(0)
-    }
   };
 
   return (
@@ -275,6 +270,7 @@ export default function DrawerFilter() {
               setLocalPositionFilter([]);
               setStatusFilter([]);
               setIsFiltered(false);
+              setSelectedPositionId(0);
             }}
             variant="outline"
             size={buttonSize}

@@ -1,10 +1,19 @@
+.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title="Applied"]) {
+  font-weight: 400;
+  background-color: rgb(222, 236, 255, 0.3);
+  color: #0078eb;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
 
-.mantine-datatable-header-cell-sortable-group:has(.mantine-datatable-header-cell-sortable-text[title='Applied']) {
-    font-weight: 400;
-    background-color: rgb(222,236,255, 0.3);
-    color: #0078EB;
-    padding: 0.5rem;
-    border-radius: 0.3rem;
+/* Add to global CSS or Tailwind config */
+.rte ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+.rte ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
 }
 
 /* .mantine-datatable-header-cell-sortable .mantine-datatable-header-cell-sortable-text:not(:has(.applied)) {
@@ -47,6 +56,6 @@
     border-radius: 0.3rem;
 } */
 
-.applicants-datatable .mantine-datatable-table  tbody .mantine-Table-tr .mantine-Table-td {
+.applicants-datatable .mantine-datatable-table tbody .mantine-Table-tr .mantine-Table-td {
   @apply cursor-pointer hover:bg-gray-50;
 }

@@ -115,7 +115,7 @@ export default function Filter() {
       {/* Applied Filters List */}
       {isFiltered && (
         <div className="flex w-full max-h-[39px] overflow-hidden">
-          <div className="scrollbar flex flex-wrap gap-2 px-4 py-1 w-full max-h-fit overflow-y-auto">
+          <div className="scrollbar flex flex-wrap gap-2 px-4 py-1 w-full max-h-fit overflow-y-auto text-[#6D6D6D]">
             {filter.filterId && renderSinglePill('ID', filter.filterId)}
             {filter.company && filter.company.length > 0 && renderPills('Company', filter.company)}
             {filter.applicantName && renderSinglePill('Applicant Name', filter.applicantName)}

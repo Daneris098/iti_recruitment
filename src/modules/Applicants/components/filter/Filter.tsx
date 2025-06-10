@@ -12,8 +12,6 @@ export default function Filter() {
   const { dateUpdated: dateUpdatedRange } = useDateUpdatedRangeStore();
   const { applicationDateValue: applicationDateRange } = useApplicationDateStore();
 
-  const { } = useApplicationDateStore();
-
   useEffect(() => {
     const hasActiveFilters = Object.values(filter).some(value => value !== '' && value !== null);
     setIsFiltered(hasActiveFilters);
@@ -143,7 +141,7 @@ export default function Filter() {
           />
         </ActionIcon>
         <ActionIcon
-          onClick={() => setClearFilter(true)}
+          onClick={() => { setClearFilter(true); }}
           variant="transparent"
           color="gray"
           size={iconSize}

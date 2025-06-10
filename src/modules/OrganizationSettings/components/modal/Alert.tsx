@@ -93,7 +93,7 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefO
         </div>
         <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
           <CircleAlert color="#559cda" size={70} strokeWidth={1} />
-          <Text className="text-xl font-bold">{validationMessage}</Text>
+          <Text className="text-xl font-bold text-center">{`${validationMessage}`}</Text>
         </div>
       </Modal>
 
@@ -101,9 +101,7 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefO
         opened={alert === AlertType.Cancel}
         withCloseButton={false}
         onClose={() => setAlert("")}
-        styles={{
-          title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
-        }}
+        styles={{ title: { color: "#559CDA", fontSize: 22, fontWeight: 600 } }}
         centered
         size={modalSize}
         padding={30}>
@@ -127,11 +125,7 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefO
               }}>
               YES
             </Button>
-            <Button
-              className="w-[50%] rounded-md border-none br-gradient"
-              onClick={() => {
-                setAlert("");
-              }}>
+            <Button className="w-[50%] rounded-md border-none br-gradient" onClick={() => setAlert("")}>
               NO
             </Button>
           </div>

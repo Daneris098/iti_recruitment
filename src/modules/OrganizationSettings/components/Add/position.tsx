@@ -15,7 +15,7 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
   const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addPosition = useForm<AddPositionProps>({
-    initialValues: { code: "P-1", name: "Position 1", isActive: true, description: "Position 1 Description" },
+    initialValues: { code: "", name: "", isActive: true, description: "" },
   });
 
   useEffect(() => {
@@ -36,12 +36,14 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Code"
-              {...addPosition.getInputProps("code")}
-              error={addPosition.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Code"
+                {...addPosition.getInputProps("code")}
+                error={addPosition.values.code === "" ? "Code is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -56,12 +58,14 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addPosition.getInputProps("name")}
-              error={addPosition.values.name === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Name"
+                {...addPosition.getInputProps("name")}
+                error={addPosition.values.name === "" ? "Name is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -75,7 +79,11 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
       width: "50%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg)
-          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addPosition.getInputProps("description")} />;
+          return (
+            <div className="relative">
+              <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Description" {...addPosition.getInputProps("description")} />
+            </div>
+          );
         return row.description;
       },
     },

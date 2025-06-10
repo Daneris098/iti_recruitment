@@ -17,10 +17,11 @@ export default function EditCompany({ record }: { record: CompanyType }) {
   const resetExpandedRows = OrganizationSettingsStore((state) => state.reset);
 
   const editCompany = useForm<EditCompanyProps>({
+    mode: "uncontrolled",
     initialValues: {
       code: record.code ? record.code : "",
       name: record.name ? record.name : "",
-      isActive: record.isActive ?? true,
+      isActive: record.isActive ? record.isActive : true,
       guid: record.guid,
       id: record.id,
     },
@@ -57,7 +58,7 @@ export default function EditCompany({ record }: { record: CompanyType }) {
             styles={{ label: { color: "#6d6d6d" } }}
             {...editCompany.getInputProps("isActive")}
             error={editCompany.values.isActive === null ? "Required" : undefined}
-            value={editCompany.values.isActive ? "Active" : "Inactive"}
+            defaultValue={editCompany.values.isActive ? "Active" : "Inactive"}
             onChange={(value) => {
               editCompany.setFieldValue("isActive", value === "Active");
             }}

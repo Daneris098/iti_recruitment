@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Popover, TextInput, Text } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { IconCalendar } from "@tabler/icons-react";
-
+import { Popover, TextInput, Text } from "@mantine/core";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 interface DateRangeFilterProps {
   label: string;
   value: string | null;
@@ -53,7 +53,7 @@ const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ label, value, onChang
           <DatePicker
             value={selectedDate}
             onChange={(date) => {
-              onChange(date ? date.toISOString() : null); // Update selected date
+              onChange(date ? DateTimeUtils.dateDashToDefaultAddDay(date.toISOString()) : null)
               setOpened(false); // Close the calendar
             }}
           />
