@@ -387,7 +387,7 @@ export const useApplicants = (
     pageSize: number = 30,
     filters: Record<string, any> = {},
     setTime?: (time: number) => void,
-    fetchAll: boolean = true,
+    fetchAll: boolean = false,
 ) => {
     return useQuery({
         queryKey: sharedApplicantKeys.list({
