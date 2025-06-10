@@ -13,15 +13,15 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "./client/queryClient.ts";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <MantineProvider theme={theme}>
-      <React.Fragment>
-        <QueryClientProvider client={queryClient}>
-          <App />
-          <TailwindIndicator />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </React.Fragment>
-    </MantineProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <MantineProvider theme={theme}>
+    <React.Fragment>
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <TailwindIndicator />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </React.Fragment>
+  </MantineProvider>
+  // </React.StrictMode>
 );

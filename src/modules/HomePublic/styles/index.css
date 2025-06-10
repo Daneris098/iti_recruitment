@@ -4,10 +4,10 @@
   /* display: block; */
   /* width: 10em; */
   /* overflow: auto;
-  height: 2em;
-  padding: 1em;
-  margin: 1em auto;
-  outline: 2px dashed cornflowerblue; */
+    height: 2em;
+    padding: 1em;
+    margin: 1em auto;
+    outline: 2px dashed cornflowerblue; */
   /* scrollbar-width: thin;  */
 }
 
@@ -50,4 +50,9 @@
 .mantine-Stepper-stepIcon[data-completed] svg {
   width: 40% !important;
   height: 50% !important;
+}
+
+.input {
+  outline: 2px solid #fe0d45;
+  outline-offset: -2px;
 }

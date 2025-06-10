@@ -3,7 +3,7 @@ import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 // import { useMediaQuery } from "@mantine/hooks";
 import { FilterStore, FilterItemsStore } from "@modules/Vacancies/store";
 import { filterVal } from "@modules/Vacancies/values";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DateRange } from "../DateRange";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import axiosInstance from "@src/api";
@@ -15,7 +15,7 @@ export default function DrawerFilter() {
   // const isMobile = useMediaQuery("(max-width: 425px)");
 
   const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered, } = FilterStore();
-  const { companies, departments, interviewers, status, vacancies, setCompanies, setDepartments, setInterviewers, setStatus, setVacancies } = FilterItemsStore();
+  const { companies, departments, status, vacancies, setCompanies, setDepartments, setInterviewers, setStatus, setVacancies } = FilterItemsStore();
   const { value, setValue } = useDateRangeStore();
 
   // useEffect(() => {

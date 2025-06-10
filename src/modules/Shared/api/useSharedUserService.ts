@@ -1,7 +1,7 @@
 import { apiClient } from "@shared/services/apiClient";
 import { BaseService } from "@shared/services/baseService";
 import { ApplicantResponse, JobOpenings, AcceptedOffer } from "@modules/Shared/types";
-import { Organization } from "@src/modules/OrganizationSettings/assets/Types";
+// import { Organization } from "@src/modules/OrganizationSettings/assets/Types";
 
 export const useSharedUserService = new BaseService<ApplicantResponse>(apiClient, "/recruitment/applicants");
 

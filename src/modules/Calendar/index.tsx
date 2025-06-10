@@ -3,12 +3,10 @@
  * @date_created  February 21, 2025
  */
 
-//--- React
-import React, { useEffect } from "react";
 //--- Mantine
 import { Stack } from "@mantine/core";
 //--- Full Calendar
-import { CalendarApi, EventClickArg, EventInput } from "@fullcalendar/core";
+import { CalendarApi, EventClickArg } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -31,23 +29,24 @@ import Reschedule from "./components/modals/ModalReschedule";
 import MonthYear from "./components/modals/ModalMonthYear";
 
 //--- Dummy Data
-import { INITIAL_EVENTS, createEventId } from "./assets/Events";
+import { createEventId } from "./assets/Events";
 import SuccessAlert from "./components/alerts/SuccessAlert";
 import { ResponsiveContainer } from "recharts";
 import { useCalendar } from "@modules/Calendar/hooks/useCalendar";
 import { ApplicantStore } from "@modules/Vacancies/store/index"
 import { useSharedApplicantStore } from "../Shared/store";
+import React from "react";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
   const { setIsViewApplicant, isViewApplicant } = ApplicantStore();
-  const { selectedApplicant, setSelectedApplicant } = useSharedApplicantStore();
+  const { selectedApplicant } = useSharedApplicantStore();
 
-  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, checkedItems, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate, setDetails } = useCalendarStore();
+  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, setOnViewFilter, setOnMonthYear, setCurrentDate, setDetails } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
-  const { isFetching, data } = useCalendar();
+  const { data } = useCalendar();
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     const ev = clickInfo.event._def
@@ -100,7 +99,7 @@ export default function index() {
     setOnViewEvent(false);
   };
 
-  const filteredEvents: EventInput[] = checkedItems.length === 0 ? INITIAL_EVENTS : INITIAL_EVENTS.filter((event) => checkedItems.includes(event.extendedProps?.department));
+  // const filteredEvents: EventInput[] = checkedItems.length === 0 ? INITIAL_EVENTS : INITIAL_EVENTS.filter((event) => checkedItems.includes(event.extendedProps?.department));
 
   const [type, setType] = React.useState<string>();
   const handleViewChange = () => {

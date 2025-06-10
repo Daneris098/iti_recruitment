@@ -196,7 +196,7 @@ export default function OfferedStatus() {
                         type="text"
                         placeholder="00,000.0000"
                         value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        onChange={(e: any) => setAmount(e.target.value)}
                         classNames={{
                             input: "poppins relative flex items-center w-[271px] h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                         }}

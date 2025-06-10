@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm, FilterState } from "@modules/HomePublic/types";
+import { HomeState, VacancyType, FilterType, ApplicationState, ApplicationForm, FilterState, Barangay } from "@modules/HomePublic/types";
 import { filterVal, selectedDataVal } from "@src/modules/HomePublic/values";
 import { ApplicationFormVal as ApplicationFormCleanVal } from "@src/modules/HomePublic/values/cleanState";
 
@@ -8,7 +8,13 @@ export const HomeStore = create<HomeState>((set) => ({
   applicationFormModal: false,
   alert: "",
   alertBody: "",
+  barangays: [{ id: 1, value: 'BRGY 12', label: 'BRGY 12' }],
+  barangays2: [{ id: 1, value: 'BRGY 12', label: 'BRGY 12' }],
+  sameAsPresent: false,
 
+  setSameAsPresent: (sameAsPresent: boolean) => set({ sameAsPresent: sameAsPresent }),
+  setBarangays: (barangays: Barangay[]) => set({ barangays: barangays }),
+  setBarangays2: (barangays: Barangay[]) => set({ barangays2: barangays }),
   setAlertBody: (alertBody: string) => set({ alertBody: alertBody }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),

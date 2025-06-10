@@ -1,5 +1,5 @@
 import { Divider, NumberInput, Select, TextInput } from "@mantine/core";
-import { IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
+import { IconCaretDownFilled } from "@tabler/icons-react";
 import { AccountSetupStore } from "@modules/AccountSetup/store";
 import Dropzone from "@modules/AccountSetup/components/Dropzone";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
@@ -137,9 +137,9 @@ const Hiring = forwardRef((_, ref) => {
               placeholder="Select if Yes or No"
               rightSection={<IconCaretDownFilled size="18" />}
               value={form.values.otherSettings.allowReApply ? "1" : "0"}
-              // onChange={(value) => {
-              //   form.setFieldValue("otherSettings.allowReApply", value === "Yes");
-              // }}
+            // onChange={(value) => {
+            //   form.setFieldValue("otherSettings.allowReApply", value === "Yes");
+            // }}
             />
             <NumberInput
               withAsterisk
@@ -163,7 +163,7 @@ const Hiring = forwardRef((_, ref) => {
           <Divider size={3} color="#ebe5e5" />
           <p>Customize your interview stages to align with your organization's specific recruitment process.</p>
           <div className="flex flex-col gap-6">
-            {accountSetupForm.hiring.interviewStages.map((interview, index) => (
+            {accountSetupForm.hiring.interviewStages.map((interview) => (
               <div className="relative " key={interview.id}>
                 {/* {index != 0 && (
                   <IconCircleMinus
@@ -205,7 +205,7 @@ const Hiring = forwardRef((_, ref) => {
           <Divider size={3} color="#ebe5e5" />
           <p>List individuals authorized to conduct interview for applicants.</p>
           <div className="flex flex-col gap-6">
-            {accountSetupForm.hiring.interviewers.map((interviewer, index) => (
+            {accountSetupForm.hiring.interviewers.map((interviewer) => (
               <div className="relative " key={interviewer.id}>
                 {/* {index != 0 && (
                   <IconCircleMinus

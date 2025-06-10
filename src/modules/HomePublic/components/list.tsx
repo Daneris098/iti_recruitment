@@ -1,4 +1,4 @@
-import jobsJson from "@src/modules/HomePublic/values/response/jobs.json";
+// import jobsJson from "@src/modules/HomePublic/values/response/jobs.json";
 import { VacancyType } from "@src/modules/HomePublic/types";
 import { MantineSize, Pill, useMatches } from "@mantine/core";
 import { HomeStore } from "@src/modules/HomePublic/store";
@@ -6,8 +6,8 @@ import { cn } from "@src/lib/utils";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 
 export default function index() {
-  const { isFetching, data } = useVacancies();
-  const jobs: VacancyType[] = jobsJson;
+  const { data } = useVacancies();
+  // const jobs: VacancyType[] = jobsJson;
   const { setSelectedData, selectedData } = HomeStore();
   const pillSize: MantineSize = useMatches({
     base: "xs",

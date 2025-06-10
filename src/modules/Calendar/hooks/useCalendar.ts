@@ -8,7 +8,6 @@ export const useCalendar = () => {
         page,
         pageSize,
         sortStatus,
-        setTime
     } = DataTableStore();
     const { currentDate, filterInterviewer, filterDepartmentIds, filterCompanyId } = useCalendarStore();
 

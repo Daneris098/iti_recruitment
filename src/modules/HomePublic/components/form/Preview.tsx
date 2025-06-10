@@ -40,8 +40,8 @@ export default function index() {
                         <p className="text-[#0078EB] text-2xl font-bold">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
                         <p>{applicationForm.generalInformation.firstChoice}</p>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
-                            <p className="text-[#6D6D6D]">Email</p>
-                            <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.workingEmailAddress}</p>
+                            <p className="text-[#6D6D6D] ">Email</p>
+                            <p className="text-[#6D6D6D] font-bold truncate">{applicationForm.generalInformation.personalInformation.workingEmailAddress}</p>
                         </div>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
                             <p className="text-[#6D6D6D]">Phone</p>
@@ -236,14 +236,14 @@ export default function index() {
 
                                     <div className="flex sm:gap-48">
                                         <div className="w-28">
-                                            <p className="text-[#6D6D6D]">Start Date</p>
-                                            <p className="text-[#6D6D6D] font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.from?.toString())}</p>
+                                            <p className="text-[#6D6D6D]">Date</p>
+                                            <p className="text-[#6D6D6D] font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.from?.toString())} - {DateTimeUtils.dateToYearOnly(education.yearsAttended.to?.toString())}</p>
                                         </div>
 
-                                        <div className="w-28">
+                                        {/* <div className="w-28">
                                             <p className="text-[#6D6D6D]">End Date</p>
                                             <p className="text-[#6D6D6D] font-bold">{DateTimeUtils.dateToYearOnly(education.yearsAttended.to?.toString())}</p>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <div>
@@ -274,16 +274,16 @@ export default function index() {
                                     <div className="flex sm:gap-48">
                                         <div className="w-28">
                                             <p className="text-[#6D6D6D]">Start Date</p>
-                                            <p className="text-[#6D6D6D] font-bold">{employment.inclusiveDate.from}</p>
+                                            <p className="text-[#6D6D6D] font-bold">{employment.inclusiveDate.from}-{employment.inclusiveDate.to}</p>
                                         </div>
-                                        <div className="w-28">
+                                        {/* <div className="w-28">
                                             <p className="text-[#6D6D6D]">End Date</p>
                                             <p className="text-[#6D6D6D] font-bold">{employment.inclusiveDate.to}</p>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Salary</p>
-                                        <p className="text-[#6D6D6D] font-bold">PHP {employment.salary}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{employment.salary === 0 ? ` ` : `PHP ${employment.salary}`}</p>
                                     </div>
                                     <div>
                                         <p className="text-[#6D6D6D]">Reason for Leaving</p>
@@ -315,8 +315,7 @@ export default function index() {
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.contactNumber}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 ">
-                                <p className="text-[#0078EB] text-xl font-bold mt-2">Mother's Name</p>
+                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem]">
                                 <div>
                                     <p className="text-[#6D6D6D]">Mother's Name</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.mother.fullname}</p>
@@ -412,7 +411,7 @@ export default function index() {
                         </div>
 
                         <div className="flex h-full w-full flex-wrap">
-                            {applicationForm.reference.characterReference.map((ref, index) => (
+                            {applicationForm.reference.employmentReference.map((ref, index) => (
                                 <div className="flex flex-col p-2 gap-5 w-1/2">
                                     <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Reference</p>
                                     <div>

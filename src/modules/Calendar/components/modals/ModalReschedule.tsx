@@ -16,7 +16,7 @@ import { useRef } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
-  const { date, interviewer, setDate, setInterviewer } = useRescheduleStore();
+  const { setDate, setInterviewer } = useRescheduleStore();
   const { onViewResched, setOnViewResched, setOnViewEvent, setOnViewUpdate, details } = useCalendarStore();
   const formRef = useRef<HTMLFormElement>(null);
   const queryClient = useQueryClient();
