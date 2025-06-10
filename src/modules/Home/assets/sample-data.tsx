@@ -109,14 +109,14 @@ export const iconMap = {
 export interface Applicant {
   icon: ApplicantIcons;
   title: string;
-  value: string;
+  value: number;
 }
 
 export const applicantsData: Applicant[] = [
-  { icon: ApplicantIcons.Users, title: "Total Applicants", value: "0" },
-  { icon: ApplicantIcons.UserUp, title: "For Interview", value: "0" },
-  { icon: ApplicantIcons.UserCheck, title: "Hired", value: "0" },
-  { icon: ApplicantIcons.UserX, title: "Archived", value: "0" },
+  { icon: ApplicantIcons.Users, title: "Total Applicants", value: 248 },
+  { icon: ApplicantIcons.UserUp, title: "For Interview", value: 10 },
+  { icon: ApplicantIcons.UserCheck, title: "Hired", value: 200 },
+  { icon: ApplicantIcons.UserX, title: "Archived", value: 38 },
 ];
 
 export const monthData = [
