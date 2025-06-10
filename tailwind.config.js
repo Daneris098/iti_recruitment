@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       screens: {
+        sp: "770px",
         "h-sm": { raw: "(max-height: 720px)" },
         "h-md": { raw: "(max-height: 1024px)" },
         "h-lg": { raw: "(max-height: 1280px)" },
