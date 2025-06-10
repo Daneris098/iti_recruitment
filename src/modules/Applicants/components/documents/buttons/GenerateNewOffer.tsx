@@ -315,7 +315,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                         Cancel
                     </Button>
                     <Button
-                        onClick={() => setIsModalOpen(true)} // Open modal on click
+                        onClick={() => setIsModalOpen(true)}
                         className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[15px]"
                     >
                         {"Generate Offer".toUpperCase()}

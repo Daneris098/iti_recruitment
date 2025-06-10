@@ -61,6 +61,7 @@ export interface AllJobOffersFilterType {
 
 //#region PDF PROPS
 export interface PDFProps {
+  applicantId: number;
   applicantName: string;
   position: string;
   department: string;
@@ -79,6 +80,7 @@ export interface PDFProps {
 }
 
 export interface ExtendedPDFProps extends Partial<PDFProps> {
+  status: string;
   applicantId?: number;
 }
 
