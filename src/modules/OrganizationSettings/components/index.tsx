@@ -4,7 +4,7 @@ import { IconCirclePlus } from "@tabler/icons-react";
 import { OrganizationSettingsStore } from "../store";
 import useRecords from "./records";
 import useColumns from "./columns";
-import { Description, Panel, Title } from "../assets/Enum";
+import { AlertType, Description, Panel, Title } from "../assets/Enum";
 import useEdit from "./Edit/";
 import { OrganizationItem } from "../assets/Types";
 import { useAddOrganizationSettings } from "../services/add";
@@ -12,7 +12,25 @@ import { useEditOrganizationSettings } from "../services/edit";
 import useTotalRecords from "./total";
 
 const DataTableComp = forwardRef((_, ref) => {
-  const { activePanel, addOrg, setAddOrg, expandedIds, setNewRows, newRows, sortBy, setSortBy, time, page, setPage, ascDesc, toggleAscDesc } = OrganizationSettingsStore();
+  const {
+    activePanel,
+    addOrg,
+    setAddOrg,
+    expandedIds,
+    setNewRows,
+    newRows,
+    sortBy,
+    setSortBy,
+    time,
+    page,
+    setPage,
+    ascDesc,
+    toggleAscDesc,
+    setExpanded,
+    setValidationMessage,
+    setAlert,
+    alert,
+  } = OrganizationSettingsStore();
   const { addBranch, addCompany, addDepartment, addDivision, addPosition, addSection } = useAddOrganizationSettings();
   const { editBranch, editCompany, editDepartment, editDivision, editPosition, editSection } = useEditOrganizationSettings();
 
@@ -49,6 +67,7 @@ const DataTableComp = forwardRef((_, ref) => {
     setAddOrg(true);
     setNewRows([newRow]);
     resetExpandedRows();
+    setExpanded([]);
   };
 
   const editActions: Record<Panel, () => void> = {
@@ -72,11 +91,17 @@ const DataTableComp = forwardRef((_, ref) => {
   const saveAll = () => {
     if (addOrg) {
       (addActions as any)[activePanel]?.();
-      setAddOrg(false);
-      setNewRows([]);
-    } else if (!addOrg) {
+      if (alert === AlertType.Saved) {
+        setAddOrg(false);
+        setNewRows([]);
+      }
+      setValidationMessage("Add row form is open, Please Fill up before you switch tab");
+    } else if (expandedIds.length >= 1) {
       (editActions as any)[activePanel]?.();
       resetExpandedRows();
+    } else if (!addOrg && expandedIds.length === 0) {
+      setAlert("Validation");
+      setValidationMessage("It Doesn't have any data to save, Please add or edit a data");
     }
   };
 

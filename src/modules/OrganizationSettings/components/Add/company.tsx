@@ -14,7 +14,7 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
   const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addCompany = useForm<AddCompanyProps>({
-    initialValues: { code: "C-1", name: "Company 1", isActive: true },
+    initialValues: { code: "", name: "", isActive: true },
   });
 
   useEffect(() => {
@@ -35,12 +35,14 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Code"
-              {...addCompany.getInputProps("code")}
-              error={addCompany.values.code === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Code"
+                {...addCompany.getInputProps("code")}
+                error={addCompany.values.code === "" ? "Code is Required" : undefined}
+              />
+            </div>
           );
         }
 
@@ -55,12 +57,14 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Name"
-              {...addCompany.getInputProps("name")}
-              error={addCompany.values.name === "" ? "Required" : undefined}
-            />
+            <div className="relative">
+              <TextInput
+                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                placeholder="Name"
+                {...addCompany.getInputProps("name")}
+                error={addCompany.values.name === "" ? "Name is Required" : undefined}
+              />
+            </div>
           );
         }
         return row.name;
@@ -73,7 +77,7 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
       width: "25%",
       render: (row: any) =>
         row.id === "NEW" && addOrg ? (
-          <div className="flex flex-row items-center justify-between gap-5">
+          <div className="flex flex-row items-center justify-between gap-5 ">
             <Select
               radius={8}
               data={["Active", "Inactive"]}
