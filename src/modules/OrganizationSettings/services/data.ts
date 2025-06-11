@@ -25,7 +25,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.branch,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -39,7 +38,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.companyList,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -53,7 +51,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.departments || activePanel === Panel.section,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -67,7 +64,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.division || activePanel === Panel.section,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -81,7 +77,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.positionLevel,
     staleTime: 1000 * 60 * 5,
   });
 
@@ -95,7 +90,6 @@ export const useFetchOrganizationSettings = () => {
       setTime(executionTime.toFixed(3).toString());
       return result;
     },
-    enabled: activePanel === Panel.section,
     staleTime: 1000 * 60 * 5,
   });
 

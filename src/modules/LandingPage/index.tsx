@@ -4,7 +4,6 @@ import bg from "@assets/bg.png";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-
   return (
     <div style={{ backgroundImage: `url(${bg})` }} className="bg-cover bg-center object-fill h-full w-full flex overflow-hidden ">
       <img src="bg.png " className="hidden sm:block  w-full h-full absolute object-fill z-10" alt="bg" />
@@ -28,7 +27,7 @@ export default function LandingPage() {
       </div>
 
       <div className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center  h-full w-1/2 z-30 ">
-        <img src="person2.png " className="  object-fill h-[80%]  z-20" alt="bg" />
+        <img src="person3.png " className="  object-fill h-[80%]  z-20" alt="bg" />
       </div>
     </div>
   );

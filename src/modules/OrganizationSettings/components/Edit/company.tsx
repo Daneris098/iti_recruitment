@@ -17,7 +17,6 @@ export default function EditCompany({ record }: { record: CompanyType }) {
   const resetExpandedRows = OrganizationSettingsStore((state) => state.reset);
 
   const editCompany = useForm<EditCompanyProps>({
-    mode: "uncontrolled",
     initialValues: {
       code: record.code ? record.code : "",
       name: record.name ? record.name : "",

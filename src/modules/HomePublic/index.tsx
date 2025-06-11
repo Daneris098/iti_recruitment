@@ -9,11 +9,10 @@ import { selectedDataVal } from "./values";
 import { VacancyType } from "@src/modules/HomePublic/types";
 import { ActionIcon } from "@mantine/core";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
-import bg2 from '@assets/bg2.png';
+import bg2 from "@assets/bg2.png";
 import Alert from "@src/modules/HomePublic/components/modal/Alert";
 
 export default function Home() {
-
   const { selectedData, setApplicationFormModal } = HomeStore();
   const { setFilterDrawer, filter, isFiltered } = FilterStore();
   const { isMobile } = GlobalStore();
@@ -24,7 +23,7 @@ export default function Home() {
       if (Array.isArray(value)) {
         return count + (value.length > 0 ? 1 : 0);
       }
-      return count + (value && value !== '' ? 1 : 0);
+      return count + (value && value !== "" ? 1 : 0);
     }, 0);
   };
 
@@ -35,21 +34,26 @@ export default function Home() {
       <div style={{ backgroundImage: `url(${bg2})` }} className=" bg-cover bg-center h-[19%] 2xl:p-4 ">
         <div className="h-full w-[89%] 2xl:w-[92%] m-auto flex flex-col justify-center">
           <div className="p-1 2xl:p-2 text-white text-sm 2xl:text-xl flex gap-4 items-center ">
-
-
             <ActionIcon variant="filled" color="white" size="lg" aria-label="Settings" className="lg:hidden" onClick={() => setFilterDrawer(true)}>
               <IconAdjustmentsHorizontal className="text-[#559CDA]" />
             </ActionIcon>
 
-            {isFiltered && getActiveFilterCount() > 0 && isMobile && (<p className="bg-orange-400 rounded-full absolute mt-7 ml-6 text-[0.6rem] w-4 h-4 flex items-center justify-center text-white">
-              {getActiveFilterCount()}
-            </p>)}
+            {isFiltered && getActiveFilterCount() > 0 && isMobile && (
+              <p className="bg-orange-400 rounded-full absolute mt-7 ml-6 text-[0.6rem] w-4 h-4 flex items-center justify-center text-white">{getActiveFilterCount()}</p>
+            )}
 
-
-            <p>Search for vacancies or fill out the <span className=" underline cursor-pointer font-bold" onClick={() => { setApplicationFormModal(true) }}>APPLICATION FORM.</span></p>
+            <p>
+              Search for vacancies or fill out the{" "}
+              <span
+                className=" underline cursor-pointer font-bold"
+                onClick={() => {
+                  setApplicationFormModal(true);
+                }}>
+                APPLICATION FORM.
+              </span>
+            </p>
           </div>
-          <div>
-          </div>
+          <div></div>
           <div className="h-[35%] 2xl:h-[49%] hidden lg:block text-sm 2xl:text-md">
             <Filter />
           </div>
@@ -57,7 +61,6 @@ export default function Home() {
       </div>
 
       <div className="h-[79%] flex w-[92%] m-auto">
-
         {jobs.length > 0 ? (
           <>
             <div className="h-auto w-full lg:w-[28%] sm:overflow-y-hidden overflow-y-auto sm:hover:overflow-y-auto ease-in-out p-5">
@@ -66,7 +69,6 @@ export default function Home() {
             </div>
 
             <div className="hidden sm:block h-auto lg:w-[72%] sm:overflow-y-hidden  ease-in-out p-4">
-
               {selectedData != selectedDataVal ? (
                 <>
                   <Details />
@@ -87,7 +89,6 @@ export default function Home() {
             </div>
           </>
         )}
-
       </div>
     </div>
   );
