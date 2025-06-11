@@ -14,7 +14,9 @@ import {
     viewApplicantOfferService, useViewInterviewStagesHiring,
 } from "@modules/Shared/components/api/UserService";
 import {
-    useSharedUserService, useGetPositionLevels, useGetDepartments,
+    useSharedUserService,
+    useGetDivisions, useGetFeedbacks,
+    useGetPositionLevels, useGetDepartments,
     useSharedTransferredPosition, useSharedViewAcceptedOffer
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
@@ -360,6 +362,32 @@ export const useViewDepartments = () => {
         }
     })
 }
+
+export const useGetCompanyDivisions = () => {
+    return useQuery({
+        queryKey: ['divisions'],
+        queryFn: async () => {
+            const divisionFilters: Record<string, any> = {};
+
+            const data = await useGetDivisions.getAll(divisionFilters);
+
+            return data.items
+        }
+    })
+}
+
+export const useGetHiringAndApplicantFeedbacks = (isApplicantFeedback: boolean = false) => {
+    return useQuery({
+        queryKey: ['feedbacks', isApplicantFeedback],
+        queryFn: async () => {
+            const feedbacksFilter: Record<string, any> = {
+                IsApplicantFeedback: isApplicantFeedback
+            };
+            const data = await useGetFeedbacks.getAll(feedbacksFilter);
+            return data.items;
+        }
+    });
+};
 
 const DEFAULT_FETCH_ALL_PAGE = 1;
 const DEFAULT_FETCH_ALL_PAGE_SIZE = 60;

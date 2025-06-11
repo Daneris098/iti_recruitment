@@ -5,7 +5,7 @@ import { useDropDownOfferedStore } from "@modules/Applicants/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert"
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
-import { useViewPositionLevels, useViewDepartments } from "@modules/Shared/hooks/useSharedApplicants";
+import { useViewPositionLevels, useViewDepartments, useGetCompanyDivisions } from "@modules/Shared/hooks/useSharedApplicants";
 import { useEffect, useState } from "react";
 import { interviewStagesOption } from "@modules/Applicants/types";
 interface DropDownOfferedProps {
@@ -17,12 +17,14 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
 
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
+    const { data: compDivisions } = useGetCompanyDivisions();
 
     const [getPositionLevels, setPositionLevels] = useState<interviewStagesOption[]>([]);
     const [getDepartments, setDepartments] = useState<interviewStagesOption[]>([]);
+    const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
 
     useEffect(() => {
-        if (!positionLevels || !orgDepartments) return;
+        if (!positionLevels || !orgDepartments || !compDivisions) return;
 
         const positions = positionLevels.map((position: any) => ({
             value: position.id,
@@ -34,8 +36,14 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             value: deps.id,
             label: deps.name
         }));
+        setDepartments(departments);
 
-        setDepartments(departments)
+        const divisions = compDivisions.map((divs: any) => ({
+            value: divs.id,
+            label: divs.name
+        }))
+        setDivisions(divisions);
+
     }, [positionLevels, orgDepartments])
 
     useEffect(() => {
@@ -47,21 +55,26 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             setPosition(getPositionLevels[0].label)
             setPositionId(getPositionLevels[0].value)
         }
-    }, [getPositionLevels, getDepartments])
+        if (getDivisions.length > 0) {
+            setDivision(getDivisions[0].label)
+            setDivisionId(getDivisions[0].value)
+        }
+
+    }, [getPositionLevels, getDepartments, getDivisions])
 
     // These are just a hardcoded information. This will be removed during the integration with the backend.
     // const positions = ["HR Specialist", "Engineer", "Doctor"];
-    const divisions = ["Finance", "IT", "HR", "Operations"];
+    // const divisions = ["Finance", "IT", "HR", "Operations"];
     const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
     const {
+        setDivisionId,
         amount, setAmount,
         comments, setComments,
         position, setPosition,
         department, setDepartment,
         getSalaryTypes, setSalaryTypes,
-        positionId, setPositionId, setDepartmentId,
+        setPositionId, setDepartmentId,
         division, setDivision,
-        divisionId, setDivisionId
     } = useDropDownOfferedStore();
 
     const { isModalOpen, setIsModalOpen } = useCloseModal();
@@ -201,7 +214,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                     <Combobox store={divisionCombobox} withinPortal={false}>
                         <Combobox.Target>
                             <TextInput
-                                value={divisions}
+                                value={division}
                                 onChange={(e) => setDivision(e.currentTarget.value)}
                                 onFocus={() => divisionCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -213,20 +226,20 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                             />
                         </Combobox.Target>
 
-                        {divisions.length > 0 && (
+                        {getDivisions.length > 0 && (
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg">
-                                {divisions.map((division) => (
+                                {getDivisions.map((div) => (
                                     <Combobox.Option
-                                        key={division}
-                                        value={division}
+                                        key={div.value}
+                                        value={div.label}
                                         onClick={() => {
-                                            setDivision(division);
-                                            // setDivisionId(dept.value);
+                                            setDivision(div.label);
+                                            setDivisionId(div.value);
                                             divisionCombobox.closeDropdown();
                                         }}
                                         className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition  poppins"
                                     >
-                                        {division}
+                                        {div.label}
                                     </Combobox.Option>
                                 ))}
                             </Combobox.Dropdown>
