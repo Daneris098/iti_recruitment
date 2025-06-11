@@ -33,9 +33,9 @@ import { createEventId } from "./assets/Events";
 import SuccessAlert from "./components/alerts/SuccessAlert";
 import { ResponsiveContainer } from "recharts";
 import { useCalendar } from "@modules/Calendar/hooks/useCalendar";
-import { ApplicantStore } from "@modules/Vacancies/store/index"
+import { ApplicantStore } from "@modules/Vacancies/store/index";
 import { useSharedApplicantStore } from "../Shared/store";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function index() {
   const { interviewer, date } = useRescheduleStore();
@@ -46,27 +46,27 @@ export default function index() {
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
-  const { data } = useCalendar();
+  const { data, isLoading } = useCalendar();
 
   const handleEventClick = (clickInfo: EventClickArg) => {
-    const ev = clickInfo.event._def
-    if (ev.title != '') {
+    const ev = clickInfo.event._def;
+    if (ev.title != "") {
       const date = new Date((ev.extendedProps as any).entry.date);
       const dateOptions: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
       };
       const timeOptions: Intl.DateTimeFormatOptions = {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
       };
       // Format the date and time
-      const formattedDate = date.toLocaleDateString('en-US', dateOptions);
-      const formattedTime = date.toLocaleTimeString('en-US', timeOptions).toLowerCase();
-      setDetails({ ...(ev.extendedProps as any)?.entry, date: formattedDate, time: `${formattedTime}` })
+      const formattedDate = date.toLocaleDateString("en-US", dateOptions);
+      const formattedTime = date.toLocaleTimeString("en-US", timeOptions).toLowerCase();
+      setDetails({ ...(ev.extendedProps as any)?.entry, date: formattedDate, time: `${formattedTime}` });
     }
 
     setEventInfo({ ...clickInfo.event._def });
@@ -107,27 +107,36 @@ export default function index() {
     if (api) {
       setType(api.view.type);
       const date = new Date(api.getDate());
-      const formatter = new Intl.DateTimeFormat('en-PH', {
-        timeZone: 'Asia/Manila',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
+      const formatter = new Intl.DateTimeFormat("en-PH", {
+        timeZone: "Asia/Manila",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
       });
       const parts = formatter.formatToParts(date);
-      const year = parts.find(p => p.type === 'year')?.value;
-      const month = parts.find(p => p.type === 'month')?.value;
-      const day = parts.find(p => p.type === 'day')?.value;
+      const year = parts.find((p) => p.type === "year")?.value;
+      const month = parts.find((p) => p.type === "month")?.value;
+      const day = parts.find((p) => p.type === "day")?.value;
       const formattedDate = `${year}${month}${day}`;
-      setCurrentDate(formattedDate)
+      setCurrentDate(formattedDate);
     }
   };
+
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const formattedDate = `${year}${month}${day}`;
+    setCurrentDate(formattedDate);
+  }, [data]);
 
   return (
     <Stack flex={1} bg="white" w="100%" h="100%">
       <title>Calendar</title>
       <ResponsiveContainer width="100%" height="100%">
         <FullCalendar
-          events={data}
+          events={isLoading ? data : undefined}
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
           headerToolbar={{
@@ -174,18 +183,11 @@ export default function index() {
       <MonthYear calendarRef={calendarRef} viewType={type} />
       {/* Modal Succes Update */}
 
-      <ModalWrapper
-        isOpen={isViewApplicant}
-        overlayClassName="modal-overlay"
-        contentClassName="modal-content"
-        onClose={() => setIsViewApplicant(false)}
-      >
+      <ModalWrapper isOpen={isViewApplicant} overlayClassName="modal-overlay" contentClassName="modal-content" onClose={() => setIsViewApplicant(false)}>
         <ViewApplicantShared
           applicantName={selectedApplicant?.nameResponse?.normalName}
           Position={selectedApplicant?.positionsApplied[0].name}
-          Status={
-            selectedApplicant?.applicationMovements[selectedApplicant?.applicationMovements.length - 1]?.status?.name
-          }
+          Status={selectedApplicant?.applicationMovements[selectedApplicant?.applicationMovements.length - 1]?.status?.name}
           Email={selectedApplicant?.contact?.email}
           Phone={selectedApplicant?.contact?.mobileNo}
           Skills={selectedApplicant?.skills}

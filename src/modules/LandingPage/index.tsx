@@ -1,9 +1,13 @@
 import { Button } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import bg from "@assets/bg.png";
+import SplitText from "../Shared/animation/SplitText";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const handleAnimationComplete = () => {
+    console.log("All letters have animated!");
+  };
 
   return (
     <div style={{ backgroundImage: `url(${bg})` }} className="bg-cover bg-center object-fill h-full w-full flex overflow-hidden ">
@@ -12,7 +16,21 @@ export default function LandingPage() {
         <img src="logoword.png" className="w-36 2xl:w-48" alt="bg" />
 
         <div className="flex flex-col gap-12 sm:pt-0  sm:gap-8 2xl:gap-12  h-full sm:h-auto justify-center">
-          <p className="2xl:text-6xl text-4xl text-gray-600 max-w-[25rem] 2xl:max-w-[45rem] font-semibold">Your Next Career Move Starts Here!</p>
+          <SplitText
+            text="Your Next Career Move Starts Here!"
+            className="2xl:text-6xl text-4xl text-gray-600 max-w-[25rem] 2xl:max-w-[45rem] font-semibold"
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="words"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="left"
+            onLetterAnimationComplete={handleAnimationComplete}
+          />
+          {/* <p className="2xl:text-6xl text-4xl text-gray-600 max-w-[25rem] 2xl:max-w-[45rem] font-semibold">Your Next Career Move Starts Here!</p> */}
           <p className="2xl:text-2xl text-gray-500 max-w-[25rem] 2xl:max-w-[40rem]">
             Looking for a new opportunity? At HRDotNet, we connect talented individuals like you with top companies.
           </p>
@@ -28,7 +46,7 @@ export default function LandingPage() {
       </div>
 
       <div className="hidden sm:flex sm:flex-col sm:items-center sm:justify-center  h-full w-1/2 z-30 ">
-        <img src="person2.png " className="  object-fill h-[80%]  z-20" alt="bg" />
+        <img src="person3.png " className="  object-fill h-[80%]  z-20" alt="bg" />
       </div>
     </div>
   );
