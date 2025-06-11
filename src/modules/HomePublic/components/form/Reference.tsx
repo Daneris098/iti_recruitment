@@ -25,7 +25,7 @@ export default function index() {
                 fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                ContactNo: (value: string | number) => !value.toString() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
             employmentReference: {
                 fullname: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Fullname is required" : null,
@@ -156,8 +156,8 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
-                            <NumberInput
-                                hideControls
+                            <TextInput
+                                inputMode="numeric"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.ContactNo`)}
                                 radius="md"
@@ -165,6 +165,15 @@ export default function index() {
                                 placeholder="Contact Number"
                                 maxLength={11}
                             />
+                            {/* <NumberInput
+                                hideControls
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps(`characterReference.${index}.ContactNo`)}
+                                radius="md"
+                                w={isMobile ? '25%' : '100%'}
+                                placeholder="Contact Number"
+                                maxLength={11}
+                            /> */}
                             {index === applicationForm.reference.characterReference.length - 1 && index > 0 && (<div>
                                 <IconCircleMinus size={35} className="" onClick={() => { removeFieldCharacter(index) }} />
                             </div>)}

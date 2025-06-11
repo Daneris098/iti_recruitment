@@ -267,13 +267,13 @@ export default function index() {
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father </p>} placeholder="Full Name" />
                     <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={0} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother </p>} placeholder="Full Name" />
                     <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={0}  {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
 
                 {applicationForm.familyBackground.siblings.map((_, index) => (
@@ -281,7 +281,7 @@ export default function index() {
                         <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key(`siblings.${index}.fullname`)} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
                         <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} min={0} hideControls key={form.key(`siblings.${index}.age`)} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                         <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} key={form.key(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                        <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                        <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                         {(<div>
                             <IconCircleMinus size={35} className="" onClick={() => { removeField(index) }} />
                         </div>)}
@@ -293,7 +293,7 @@ export default function index() {
                     <TextInput {...form.getInputProps("spouse.fullname")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
                     <TextInput {...form.getInputProps("spouse.age")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput {...form.getInputProps("spouse.occupation")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <NumberInput maxLength={11}  {...form.getInputProps("spouse.contactNumber")} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    <TextInput maxLength={11}  {...form.getInputProps("spouse.contactNumber")} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%] " >
