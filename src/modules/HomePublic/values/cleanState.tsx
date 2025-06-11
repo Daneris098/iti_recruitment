@@ -318,8 +318,8 @@ export const referenceValue2: Reference = {
 
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal,
-  educationAndEmployment: educationAndEmploymentVal,
+  generalInformation: GeneralInformationVal2,
+  educationAndEmployment: educationAndEmploymentVal2,
   familyBackground: familyBackgroundVal,
   reference: referenceValue,
   photo: ''

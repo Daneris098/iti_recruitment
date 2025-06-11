@@ -1,17 +1,52 @@
-import { Divider, MultiSelect, NumberInput, TextInput } from "@mantine/core";
+import { Divider, NumberInput, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
+import { IconCirclePlus, IconCircleMinus, IconPlus } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
+import { PillsInput, Pill, Combobox, useCombobox } from '@mantine/core';
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null);
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [technicalSkills, setTechnicalSkills] = useState<string[]>([]);
-    const myRef = useRef(null);
+    const [search, setSearch] = useState('');
+    const combobox = useCombobox({
+        onDropdownClose: () => combobox.resetSelectedOption(),
+        onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
+    });
+    const values = technicalSkills.map((item) => (
+        <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(item)}>
+            {item}
+        </Pill>
+    ));
+
+    const handleAdd = () => {
+        const newValue = search;
+        if (!technicalSkills.includes(newValue)) {
+            setTechnicalSkills((prev) => [...prev, newValue]);
+            setSearch("")
+        }
+    }
+
+    const handleKeyDown = (event: any) => {
+        if (event.key === 'Enter' && event.target.value) {
+            const newValue = event.target.value.trim();
+            if (!technicalSkills.includes(newValue)) {
+                setTechnicalSkills((prev) => [...prev, newValue]);
+                setSearch("")
+            }
+            event.preventDefault();
+        }
+    };
+
+    const handleValueRemove = (val: string) => {
+        setTechnicalSkills((prev) => prev.filter(item => item != val));
+        form.setFieldValue('otherInformation.specialTechnicalSkills', val);
+    }
+
 
     useEffect(() => {
         if (applicationForm.familyBackground.otherInformation.specialTechnicalSkills != '') {
@@ -19,22 +54,10 @@ export default function index() {
         }
     }, [])
 
-    const handleChange = (value: any) => {
-        form.setFieldValue('otherInformation.specialTechnicalSkills', applicationForm.familyBackground.otherInformation.specialTechnicalSkills);
-        console.log('form.getValues', form.getValues())
-        setTechnicalSkills(value);
-    };
-    const handleKeyDown = (event: any) => {
-        if (event.key === 'Enter' && event.target.value) {
-            const newValue = event.target.value.trim();
-            form.setFieldValue('otherInformation.specialTechnicalSkills', newValue);
-            if (!technicalSkills.includes(newValue)) {
-                setTechnicalSkills((prev) => [...prev, newValue]);
-                (myRef as any).current.value = "";
-            }
-            event.preventDefault();
-        }
-    };
+    useEffect(() => {
+        const newVal = technicalSkills.length > 0 ? technicalSkills.toString() : '';
+        form.setFieldValue('otherInformation.specialTechnicalSkills', newVal);
+    }, [technicalSkills])
 
     const form = useForm({
         mode: 'controlled',
@@ -75,7 +98,6 @@ export default function index() {
                 specialTechnicalSkills: technicalSkills.toString()
             }
         };
-        console.log('cleanedForm: ', cleanedForm)
         setApplicationForm({
             ...applicationForm,
             familyBackground: cleanedForm
@@ -103,9 +125,9 @@ export default function index() {
                     form.setFieldError(`father.occupation`, 'Occupation is required');
                     invalid = true
                 }
-                if (father.contactNumber.toString() === '') {
-                    form.setFieldError(`father.contactNumber`, 'Contact Number is required');
-                    invalid = true
+                if (father.contactNumber.toString() === '' || isNaN(Number(father.contactNumber))) {
+                    form.setFieldError(`father.contactNumber`, 'Contact Number is required and must be a number');
+                    invalid = true;
                 }
             }
             if (mother.fullname != '' || (mother.age != '' && Number(mother.age) > 0) || mother.occupation != '' || mother.contactNumber.toString() != '') {
@@ -121,14 +143,14 @@ export default function index() {
                     form.setFieldError(`mother.occupation`, 'Occupation is required');
                     invalid = true
                 }
-                if (mother.contactNumber.toString() === '') {
-                    form.setFieldError(`mother.contactNumber`, 'Contact Number is required');
-                    invalid = true
+                if (mother.contactNumber.toString() === '' || isNaN(Number(mother.contactNumber))) {
+                    form.setFieldError(`mother.contactNumber`, 'Contact Number is required and must be a number');
+                    invalid = true;
                 }
             }
 
             form.getValues().siblings.forEach((item, index) => {
-                if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString().length < 11)) {
+                if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString() != '')) {
                     if (item.fullname === '') {
                         form.setFieldError(`siblings.${index}.fullname`, 'Fullname is required');
                         invalid = true
@@ -145,10 +167,10 @@ export default function index() {
                         form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required')
                         invalid = true
                     };
-                    if (item.contactNumber.toString().length < 11) {
-                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number Minimum length 11')
-                        invalid = true
-                    };
+                    if (item.contactNumber.toString().length < 11 || isNaN(Number(item.contactNumber))) {
+                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number must be at least 11 digits and numeric');
+                        invalid = true;
+                    }
                 }
             });
             const spouse = form.getValues().spouse;
@@ -192,9 +214,6 @@ export default function index() {
                         contactNumber: '',
                     },
                 ];
-
-                console.log('application form :', applicationForm)
-                console.log('form.getValues', form.getValues())
 
                 setApplicationForm({
                     ...applicationForm,
@@ -244,13 +263,13 @@ export default function index() {
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Father </p>} placeholder="Full Name" />
                     <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={0} {...form.getInputProps("father.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("father.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("father.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.fullname")} radius='md' w={isMobile ? '25%' : '100%'} label={<p>Mother </p>} placeholder="Full Name" />
                     <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} hideControls min={0}  {...form.getInputProps("mother.age")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.occupation")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("mother.contactNumber")} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
 
                 {applicationForm.familyBackground.siblings.map((_, index) => (
@@ -258,19 +277,19 @@ export default function index() {
                         <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} key={form.key(`siblings.${index}.fullname`)} {...form.getInputProps(`siblings.${index}.fullname`)} radius='md' w={isMobile ? '25%' : '100%'} label="Siblings" placeholder="Full Name" />
                         <NumberInput maxLength={11} classNames={{ input: 'poppins text-[#6D6D6D]' }} min={0} hideControls key={form.key(`siblings.${index}.age`)} {...form.getInputProps(`siblings.${index}.age`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                         <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.occupation`)} key={form.key(`siblings.${index}.occupation`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                        <NumberInput maxLength={11} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                        <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`siblings.${index}.contactNumber`)} key={form.key(`siblings.${index}.contactNumber`)} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                         {(<div>
                             <IconCircleMinus size={35} className="" onClick={() => { removeField(index) }} />
                         </div>)}
                     </div>
                 ))}
-                <p className=" w-[12%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2" onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD SIBLINGS</p>
+                <p className="w-full sp:w-[12%] text-sm bg-[#559cda] text-white sp:px-2 sp:py-1 p-3 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD SIBLINGS</p>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput {...form.getInputProps("spouse.fullname")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
                     <TextInput {...form.getInputProps("spouse.age")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput {...form.getInputProps("spouse.occupation")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
-                    <NumberInput maxLength={11}  {...form.getInputProps("spouse.contactNumber")} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
+                    <TextInput maxLength={11}  {...form.getInputProps("spouse.contactNumber")} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%] " >
@@ -305,7 +324,41 @@ export default function index() {
 
                 <p className="font-bold">Other Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
-                <MultiSelect rightSection ref={myRef} key={form.getValues().otherInformation.specialTechnicalSkills}  {...form.getInputProps("otherInformation.specialTechnicalSkills")} classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]' }} className='w-full' label={<p>Special Technical Skills <span className="text-[#F14336]">*</span></p>} radius='md' placeholder="Enter Keyword to add skills" data={[]} searchable value={technicalSkills} onChange={handleChange} onKeyDown={handleKeyDown} />
+
+                <div className="flex items-center gap-2">
+                    <Combobox store={combobox}  >
+                        <Combobox.DropdownTarget>
+                            <PillsInput className="flex-grow" radius={8} onClick={() => combobox.openDropdown()} key={form.getValues().otherInformation.specialTechnicalSkills} {...form.getInputProps("otherInformation.specialTechnicalSkills")}>
+                                <Pill.Group>
+                                    {values}
+                                    <Combobox.EventsTarget>
+                                        <PillsInput.Field
+                                            onFocus={() => combobox.openDropdown()}
+                                            onBlur={() => combobox.closeDropdown()}
+                                            value={search}
+                                            placeholder="Enter Keyword to add skills"
+                                            onChange={(event) => {
+                                                combobox.updateSelectedOptionIndex();
+                                                setSearch(event.currentTarget.value);
+                                            }}
+                                            onKeyDown={handleKeyDown}
+                                        />
+                                    </Combobox.EventsTarget>
+                                </Pill.Group>
+                            </PillsInput>
+                        </Combobox.DropdownTarget>
+                    </Combobox>
+                    <IconPlus className="cursor-pointer" onClick={() => { handleAdd() }} />
+                </div>
+
+
+                {/* <MultiSelect
+                    rightSection ref={myRef}
+                    key={form.getValues().otherInformation.specialTechnicalSkills} {...form.getInputProps("otherInformation.specialTechnicalSkills")}
+                    classNames={{ dropdown: 'hidden', input: 'poppins text-[#6D6D6D]' }}
+                    className='w-full' label={<p>Special Technical Skills <span className="text-[#F14336]">*</span></p>} radius='md' placeholder="Enter Keyword to add skills"
+                    data={[]} searchable value={technicalSkills} onChange={handleChange} onKeyDown={handleKeyDown} /> */}
+
                 <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isConvictedCrimeDetails")} radius='md' w={'100%'} label={<p>Have you ever been convicted of a crime ? if yes, please give details. <span className="text-[#F14336]">*</span></p>} placeholder="if you answer yes, please give details." />
                 <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.isBeenHospitalizedDetails")} radius='md' w={'100%'} label={<p>Have you ever been hospitalized?if yes, please give details. <span className="text-[#F14336]">*</span></p>} placeholder="if you answer yes, please give details." />
                 <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("otherInformation.medicalConditionDetails")} radius='md' w={'100%'} label={<p>Do you have any medical condition that may prevent  you from performing certain types of jobs?please specify. <span className="text-[#F14336]">*</span></p>} placeholder="if you answer yes, please give details." />
