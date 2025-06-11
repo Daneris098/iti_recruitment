@@ -7,17 +7,16 @@ import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground }
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { useMediaQuery } from "@mantine/hooks";
 
 export default function index() {
     const { isMobile } = GlobalStore()
     const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
-
+    const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [profesionalLicenses, setProfesionalLicenses] = useState<string[][]>([[]]);
     const [certifications, setCertifications] = useState<string[][]>([[]]);
-
-
     const [opened, setOpened] = useState(false);
     const [opened2, setOpened2] = useState(false);
     const togglePopover = (index: number, isStart: boolean) => {
@@ -166,7 +165,7 @@ export default function index() {
             // form.validate();  
             form.getValues().employmentRecord.forEach((item, index) => {
                 console.log('item.salary : ', item.salary)
-                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || item.salary > 0 || item.reasonForLeaving != '') {
+                if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || (item.salary != '' && Number(item.salary) > 0) || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
                         invalid = true
@@ -212,6 +211,12 @@ export default function index() {
                     form.clearFieldError(`employmentRecord.${index}.inclusiveDate.reasonForLeaving`)
                 }
             });
+
+            form.getValues().employmentRecord.forEach((item) => {
+                if (item.salary === '') {
+                    item.salary = 0
+                }
+            })
 
             if (!invalid) {
                 formRef.current.requestSubmit();
@@ -442,7 +447,7 @@ export default function index() {
                                         <Popover.Dropdown className="w-full">
                                             <DatePicker
                                                 firstDayOfWeek={0}
-                                                numberOfColumns={2}
+                                                numberOfColumns={isGreaterThanSp ? 2 : 1}
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
@@ -482,7 +487,7 @@ export default function index() {
                                         </Popover.Target>
                                         <Popover.Dropdown>
                                             <DatePicker
-                                                numberOfColumns={2}
+                                                numberOfColumns={isGreaterThanSp ? 2 : 1}
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {

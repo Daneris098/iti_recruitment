@@ -1,6 +1,6 @@
-import { Divider, MultiSelect, NumberInput, Select, TextInput } from "@mantine/core";
+import { Divider, MultiSelect, NumberInput, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCaretDownFilled, IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
+import { IconCirclePlus, IconCircleMinus } from "@tabler/icons-react";
 import { FamilyBackground, Step } from "../../types";
 import { ApplicationStore } from "../../store";
 import { useEffect, useRef, useState } from "react";
@@ -66,13 +66,16 @@ export default function index() {
     const onSubmit = async (form: FamilyBackground) => {
         const cleanedForm: FamilyBackground = {
             ...form,
+            father: { ...form.father, age: form.father.age == '' ? 0 : form.father.age },
+            mother: { ...form.mother, age: form.mother.age == '' ? 0 : form.mother.age },
+            children: { ...form.children, numberOfChildren: form.children.numberOfChildren == '' ? 0 : form.children.numberOfChildren },
             siblings: form.siblings?.filter(sibling => sibling.fullname.trim() !== ''),
             otherInformation: {
                 ...form.otherInformation,
                 specialTechnicalSkills: technicalSkills.toString()
             }
         };
-
+        console.log('cleanedForm: ', cleanedForm)
         setApplicationForm({
             ...applicationForm,
             familyBackground: cleanedForm
@@ -87,12 +90,12 @@ export default function index() {
             const father = form.getValues().father
             const mother = form.getValues().mother
 
-            if (father.fullname != '' || father.age > 0 || father.occupation != '' || father.contactNumber.toString() != '') {
+            if (father.fullname != '' || (father.age != '' && Number(father.age) > 0) || father.occupation != '' || father.contactNumber.toString() != '') {
                 if (father.fullname === '') {
                     form.setFieldError(`father.fullname`, 'Fullname is required');
                     invalid = true
                 }
-                if (father.age <= 0) {
+                if (father.age != '' && Number(father.age) <= 0) {
                     form.setFieldError(`father.age`, 'Age is required');
                     invalid = true
                 }
@@ -105,12 +108,12 @@ export default function index() {
                     invalid = true
                 }
             }
-            if (mother.fullname != '' || mother.age > 0 || mother.occupation != '' || mother.contactNumber.toString() != '') {
+            if (mother.fullname != '' || (mother.age != '' && Number(mother.age) > 0) || mother.occupation != '' || mother.contactNumber.toString() != '') {
                 if (mother.fullname === '') {
                     form.setFieldError(`mother.fullname`, 'Fullname is required');
                     invalid = true
                 }
-                if (mother.age <= 0) {
+                if (mother.age == '' && Number(mother.age) > 0) {
                     form.setFieldError(`mother.age`, 'Age is required');
                     invalid = true
                 }
@@ -118,7 +121,7 @@ export default function index() {
                     form.setFieldError(`mother.occupation`, 'Occupation is required');
                     invalid = true
                 }
-                if (father.contactNumber.toString() === '') {
+                if (mother.contactNumber.toString() === '') {
                     form.setFieldError(`mother.contactNumber`, 'Contact Number is required');
                     invalid = true
                 }
@@ -149,7 +152,7 @@ export default function index() {
                 }
             });
             const spouse = form.getValues().spouse;
-            if (spouse?.fullname != '' || spouse?.occupation != '' || spouse.age > 0 || spouse.contactNumber != '' && spouse.contactNumber.toString().length < 11) {
+            if (spouse?.fullname != '' || spouse?.occupation != '' || (spouse.age != '' && Number(spouse.age) > 0) || spouse.contactNumber != '' && spouse.contactNumber.toString().length < 11) {
                 if (spouse?.fullname == '') {
                     form.setFieldError(`spouse.fullname`, 'Fullname is required');
                     invalid = true
@@ -284,16 +287,18 @@ export default function index() {
                         styles={{ label: { color: "#6d6d6d" } }}
                         min={0}
                     />
-                    <Select
+
+                    <TextInput
+                        disabled={form.getValues().children.numberOfChildren == '' || Number(form.getValues().children.numberOfChildren) <= 0}
+                        {...form.getInputProps("children.ageRange")}
                         w={isMobile ? '100%' : '100%'}
+                        label="Age Range"
                         placeholder={"Age Range"}
                         radius={8}
-                        data={["1-12", "13-18", "Age > 19"]}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
+                        className="border-none w-full text-sm "
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
-                    // onChange={(value) => { setFilter({ ...filter, postedDate: `${value}` }) }}
+                        min={0}
                     />
 
                 </div>
