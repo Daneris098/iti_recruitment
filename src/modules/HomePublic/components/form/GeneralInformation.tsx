@@ -10,7 +10,6 @@ import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
-import { useMediaQuery } from "@mantine/hooks";
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -18,7 +17,6 @@ export default function index() {
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
-    const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
         { id: 2, value: 'Web Developer', label: 'Web Developer' },
@@ -26,10 +24,7 @@ export default function index() {
     const [cities, setCities] = useState([
         { id: 1, value: 'MANILA', label: 'MANILA' },
     ]);
-    // const [presentCityKey, setPresentCityKey] = useState('');
-    // const [permanentCityKey, setPermanentCityKey] = useState('');
     const [presentBarangayKey, setPresentBarangayKey] = useState('');
-    // const [permanentBarangayKey, setPermanentBarangayKey] = useState('');
     const [startDateAvailabilityOpened, setStartDateAvailabilityOpened] = useState(false);
     const [datedOfBirthOpened, setDatedOfBirthOpenedOpened] = useState(false);
     const form = useForm({
@@ -66,7 +61,7 @@ export default function index() {
                 age: (value: number) => value <= 0 ? "Age must be greater than 0" : null,
                 gender: (value: string) => value.length === 0 ? "Gender is required" : null,
                 civilStatus: (value: string) => value.length === 0 ? "Civil Status is required" : null,
-                mobileNumber: (value: number) => value.toString().length !== 12 ? "Enter a valid mobile number" : null,
+                mobileNumber: (value: number | string) => /^\d+$/.test(value.toString()) ? (value.toString().length < 11 ? "Enter a valid mobile number" : null) : "Mobile number must contain digits only",
                 workingEmailAddress: (value: string) => !/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? "Enter a valid email address" : null,
                 landlineNumber: (value: string) => value && value.length != 8 ? "Enter a valid landline mobile number" : null,
 
@@ -86,31 +81,17 @@ export default function index() {
     });
 
     const onSubmit = async (formData: GeneralInformation) => {
-
-
-        // form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!');
-        // form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!');
-        // form.clearFieldError('personalInformation.workingEmailAddress');
-
         const emailAvailable = await checkIfAvailable('email')
         const mobileAvailable = await checkIfAvailable('mobile')
-
-
-        console.log('emailAvailable: ', emailAvailable)
-        console.log('mobileAvailable: ', mobileAvailable)
-
         if (!emailAvailable) {
             form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!')
         }
-
         if (!mobileAvailable) {
             form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
         }
-
         if (!emailAvailable || !mobileAvailable) {
             return
         }
-
         setApplicationForm({ ...applicationForm, generalInformation: formData })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -204,13 +185,15 @@ export default function index() {
     useEffect(() => {
         console.log('vacancies: ', vacancies)
         if (applicationForm.generalInformation.firstChoice != '') {
-            console.log('test2: ', String(applicationForm.generalInformation.firstChoice))
+            // console.log('testtttt: ', String(vacancies.find((item) => String(item.label) === applicationForm.generalInformation.firstChoice)?.label))
+            // console.log('test2: ', String(applicationForm.generalInformation.firstChoice))
             // form.setFieldValue("firstChoice", String(applicationForm.generalInformation.firstChoice));
             // form.setFieldValue("secondChoice", String(applicationForm.generalInformation.secondChoice));
         }
-        if (selectedData.id != 0) {
-            console.log('test1: ', String(selectedData.id))
-            form.setFieldValue("firstChoice", String(selectedData.id));
+        if (selectedData.id != 0 && applicationForm.generalInformation.firstChoice === '') {
+            form.setFieldValue("firstChoice", String(vacancies.find((item) => item.id === selectedData.id)?.label));
+            // console.log('test1: ', String(selectedData.id))
+            // form.setFieldValue("firstChoice", String(selectedData.id));
         }
     }, [vacancies])
 
@@ -250,7 +233,7 @@ export default function index() {
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end ">
-                    <Select
+                    <Autocomplete
                         withAsterisk
                         {...form.getInputProps("firstChoice")}
                         key={form.key('firstChoice')}
@@ -263,11 +246,14 @@ export default function index() {
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
+                        onChange={((val) => {
+                            form.setFieldValue("firstChoice", val);
+                        })}
                     />
 
-                    <Select
+                    <Autocomplete
                         {...form.getInputProps("secondChoice")}
-                        key={form.getValues().secondChoice}
+                        key={form.key('secondChoice')}
                         w={isMobile ? '25%' : '100%'}
                         label="Position Applying for - Second Choice"
                         placeholder={"Second Choice"}
@@ -277,6 +263,9 @@ export default function index() {
                         className="border-none w-full text-sm"
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
+                        onChange={((val) => {
+                            form.setFieldValue("secondChoice", val);
+                        })}
                     />
 
                 </div>
@@ -594,7 +583,7 @@ export default function index() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
-                    <NumberInput prefix="+" maxLength={13} hideControls classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
+                    <TextInput maxLength={11} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.mobileNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Mobile Number" placeholder="Mobile Number (+63)" />
                     <TextInput classNames={{ input: 'poppins text-[#6D6D6D]' }} withAsterisk {...form.getInputProps("personalInformation.workingEmailAddress")} radius='md' w={isMobile ? '33%' : '100%'} label="Working Email Address" placeholder="Email Address" />
                     <TextInput maxLength={8} classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.landlineNumber")} radius='md' w={isMobile ? '33%' : '100%'} label="Landline Number" placeholder="Landline Number" />
                 </div>

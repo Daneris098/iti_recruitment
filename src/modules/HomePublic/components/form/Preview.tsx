@@ -44,7 +44,7 @@ export default function index() {
                     <div className="flex flex-col h-full  sm:w-[20%] p-2 gap-6 ">
                         <img src={applicationForm.photo ?? ""} alt="Profile Picture" className="w-[90%] h-auto object-cover rounded-lg" />
                         <p className="text-[#0078EB] text-2xl font-bold">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
-                        <p>{vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.firstChoice))?.position}</p>
+                        <p>{applicationForm.generalInformation.firstChoice}</p>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
                             <p className="text-[#6D6D6D] ">Email</p>
                             <p className="text-[#6D6D6D] font-bold truncate">{applicationForm.generalInformation.personalInformation.workingEmailAddress}</p>
@@ -80,7 +80,7 @@ export default function index() {
                                 <p className="text-[#0078EB] text-xl font-bold">Personal Details</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Applying for (First Choice)</p>
-                                    <p className="font-bold">{vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.firstChoice))?.position}</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.firstChoice}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Desired Salary</p>
@@ -90,6 +90,8 @@ export default function index() {
                                     <p className="text-[#6D6D6D]">Present Address</p>
                                     <p className="text-[#6D6D6D] font-bold">
                                         {
+                                            applicationForm.generalInformation.personalInformation.presentAddress.unitNo + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.houseNo + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
@@ -116,7 +118,7 @@ export default function index() {
                             <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-14">
                                 <div>
                                     <p className="text-[#6D6D6D]">Applying for (Second Choice)</p>
-                                    <p className="font-bold">{vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice))?.position ?? "N/A"}</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.secondChoice}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Availability to start</p>
@@ -126,6 +128,8 @@ export default function index() {
                                     <p className="text-[#6D6D6D]">Permanent Address</p>
                                     <p className="text-[#6D6D6D] font-bold">
                                         {
+                                            applicationForm.generalInformation.personalInformation.presentAddress.unitNo + " " +
+                                            applicationForm.generalInformation.personalInformation.presentAddress.houseNo + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
                                             applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
@@ -255,6 +259,11 @@ export default function index() {
                                     <div>
                                         <p className="text-[#6D6D6D]">Professional Liscences</p>
                                         <p className="text-[#6D6D6D] font-bold">{education.professionalLicenses != "" ? education.professionalLicenses : 'N/A'}</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-[#6D6D6D]">Certifications</p>
+                                        <p className="text-[#6D6D6D] font-bold">{education.certfications != "" ? education.certfications : 'N/A'}</p>
                                     </div>
                                 </div>
                             ))}

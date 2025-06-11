@@ -126,9 +126,9 @@ export default function index() {
                     form.setFieldError(`father.occupation`, 'Occupation is required');
                     invalid = true
                 }
-                if (father.contactNumber.toString() === '') {
-                    form.setFieldError(`father.contactNumber`, 'Contact Number is required');
-                    invalid = true
+                if (father.contactNumber.toString() === '' || isNaN(Number(father.contactNumber))) {
+                    form.setFieldError(`father.contactNumber`, 'Contact Number is required and must be a number');
+                    invalid = true;
                 }
             }
             if (mother.fullname != '' || (mother.age != '' && Number(mother.age) > 0) || mother.occupation != '' || mother.contactNumber.toString() != '') {
@@ -144,14 +144,14 @@ export default function index() {
                     form.setFieldError(`mother.occupation`, 'Occupation is required');
                     invalid = true
                 }
-                if (mother.contactNumber.toString() === '') {
-                    form.setFieldError(`mother.contactNumber`, 'Contact Number is required');
-                    invalid = true
+                if (mother.contactNumber.toString() === '' || isNaN(Number(mother.contactNumber))) {
+                    form.setFieldError(`mother.contactNumber`, 'Contact Number is required and must be a number');
+                    invalid = true;
                 }
             }
 
             form.getValues().siblings.forEach((item, index) => {
-                if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString().length < 11)) {
+                if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString() != '')) {
                     if (item.fullname === '') {
                         form.setFieldError(`siblings.${index}.fullname`, 'Fullname is required');
                         invalid = true
@@ -168,10 +168,10 @@ export default function index() {
                         form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required')
                         invalid = true
                     };
-                    if (item.contactNumber.toString().length < 11) {
-                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number Minimum length 11')
-                        invalid = true
-                    };
+                    if (item.contactNumber.toString().length < 11 || isNaN(Number(item.contactNumber))) {
+                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number must be at least 11 digits and numeric');
+                        invalid = true;
+                    }
                 }
             });
             const spouse = form.getValues().spouse;
@@ -340,7 +340,7 @@ export default function index() {
                                             onFocus={() => combobox.openDropdown()}
                                             onBlur={() => combobox.closeDropdown()}
                                             value={search}
-                                            placeholder="Search values"
+                                            placeholder="Enter Keyword to add skills"
                                             onChange={(event) => {
                                                 combobox.updateSelectedOptionIndex();
                                                 setSearch(event.currentTarget.value);
