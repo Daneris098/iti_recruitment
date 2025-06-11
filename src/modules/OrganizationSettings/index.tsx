@@ -3,7 +3,6 @@ import { OrganizationSettingsStore } from "@modules/OrganizationSettings/store";
 import Modals from "@src/modules/OrganizationSettings/components/modal";
 import OrganizationDataTable from "@modules/OrganizationSettings/components/";
 import { Panel, AlertType } from "./assets/Enum";
-import bg2 from "@assets/bg2.png";
 import { useEffect, useRef } from "react";
 import { IconExclamationMark } from "@tabler/icons-react";
 import { useFetchOrganizationSettings } from "./services/data";
@@ -44,7 +43,7 @@ export const OrganizationSettings = () => {
     <div className="bg-white h-full select-none">
       <title>Organization</title>
       <Modals dataTableRef={dataTableRef} />
-      <div style={{ backgroundImage: `url(${bg2})` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
+      <div style={{ backgroundImage: `url(bg2.png)` }} className="bg-cover bg-center h-[15%]  rounded-t-md flex flex-col items-center">
         <div className=" flex items-center justify-between w-[90%] m-auto">
           <div className="flex flex-col">
             <p className="text-xs sm:text-3xl text-white font-bold">Organization Settings</p>

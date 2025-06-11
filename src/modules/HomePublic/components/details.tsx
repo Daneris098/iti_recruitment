@@ -14,10 +14,10 @@ export default function Details() {
         <p className="text-xl text-gray-500 font-semibold 2xl:text-3xl">{selectedData.position}</p>
         <div className="w-full flex justify-between">
           <Pill.Group>
-            <Pill className="rounded-md bg-green-500" size={pillSize}>
+            <Pill className="rounded-md bg-[#7BADFF]" size={pillSize}>
               <p className="text-white ">{selectedData.workplace}</p>
             </Pill>
-            <Pill className="rounded-md bg-orange-400" size={pillSize}>
+            <Pill className="rounded-md bg-[#FFB703]" size={pillSize}>
               <p className="text-white">{selectedData.employmentType}</p>
             </Pill>
           </Pill.Group>
