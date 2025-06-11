@@ -28,8 +28,8 @@ import Applied from "@src/modules/Applicants/components/pages/applied";
 import ForInterview from "@src/modules/Applicants/components/pages/forInterview";
 import ForOffered from "@src/modules/Applicants/components/pages/offered";
 import Hired from "@src/modules/Applicants/components/pages/hired";
-import ForTransferee from "@src/modules/Applicants/components/pages/forTransfer";
-import Transferred from "@src/modules/Applicants/components/pages/transferred";
+// import ForTransferee from "@src/modules/Applicants/components/pages/forTransfer";
+// import Transferred from "@src/modules/Applicants/components/pages/transferred";
 import Archived from "@src/modules/Applicants/components/pages/archived";
 import useFetchUserDetails from "@src/utils/FetchUserDetails";
 const isValidJWT = (token: string | null): boolean => {
@@ -200,14 +200,14 @@ const router = createBrowserRouter([
             path: "hired",
             element: <Hired />,
           },
-          {
-            path: "transferee",
-            element: <ForTransferee />,
-          },
-          {
-            path: "transferred",
-            element: <Transferred />,
-          },
+          // {
+          //   path: "transferee",
+          //   element: <ForTransferee />,
+          // },
+          // {
+          //   path: "transferred",
+          //   element: <Transferred />,
+          // },
           {
             path: "archive",
             element: <Archived />,

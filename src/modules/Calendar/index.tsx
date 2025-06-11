@@ -186,13 +186,13 @@ export default function index() {
       <ModalWrapper isOpen={isViewApplicant} overlayClassName="modal-overlay" contentClassName="modal-content" onClose={() => setIsViewApplicant(false)}>
         <ViewApplicantShared
           applicantName={selectedApplicant?.nameResponse?.normalName}
-          Position={selectedApplicant?.positionsApplied[0].name}
-          Status={selectedApplicant?.applicationMovements[selectedApplicant?.applicationMovements.length - 1]?.status?.name}
-          Email={selectedApplicant?.contact?.email}
-          Phone={selectedApplicant?.contact?.mobileNo}
-          Skills={selectedApplicant?.skills}
-          Remarks={selectedApplicant?.applicationMovements}
-          Application_Date={selectedApplicant?.applicationDate}
+          position={selectedApplicant?.positionsApplied[0].name}
+          status={selectedApplicant?.applicationMovements[selectedApplicant?.applicationMovements.length - 1]?.status?.name}
+          email={selectedApplicant?.contact?.email}
+          phone={selectedApplicant?.contact?.mobileNo}
+          skills={selectedApplicant?.skills}
+          remarks={selectedApplicant?.applicationMovements}
+          applicationDate={selectedApplicant?.applicationDate}
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />

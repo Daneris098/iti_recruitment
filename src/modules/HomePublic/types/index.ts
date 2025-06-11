@@ -97,7 +97,7 @@ export interface EmploymentRecord {
     from: string | null;
     to: string | null;
   };
-  salary: number;
+  salary: number | string;
   reasonForLeaving: string;
 }
 
@@ -180,13 +180,13 @@ export interface Siblings {
 export interface FamilyBackground {
   father: {
     fullname: string;
-    age: number;
+    age: number | string;
     occupation: string;
     contactNumber: string;
   };
   mother: {
     fullname: string;
-    age: number;
+    age: number | string;
     occupation: string;
     contactNumber: string;
   };
@@ -195,12 +195,12 @@ export interface FamilyBackground {
 
   spouse?: {
     fullname: string;
-    age: number;
+    age: number | string;
     occupation: string;
     contactNumber: string;
   };
   children: {
-    numberOfChildren: number;
+    numberOfChildren: number | string;
     ageRange: string;
   };
 
@@ -271,4 +271,12 @@ export enum AlertType {
   cancelApplication = "cancelApplication",
   cancelledApplication = "cancelledApplication",
   submitResponse = "submitResponse",
+}
+
+export enum StepperTitle {
+  "General and Personal Information",
+  "Education and Employment Record",
+  "Family Background and Other Information",
+  "Reference",
+  "Photo"
 }

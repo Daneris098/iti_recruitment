@@ -1,27 +1,30 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
 import {
     ArchiveForm,
     HiredForm, OfferForm,
     Applicant, ForInterviewForm,
     TransferApplicationPositionForm
 } from "@modules/Shared/types";
-import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
-import { ViewApplicantById } from "@modules/Applicants/types"
-import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
 import {
-applicantsByIdService,
-    viewApplicantOfferService, useViewInterviewStagesHiring
-} from "@modules/Shared/components/api/UserService"
-import {
-    applicationMovementHired,
+    applicationMovementHired, transferApplicantPosition,
     applicationMovementArchive, applicationMovementForTransfer,
     applicationMovementOffered, applicationMovementForInterview,
-    transferApplicantPosition
 } from "@modules/Applicants/api/userService";
+import {
+    applicantsByIdService,
+    viewApplicantOfferService, useViewInterviewStagesHiring,
+} from "@modules/Shared/components/api/UserService";
+import {
+    useSharedUserService,
+    useGetDivisions, useGetFeedbacks,
+    useGetPositionLevels, useGetDepartments,
+    useSharedTransferredPosition, useSharedViewAcceptedOffer
+} from "@modules/Shared/api/useSharedUserService";
+import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { ViewApplicantById } from "@modules/Applicants/types"
 import { applicantKeys } from "@modules/Applicants/keys/queryKeys";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { payloadMapper } from "@modules/Shared/utils/payloadMapper";
-import { useSharedUserService, useSharedTransferredPosition, useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
+import { sharedApplicantKeys } from "@src/modules/Shared/keys/queryKeys";
+import { useMutation, useQueryClient, useQuery, useQueries } from "@tanstack/react-query";
 
 const formatAddress = (address?: {
     houseNo?: string;
@@ -67,6 +70,9 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
     const [firstPositionApplied, secondPositionApplied] = positionsApplied;
     const mapComments = applicationMovements.map((item: any) => item.comment)
     const mapApplicationMovements = applicationMovements.map((item: any) => item.status.name);
+    const dateApplied = applicationMovements.map((item: any) =>
+        DateTimeUtils.dateDefaultToHalfMonthWord(item.audit.date));
+
     return {
         name: nameResponse.normalName,
         generalInformation: {
@@ -200,7 +206,8 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
             }
         },
         applicationMovements: {
-            movements: mapApplicationMovements
+            movements: mapApplicationMovements,
+            movementLastModifiedDate: dateApplied
         },
         commentsByID: mapComments
     };
@@ -208,10 +215,12 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
 
 export const useApplicantsById = (id: string | number) => {
     return useQuery({
-        queryKey: sharedApplicantKeys.lists(),
+        queryKey: sharedApplicantKeys.detail(id),
         queryFn: () => applicantsByIdService.getById(id),
         select: (data) => formatApplicantById(data),
-
+        enabled: !!id,
+        staleTime: 0,
+        structuralSharing: false
     });
 };
 
@@ -228,14 +237,14 @@ export const formatApplicant = (
     page: number,
     pageSize: number,
     total: number,
-    // acceptedOffers: any[]
 ): Applicant => {
-    const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
-    const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
+    const dateApplied = applicant.dateApplied;
+    const location = applicant.addresses?.[0]?.zipCode?.name;
     const firstTwoPositions = applicant.positionsApplied?.slice(0, 2) || [];
     const positionNames = firstTwoPositions.map((pos: any) => pos.name).join(", ");
+    const mapComments = applicant.applicationMovements.map((item: any) => item.comment);
     const singlePosition = applicant.positionsApplied?.[applicant.positionsApplied.length - 1] || null;
-    // const acceptedOffer = acceptedOffers.find((offer) => offer.applicantId === applicant.id);
+    const mapApplicationMovements = applicant.applicationMovements.map((item: any) => item.status.name);
 
     let movement;
     if (applicant.applicationMovements?.length === 1) {
@@ -247,11 +256,7 @@ export const formatApplicant = (
     return {
         id: applicant.id,
         applicantName: `${applicant.nameResponse.firstName} ${applicant.nameResponse.lastName}`,
-        applicationDate: new Date(applicant.dateApplied).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        }),
+        applicationDate: DateTimeUtils.dateDefaultToHalfMonthWord(dateApplied),
         phone: applicant.contact.mobileNo,
         email: applicant.contact.emailAddress,
         position: positionNames,
@@ -262,8 +267,8 @@ export const formatApplicant = (
         movement: mapApplicationMovements,
         comments: mapComments,
         generalApplicant: applicant,
+        location,
         singlePosition,
-        // acceptedOffer
     };
 };
 
@@ -287,8 +292,8 @@ export const useTransferPositionLookup = (
             return {
                 jobOpenings: data.items.map(item => ({
                     id: item.id,
-                    position: item.positionTitleResponse,
-                    company: item.companyResponse,
+                    position: item.position,
+                    company: item.company,
                     slots: item.availableSlot,
                 })),
                 page: data.page,
@@ -332,30 +337,60 @@ export const useViewInterviewStages = (
     });
 };
 
+export const useViewPositionLevels = () => {
+    return useQuery({
+        queryKey: ['position-levels'],
+        queryFn: async () => {
+            const apiFilters: Record<string, any> = {};
+
+            const data = await useGetPositionLevels.getAll(apiFilters);
+
+            return data.items;
+        }
+    })
+}
+
+export const useViewDepartments = () => {
+    return useQuery({
+        queryKey: ['departments'],
+        queryFn: async () => {
+            const departmentFilters: Record<string, any> = {};
+
+            const data = await useGetDepartments.getAll(departmentFilters);
+
+            return data.items
+        }
+    })
+}
+
+export const useGetCompanyDivisions = () => {
+    return useQuery({
+        queryKey: ['divisions'],
+        queryFn: async () => {
+            const divisionFilters: Record<string, any> = {};
+
+            const data = await useGetDivisions.getAll(divisionFilters);
+
+            return data.items
+        }
+    })
+}
+
+export const useGetHiringAndApplicantFeedbacks = (isApplicantFeedback: boolean = false) => {
+    return useQuery({
+        queryKey: ['feedbacks', isApplicantFeedback],
+        queryFn: async () => {
+            const feedbacksFilter: Record<string, any> = {
+                IsApplicantFeedback: isApplicantFeedback
+            };
+            const data = await useGetFeedbacks.getAll(feedbacksFilter);
+            return data.items;
+        }
+    });
+};
+
 const DEFAULT_FETCH_ALL_PAGE = 1;
 const DEFAULT_FETCH_ALL_PAGE_SIZE = 60;
-
-// export const useViewAcceptedOffer = (id: string | number) => {
-//     return useQuery({
-//         queryKey: sharedApplicantKeys.list({}),
-//         queryFn: async () => {
-//             const data = await useSharedViewAcceptedOffer.getAcceptedOfferId(id)
-//             // debugger;
-//             return data
-//         },
-//         enabled: !!id
-//     })
-
-// }
-// export const useViewAcceptedOffer = (id: string | number) => {
-//     return useQuery({
-//         queryKey: ['accepted-offer', id],
-//         queryFn: async () => {
-//             return await useSharedViewAcceptedOffer.getAcceptedOfferId(id);
-//         },
-//         enabled: !!id,
-//     });
-// };
 
 export const useViewAcceptedOffer = (ids: (string | number)[]) => {
     return useQueries({
@@ -380,17 +415,14 @@ export const useSingleAcceptedOffer = (id: string | number) => {
 export const useApplicants = (
     page: number = 1,
     pageSize: number = 30,
-    statusId?: number,
     filters: Record<string, any> = {},
     setTime?: (time: number) => void,
-    fetchAll: boolean = true,
-    // acceptedOffers: any[]
+    fetchAll: boolean = false,
 ) => {
     return useQuery({
         queryKey: sharedApplicantKeys.list({
             page: fetchAll ? DEFAULT_FETCH_ALL_PAGE : page,
             pageSize: fetchAll ? DEFAULT_FETCH_ALL_PAGE_SIZE : pageSize,
-            statusId,
             ...filters,
         }),
         queryFn: async () => {
@@ -401,10 +433,6 @@ export const useApplicants = (
                 page: fetchAll ? DEFAULT_FETCH_ALL_PAGE : page,
                 pageSize: fetchAll ? DEFAULT_FETCH_ALL_PAGE_SIZE : pageSize,
             };
-
-            if (statusId !== undefined) {
-                apiFilters.statusId = statusId;
-            }
 
             const data = await useSharedUserService.getAll(apiFilters);
             const end = performance.now();
@@ -420,7 +448,6 @@ export const useApplicants = (
                 total: data.total,
                 page,
                 pageSize,
-                statusId,
             };
         },
         staleTime: 60 * 1000,

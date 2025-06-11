@@ -8,7 +8,7 @@ import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 export default function index() {
   const { data } = useVacancies();
   // const jobs: VacancyType[] = jobsJson;
-  const { setSelectedData, selectedData } = HomeStore();
+  const { setSelectedData, selectedData, setApplicationFormModal } = HomeStore();
   const pillSize: MantineSize = useMatches({
     base: "xs",
     lg: "xs",

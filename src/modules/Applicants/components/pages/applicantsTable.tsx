@@ -1,38 +1,43 @@
 //#region IMPORTS
+import dayjs from "dayjs";
 import { Divider } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
-import { usePositionFilterStore, useStatusFilterStore, } from "@modules/Shared/store";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
-import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
-import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
-import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import {
+  useSelectedApplicantsStore,
   FilterStore, useCloseModal,
   useSortStore, useApplicantStore,
-  usePaginationStore, useApplicantIdStore, useSelectedApplicantsStore,
+  usePaginationStore, useApplicantIdStore,
 } from "@modules/Applicants/store";
 import Filter from "@src/modules/Applicants/components/filter/Filter";
+import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
+import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
+import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
-import applicantsColumns from "@src/modules/Applicants/components/columns/Columns";
+import { usePositionFilterStore, useStatusFilterStore, } from "@modules/Shared/store";
+import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
-import dayjs from "dayjs";
 
 export default function index() {
+
+  const location = useLocation();
+  const { filter } = FilterStore();
   const { selectedStatusId } = useStatusFilterStore();
   const { selectedPositionId } = usePositionFilterStore();
 
-  const { filter } = FilterStore();
+  const allColumns = getCombinedColumns({ includeApplicants: true });
 
-  const location = useLocation();
   const { isForMultipleTransfer, setIsForMultipleTransfer } = useCloseModal();
+
   const currentRoute = Object.values(ApplicantRoutes).find(
     (route) => route.path === location.pathname
   );
+  
   const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
 
   const headerText = currentRoute?.label;
@@ -103,9 +108,8 @@ export default function index() {
   }
 
   const { data: getApplicants, isLoading } = useApplicants(
-    page,
-    pageSize,
-    0,
+    1,
+    10000,
     queryParams,
     setLoadTime
   );
@@ -165,19 +169,15 @@ export default function index() {
       filtered = transformToTransferredStatus(filtered);
     }
 
-    //client-side pagination
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedApplicants = filtered.slice(startIndex, endIndex);
-
-    setRecords(paginatedApplicants);
-  }, [getApplicants, location.pathname, page, pageSize]);
+    setApplicantRecords(getApplicants.applicants);
+    setRecords(filtered);
+  }, [getApplicants, location.pathname]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
   // it is also responsible for sorting the records based on the selected column.
-  const extendedColumn = applicantsColumns
-
+  // const extendedColumn = applicantsColumns
+  const extendedColumn = allColumns
     // Exclude Feedback Column from the JSON object
     .filter((col: any) => col.accessor !== "feedback" && col.accessor !== 'movement' && col.accessor !== "comments")
     .map((col) => {
@@ -203,7 +203,7 @@ export default function index() {
 
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
-
+  // debugger;
   //#region MAIN
   // main
   return (
@@ -237,8 +237,7 @@ export default function index() {
         {isTransfereePath && (
           <DataTable
             columns={extendedColumn}
-            records={sortedRecords}
-            // withrowselection="true"
+            records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             selectedRecords={selectedRecords}
             onSelectedRecordsChange={(records) => {
               setSelectedRecords(records);
@@ -253,12 +252,11 @@ export default function index() {
         {!isTransfereePath && (
           <DataTable
             columns={extendedColumn}
-            records={sortedRecords}
+            records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             onRowClick={({ record }) => handleRowClick(record)}
             rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
           />
         )}
-
       </div>
 
       {/* Pagination and Footer (Sticky at Bottom) */}
@@ -290,14 +288,15 @@ export default function index() {
         onClose={() => setIsViewApplicant(false)}
       >
         <ViewApplicant
+          location={selectedApplicant?.location}
           applicantName={selectedApplicant?.applicantName}
-          Position={selectedApplicant?.position}
-          Status={selectedApplicant?.status}
-          Email={selectedApplicant?.email}
-          Phone={selectedApplicant?.phone}
-          Skills={selectedApplicant?.skills}
-          Remarks={selectedApplicant?.remarks}
-          Application_Date={selectedApplicant?.applicationDate}
+          position={selectedApplicant?.position}
+          status={selectedApplicant?.status}
+          email={selectedApplicant?.email}
+          phone={selectedApplicant?.phone}
+          skills={selectedApplicant?.skills}
+          remarks={selectedApplicant?.remarks}
+          applicationDate={selectedApplicant?.applicationDate}
           IsJobOffer={selectedApplicant?.isJobOffer}
           onClose={() => setIsViewApplicant(false)}
         />

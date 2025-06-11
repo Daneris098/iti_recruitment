@@ -157,6 +157,12 @@ interface useDropDownOfferedState {
   department: string;
   setDepartment: (department: string) => void;
 
+  division: string;
+  setDivision: (division: string) => void;
+
+  divisionId: number;
+  setDivisionId: (divisionId: number) => void;
+
   departmentId: number;
   setDepartmentId: (departmentId: number) => void;
 
@@ -183,11 +189,24 @@ interface useDropDownOfferedState {
 
   interviewTime: string;
   setInterviewTime: (interviewTime: string) => void;
+
+  feedbacks: string[];
+  setFeedbacks: (feedbacks: string[]) => void;
+
+  feedbacksId: number;
+  setFeedbacksId: (feedbacksId: number) => void;
 }
 
 export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => ({
+
   status: "Offered",
   setStatus: (status) => set({ status }),
+
+  feedbacks: [], 
+  setFeedbacks: (feeds) => set({ feedbacks: feeds }),
+
+  feedbacksId: 0,
+  setFeedbacksId: (feedbacksId) => set({ feedbacksId }),
 
   getSalaryTypes: "",
   setSalaryTypes: (type) => set({ getSalaryTypes: type }),
@@ -235,7 +254,13 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   setInterviewDate: (interviewDate) => set({ interviewDate }),
 
   interviewTime: "",
-  setInterviewTime: (interviewTime) => set({ interviewTime })
+  setInterviewTime: (interviewTime) => set({ interviewTime }),
+
+  division: "",
+  setDivision: (division) => set({ division }),
+
+  divisionId: 0,
+  setDivisionId: (divisionId) => set({ divisionId })
 }))
 // End of DropDownOffered modal
 
@@ -256,9 +281,15 @@ interface Feedbacks {
 
   applicantFeedback: string;
   setApplicantFeedback: (applicantFeedback: string) => void;
+
+  feedbacksId: number;
+  setFeedbacksId: (feedbacksId: number) => void;
 }
 
 export const useFeedbacksStore = create<Feedbacks>((set) => ({
+  feedbacksId: 0,
+  setFeedbacksId: (feedbacksId) => set({ feedbacksId }),
+
   feedback: "",
   setFeedback: (feedback) => set({ feedback }),
 

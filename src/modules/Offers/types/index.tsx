@@ -1,3 +1,5 @@
+import React from "react";
+
 //#region OFFER
 export interface OfferColumns {
   applicantName: string;
@@ -59,6 +61,7 @@ export interface AllJobOffersFilterType {
 
 //#region PDF PROPS
 export interface PDFProps {
+  applicantId: number;
   applicantName: string;
   position: string;
   department: string;
@@ -77,6 +80,7 @@ export interface PDFProps {
 }
 
 export interface ExtendedPDFProps extends Partial<PDFProps> {
+  status: string;
   applicantId?: number;
 }
 
@@ -86,23 +90,23 @@ export type JobOfferRecord = Partial<PDFProps> & {
   applicantName: string;
   dateGenerated?: string;
   dateLastUpdated?: string;
-  attachments: string | null;
+  attachments: string | null | React.ReactNode;
 };
 
 //#region ROW
 export interface Row {
   status: string;
-  attachments: string | null;
+  attachments: string | null | React.ReactNode;
 }
 
 //#region TABKEYs
 export type TabKey = "Pending" | "Accepted" | "All_offers" | "Archived";
 
 export enum TABSKey {
-  AllOffers = "All_offers",
   Pending = "Pending",
   Accepted = "Accepted",
-  Archived = "Archived"
+  Archived = "Archived",
+  AllOffers = "All_offers",
 }
 
 //#region SORT
@@ -122,7 +126,7 @@ export interface JobOffersColumns {
   dateLastUpdated: string;
   remarks: string;
   status: string;
-  attachments: string;
+  attachments: string | React.ReactNode;
 }
 
 export interface JobOffersStore {

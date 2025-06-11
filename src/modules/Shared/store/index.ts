@@ -1,8 +1,8 @@
 import { create } from "zustand"
 import {
-    SelectedApplicantsStore,
     ApplicantId, SharedApplicantStore,
     JobOpeningsStore, PaginationState,
+    SelectedApplicantsStore, SelectedDateStore,
 } from "@modules/Shared/types"
 
 export const useApplicantIdStore = create<ApplicantId>((set) => ({
@@ -83,3 +83,8 @@ export const usePositionFilterStore = create<PositionFilterStore>((set) => ({
     selectedPositionId: 0,
     setSelectedPositionId: (id) => set({ selectedPositionId: id }),
 }));
+
+export const useHiredStartDate = create<SelectedDateStore>((set) => ({
+    selectedDate: null,
+    setSelectedDate: (date) => set({ selectedDate: date })
+}))

@@ -13,25 +13,27 @@ import { Button, Divider, Drawer, Flex, MultiSelect, Text, TextInput, useMatches
 const STATUS_LABEL_ID_MAP: Record<string, number> = {
   "Applied": 1,
   "For Interview": 2,
-  "Offered": 3,
+  "Pending": 3,
   "Archived": 4,
-  "Hired": 5,
+  "Accepted": 5,
   "Ready for Transfer": 7,
 };
 
 export default function DrawerFilter() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const getJobOffersFilter = useJobOfferStore((state) => state.records)
-  const statusMap = new Map<string, Set<string>>();
+
   const commentsMap = new Map<string, Set<string>>();
+  const statusMap = new Map<string, Set<string>>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const getJobOffersFilter = useJobOfferStore((state) => state.records);
 
   const {
+    dateArchived, setDateArchived,
     dateGenerated, setDateGenerated,
     dateLastUpdated, setDateLastUpdated,
-    dateArchived, setDateArchived
   } = useDateRangeStore();
 
   const { selectedStatusId, SetSelectedStatusId } = useStatusFilterStore();
+
   const {
     filter, activeTab,
     setIsFiltered, setFilter,
@@ -44,7 +46,6 @@ export default function DrawerFilter() {
   const { setGeneratedOfferValue: setFilterValue } = useGeneratedOfferStore();
   const [localStatusFilter, setLocalStatusFilter] = useState<any>(filter.status || []);
   const [localApplicantName, setLocalApplicantName] = useState(filter.applicantName || "");
-  const [localRemarksFilter, setLocalRemarksFilter] = useState<any>(filter.remarks || []);
 
   getJobOffersFilter.forEach(({ id, status, remarks }) => {
     if (typeof status === 'string' && status.trim()) {
@@ -68,28 +69,20 @@ export default function DrawerFilter() {
     ids: Array.from(ids)
   }));
 
-  const filterRemarks = Array.from(commentsMap.entries()).map(([label, ids]) => ({
-    value: label,
-    label,
-    ids: Array.from(ids)
-  }));
-
 
   useEffect(() => {
     if (filterDrawer) {
       const nameFromUrl = searchParams.get("name") || "";
-      const statusFromUrl = searchParams.get("status")?.split(",") || [];
-      const remarksFromUrl = searchParams.get("remarks")?.split(",") || [];
-      const dateGeneratedFromUrl = searchParams.get("dateGeneratedFrom");
       const dateGeneratedToUrl = searchParams.get("dateGenerateTo");
-      const dateLastUpdateFromUrl = searchParams.get("dateLastUpdatedFrom");
-      const dateLastUpdatedToUrl = searchParams.get("dateLastUpdatedTo");
       const dateArchivedFromUrl = searchParams.get("dateArchived");
       const dateArchivedToUrl = searchParams.get("dateArchivedTo");
+      const statusFromUrl = searchParams.get("status")?.split(",") || [];
+      const dateGeneratedFromUrl = searchParams.get("dateGeneratedFrom");
+      const dateLastUpdatedToUrl = searchParams.get("dateLastUpdatedTo");
+      const dateLastUpdateFromUrl = searchParams.get("dateLastUpdatedFrom");
 
       setLocalApplicantName(nameFromUrl);
       setLocalStatusFilter(statusFromUrl);
-      setLocalRemarksFilter(remarksFromUrl);
 
       if (dateGeneratedFromUrl || dateGeneratedToUrl) {
         setDateGenerated([
@@ -119,7 +112,7 @@ export default function DrawerFilter() {
       setFilter(filterVal);
       setLocalApplicantName("");
       setLocalStatusFilter([]);
-      setLocalRemarksFilter([]);
+      // setLocalRemarksFilter([]);
       SetSelectedStatusId(0);
       setIsFiltered(false);
       setClearFilter(false);
@@ -138,6 +131,13 @@ export default function DrawerFilter() {
     let formattedDateArchivedFrom: string | null = null;
     let formattedArchivedTo: string | null = null;
 
+    const statusId = localStatusFilter.find((label: any) => STATUS_LABEL_ID_MAP[label]);
+
+    if (statusId) {
+      SetSelectedStatusId(STATUS_LABEL_ID_MAP[statusId]);
+    } else {
+      SetSelectedStatusId(0);
+    }
     if (dateGenerated?.[0]) {
       formattedDateGeneratedFrom = dayjs(dateGenerated[0]).format("YYYYMMDD")
     }
@@ -164,7 +164,7 @@ export default function DrawerFilter() {
       ...filter,
       applicantName: localApplicantName,
       status: localStatusFilter,
-      remarks: localRemarksFilter,
+      // remarks: localRemarksFilter,
       dateGenerated: [formattedDateGeneratedFrom, formattedDateGeneratedTo],
       dateLastUpdated: [formattedDateLastUpdateFrom, formattedDateLastUpdatedTo],
       dateArchived: [formattedDateArchivedFrom, formattedArchivedTo]
@@ -175,7 +175,6 @@ export default function DrawerFilter() {
       pageSize: "30",
       Name: localApplicantName || "",
       StatusIds: selectedStatusId === 0 ? "" : selectedStatusId.toString(),
-      remarks: localRemarksFilter.join(",")
     }
 
     if (formattedDateGeneratedFrom && formattedDateGeneratedTo) {
@@ -236,20 +235,6 @@ export default function DrawerFilter() {
 
   const handleStatusChange = (selectedLabels: string[]) => {
     setLocalStatusFilter(selectedLabels);
-
-    const matchingIds = filterStatus
-      .filter((item) => selectedLabels.includes(item.label))
-      .flatMap((item) => item.ids);
-
-    const statusId = selectedLabels.find((label) => STATUS_LABEL_ID_MAP[label]);
-    if (statusId) {
-      SetSelectedStatusId(STATUS_LABEL_ID_MAP[statusId]);
-    } else if (matchingIds.length > 0) {
-
-      SetSelectedStatusId(Number(matchingIds[0]));
-    } else {
-      setLocalStatusFilter([]);
-    }
   };
 
   return (
@@ -397,44 +382,6 @@ export default function DrawerFilter() {
 
               <Divider size={0.5} color="#edeeed" className="w-full" />
 
-              {/* Remarks chips */}
-              <MultiSelect
-                radius={8}
-                size={inputSize}
-                className="border-none w-full text-[16px] poppins"
-                label="Remarks"
-                placeholder="Select Remarks"
-                styles={() => ({
-                  label: { color: "#6d6d6d" },
-                  input: {
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    overflowX: "auto",
-                    maxHeight: "40px",
-                    scrollbarWidth: "thin",
-                  },
-                  values: {
-                    display: "flex",
-                    flexWrap: "nowrap",
-                    overflowX: "auto",
-                    maxWidth: "100%",
-                    gap: "4px",
-                    padding: "4px",
-                  },
-                })}
-                data={filterRemarks}
-                onChange={(values) => setLocalRemarksFilter(values)}
-                searchable
-                clearable
-                nothingFoundMessage="No options"
-                maxDropdownHeight={90}
-                rightSection={
-                  <span>
-                    <IconCaretDownFilled size={18} stroke={2} />
-                  </span>
-                }
-              />
-
               {/* Status chips */}
               <MultiSelect
                 radius={8}
@@ -465,13 +412,11 @@ export default function DrawerFilter() {
                 label="Applicant Name"
                 placeholder="Type Applicant Name"
                 styles={{ label: { color: "#6d6d6d" } }}
-                value={filter.applicantName}
-                onChange={(event) => { setFilter({ ...filter, applicantName: `${event.currentTarget.value}` }) }}
+                value={localApplicantName}
+                onChange={(e) => setLocalApplicantName(e.currentTarget.value)}
               />
 
               <Text fw={500} c="#6d6d6d">Date Generated Range</Text>
-
-
               <DateRange
                 gapValue={12}
                 size="md"

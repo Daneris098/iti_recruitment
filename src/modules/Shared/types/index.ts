@@ -1,4 +1,5 @@
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import React from "react";
 export interface ApplicantResponseById {
     id: number[];
 }
@@ -102,7 +103,7 @@ export const STATUS_MAP: Record<string, JobOfferStatus> = {
     Hired: JobOfferStatus.Accepted,
     Archived: JobOfferStatus.Archived
 }
-
+// debugger;
 export const APPLICANT_FIELDS: Record<string, (applicant: any) => string | undefined> = {
     id: (applicant) => String(applicant.id),
     applicantName: (applicant) => applicant.applicantName,
@@ -113,7 +114,7 @@ export const APPLICANT_FIELDS: Record<string, (applicant: any) => string | undef
         const lastStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
         return lastStatus ? STATUS_MAP[lastStatus] ?? "Unknown" : "Unknown";
     },
-    attachments: (applicant) => applicant.acceptedOffer?.data?.[0]?.name ?? ''
+    attachments: (applicant) => applicant.acceptedOffer?.[0]?.name ?? ''
 };
 
 export interface JobOffersColumns {
@@ -123,7 +124,7 @@ export interface JobOffersColumns {
     dateLastUpdated: string;
     remarks: string;
     status: string;
-    attachments: string;
+    attachments: string | React.ReactNode;
 }
 
 export interface ApplicantId {
@@ -143,7 +144,8 @@ export interface Applicant {
     movement: string;
     comments: string;
     generalApplicant: any;
-    singlePosition: any;
+    location?: string;
+    singlePosition: string;
 }
 
 export interface SharedApplicantStore {
@@ -173,8 +175,8 @@ export interface JobOpenings {
         name?: string;
     };
     id: string | number;
-    positionTitleResponse: string;
-    companyResponse: {
+    position: string;
+    company: {
         name: string;
         [key: string]: any;
     } | null;
@@ -235,9 +237,9 @@ export type ForInterviewForm = {
 
 export type HiredForm = {
     ApplicantId: number;
-    File: File | null;
+    FileAttachment: File | null;
     Order?: number;
-    DateStart: string;
+    DateStart: string | null;
 }
 
 export type OfferForm = {
@@ -316,14 +318,15 @@ export type TextRendererProps = {
 
 export interface ViewApplicantsProps extends Partial<PDFProps> {
     applicantName: string;
-    Position: string;
-    Status: string;
-    Email: string;
-    Phone: string;
-    Skills: string;
-    Remarks: string;
-    Application_Date: string;
+    position: string;
+    status: string;
+    email: string;
+    phone: string;
+    skills: string;
+    remarks: string;
+    applicationDate: string;
     IsJobOffer: any;
+    location?: string;
     onClose: () => void;
 }
 
@@ -352,3 +355,13 @@ export type AcceptedOffer = {
     name: string;
     isUploaded: boolean;
 }[];
+
+export interface SelectedDateStore {
+    selectedDate: string | null;
+    setSelectedDate: (date: string | null) => void;
+}
+
+export type PDFViewerProps<T> = {
+    identifier: T;
+    getPdfPathFn: (identifier: T) => Promise<string>;
+};
