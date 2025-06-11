@@ -7,7 +7,7 @@ import { HomeStore, FilterStore } from "@src/modules/HomePublic/store";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { selectedDataVal } from "./values";
 import { VacancyType } from "@src/modules/HomePublic/types";
-import { ActionIcon, ScrollArea } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 import bg2 from "@assets/bg2.png";
 import Alert from "@src/modules/HomePublic/components/modal/Alert";
@@ -63,10 +63,10 @@ export default function Home() {
       <div className="h-[79%] flex w-[92%] m-auto">
         {jobs.length > 0 ? (
           <>
-            <ScrollArea type="auto" className="h-full w-full lg:w-[28%] p-5" style={{ maxHeight: "100vh", scrollbar: { display: "none" } }}>
-              <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 font-semibold">RELEVANT RESULTS:</p>
+            <div className="h-auto w-full lg:w-[28%] sm:overflow-y-hidden overflow-y-auto sm:hover:overflow-y-auto ease-in-out p-5">
+              <p className="text-sm 2xl:text-2xl text-gray-500 pl-3 2xl:pl-0 font-semibold">RELEVANT RESULTS: </p>
               <List />
-            </ScrollArea>
+            </div>
 
             <div className="hidden sm:block h-auto lg:w-[72%] sm:overflow-y-hidden  ease-in-out p-4">
               {selectedData != selectedDataVal ? (
