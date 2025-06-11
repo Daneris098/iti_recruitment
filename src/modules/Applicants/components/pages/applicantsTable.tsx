@@ -24,18 +24,20 @@ import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applic
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 
 export default function index() {
-  const allColumns = getCombinedColumns({ includeApplicants: true });
 
+  const location = useLocation();
+  const { filter } = FilterStore();
   const { selectedStatusId } = useStatusFilterStore();
   const { selectedPositionId } = usePositionFilterStore();
 
-  const { filter } = FilterStore();
+  const allColumns = getCombinedColumns({ includeApplicants: true });
 
-  const location = useLocation();
   const { isForMultipleTransfer, setIsForMultipleTransfer } = useCloseModal();
+
   const currentRoute = Object.values(ApplicantRoutes).find(
     (route) => route.path === location.pathname
   );
+  
   const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
 
   const headerText = currentRoute?.label;
@@ -106,8 +108,8 @@ export default function index() {
   }
 
   const { data: getApplicants, isLoading } = useApplicants(
-    page,
-    pageSize,
+    1,
+    10000,
     queryParams,
     setLoadTime
   );
@@ -167,13 +169,9 @@ export default function index() {
       filtered = transformToTransferredStatus(filtered);
     }
 
-    //client-side pagination
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedApplicants = filtered.slice(startIndex, endIndex);
-
-    setRecords(paginatedApplicants);
-  }, [getApplicants, location.pathname, page, pageSize]);
+    setApplicantRecords(getApplicants.applicants);
+    setRecords(filtered);
+  }, [getApplicants, location.pathname]);
 
   // This is for rendering applicants record for each column.
   // Not only does it render each applicants into the column, 
@@ -205,7 +203,7 @@ export default function index() {
 
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
-
+  // debugger;
   //#region MAIN
   // main
   return (
@@ -239,8 +237,7 @@ export default function index() {
         {isTransfereePath && (
           <DataTable
             columns={extendedColumn}
-            records={sortedRecords}
-            // withrowselection="true"
+            records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             selectedRecords={selectedRecords}
             onSelectedRecordsChange={(records) => {
               setSelectedRecords(records);
@@ -255,12 +252,11 @@ export default function index() {
         {!isTransfereePath && (
           <DataTable
             columns={extendedColumn}
-            records={sortedRecords}
+            records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             onRowClick={({ record }) => handleRowClick(record)}
             rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
           />
         )}
-
       </div>
 
       {/* Pagination and Footer (Sticky at Bottom) */}
