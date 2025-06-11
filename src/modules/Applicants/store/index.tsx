@@ -189,11 +189,24 @@ interface useDropDownOfferedState {
 
   interviewTime: string;
   setInterviewTime: (interviewTime: string) => void;
+
+  feedbacks: string[];
+  setFeedbacks: (feedbacks: string[]) => void;
+
+  feedbacksId: number;
+  setFeedbacksId: (feedbacksId: number) => void;
 }
 
 export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => ({
+
   status: "Offered",
   setStatus: (status) => set({ status }),
+
+  feedbacks: [], 
+  setFeedbacks: (feeds) => set({ feedbacks: feeds }),
+
+  feedbacksId: 0,
+  setFeedbacksId: (feedbacksId) => set({ feedbacksId }),
 
   getSalaryTypes: "",
   setSalaryTypes: (type) => set({ getSalaryTypes: type }),
@@ -268,9 +281,15 @@ interface Feedbacks {
 
   applicantFeedback: string;
   setApplicantFeedback: (applicantFeedback: string) => void;
+
+  feedbacksId: number;
+  setFeedbacksId: (feedbacksId: number) => void;
 }
 
 export const useFeedbacksStore = create<Feedbacks>((set) => ({
+  feedbacksId: 0,
+  setFeedbacksId: (feedbacksId) => set({ feedbacksId }),
+
   feedback: "",
   setFeedback: (feedback) => set({ feedback }),
 

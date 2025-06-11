@@ -1,11 +1,66 @@
+import { useState, useEffect } from "react";
+import { ViewApplicantsProps } from "@modules/Applicants/store";
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { useFeedbacksStore } from "@src/modules/Applicants/store";
-import { IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
-import { ViewApplicantsProps } from "@modules/Applicants/store";
+import { interviewStagesOption } from "@modules/Applicants/types";
 import DropZone from "@modules/Applicants/components/dropzone/Dropzone";
-import { useState } from "react";
+import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
+import { IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
+import { useGetHiringAndApplicantFeedbacks } from "@modules/Shared/hooks/useSharedApplicants";
 
 export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "Status">) {
+    const {
+        feedbacks,
+        setFeedbacks
+    } = useDropDownOfferedStore();
+
+    const {
+        setFeedbacksId,
+        feedback, setFeedback,
+        applicantFeedback, setApplicantFeedback,
+    } = useFeedbacksStore();
+
+    const { data: hiringFeedback } = useGetHiringAndApplicantFeedbacks(false);
+    const { data: applicantFeedbacks } = useGetHiringAndApplicantFeedbacks(true);
+
+    const [getHiringFeedback, setHiringFeedback] = useState<interviewStagesOption[]>([]);
+    const [getApplicantFeedback, setApplicantFeedbackDropdown] = useState<interviewStagesOption[]>([]);
+
+    useEffect(() => {
+        if (!applicantFeedbacks || !hiringFeedback) return;
+
+        const feedbacks = applicantFeedbacks.map((feeds: any) => ({
+            value: feeds.id,
+            label: feeds.description
+        }));
+
+        const hiringFeedbacksDropdown = hiringFeedback.map((hiringFeeds: any) => ({
+            value: hiringFeeds.id,
+            label: hiringFeeds.description
+        }))
+
+        hiringFeedbacksDropdown.push({
+            value: "custom_add_feedback",
+            label: "Add Applicant Feedback"
+        });
+
+        feedbacks.push({
+            value: "custom_add_feedback",
+            label: "Add Feedback"
+        });
+
+        setHiringFeedback(hiringFeedbacksDropdown);
+        setApplicantFeedbackDropdown(feedbacks);
+    }, [applicantFeedbacks]);
+
+
+    useEffect(() => {
+        if (getApplicantFeedback.length > 0) {
+            setFeedbacks([getApplicantFeedback[0].label]);
+            setFeedbacksId(getApplicantFeedback[0].value)
+        }
+    }, [applicantFeedbacks])
+
     const feedbacksComboBox = useCombobox({
         onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
     });
@@ -14,26 +69,11 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
         onDropdownClose: () => applicantFeedbackComboBox.resetSelectedOption(),
     });
 
-    const { feedback, setFeedback, applicantFeedback, setApplicantFeedback } = useFeedbacksStore();
-
-    const [feedbacks, setFeedbacks] = useState([
-        "Inactive",
-        "Not Qualified",
-        "Budget Constraint",
-        "Add Feedback",
-    ]);
-    const [applicantsFeedbacks, setApplicantsFeedbacks] = useState([
-        "Salary Mismatch",
-        "Better Offer",
-        "No Response",
-        "Add Applicant Feedback",
-    ]);
-
-    const [showCustomFeedbackInput, setShowCustomFeedbackInput] = useState(false);
     const [customFeedback, setCustomFeedback] = useState("");
+    const [showCustomFeedbackInput, setShowCustomFeedbackInput] = useState(false);
 
-    const [showCustomApplicantFeedbackInput, setShowCustomApplicantFeedbackInput] = useState(false);
     const [customApplicantFeedback, setCustomApplicantFeedback] = useState("");
+    const [showCustomApplicantFeedbackInput, setShowCustomApplicantFeedbackInput] = useState(false);
 
     const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(Status);
     const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
@@ -64,23 +104,23 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                             </Combobox.Target>
 
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                                {feedbacks.map((item) => (
+                                {getHiringFeedback.map((item) => (
                                     <Combobox.Option
-                                        key={item}
-                                        value={item}
+                                        key={item.value}
+                                        value={item.label}
                                         onClick={() => {
-                                            if (item === "Add Feedback") {
+                                            if (item.label === "Add Applicant Feedback") {
                                                 setShowCustomFeedbackInput(true);
                                                 feedbacksComboBox.closeDropdown();
                                             } else {
-                                                setFeedback(item);
+                                                setFeedback(item.label);
                                                 feedbacksComboBox.closeDropdown();
                                             }
                                         }}
                                         className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition flex items-center poppins"
                                     >
-                                        <span>{item}</span>
-                                        {item === "Add Feedback" && (
+                                        <span>{item.label}</span>
+                                        {item.label === "Add Applicant Feedback" && (
                                             <IconCirclePlus className="text-[#5A9D27] ml-auto w-[18px] h-[18px]" />
                                         )}
                                     </Combobox.Option>
@@ -101,7 +141,7 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                     onClick={() => {
                                         if (customFeedback && !feedbacks.includes(customFeedback)) {
                                             const updated = [...feedbacks];
-                                            updated.splice(-1, 0, customFeedback); // insert before last
+                                            updated.splice(-1, 0, customFeedback);
                                             setFeedbacks(updated);
                                             setFeedback(customFeedback);
                                             setCustomFeedback("");
@@ -139,23 +179,23 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                             </Combobox.Target>
 
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                                {applicantsFeedbacks.map((item) => (
+                                {getApplicantFeedback.map((item) => (
                                     <Combobox.Option
-                                        key={item}
-                                        value={item}
+                                        key={item.value}
+                                        value={item.label}
                                         onClick={() => {
-                                            if (item === "Add Applicant Feedback") {
+                                            if (item.label === "Add Feedback") {
                                                 setShowCustomApplicantFeedbackInput(true);
                                                 applicantFeedbackComboBox.closeDropdown();
                                             } else {
-                                                setApplicantFeedback(item);
+                                                setApplicantFeedback(item.label);
                                                 applicantFeedbackComboBox.closeDropdown();
                                             }
                                         }}
                                         className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition flex items-center poppins"
                                     >
-                                        <span>{item}</span>
-                                        {item === "Add Applicant Feedback" && (
+                                        <span>{item.label}</span>
+                                        {item.label === "Add Feedback" && (
                                             <IconCirclePlus className="text-[#5A9D27] ml-auto w-[18px] h-[18px]" />
                                         )}
                                     </Combobox.Option>
@@ -176,11 +216,16 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                     onClick={() => {
                                         if (
                                             customApplicantFeedback &&
-                                            !applicantsFeedbacks.includes(customApplicantFeedback)
+                                            !getHiringFeedback.some(item => item.label === customApplicantFeedback)
                                         ) {
-                                            const updated = [...applicantsFeedbacks];
-                                            updated.splice(-1, 0, customApplicantFeedback);
-                                            setApplicantsFeedbacks(updated);
+                                            const updated = [...getHiringFeedback];
+                                            const newValue = updated.length > 0 ? Math.max(...updated.map(item => item.value)) + 1 : 1;
+
+                                            updated.splice(-1, 0, {
+                                                label: customApplicantFeedback,
+                                                value: newValue,
+                                            });
+                                            setHiringFeedback(updated);
                                             setApplicantFeedback(customApplicantFeedback);
                                             setCustomApplicantFeedback("");
                                             setShowCustomApplicantFeedbackInput(false);

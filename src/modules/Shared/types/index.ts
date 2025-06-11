@@ -114,7 +114,7 @@ export const APPLICANT_FIELDS: Record<string, (applicant: any) => string | undef
         const lastStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
         return lastStatus ? STATUS_MAP[lastStatus] ?? "Unknown" : "Unknown";
     },
-    attachments: (applicant) => applicant.acceptedOffer?.data?.[0]?.name ?? ''
+    attachments: (applicant) => applicant.acceptedOffer?.[0]?.name ?? ''
 };
 
 export interface JobOffersColumns {

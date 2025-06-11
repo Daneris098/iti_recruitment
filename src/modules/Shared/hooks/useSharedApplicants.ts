@@ -14,7 +14,9 @@ import {
     viewApplicantOfferService, useViewInterviewStagesHiring,
 } from "@modules/Shared/components/api/UserService";
 import {
-    useSharedUserService, useGetPositionLevels, useGetDepartments,
+    useSharedUserService,
+    useGetDivisions, useGetFeedbacks,
+    useGetPositionLevels, useGetDepartments,
     useSharedTransferredPosition, useSharedViewAcceptedOffer
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
@@ -213,10 +215,12 @@ const formatApplicantById = (applicant: any): ViewApplicantById => {
 
 export const useApplicantsById = (id: string | number) => {
     return useQuery({
-        queryKey: sharedApplicantKeys.lists(),
+        queryKey: sharedApplicantKeys.detail(id),
         queryFn: () => applicantsByIdService.getById(id),
         select: (data) => formatApplicantById(data),
-
+        enabled: !!id,
+        staleTime: 0,
+        structuralSharing: false
     });
 };
 
@@ -359,6 +363,32 @@ export const useViewDepartments = () => {
     })
 }
 
+export const useGetCompanyDivisions = () => {
+    return useQuery({
+        queryKey: ['divisions'],
+        queryFn: async () => {
+            const divisionFilters: Record<string, any> = {};
+
+            const data = await useGetDivisions.getAll(divisionFilters);
+
+            return data.items
+        }
+    })
+}
+
+export const useGetHiringAndApplicantFeedbacks = (isApplicantFeedback: boolean = false) => {
+    return useQuery({
+        queryKey: ['feedbacks', isApplicantFeedback],
+        queryFn: async () => {
+            const feedbacksFilter: Record<string, any> = {
+                IsApplicantFeedback: isApplicantFeedback
+            };
+            const data = await useGetFeedbacks.getAll(feedbacksFilter);
+            return data.items;
+        }
+    });
+};
+
 const DEFAULT_FETCH_ALL_PAGE = 1;
 const DEFAULT_FETCH_ALL_PAGE_SIZE = 60;
 
@@ -387,7 +417,7 @@ export const useApplicants = (
     pageSize: number = 30,
     filters: Record<string, any> = {},
     setTime?: (time: number) => void,
-    fetchAll: boolean = true,
+    fetchAll: boolean = false,
 ) => {
     return useQuery({
         queryKey: sharedApplicantKeys.list({

@@ -1,7 +1,6 @@
 //#region IMPORTS
 import dayjs from "dayjs";
 import { DataTable } from "mantine-datatable";
-import { PDFViewer } from "@react-pdf/renderer";
 import { Pagination, Tabs } from "@mantine/core";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -10,11 +9,12 @@ import Filter from "@modules/Offers/components/filter/Filter";
 import { IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useApplicantIdStore } from "@modules/Applicants/store";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
-import PDFDocument from "@modules/Offers/components/documents/PDF";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
 import { useApplicants } from "@modules/Shared/hooks/useSharedApplicants";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
+import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
+import { getApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 import { useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
 import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
@@ -44,6 +44,7 @@ export default function index() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [loadTime, setLoadTime] = useState<number | null>(null);
     const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
+    const applicantId = useApplicantIdStore((state) => state.id);
 
     // #region CONSTANTS
     const TABS = [
@@ -140,12 +141,13 @@ export default function index() {
     const filteredRecords = filterRecords(activeTab!, sortedRecords.length > 0 ? sortedRecords : records);
     const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
 
-    const createOfferMap = (hiredApplicantsIds: any[], acceptedOffers: any[]) => {
-        return hiredApplicantsIds.reduce((map, id, index) => {
-            map[id] = acceptedOffers[index];
+    const createOfferMap = (acceptedOffers: { applicantId: number, offer: any[] }[]) => {
+        return acceptedOffers.reduce((map, { applicantId, offer }) => {
+            map[applicantId] = offer;
             return map;
         }, {} as Record<string | number, any>);
-    }
+    };
+
 
     const mergeApplicantsWithOffers = (applicants: any[], offerMap: Record<number | string, any>) => {
         return applicants.map(applicant => ({
@@ -153,7 +155,7 @@ export default function index() {
             acceptedOffer: offerMap[applicant.id] ?? null,
         }));
     }
-
+    // debugger;
     const filterValidApplicants = (applicants: any[]) => {
         return applicants.filter(applicant => {
             const lastStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
@@ -170,11 +172,17 @@ export default function index() {
                 result.status = STATUS_MAP[rawStatus as keyof typeof STATUS_MAP];
 
             } else if (key === ATTACHMENTS) {
-                result.attachments = applicant.acceptedOffer?.data?.[0]?.name ?? '';
+                const rawStatus = applicant.generalApplicant?.applicationMovements?.at(-1)?.status?.name;
+                const status = STATUS_MAP[rawStatus as keyof typeof STATUS_MAP];
+
+                if (status === "Accepted") {
+                    result.attachments = applicant.generalApplicant.nameResponse.firstName;
+                } else {
+                    result.attachments = '';
+                }
             } else {
                 result[key as keyof JobOffersColumns] = APPLICANT_FIELDS[key](applicant) ?? '';
             }
-
         }
         return result;
     };
@@ -189,38 +197,51 @@ export default function index() {
 
     useEffect(() => {
         if (hiredApplicantIds.length === 0) return;
-
         Promise.all(
-            hiredApplicantIds.map(id => useSharedViewAcceptedOffer.getAcceptedOfferId(id))
-        )
-            .then(setAcceptedOffers)
-            .catch(console.error);
+            hiredApplicantIds.map(id =>
+                useSharedViewAcceptedOffer
+                    .getAcceptedOfferId(id)
+                    .then(res => ({ id, offer: res.data }))
+                    .catch(() => ({ id, offer: null }))
+            )
+
+        ).then(results => {
+            const offers = results
+                .filter(result => result.offer !== null)
+                .map(result => result.offer);
+            setAcceptedOffers(offers);
+        });
+
     }, [hiredApplicantIds]);
 
     useEffect(() => {
-        setHasLoaded(false);
-    }, [page, pageSize, filter, selectedStatusId, activeTab]);
 
-    useEffect(() => {
-        if (!sharedApplicants?.applicants || hasLoaded) return;
-
-        const offerMap = createOfferMap(hiredApplicantIds, acceptedOffers);
+        if (!sharedApplicants?.applicants || hasLoaded || !acceptedOffers) return;
+        const offerMap = createOfferMap(acceptedOffers);
         const applicantsWithOffers = mergeApplicantsWithOffers(sharedApplicants.applicants, offerMap);
         const transformedColumns = transformApplicants(applicantsWithOffers);
-
         loadCandidates(transformedColumns);
         setHasLoaded(true);
     }, [sharedApplicants?.applicants, acceptedOffers, hasLoaded]);
 
     //#region FUNCTIONS
     const handleRowClick = (row: ExtendedPDFProps) => {
-        setApplicantId(row.applicantId!);
-        setSelectedRow(row);
+        const id = (row as any).id || row.applicantId;
+
+        if (row.status !== "Accepted") { return; }
+
+        if (id) {
+            setApplicantId(id);
+            setSelectedRow({ ...row, applicantId: id });
+        } else {
+            console.warn("applicantId is missing in row:", row);
+        }
     };
 
     const renderCell = (col: { accessor: string }, row: Row) => {
-
         let content = col.accessor === STATUS ? checkStatus(row.status) : row[col.accessor as keyof Row];
+        // Determine cursor class based on status
+        const cursorClass = row.status !== "Accepted" ? "cursor-not-allowed" : "cursor-pointer";
 
         if (col.accessor === ATTACHMENTS) {
             if (!row.attachments) return null;
@@ -234,9 +255,11 @@ export default function index() {
             );
         }
 
-        return <span className={`flex items-center ${col.accessor === STATUS ? 'flex items-center justify-center' : ''}`}
-        >{content}
-        </span>
+        return (
+            <span className={`flex items-center ${col.accessor === STATUS ? 'flex items-center justify-center' : ''} ${cursorClass}`}>
+                {content}
+            </span>
+        );
     };
 
     const getFilteredColumns = (tab: TabKey) => {
@@ -325,9 +348,10 @@ export default function index() {
             {/* PDF Modal */}
             <PDFModal isOpen={!!selectedRow} onClose={() => setSelectedRow(null)} header={HEADER_GENERATE_JOB_OFFER}>
                 {selectedRow && (
-                    <PDFViewer width="100%" height="891" style={{ border: "1px solid #ccc", borderRadius: "8px" }}>
-                        <PDFDocument {...selectedRow} />
-                    </PDFViewer>
+                    <PDFViewer
+                        identifier={applicantId}
+                        getPdfPathFn={getApplicantPDFPath}
+                    />
                 )}
             </PDFModal>
         </div>
