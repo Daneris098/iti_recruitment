@@ -306,7 +306,7 @@ export default function index() {
 
                         <div className="flex flex-col items-end sm:flex-row gap-4">
                             <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps(`educationBackground.${index}.course`)} radius='md' w={isMobile ? '50%' : '100%'} label="Course" placeholder="Course" />
-                            <div className="flex flex-col sm:flex-row items-end gap-4 w-[100%]" >
+                            <div className="flex  items-end gap-4 w-[100%]" >
 
 
                                 <YearPickerInput
@@ -381,7 +381,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEducationBackground}><IconCirclePlus size={20} />ADD EDUCATION</p>
+                <p className="sp:w-40 text-sm bg-[#559cda] text-white p-3 sp:px-2 sp:py-1 rounded-lg justify-center font-semibold cursor-pointer flex gap-2 m-1" onClick={addEducationBackground}><IconCirclePlus size={20} />ADD EDUCATION</p>
 
 
                 <p className="font-bold">Employment Record</p>
@@ -537,7 +537,7 @@ export default function index() {
 
                     </div>
                 ))}
-                <p className="w-40 text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEmploymentRecord}><IconCirclePlus size={20} />ADD EXPERIENCE</p>
+                <p className="justify-center sp:w-40 text-sm bg-[#559cda] text-white p-3 sp:px-2 sp:py-1 rounded-md font-semibold cursor-pointer flex gap-2 m-1" onClick={addEmploymentRecord}><IconCirclePlus size={20} />ADD EXPERIENCE</p>
 
 
             </div>

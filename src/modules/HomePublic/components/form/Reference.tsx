@@ -170,7 +170,7 @@ export default function index() {
                             </div>)}
                         </div>
                     ))}
-                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD CHARACTER REFERENCE</p>
+                    <p className="sp:w-[20%] text-sm bg-[#559cda] text-white p-3 sp:px-2 sp:py-1 rounded-md font-semibold cursor-pointer flex justify-center gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD CHARACTER REFERENCE</p>
 
                 </div>
 
@@ -230,41 +230,34 @@ export default function index() {
                 <p className="font-bold">Application Source</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <p>Let us know how did you find our company <span className="text-red-500">*</span></p>
-                <div className="flex gap-2 sm:gap-0">
+                <div className="grid grid-cols-2 sp:grid-cols-3 gap-3">
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'employeeReferal'}
                         {...form.getInputProps(`applicationSource.employeeReferal`, { type: 'checkbox' })}
-                        className="w-[33%]"
-                        label="Employee Refereal"
+                        label="Employee Referal"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'jobStreet'}
                         {...form.getInputProps(`applicationSource.jobStreet`, { type: 'checkbox' })}
-                        className="w-[33%] "
                         label="Jobstreet"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'headHunter'}
                         {...form.getInputProps(`applicationSource.headHunter`, { type: 'checkbox' })}
-                        className="w-[33%] truncate"
                         label="Headhunter"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
-                </div>
-                <div className="flex  gap-2 sm:gap-0">
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'wordOfMouth'}
                         {...form.getInputProps(`applicationSource.wordOfMouth`, { type: 'checkbox' })}
-                        className="w-[33%]"
                         label="Word of Mouth"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'walkin'}
                         {...form.getInputProps(`applicationSource.walkin`, { type: 'checkbox' })}
-                        className="w-[33%]"
                         label="Walk-in"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
@@ -272,7 +265,6 @@ export default function index() {
                         <Checkbox
                             disabled={isAlreadyCheck && activeSource != 'others'}
                             {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
-                            className="w-[33%]"
                             label="Others"
                             classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                         />

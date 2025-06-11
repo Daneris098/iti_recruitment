@@ -66,11 +66,11 @@ export default function index() {
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
                     title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
                 }} >
-                <div className='h-[95vh] sp:h-[85vh] flex flex-col gap-3 py-3 '>
+                <div className='h-[89vh] sp:h-[85vh] flex flex-col gap-3 py-3 '>
 
                     {/* header */}
                     <div className='top-0 z-50 sticky bg-white m-auto w-[95%]'>
-                        <div className='flex justify-between'>
+                        <div className='flex justify-between items-center'>
                             <p className='text-[#559CDA] text-[22px] font-bold py-2'>{(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}</p>
                             <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setApplicationFormModal(false); }} />
                         </div>
