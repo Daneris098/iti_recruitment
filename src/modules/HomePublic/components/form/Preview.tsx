@@ -43,7 +43,7 @@ export default function index() {
 
                     <div className="flex flex-col h-full  sm:w-[20%] p-2 gap-6 ">
                         <img src={applicationForm.photo ?? ""} alt="Profile Picture" className="w-[90%] h-auto object-cover rounded-lg" />
-                        <p className="text-[#0078EB] text-2xl font-bold">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
+                        <p className="text-[#559CDA] text-2xl font-bold">{applicationForm.generalInformation.personalInformation.fullname.firstName + " " + applicationForm.generalInformation.personalInformation.fullname.lastName}</p>
                         <p>{applicationForm.generalInformation.firstChoice}</p>
                         <div className="flex gap-1 sm:flex-col sm:gap-0">
                             <p className="text-[#6D6D6D] ">Email</p>
@@ -73,11 +73,11 @@ export default function index() {
                     <div className="flex flex-col w-full gap-6">
 
 
-                        <div className="flex h-full w-full">
+                        <p className="text-[#559CDA] text-xl font-bold mt-6">Personal Details</p>
+                        <div className="flex h-full w-full X">
 
 
-                            <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Personal Details</p>
+                            <div className="flex flex-col p-2 gap-5 w-1/2 ">
                                 <div>
                                     <p className="text-[#6D6D6D]">Applying for (First Choice)</p>
                                     <p className="font-bold">{applicationForm.generalInformation.firstChoice}</p>
@@ -115,7 +115,7 @@ export default function index() {
                             </div>
 
 
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-14">
+                            <div className="flex flex-col p-2 gap-5 w-1/2 ">
                                 <div>
                                     <p className="text-[#6D6D6D]">Applying for (Second Choice)</p>
                                     <p className="font-bold">{applicationForm.generalInformation.secondChoice}</p>
@@ -171,11 +171,11 @@ export default function index() {
 
                         </div>
 
+                        <p className="text-[#559CDA] text-xl font-bold">Government ID/Number</p>
                         <div className="flex h-full w-full">
 
 
                             <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Government ID/Number</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">SSS</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.sssNo : 'N/A'}</p>
@@ -199,8 +199,7 @@ export default function index() {
                             </div>
 
 
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[4.9rem] sm:mt-7">
-                                <p className="text-[#0078EB] text-xl font-bold"></p>
+                            <div className="flex flex-col p-2 gap-5 w-1/2 ">
                                 <div>
                                     <p className="text-[#6D6D6D]">Pag-ibig No.</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo != '' ? applicationForm.generalInformation.personalInformation.governmentIdOrNumber.pagibigNo : 'N/A'}</p>
@@ -229,7 +228,7 @@ export default function index() {
                         <div className="flex h-full w-full flex-wrap">
                             {applicationForm.educationAndEmployment.educationBackground.map((education) => (
                                 <div className="flex flex-col p-2 gap-5 w-1/2">
-                                    <p className="text-[#0078EB] text-xl font-bold">Education</p>
+                                    <p className="text-[#559CDA] text-xl font-bold">Education</p>
                                     <div>
                                         <p className="text-[#6D6D6D]">School Name</p>
                                         <p className="text-[#6D6D6D] font-bold">{education.nameOfSchool}</p>
@@ -273,7 +272,7 @@ export default function index() {
                         <div className="flex h-full w-full flex-wrap">
                             {applicationForm.educationAndEmployment.employmentRecord.map((employment, index) => (
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
-                                    <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Record</p>
+                                    <p className={cn("text-[#559CDA] text-xl font-bold", index != 0 && "opacity-0")}>Employment Record</p>
                                     <div>
                                         <p className="text-[#6D6D6D]">Employer Name</p>
                                         <p className="text-[#6D6D6D] font-bold">{employment.employerCompany != '' ? employment.employerCompany : 'N/A'}</p>
@@ -312,9 +311,9 @@ export default function index() {
                             ))}
                         </div>
 
+                        <p className="text-[#559CDA] text-xl font-bold">Family Background</p>
                         <div className="flex h-full w-full">
                             <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Family Background</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Father's Name</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.fullname != '' ? applicationForm.familyBackground.father.fullname : 'N/A'}</p>
@@ -334,7 +333,7 @@ export default function index() {
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.father.contactNumber != '' ? applicationForm.familyBackground.father.contactNumber : 'N/A'}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem]">
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
                                 <div>
                                     <p className="text-[#6D6D6D]">Mother's Name</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.mother.fullname != '' ? applicationForm.familyBackground.mother.fullname : 'N/A'}</p>
@@ -389,9 +388,9 @@ export default function index() {
                             ))}
                         </div>
 
+                        <p className="text-[#559CDA] text-xl font-bold">Other Information</p>
                         <div className="flex h-full w-full">
                             <div className="flex flex-col p-2 gap-5 w-1/2">
-                                <p className="text-[#0078EB] text-xl font-bold">Other Information</p>
                                 <div>
                                     <p className="text-[#6D6D6D]">Convicted Crime</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.isConvictedCrimeDetails}</p>
@@ -401,8 +400,7 @@ export default function index() {
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.medicalConditionDetails}</p>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-2 gap-5 w-1/2 mt-[3.5rem] sm:mt-7">
-                                <p className="text-[#0078EB] text-xl font-bold"></p>
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
                                 <div>
                                     <p className="text-[#6D6D6D]">Hospitalized</p>
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.otherInformation.isBeenHospitalizedDetails}</p>
@@ -417,21 +415,21 @@ export default function index() {
 
                         <div className="flex h-full w-full flex-wrap">
                             {applicationForm.reference.characterReference.map((ref, index) => (
-                                <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
-                                    <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Character Reference</p>
-                                    <div>
+                                <div key={index} className="flex flex-col p-2 gap-5 w-full sp:w-1/2">
+                                    <p className={cn("text-[#559CDA] text-xl font-bold", index != 0 && "opacity-0")}>Character Reference</p>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Full Name</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.fullname}</p>
                                     </div>
-                                    <div>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Company</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.company}</p>
                                     </div>
-                                    <div>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Position Held</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.positionHeld}</p>
                                     </div>
-                                    <div>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Contact Number</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.ContactNo}</p>
                                     </div>
@@ -441,21 +439,21 @@ export default function index() {
 
                         <div className="flex h-full w-full flex-wrap">
                             {applicationForm.reference.employmentReference.map((ref, index) => (
-                                <div className="flex flex-col p-2 gap-5 w-1/2">
-                                    <p className={cn("text-[#0078EB] text-xl font-bold", index != 0 && "opacity-0")}>Employment Reference</p>
-                                    <div>
+                                <div key={index} className="flex flex-col p-2 gap-5 w-full sp:w-1/2">
+                                    <p className={cn("text-[#559CDA] text-xl font-bold", index != 0 && "opacity-0")}>Employment Reference</p>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Full Name</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.fullname != '' ? ref.fullname : 'N/A'}</p>
                                     </div>
-                                    <div>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Company</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.company != '' ? ref.company : 'N/A'}</p>
                                     </div>
-                                    <div>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Position Held</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.positionHeld != '' ? ref.positionHeld : 'N/A'}</p>
                                     </div>
-                                    <div>
+                                    <div className="grid grid-cols-2 sp:grid-cols-1 gap-5 ">
                                         <p className="text-[#6D6D6D]">Contact Number</p>
                                         <p className="text-[#6D6D6D] font-bold">{ref.ContactNo != '' ? ref.ContactNo : 'N/A'}</p>
                                     </div>
