@@ -98,7 +98,6 @@ export default function index() {
                 specialTechnicalSkills: technicalSkills.toString()
             }
         };
-        console.log('cleanedForm: ', cleanedForm)
         setApplicationForm({
             ...applicationForm,
             familyBackground: cleanedForm
@@ -215,9 +214,6 @@ export default function index() {
                         contactNumber: '',
                     },
                 ];
-
-                console.log('application form :', applicationForm)
-                console.log('form.getValues', form.getValues())
 
                 setApplicationForm({
                     ...applicationForm,

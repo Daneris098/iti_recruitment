@@ -32,10 +32,6 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
-    useEffect(() => {
-        console.log('applicationForm: ', applicationForm)
-    }, [activeStepper])
-
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-3  p-2 text-sm sm:text-md">

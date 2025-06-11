@@ -13,13 +13,11 @@ export default function Index() {
     const { data: vacanciesData } = useVacancies();
 
     useEffect(() => {
-        console.log('vacanciesData: ', vacanciesData)
         if (submit === true && activeStepper === Step.Oath && consent != '') {
             if (consent === 'true') {
                 setSubmitLoading(true);
                 (async () => {
                     try {
-                        // console.log(' (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any): ', (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.firstChoice)) as any))
                         const formData = new FormData();
                         const split = applicationForm.photo.split('/');
                         const mimeToExtension = (mimeType: string): string => {
@@ -262,7 +260,6 @@ export default function Index() {
                                 'Content-Type': 'multipart/form-data',
                             },
                         })
-                        console.log(response)
                         if (response.status == 201) {
                             setApplicationForm(ApplicationFormVal)
                             setApplicationFormModal(false);

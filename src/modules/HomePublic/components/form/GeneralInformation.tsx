@@ -135,14 +135,6 @@ export default function index() {
         return (setSubmit(false))
     }, [submit])
 
-    useEffect(() => {
-        if (activeStepper === Step.GeneralInformation) {
-            // console.log('vacancies: ', vacancies)
-            // console.log('applicationForm.generalInformation.firstChoice: ', applicationForm.generalInformation.firstChoice)
-            // form.setFieldValue("firstChoice", String(applicationForm.generalInformation.firstChoice));
-            // form.setFieldValue("secondChoice", String(applicationForm.generalInformation.secondChoice));
-        }
-    }, [activeStepper, vacancies])
 
     const fetchCities = async () => {
         await axiosInstance
@@ -182,21 +174,6 @@ export default function index() {
 
     }, [vacanciesData])
 
-    useEffect(() => {
-        console.log('vacancies: ', vacancies)
-        if (applicationForm.generalInformation.firstChoice != '') {
-            // console.log('testtttt: ', String(vacancies.find((item) => String(item.label) === applicationForm.generalInformation.firstChoice)?.label))
-            // console.log('test2: ', String(applicationForm.generalInformation.firstChoice))
-            // form.setFieldValue("firstChoice", String(applicationForm.generalInformation.firstChoice));
-            // form.setFieldValue("secondChoice", String(applicationForm.generalInformation.secondChoice));
-        }
-        if (selectedData.id != 0 && applicationForm.generalInformation.firstChoice === '') {
-            form.setFieldValue("firstChoice", String(vacancies.find((item) => item.id === selectedData.id)?.label));
-            // console.log('test1: ', String(selectedData.id))
-            // form.setFieldValue("firstChoice", String(selectedData.id));
-        }
-    }, [vacancies])
-
     const fetchBarangays = async (cityId: number, mode: number = 1) => {
         await axiosInstance
             .get(`/general/cities/${cityId}/barangays`)
@@ -213,7 +190,6 @@ export default function index() {
                         value: item.name,
                         label: item.name,
                     }));
-                console.log('map sheesh: ', map)
                 if (mode == 1) {
                     setBarangays(map);
                 }
@@ -339,8 +315,6 @@ export default function index() {
                             classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                             styles={{ label: { color: "#6d6d6d" } }}
                             onChange={((val) => {
-                                console.log('cities123: ', cities)
-                                console.log('val123: ', val)
                                 const selectedCity = cities.find(city => city.label === val);
                                 fetchBarangays(selectedCity?.id ?? 1, 1)
                                 form.setFieldValue("personalInformation.presentAddress.city", val);

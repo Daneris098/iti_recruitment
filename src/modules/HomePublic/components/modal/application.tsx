@@ -10,18 +10,17 @@ import Preview from "@modules/HomePublic/components/form/Preview";
 import Oath from "@modules/HomePublic/components/Oath"
 import { cn } from "@src/lib/utils";
 import { PhotoRef, Step, StepperTitle } from '@modules/HomePublic/types';
-import { useEffect, useRef, useState } from 'react';
-import { IconCaretDownFilled, IconCheck, IconX } from '@tabler/icons-react';
+import { useRef, useState } from 'react';
+import { IconCaretDownFilled, IconX } from '@tabler/icons-react';
 import "@modules/HomePublic/styles/index.css"
 import { useMediaQuery } from "@mantine/hooks";
-import { RingProgress, Text } from '@mantine/core';
+import { RingProgress } from '@mantine/core';
 
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
     const { applicationFormModal, setApplicationFormModal } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
-    const [hovered, setHovered] = useState(-1);
     const StepperPercent = [20, 40, 60, 80, 100];
     const StepperLabel = ['1 of 5', '2 of 5', '3 of 5', '4 of 5', '5 of 5'];
 
@@ -49,13 +48,6 @@ export default function index() {
     }
 
     const [opened, setOpened] = useState(false);
-    const reset = () => setHovered(-1);
-
-    useEffect(() => {
-        console.log('StepperPercent: ', StepperPercent)
-        console.log('activeStepper: ', activeStepper)
-        console.log('Number(StepperPercent[activeStepper]): ', StepperPercent[activeStepper])
-    }, [activeStepper])
 
     return (
         <>

@@ -42,27 +42,12 @@ export default function index() {
         },
     });
 
-
-    useEffect(() => {
-        if (activeStepper === Step.Reference) {
-            console.log('isNoEmploymentRecord: ', isNoEmploymentRecord)
-            console.log('!isNoEmploymentRecord: ', !isNoEmploymentRecord)
-            console.log('applicationForm.educationAndEmployment: ', applicationForm.educationAndEmployment.employmentRecord)
-            console.log('employmentRecordVal: ', employmentRecordVal)
-            console.log(applicationForm.educationAndEmployment.employmentRecord[0] == employmentRecordVal[0])
-        }
-    }, [activeStepper])
-
     useEffect(() => {
         const hasTrue = Object.values(form.getValues().applicationSource).some(value => value === true);
         setIsAlreadyCheck(hasTrue);
         const found = Object.entries(form.getValues().applicationSource).find(([_, value]) => value === true);
         setActiveSource(found ? found[0] : null);
     }, [form.getValues()])
-
-    useEffect(() => {
-        console.log('activeSource: ', activeSource)
-    }, [activeSource])
 
     const onSubmit = async (form: Reference) => {
 

@@ -164,7 +164,6 @@ export default function index() {
             let invalid = false
             // form.validate();  
             form.getValues().employmentRecord.forEach((item, index) => {
-                console.log('item.salary : ', item.salary)
                 if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || (item.salary != '' && Number(item.salary) > 0) || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
@@ -491,7 +490,6 @@ export default function index() {
                                                 type="range"
                                                 value={vacancyDuration}
                                                 onChange={(e) => {
-                                                    console.log('e: ', e)
                                                     if (e[0])
                                                         form.setFieldValue(`employmentRecord.${index}.inclusiveDate.from`, DateTimeUtils.dayWithDate(e[0].toString()));
                                                     else
