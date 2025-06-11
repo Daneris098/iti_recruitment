@@ -12,8 +12,11 @@ export const Reports = () => {
       <Modals />
       {reports.map((report) => (
         <div
-          className={`shadow-sm shadow-[#559CDA] relative  rounded-md  h-[10rem] flex flex-col items-center text-center justify-center gap-2  p-4 cursor-pointer ${report.comingSoon ? "opacity-50" : ""}`}
-          onClick={() => setSelectedReport(report)}>
+          className={`shadow-sm shadow-[#559CDA] relative  rounded-md  h-[10rem] flex flex-col items-center text-center justify-center gap-2  p-4  ${report.comingSoon ? "opacity-50" : "cursor-pointer"}`}
+          onClick={() => {
+            if (report.comingSoon) return;
+            setSelectedReport(report);
+          }}>
           {" "}
           <LoadingOverlay
             visible={report.comingSoon}
