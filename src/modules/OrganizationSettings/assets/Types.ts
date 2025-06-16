@@ -40,6 +40,10 @@ export type Department = {
     id: number;
     name: string;
   };
+  branch?: {
+    id: number;
+    name: string;
+  };
 };
 
 export type Branch = {
@@ -48,6 +52,10 @@ export type Branch = {
     name: string;
   };
   location?: {
+    id: number;
+    name: string;
+  };
+  company?: {
     id: number;
     name: string;
   };

@@ -11,6 +11,10 @@ type AddBranchProps = {
   name: string;
   isActive: boolean;
   description: string;
+  company: {
+    id: number;
+    name: string;
+  };
   location: {
     id: number;
     name: string;
@@ -30,6 +34,10 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       name: "",
       isActive: true,
       description: "",
+      company: {
+        id: 0,
+        name: "",
+      },
       location: {
         id: 0,
         name: "",
@@ -41,7 +49,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
     },
   });
 
-  const { locations, areas } = useFetchOrganizationSettings();
+  const { locations, areas, companies } = useFetchOrganizationSettings();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addBranch", addBranch.values);
@@ -95,6 +103,42 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
         }
 
         return row.name;
+      },
+    },
+    {
+      accessor: "company",
+      title: <div className="flex flex-row gap-3">Company {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
+      sortable: true,
+      width: "15%",
+      render: (row: any) => {
+        if (row.id === "NEW" && addOrg) {
+          return (
+            <div className="relative">
+              <Select
+                radius={8}
+                data={companies.data?.items.map((items: any) => ({
+                  value: String(items.id),
+                  label: items.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Company"
+                error={addBranch.values.company.name === "" ? "Company is Required" : undefined}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = companies.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addBranch.setFieldValue("company.id", selectedItem.id);
+                    addBranch.setFieldValue("company.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
+          );
+        }
+
+        return row.company.name;
       },
     },
     {
