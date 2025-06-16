@@ -45,7 +45,9 @@ export interface HomeState {
   barangays: Barangay[];
   barangays2: Barangay[];
   sameAsPresent: boolean;
+  isFromPortal: boolean
 
+  setIsFromPortal: (isFromPortal: boolean) => void;
   setSameAsPresent: (sameAsPresent: boolean) => void;
   setBarangays: (barangays: Barangay[]) => void;
   setBarangays2: (barangays2: Barangay[]) => void;

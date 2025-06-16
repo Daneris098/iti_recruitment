@@ -18,7 +18,7 @@ import { RingProgress } from '@mantine/core';
 
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
-    const { applicationFormModal, setApplicationFormModal } = HomeStore();
+    const { applicationFormModal, setApplicationFormModal, setIsFromPortal } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
     const StepperPercent = [20, 40, 60, 80, 100];
@@ -120,7 +120,7 @@ export default function index() {
                                             setSubmit(true)
                                         }
                                         setOpened(false)
-
+                                        setIsFromPortal(false)
                                     }}>
                                         <div className='flex'>
 

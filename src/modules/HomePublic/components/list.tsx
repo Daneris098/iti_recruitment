@@ -8,7 +8,7 @@ import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 export default function index() {
   const { data } = useVacancies();
   // const jobs: VacancyType[] = jobsJson;
-  const { setSelectedData, selectedData, setApplicationFormModal } = HomeStore();
+  const { setSelectedData, selectedData, setApplicationFormModal, setIsFromPortal } = HomeStore();
   const pillSize: MantineSize = useMatches({
     base: "xs",
     lg: "xs",
@@ -24,6 +24,7 @@ export default function index() {
           onClick={() => {
             setSelectedData(job);
             setApplicationFormModal(true);
+            setIsFromPortal(true);
           }}>
           <p className={cn("text-blue-500 font-[500] text-sm 2xl:text-2xl ", selectedData.id === job.id && "")}>{job.position}</p>
           <div className="flex gap-2">

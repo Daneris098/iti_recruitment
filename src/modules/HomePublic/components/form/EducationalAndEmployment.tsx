@@ -1,13 +1,14 @@
 import { Divider, Flex, MultiSelect, NumberInput, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
-import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
+import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus, IconPlus } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { EducationalAndEmployment, Step, EmploymentRecord, EducationBackground } from "../../types";
 import { ApplicationStore } from "../../store";
 import { DatePicker, YearPickerInput } from "@mantine/dates";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { useMediaQuery } from "@mantine/hooks";
+import { PillsInput, Pill, Combobox, useCombobox } from '@mantine/core';
 
 export default function index() {
     const { isMobile } = GlobalStore()
@@ -29,10 +30,90 @@ export default function index() {
             [index]: isStart ? false : !prev[index],
         }));
     };
+    const [professionaLicensesInput, setProfessionaLicensesInput] = useState<string[]>([]);
+    const combobox = useCombobox({
+        onDropdownClose: () => combobox.resetSelectedOption(),
+        onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
+    });
 
+    const valuesComputed = (index: number, mode: string) =>
+        profesionalLicenses[index]?.length
+            ? profesionalLicenses[index].map((item) => (
+                <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(mode, item, index)}>
+                    {item}
+                </Pill>
+            ))
+            : <></>;
+
+    const handleAdd = (mode: string, index: number) => {
+        const newValue = professionaLicensesInput[index];
+        if (mode == 'professionaLicenses') {
+            if (!profesionalLicenses[index]?.includes(newValue)) {
+                setProfesionalLicenses((prev) => {
+                    const updated = [...prev];
+                    if (!Array.isArray(updated[index])) {
+                        updated[index] = [];
+                    }
+                    const newVal = [...updated[index], newValue]
+                    updated[index] = newVal;
+                    form.setFieldValue(`educationBackground.${index}.professionalLicenses`, newVal);
+                    return updated;
+                });
+                setProfessionaLicensesInput((prev) => {
+                    const updated = [...prev];
+                    updated[index] = '';
+                    return updated;
+                });
+            }
+        }
+
+    }
+
+    const handleKeyDown = (event: any, mode: string, index: number) => {
+        if (event.key === 'Enter' && event.target.value) {
+            const newValue = event.target.value.trim();
+            console.log('newValue', newValue)
+            console.log('index', index)
+            if (mode == 'professionaLicenses') {
+                if (!profesionalLicenses[index]?.includes(newValue)) {
+                    setProfesionalLicenses((prev) => {
+                        const updated = [...prev];
+                        if (!Array.isArray(updated[index])) {
+                            updated[index] = [];
+                        }
+                        const newVal = [...updated[index], newValue]
+                        updated[index] = newVal;
+                        form.setFieldValue(`educationBackground.${index}.professionalLicenses`, newVal);
+                        return updated;
+                    });
+
+
+                    setProfessionaLicensesInput((prev) => {
+                        const updated = [...prev];
+                        updated[index] = '';
+                        return updated;
+                    });
+                }
+
+            }
+            event.preventDefault();
+        }
+    };
+
+    const handleValueRemove = (mode: string, val: string, index: number) => {
+        if (mode == 'professionaLicenses') {
+            setProfesionalLicenses((prev) => {
+                const updated = [...prev];
+                const newVal = updated[index].filter((item) => item !== val);
+                updated[index] = newVal;
+                form.setFieldValue(`educationBackground.${index}.professionalLicenses`, newVal);
+                return updated;
+            });
+        }
+    };
 
     const form = useForm({
-        mode: 'uncontrolled',
+        mode: 'controlled',
         initialValues: applicationForm.educationAndEmployment,
         validate: {
             educationBackground: {
@@ -49,26 +130,26 @@ export default function index() {
 
     useEffect(() => {
         applicationForm.educationAndEmployment.educationBackground.forEach((item, index) => {
-            const licensesArr = item.professionalLicenses.split(',')
-            const certificationsArr = item.certfications.split(',')
-
-            if (item.professionalLicenses != '') {
-                if (index == 0) {
+            if (item.professionalLicenses !== '') {
+                const licensesArr = item.professionalLicenses.split(',');
+                if (index === 0) {
                     setProfesionalLicenses([licensesArr]);
                 } else {
                     setProfesionalLicenses((prevValues) => [...prevValues, licensesArr]);
                 }
             }
 
-            if (item.certfications != '') {
-                if (index == 0) {
+            if (item.certfications !== '') {
+                const certificationsArr = item.certfications.split(',');
+                if (index === 0) {
                     setCertifications([certificationsArr]);
                 } else {
                     setCertifications((prevValues) => [...prevValues, certificationsArr]);
                 }
             }
-        })
-    }, [])
+        });
+    }, []);
+
 
     const increaseLicenses = () => {
         setProfesionalLicenses((prevValues) => [...prevValues, []]);
@@ -84,26 +165,6 @@ export default function index() {
 
     const decreaseCertifications = () => {
         setCertifications((prevValues) => prevValues.length > 0 ? prevValues.slice(0, -1) : prevValues);
-    };
-
-    const handleChangeLicenses = (index: number, value: string[]) => {
-        const newSelectedValues = [...profesionalLicenses];
-        newSelectedValues[index] = value;
-        setProfesionalLicenses(newSelectedValues);
-    };
-
-    const handleKeyDownLicenses = (index: number, event: any) => {
-        if (event.key === 'Enter' && event.target.value) {
-            const newValue = event.target.value.trim();
-            const newSelectedValues = [...profesionalLicenses];
-
-            // Avoid adding the same value more than once
-            if (!newSelectedValues[index].includes(newValue) && newValue != '') {
-                newSelectedValues[index] = [...newSelectedValues[index], newValue];
-                setProfesionalLicenses(newSelectedValues);
-            }
-            event.preventDefault();
-        }
     };
 
     const handleChangeCertifications = (index: number, value: string[]) => {
@@ -128,6 +189,7 @@ export default function index() {
 
     const onSubmit = async (form: EducationalAndEmployment) => {
         let educationBackground = form.educationBackground
+        console.log('educationBackground: ', educationBackground)
         for (let i = 0; i < educationBackground.length; i++) {
             educationBackground[i].professionalLicenses = profesionalLicenses[i].toString()
             educationBackground[i].certfications = certifications[i].toString()
@@ -350,32 +412,52 @@ export default function index() {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">
-                            <MultiSelect
-                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                label="Professional Licenses"
-                                placeholder={item.professionalLicenses == '' ? 'Professional Licenses' : ''}
-                                data={[]}
-                                w={isMobile ? '50%' : '100%'}
-                                radius='md'
-                                searchable
-                                value={profesionalLicenses[index]}
-                                onChange={(value) => handleChangeLicenses(index, value)}
-                                onKeyDown={(event) => handleKeyDownLicenses(index, event)}
-                                rightSection
-                            />
-                            <MultiSelect
-                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                label="Certifications"
-                                placeholder={item.professionalLicenses == '' ? 'Certifications (Local/International)' : ''}
-                                data={[]}
-                                w={isMobile ? '50%' : '100%'}
-                                radius='md'
-                                searchable
-                                value={certifications[index]}
-                                onChange={(value) => handleChangeCertifications(index, value)}
-                                onKeyDown={(event) => handleKeyDownCertifications(index, event)}
-                                rightSection
-                            />
+                            <div className="flex items-center w-full sp:w-1/2">
+                                <Combobox store={combobox}  >
+                                    <Combobox.DropdownTarget>
+                                        <PillsInput label="Professional Licenses" className="flex-grow" radius={8} onClick={() => combobox.openDropdown()}   {...form.getInputProps(`educationBackground.${index}.professionalLicenses`)} >
+                                            <Pill.Group>
+                                                {valuesComputed(index, 'professionaLicenses')}
+                                                <Combobox.EventsTarget>
+                                                    <PillsInput.Field
+                                                        onFocus={() => combobox.openDropdown()}
+                                                        onBlur={() => combobox.closeDropdown()}
+                                                        value={professionaLicensesInput[index]}
+                                                        placeholder="Enter Keyword to add skills"
+                                                        onChange={(event) => {
+                                                            combobox.updateSelectedOptionIndex();
+                                                            setProfessionaLicensesInput((prev) => {
+                                                                const updated = [...prev];
+                                                                updated[index] = event.currentTarget.value;
+                                                                return updated;
+                                                            });
+
+                                                        }}
+                                                        onKeyDown={(event) => handleKeyDown(event, 'professionaLicenses', index)}
+                                                    />
+                                                </Combobox.EventsTarget>
+                                            </Pill.Group>
+                                        </PillsInput>
+                                    </Combobox.DropdownTarget>
+                                </Combobox>
+                                <IconPlus className="cursor-pointer mt-5 ml-1" onClick={() => { handleAdd('professionaLicenses', index) }} />
+                            </div>
+                            <div className="flex items-center w-full sp:w-1/2">
+                                <MultiSelect
+                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                    label="Certifications"
+                                    placeholder={item.certfications == '' ? 'Certifications (Local/International)' : ''}
+                                    data={[]}
+                                    w={isMobile ? '50%' : '100%'}
+                                    radius='md'
+                                    searchable
+                                    value={certifications[index]}
+                                    onChange={(value) => handleChangeCertifications(index, value)}
+                                    onKeyDown={(event) => handleKeyDownCertifications(index, event)}
+                                    rightSection
+                                />
+                                <IconPlus className="cursor-pointer mt-5 ml-1" onClick={() => { handleAdd('certifications', index) }} />
+                            </div>
                         </div>
 
                     </div>
