@@ -31,23 +31,34 @@ export default function index() {
         }));
     };
     const [professionaLicensesInput, setProfessionaLicensesInput] = useState<string[]>([]);
+    const [certficationsInput, setCertificationsInput] = useState<string[]>([]);
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
     });
 
-    const valuesComputed = (index: number, mode: string) =>
-        profesionalLicenses[index]?.length
-            ? profesionalLicenses[index].map((item) => (
-                <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(mode, item, index)}>
-                    {item}
-                </Pill>
-            ))
-            : <></>;
+    const valuesComputed = (index: number, mode: string) => {
+        if (mode === 'professionaLicenses')
+            return profesionalLicenses[index]?.length
+                ? profesionalLicenses[index].map((item) => (
+                    <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(mode, item, index)}>
+                        {item}
+                    </Pill>
+                ))
+                : <></>;
+        else
+            return certifications[index]?.length
+                ? certifications[index].map((item) => (
+                    <Pill key={item} withRemoveButton onRemove={() => handleValueRemove(mode, item, index)}>
+                        {item}
+                    </Pill>
+                ))
+                : <></>;
+    }
 
     const handleAdd = (mode: string, index: number) => {
-        const newValue = professionaLicensesInput[index];
         if (mode == 'professionaLicenses') {
+            const newValue = professionaLicensesInput[index];
             if (!profesionalLicenses[index]?.includes(newValue)) {
                 setProfesionalLicenses((prev) => {
                     const updated = [...prev];
@@ -66,14 +77,31 @@ export default function index() {
                 });
             }
         }
-
+        else {
+            const newValue = certficationsInput[index];
+            if (!certifications[index]?.includes(newValue)) {
+                setCertifications((prev) => {
+                    const updated = [...prev];
+                    if (!Array.isArray(updated[index])) {
+                        updated[index] = [];
+                    }
+                    const newVal = [...updated[index], newValue]
+                    updated[index] = newVal;
+                    form.setFieldValue(`educationBackground.${index}.certfications`, newVal);
+                    return updated;
+                });
+                setCertificationsInput((prev) => {
+                    const updated = [...prev];
+                    updated[index] = '';
+                    return updated;
+                });
+            }
+        }
     }
 
     const handleKeyDown = (event: any, mode: string, index: number) => {
         if (event.key === 'Enter' && event.target.value) {
             const newValue = event.target.value.trim();
-            console.log('newValue', newValue)
-            console.log('index', index)
             if (mode == 'professionaLicenses') {
                 if (!profesionalLicenses[index]?.includes(newValue)) {
                     setProfesionalLicenses((prev) => {
@@ -94,7 +122,25 @@ export default function index() {
                         return updated;
                     });
                 }
-
+            }
+            else {
+                if (!certifications[index]?.includes(newValue)) {
+                    setCertifications((prev) => {
+                        const updated = [...prev];
+                        if (!Array.isArray(updated[index])) {
+                            updated[index] = [];
+                        }
+                        const newVal = [...updated[index], newValue]
+                        updated[index] = newVal;
+                        form.setFieldValue(`educationBackground.${index}.certfications`, newVal);
+                        return updated;
+                    });
+                    setCertificationsInput((prev) => {
+                        const updated = [...prev];
+                        updated[index] = '';
+                        return updated;
+                    });
+                }
             }
             event.preventDefault();
         }
@@ -107,6 +153,15 @@ export default function index() {
                 const newVal = updated[index].filter((item) => item !== val);
                 updated[index] = newVal;
                 form.setFieldValue(`educationBackground.${index}.professionalLicenses`, newVal);
+                return updated;
+            });
+        }
+        else {
+            setCertifications((prev) => {
+                const updated = [...prev];
+                const newVal = updated[index].filter((item) => item !== val);
+                updated[index] = newVal;
+                form.setFieldValue(`educationBackground.${index}.certfications`, newVal);
                 return updated;
             });
         }
@@ -167,29 +222,9 @@ export default function index() {
         setCertifications((prevValues) => prevValues.length > 0 ? prevValues.slice(0, -1) : prevValues);
     };
 
-    const handleChangeCertifications = (index: number, value: string[]) => {
-        const newSelectedValues = [...certifications];
-        newSelectedValues[index] = value;
-        setCertifications(newSelectedValues);
-    };
-
-    const handleKeyDownCertifications = (index: number, event: any) => {
-        if (event.key === 'Enter' && event.target.value) {
-            const newValue = event.target.value.trim();
-            const newSelectedValues = [...certifications];
-
-            // Avoid adding the same value more than once
-            if (!newSelectedValues[index].includes(newValue) && newValue != '') {
-                newSelectedValues[index] = [...newSelectedValues[index], newValue];
-                setCertifications(newSelectedValues);
-            }
-            event.preventDefault();
-        }
-    };
 
     const onSubmit = async (form: EducationalAndEmployment) => {
         let educationBackground = form.educationBackground
-        console.log('educationBackground: ', educationBackground)
         for (let i = 0; i < educationBackground.length; i++) {
             educationBackground[i].professionalLicenses = profesionalLicenses[i].toString()
             educationBackground[i].certfications = certifications[i].toString()
@@ -423,12 +458,13 @@ export default function index() {
                                                         onFocus={() => combobox.openDropdown()}
                                                         onBlur={() => combobox.closeDropdown()}
                                                         value={professionaLicensesInput[index]}
-                                                        placeholder="Enter Keyword to add skills"
+                                                        placeholder="Enter Keyword to add Professiona Licenses"
                                                         onChange={(event) => {
                                                             combobox.updateSelectedOptionIndex();
+                                                            const value = event?.target?.value ?? '';
                                                             setProfessionaLicensesInput((prev) => {
                                                                 const updated = [...prev];
-                                                                updated[index] = event.currentTarget.value;
+                                                                updated[index] = value;
                                                                 return updated;
                                                             });
 
@@ -443,19 +479,35 @@ export default function index() {
                                 <IconPlus className="cursor-pointer mt-5 ml-1" onClick={() => { handleAdd('professionaLicenses', index) }} />
                             </div>
                             <div className="flex items-center w-full sp:w-1/2">
-                                <MultiSelect
-                                    classNames={{ input: 'poppins text-[#6D6D6D]' }}
-                                    label="Certifications"
-                                    placeholder={item.certfications == '' ? 'Certifications (Local/International)' : ''}
-                                    data={[]}
-                                    w={isMobile ? '50%' : '100%'}
-                                    radius='md'
-                                    searchable
-                                    value={certifications[index]}
-                                    onChange={(value) => handleChangeCertifications(index, value)}
-                                    onKeyDown={(event) => handleKeyDownCertifications(index, event)}
-                                    rightSection
-                                />
+                                <Combobox store={combobox}  >
+                                    <Combobox.DropdownTarget>
+                                        <PillsInput label="Certifications" className="flex-grow" radius={8} onClick={() => combobox.openDropdown()}   {...form.getInputProps(`educationBackground.${index}.certfications`)} >
+                                            <Pill.Group>
+                                                {valuesComputed(index, 'certfications')}
+                                                <Combobox.EventsTarget>
+                                                    <PillsInput.Field
+                                                        onFocus={() => combobox.openDropdown()}
+                                                        onBlur={() => combobox.closeDropdown()}
+                                                        value={certficationsInput[index]}
+                                                        placeholder="Enter Keyword to add Certifications (Local/International)"
+                                                        onChange={(event) => {
+                                                            console.log('event: ', event.currentTarget.value)
+                                                            combobox.updateSelectedOptionIndex();
+                                                            const value = event?.target?.value ?? '';
+                                                            setCertificationsInput((prev) => {
+                                                                const updated = [...prev];
+                                                                updated[index] = value;
+                                                                return updated;
+                                                            });
+
+                                                        }}
+                                                        onKeyDown={(event) => handleKeyDown(event, 'certfications', index)}
+                                                    />
+                                                </Combobox.EventsTarget>
+                                            </Pill.Group>
+                                        </PillsInput>
+                                    </Combobox.DropdownTarget>
+                                </Combobox>
                                 <IconPlus className="cursor-pointer mt-5 ml-1" onClick={() => { handleAdd('certifications', index) }} />
                             </div>
                         </div>
