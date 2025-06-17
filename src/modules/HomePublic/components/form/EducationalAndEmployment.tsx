@@ -185,7 +185,7 @@ export default function index() {
 
     useEffect(() => {
         applicationForm.educationAndEmployment.educationBackground.forEach((item, index) => {
-            if (item.professionalLicenses !== '') {
+            if (item.professionalLicenses != undefined && item.professionalLicenses !== '') {
                 const licensesArr = item.professionalLicenses.split(',');
                 if (index === 0) {
                     setProfesionalLicenses([licensesArr]);
@@ -194,7 +194,7 @@ export default function index() {
                 }
             }
 
-            if (item.certifications !== '') {
+            if (item.certifications != undefined && item.certifications !== '') {
                 const certificationsArr = item.certifications.split(',');
                 if (index === 0) {
                     setCertifications([certificationsArr]);
