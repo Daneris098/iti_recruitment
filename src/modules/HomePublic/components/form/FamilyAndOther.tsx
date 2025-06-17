@@ -163,14 +163,10 @@ export default function index() {
                         form.setFieldError(`siblings.${index}.age`, 'Age is required')
                         invalid = true
                     };
-                    if (item.contactNumber === '') {
-                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required')
+                    if (item.contactNumber.toString() === '' || isNaN(Number(item.contactNumber))) {
+                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required and must be a number')
                         invalid = true
                     };
-                    if (item.contactNumber.toString().length < 11 || isNaN(Number(item.contactNumber))) {
-                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number must be at least 11 digits and numeric');
-                        invalid = true;
-                    }
                 }
             });
             const spouse = form.getValues().spouse;
