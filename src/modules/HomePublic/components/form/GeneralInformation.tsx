@@ -223,8 +223,6 @@ export default function index() {
     const combobox = useCombobox();
     const combobox2 = useCombobox();
 
-    const inputProps = form.getInputProps("firstChoice");
-
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">

@@ -6,12 +6,10 @@ import { Step } from "../../types";
 import { cn } from "@src/lib/utils";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils"
 import { Pill } from "@mantine/core";
-import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 
 export default function index() {
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const { submit, activeStepper, setSubmit, applicationForm, setActiveStepper } = ApplicationStore()
-    const { data: vacanciesData } = useVacancies();
 
     const form = useForm({
         mode: 'uncontrolled',
