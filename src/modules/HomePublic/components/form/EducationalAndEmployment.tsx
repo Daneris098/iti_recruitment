@@ -1,4 +1,4 @@
-import { Divider, Flex, MultiSelect, NumberInput, Popover, TextInput } from "@mantine/core";
+import { Divider, Flex, NumberInput, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { IconCalendarMonth, IconCaretDownFilled, IconCircleMinus, IconCirclePlus, IconPlus } from "@tabler/icons-react";
@@ -31,7 +31,7 @@ export default function index() {
         }));
     };
     const [professionaLicensesInput, setProfessionaLicensesInput] = useState<string[]>([]);
-    const [certficationsInput, setCertificationsInput] = useState<string[]>([]);
+    const [certificationsInput, setCertificationsInput] = useState<string[]>([]);
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
         onDropdownOpen: () => combobox.updateSelectedOptionIndex('active'),
@@ -78,7 +78,7 @@ export default function index() {
             }
         }
         else {
-            const newValue = certficationsInput[index];
+            const newValue = certificationsInput[index];
             if (!certifications[index]?.includes(newValue)) {
                 setCertifications((prev) => {
                     const updated = [...prev];
@@ -87,7 +87,7 @@ export default function index() {
                     }
                     const newVal = [...updated[index], newValue]
                     updated[index] = newVal;
-                    form.setFieldValue(`educationBackground.${index}.certfications`, newVal);
+                    form.setFieldValue(`educationBackground.${index}.certifications`, newVal);
                     return updated;
                 });
                 setCertificationsInput((prev) => {
@@ -132,7 +132,7 @@ export default function index() {
                         }
                         const newVal = [...updated[index], newValue]
                         updated[index] = newVal;
-                        form.setFieldValue(`educationBackground.${index}.certfications`, newVal);
+                        form.setFieldValue(`educationBackground.${index}.certifications`, newVal);
                         return updated;
                     });
                     setCertificationsInput((prev) => {
@@ -161,7 +161,7 @@ export default function index() {
                 const updated = [...prev];
                 const newVal = updated[index].filter((item) => item !== val);
                 updated[index] = newVal;
-                form.setFieldValue(`educationBackground.${index}.certfications`, newVal);
+                form.setFieldValue(`educationBackground.${index}.certifications`, newVal);
                 return updated;
             });
         }
@@ -194,8 +194,8 @@ export default function index() {
                 }
             }
 
-            if (item.certfications !== '') {
-                const certificationsArr = item.certfications.split(',');
+            if (item.certifications !== '') {
+                const certificationsArr = item.certifications.split(',');
                 if (index === 0) {
                     setCertifications([certificationsArr]);
                 } else {
@@ -227,7 +227,7 @@ export default function index() {
         let educationBackground = form.educationBackground
         for (let i = 0; i < educationBackground.length; i++) {
             educationBackground[i].professionalLicenses = profesionalLicenses[i].toString()
-            educationBackground[i].certfications = certifications[i].toString()
+            educationBackground[i].certifications = certifications[i].toString()
         }
         form.educationBackground = educationBackground
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
@@ -365,7 +365,7 @@ export default function index() {
                         to: null,
                     },
                     professionalLicenses: '',
-                    certfications: '',
+                    certifications: '',
                 }]
             }
         })
@@ -397,7 +397,7 @@ export default function index() {
                         <div className="flex flex-col sm:flex-row gap-4 items-end relative">
                             <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.nameOfSchool`)} radius='md' w={isMobile ? '50%' : '100%'} label="Name of School" placeholder="Name of School" />
                             <TextInput withAsterisk classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps(`educationBackground.${index}.educationalLevel`)} radius='md' w={isMobile ? '50%' : '100%'} label="Educational Level" placeholder="Educational Level" />
-                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEducationBackground(item.id) }} />)}
+                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[10%] sp:-top-[25%] cursor-pointer" onClick={() => { removeEducationBackground(item.id) }} />)}
                         </div>
 
                         <div className="flex flex-col items-end sm:flex-row gap-4">
@@ -481,14 +481,14 @@ export default function index() {
                             <div className="flex items-center w-full sp:w-1/2">
                                 <Combobox store={combobox}  >
                                     <Combobox.DropdownTarget>
-                                        <PillsInput label="Certifications" className="flex-grow" radius={8} onClick={() => combobox.openDropdown()}   {...form.getInputProps(`educationBackground.${index}.certfications`)} >
+                                        <PillsInput label="Certifications" className="flex-grow" radius={8} onClick={() => combobox.openDropdown()}   {...form.getInputProps(`educationBackground.${index}.certifications`)} >
                                             <Pill.Group>
-                                                {valuesComputed(index, 'certfications')}
+                                                {valuesComputed(index, 'certifications')}
                                                 <Combobox.EventsTarget>
                                                     <PillsInput.Field
                                                         onFocus={() => combobox.openDropdown()}
                                                         onBlur={() => combobox.closeDropdown()}
-                                                        value={certficationsInput[index]}
+                                                        value={certificationsInput[index]}
                                                         placeholder="Enter Keyword to add Certifications (Local/International)"
                                                         onChange={(event) => {
                                                             console.log('event: ', event.currentTarget.value)
@@ -501,7 +501,7 @@ export default function index() {
                                                             });
 
                                                         }}
-                                                        onKeyDown={(event) => handleKeyDown(event, 'certfications', index)}
+                                                        onKeyDown={(event) => handleKeyDown(event, 'certifications', index)}
                                                     />
                                                 </Combobox.EventsTarget>
                                             </Pill.Group>
@@ -539,7 +539,7 @@ export default function index() {
                                 label="Location"
                                 placeholder="Office Location"
                             />
-                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[25%] cursor-pointer" onClick={() => { removeEmploymentRecord(item.id) }} />)}
+                            {index != 0 && (<IconCircleMinus size={35} className="absolute right-[0%] -top-[10%] sp:-top-[25%] cursor-pointer" onClick={() => { removeEmploymentRecord(item.id) }} />)}
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-end">

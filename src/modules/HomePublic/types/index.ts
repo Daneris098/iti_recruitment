@@ -169,7 +169,7 @@ export interface EducationBackground {
     to: Date | string | null;
   };
   professionalLicenses: string;
-  certfications: string;
+  certifications: string;
 }
 
 export interface Siblings {

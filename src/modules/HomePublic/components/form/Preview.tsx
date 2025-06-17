@@ -258,7 +258,7 @@ export default function index() {
 
                                     <div>
                                         <p className="text-[#6D6D6D]">Certifications</p>
-                                        <p className="text-[#6D6D6D] font-bold">{education.certfications != "" ? education.certfications : 'N/A'}</p>
+                                        <p className="text-[#6D6D6D] font-bold">{education.certifications != "" ? education.certifications : 'N/A'}</p>
                                     </div>
                                 </div>
                             ))}
