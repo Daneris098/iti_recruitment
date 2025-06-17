@@ -296,7 +296,7 @@ export default function index() {
                 <p className="font-bold">Personal Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
-                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8] text-xs">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' placeholder="First Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' placeholder="Middle Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' placeholder="Suffix(Jr. Sr. etc.)" />
@@ -304,7 +304,7 @@ export default function index() {
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
                     <div className="w-full sp:w-1/2 flex items-end gap-4">
-                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute text-xs">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
                         <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' placeholder="House no." />
                     </div>
                     <div className="w-full sp:w-1/2 flex flex-col sp:flex-row items-end gap-4">
@@ -384,7 +384,7 @@ export default function index() {
                         <Checkbox
                             checked={sameAsPresent}
                             label="Same as Present Address"
-                            classNames={{ label: 'poppins' }}
+                            classNames={{ label: 'poppins text-xs ' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
                             onChange={(value) => {
                                 setSameAsPresent(value.target.checked);
