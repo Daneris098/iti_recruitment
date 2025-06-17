@@ -187,22 +187,23 @@ export default function TransferDetails() {
                     { accessor: "code", title: "Code" },
                     { accessor: "name", title: "Name" },
                     { accessor: "amount", title: "Amount" },
-                    {accessor: "p1",title: "P1",render: () => (
-                    <Checkbox
+                    {
+                        accessor: "p1", title: "P1", render: () => (
+                            <Checkbox
                             // checked={checkedState[record.id].p1}
                             // onChange={() => toggleCheckbox(record.id, "p1")}
                             />
-                    ),
+                        ),
                     },
-                    {accessor: "p2",title: "P2", render: () => (<Checkbox />)},
-                    {accessor: "p3",title: "P3", render: () => (<Checkbox />)},
-                    {accessor: "p4",title: "P4", render: () => (<Checkbox />)},
-                    {accessor: "p5",title: "P5", render: () => (<Checkbox />)},
-                    {accessor: "p6",title: "P6", render: () => (<Checkbox />)},
-                    {accessor: "p7",title: "P7", render: () => (<Checkbox />)},
-                    {accessor: "p8",title: "P8", render: () => (<Checkbox />)},
-                    {accessor: "p9",title: "P9", render: () => (<Checkbox />)},
-                    {accessor: "p10",title: "P10", render: () => (<Checkbox />)},
+                    { accessor: "p2", title: "P2", render: () => (<Checkbox />) },
+                    { accessor: "p3", title: "P3", render: () => (<Checkbox />) },
+                    { accessor: "p4", title: "P4", render: () => (<Checkbox />) },
+                    { accessor: "p5", title: "P5", render: () => (<Checkbox />) },
+                    { accessor: "p6", title: "P6", render: () => (<Checkbox />) },
+                    { accessor: "p7", title: "P7", render: () => (<Checkbox />) },
+                    { accessor: "p8", title: "P8", render: () => (<Checkbox />) },
+                    { accessor: "p9", title: "P9", render: () => (<Checkbox />) },
+                    { accessor: "p10", title: "P10", render: () => (<Checkbox />) },
                 ]}
             />
         </div>

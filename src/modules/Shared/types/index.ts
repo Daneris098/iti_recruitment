@@ -365,3 +365,109 @@ export type PDFViewerProps<T> = {
     identifier: T;
     getPdfPathFn: (identifier: T) => Promise<string>;
 };
+
+export type PersonalDetailsType = {
+    positionsApplied?: {
+        name?: string;
+        salary?: string | number;
+        availableDateStart?: string;
+    }[];
+    addresses?: {
+        subdivision?: string;
+    }[];
+    identification?: {
+        sssNo?: string;
+        hdmfNo?: string;
+        phicNo?: string;
+        tinNo?: string;
+        driversLicenseNo?: string;
+        gsisNo?: string;
+        passportNo?: string;
+    };
+    educations?: {
+        school?: string;
+        course?: string;
+        level?: {
+            name?: string;
+        };
+        yearFrom?: string;
+        yearTo?: string;
+    }[];
+    previousEmployments?: {
+        company?: string;
+        location?: string;
+        position?: string;
+        dateFrom?: string;
+        dateTo?: string;
+        reason?: string;
+    }[];
+    family?: {
+        father?: {
+            name?: string;
+            age?: number;
+            occupation?: string;
+            contactNo?: string;
+        };
+        mother?: {
+            name?: string;
+            age?: number;
+            occupation?: string;
+            contactNo?: string;
+        };
+        siblings?: {
+            name?: string;
+            occupation?: string;
+            contact?: string;
+        }[];
+    };
+    characterReferences?: {
+        name?: string;
+        company?: string;
+        position?: string;
+        contactNo?: string;
+    }[];
+    questionnaire?: {
+        answer?: string;
+    }[];
+    birthDate?: string;
+    birthPlace?: string;
+    civilStatus?: {
+        name?: string;
+    };
+    gender?: {
+        name?: string;
+    };
+    religion?: {
+        name?: string;
+    };
+    height?: string;
+    weight?: string;
+    skills?: {
+        keyword?: string;
+    }[];
+    mother?: {
+        name?: string;
+    };
+};
+
+export type ApplicationMovementProps = {
+    status: { id: number; name: string };
+    comment: string;
+    audit: { id: number; date: string };
+};
+
+export type Movement = {
+    status: { id: number; name: string };
+    comment: string;
+    audit: { id: number; date: string };
+};
+
+export type ApplicantMovementsProps = {
+    applicationMovements: Movement[];
+};
+
+export type Props = {
+    status: string;
+    applicantName: string;
+    remarks: string;
+};

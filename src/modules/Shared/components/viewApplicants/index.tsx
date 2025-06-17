@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Divider } from "@mantine/core";
 import profileImage from "@src/assets/jane.png";
+import { useCloseModal } from "@modules/Applicants/store";
 import { ViewApplicantsProps } from "@modules/Shared/types";
 import { IconFileUpload, IconX } from "@tabler/icons-react";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import Modals from "@modules/Shared/components/viewApplicants/Modals";
 import TabsPanel from "@modules/Shared/components/viewApplicants/TabsPanel";
 import { SkillChip } from "@modules/Shared/utils/ApplicantModal/skillChips";
-import { useApplicantIdStore, useCloseModal } from "@modules/Applicants/store";
 import { getTabs } from "@modules/Shared/utils/ApplicantModal/tabConfiguration";
 import { StatusBadge } from "@modules/Shared/utils/ApplicantModal/statusColors";
 import { ActionButton } from "@modules/Shared/utils/ApplicantModal/actionButton";
