@@ -10,7 +10,7 @@ import {
     applicationMovementOffered, applicationMovementForInterview,
 } from "@modules/Applicants/api/userService";
 import {
-    applicantsByIdService,
+    applicantsByIdService, getApplicantById,
     viewApplicantOfferService, useViewInterviewStagesHiring,
 } from "@modules/Shared/components/api/UserService";
 import {
@@ -52,8 +52,17 @@ function getApplicantCurrentAge(dateString: string): number {
     }
     return age;
 }
+export const useApplicantById = (
+    id: string | number,
+    token?: string | null
+) =>
+    useQuery<ViewApplicantById>({
+        queryKey: sharedApplicantKeys.detail(id),
+        enabled: !!id,
+        queryFn: () => getApplicantById(id!, token),
+    });
 
-const formatApplicantById = (applicant: any): ViewApplicantById => {
+export const formatApplicantById = (applicant: any): ViewApplicantById => {
 
     const {
         family, skills,
@@ -218,7 +227,6 @@ export const useApplicantsById = (id: string | number) => {
         queryKey: sharedApplicantKeys.detail(id),
         queryFn: () => applicantsByIdService.getById(id),
         select: (data) => formatApplicantById(data),
-        enabled: !!id,
         staleTime: 0,
         structuralSharing: false
     });

@@ -1,9 +1,37 @@
-import { ApplicantStore } from "@modules/Vacancies/store/index";
-import ViewApplicant from "@modules/Shared/components/viewApplicants/index";
+import { useEffect, useState } from "react";
+import { ApplicantStore } from "@modules/Vacancies/store";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
+import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
+import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
-export default function index() {
+export default function ViewApplicantModal() {
     const { setIsViewApplicant, selectedApplicant, isViewApplicant } = ApplicantStore();
+
+    const setApplicantId = useApplicantIdStore((s) => s.setApplicantId);
+    const applicantId = useApplicantIdStore((state) => state.id);
+
+    useEffect(() => {
+        if (isViewApplicant && selectedApplicant?.id && applicantId !== selectedApplicant.id) {
+            setApplicantId(selectedApplicant.id);
+        }
+    }, [isViewApplicant, selectedApplicant?.id, applicantId, setApplicantId]);
+
+
+    const token = sessionStorage.getItem("accessToken") ?? undefined;
+    const [_applicant, setApplicant] = useState<any | null>(null);
+    const [_isLoading, setLoading] = useState(false);
+    const [_error, setError] = useState<unknown>(null);
+
+    useEffect(() => {
+        if (!applicantId || !token) return;
+
+        setLoading(true);
+        fetchApplicantByIdService(applicantId, token)
+            .then(setApplicant)
+            .catch(setError)
+            .finally(() => setLoading(false));
+    }, [applicantId, token]);
 
     return (
         <ModalWrapper
@@ -26,5 +54,5 @@ export default function index() {
                 onClose={() => setIsViewApplicant(false)}
             />
         </ModalWrapper>
-    )
+    );
 }
