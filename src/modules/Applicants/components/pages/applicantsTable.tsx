@@ -7,11 +7,12 @@ import { IconArrowUpRight } from "@tabler/icons-react";
 import { Button, Modal, Pagination } from "@mantine/core";
 import { useLocation, useSearchParams } from "react-router-dom";
 import {
+  usePaginationStore,
   useSelectedApplicantsStore,
   FilterStore, useCloseModal,
-  useSortStore, useApplicantStore,
-  usePaginationStore, useApplicantIdStore,
+  useSortStore, useApplicantStore
 } from "@modules/Applicants/store";
+import { useApplicantIdStore } from '@src/modules/Shared/store';
 import Filter from "@src/modules/Applicants/components/filter/Filter";
 import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
 import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
@@ -37,7 +38,7 @@ export default function index() {
   const currentRoute = Object.values(ApplicantRoutes).find(
     (route) => route.path === location.pathname
   );
-  
+
   const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
 
   const headerText = currentRoute?.label;
@@ -203,7 +204,7 @@ export default function index() {
 
       return updatedCol; // return the header column regardless whether it is sortable or not.
     });
-  // debugger;
+
   //#region MAIN
   // main
   return (
