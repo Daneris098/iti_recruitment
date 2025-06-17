@@ -1,4 +1,4 @@
-import { Divider, Checkbox, TextInput, NumberInput } from "@mantine/core";
+import { Divider, Checkbox, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";

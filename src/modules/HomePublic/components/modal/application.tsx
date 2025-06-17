@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover, LoadingOverlay, Center, ActionIcon } from '@mantine/core';
+import { Modal, Divider, Button, Popover, LoadingOverlay } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
