@@ -5,6 +5,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { DivisionType } from "../../assets/Types";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
+import { useFetchOrganizationSettings } from "../../services/data";
 
 type EditDivisionProps = {
   code: string;
@@ -13,6 +14,10 @@ type EditDivisionProps = {
   id: number;
   guid: string;
   description: string;
+  branch: {
+    id: number;
+    name: string;
+  };
 };
 
 export default function EditDivision({ record }: { record: DivisionType }) {
@@ -22,11 +27,17 @@ export default function EditDivision({ record }: { record: DivisionType }) {
       code: record.code ?? 0,
       name: record.name ?? "",
       isActive: record.isActive ?? true,
+      branch: {
+        id: record.branch?.id ?? 0,
+        name: record.branch?.name ?? "",
+      },
       id: record.id,
       guid: record.guid,
       description: record.description,
     },
   });
+
+  const { branches } = useFetchOrganizationSettings();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editDivision", editDivision.values);
@@ -53,6 +64,26 @@ export default function EditDivision({ record }: { record: DivisionType }) {
         defaultValue={record.description}
         {...editDivision.getInputProps("description")}
         error={editDivision.values.description === "" ? "Required" : undefined}
+      />
+      <Select
+        radius={8}
+        data={branches.data?.items.map((items: any) => ({
+          value: String(items.id),
+          label: items.name,
+        }))}
+        rightSection={<IconCaretDownFilled size="18" />}
+        className="w-[15%] border-none text-sm"
+        classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+        styles={{ label: { color: "#6d6d6d" } }}
+        placeholder="Select Branch"
+        value={String(editDivision.values.branch.id)}
+        onChange={(value) => {
+          const selectedItem: { id: number; name: string } = branches.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          if (selectedItem) {
+            editDivision.setFieldValue("branch.id", selectedItem.id);
+            editDivision.setFieldValue("branch.name", selectedItem.name);
+          }
+        }}
       />
       <div className="w-[10%] flex flex-row items-center gap-10">
         <Select

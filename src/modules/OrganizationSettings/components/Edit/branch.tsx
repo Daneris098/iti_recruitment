@@ -13,6 +13,10 @@ type EditBranchProps = {
   id: number;
   guid: string;
   description: string;
+  company: {
+    id: number;
+    name: string;
+  };
   location: {
     id: number;
     name: string;
@@ -32,6 +36,10 @@ export default function EditBranch({ record }: { record: BranchType }) {
       name: record.name ?? "",
       isActive: record.isActive ?? true,
       description: record.description ?? "",
+      company: {
+        id: record.company?.id ?? 0,
+        name: record.company?.name ?? "",
+      },
       location: {
         id: record.location?.id ?? 0,
         name: record.location?.name ?? "",
@@ -45,7 +53,7 @@ export default function EditBranch({ record }: { record: BranchType }) {
     },
   });
 
-  const { locations, areas } = useFetchOrganizationSettings();
+  const { locations, areas, companies } = useFetchOrganizationSettings();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editBranch", editBranch.values);
@@ -67,6 +75,26 @@ export default function EditBranch({ record }: { record: BranchType }) {
           defaultValue={record.name}
           {...editBranch.getInputProps("name")}
           error={editBranch.values.name === "" ? "Required" : undefined}
+        />
+        <Select
+          radius={8}
+          data={companies.data?.items.map((items: any) => ({
+            value: String(items.id),
+            label: items.name,
+          }))}
+          rightSection={<IconCaretDownFilled size="18" />}
+          className="w-[15%] border-none text-sm"
+          classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+          styles={{ label: { color: "#6d6d6d" } }}
+          placeholder="Select Company"
+          value={String(editBranch.values.company.id)}
+          onChange={(value) => {
+            const selectedItem: { id: number; name: string } = companies.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+            if (selectedItem) {
+              editBranch.setFieldValue("company.id", selectedItem.id);
+              editBranch.setFieldValue("company.name", selectedItem.name);
+            }
+          }}
         />
         <Select
           radius={8}
