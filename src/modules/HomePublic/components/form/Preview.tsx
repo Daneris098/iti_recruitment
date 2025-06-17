@@ -362,6 +362,26 @@ export default function index() {
                                     <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.children.ageRange != '' ? applicationForm.familyBackground.children.ageRange : 'N/A'}</p>
                                 </div>
                             </div>
+                            <div className="flex flex-col p-2 gap-5 w-1/2">
+                                <div>
+                                    <p className="text-[#6D6D6D]">Spouse Name</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.spouse?.fullname != '' ? applicationForm.familyBackground.spouse?.fullname : 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[#6D6D6D]">Age</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.spouse?.age != 0 ? applicationForm.familyBackground.spouse?.age : 'N/A'}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Occupation</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.spouse?.occupation != '' ? applicationForm.familyBackground.spouse?.occupation : 'N/A'}</p>
+                                </div>
+
+                                <div>
+                                    <p className="text-[#6D6D6D]">Contact Number</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.spouse?.contactNumber != '' ? applicationForm.familyBackground.spouse?.contactNumber : 'N/A'}</p>
+                                </div>
+                            </div>
                             {applicationForm.familyBackground.siblings.length > 0 && applicationForm.familyBackground.siblings != ApplicationFormVal.familyBackground.siblings && applicationForm.familyBackground.siblings.map((sibling, index) => (
                                 <div key={index} className="flex flex-col p-2 gap-5 w-1/2">
                                     <div>

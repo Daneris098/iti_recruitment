@@ -126,7 +126,7 @@ export const educationBackgroundVal: EducationBackground[] = [{
     to: null,
   },
   professionalLicenses: '',
-  certifications: '',
+  certfications: '',
 }];
 
 export const employmentRecordVal: EmploymentRecord[] = [{
@@ -152,7 +152,7 @@ export const educationBackgroundVal2: EducationBackground[] = [{
     to: new Date('Wed Jan 01 2024 00:00:00 GMT+0800 (Philippine Standard Time)'),
   },
   professionalLicenses: 'AWS Practitioner',
-  certifications: '',
+  certfications: '',
 }];
 
 export const employmentRecordVal2: EmploymentRecord[] = [{
@@ -318,8 +318,8 @@ export const referenceValue2: Reference = {
 
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal,
-  educationAndEmployment: educationAndEmploymentVal,
+  generalInformation: GeneralInformationVal2,
+  educationAndEmployment: educationAndEmploymentVal2,
   familyBackground: familyBackgroundVal,
   reference: referenceValue,
   photo: ''
