@@ -11,7 +11,9 @@ export const HomeStore = create<HomeState>((set) => ({
   barangays: [{ id: 1, value: 'BRGY 12', label: 'BRGY 12' }],
   barangays2: [{ id: 1, value: 'BRGY 12', label: 'BRGY 12' }],
   sameAsPresent: false,
+  isFromPortal: false,
 
+  setIsFromPortal: (isFromPortal: boolean) => set({ isFromPortal: isFromPortal }),
   setSameAsPresent: (sameAsPresent: boolean) => set({ sameAsPresent: sameAsPresent }),
   setBarangays: (barangays: Barangay[]) => set({ barangays: barangays }),
   setBarangays2: (barangays: Barangay[]) => set({ barangays2: barangays }),

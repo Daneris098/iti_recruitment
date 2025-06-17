@@ -1,11 +1,10 @@
-import { Divider, Checkbox, TextInput, NumberInput } from "@mantine/core";
+import { Divider, Checkbox, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";
 import { IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
-import { employmentRecordVal } from "../../values/cleanState";
 import '../../styles/index.css';
 
 export default function index() {
@@ -25,13 +24,13 @@ export default function index() {
                 fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => !value.toString() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                ContactNo: (value: string | number) => /^\d+$/.test(value.toString()) ? (value.toString().length < 11 ? "Enter a valid contact number" : null) : "Contact number must contain digits only",
             },
             employmentReference: {
                 fullname: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => (!isNoEmploymentRecord) && !value.toString().trim() ? "Contact Number is required" : (!isNoEmploymentRecord) && value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                ContactNo: (value: string | number) => !isNoEmploymentRecord ? !/^\d+$/.test(value.toString()) ? "Contact number must contain digits only" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null : null,
             },
             applicationSource: {
                 description: (value: string, values) =>
@@ -200,8 +199,8 @@ export default function index() {
                                     w={isMobile ? '25%' : '100%'}
                                     placeholder="Position Held"
                                 />
-                                <NumberInput
-                                    hideControls
+                                <TextInput
+                                    inputMode="numeric"
                                     classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                     {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
                                     radius="md"

@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover, LoadingOverlay, Center, ActionIcon } from '@mantine/core';
+import { Modal, Divider, Button, Popover, LoadingOverlay } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
@@ -18,7 +18,7 @@ import { RingProgress } from '@mantine/core';
 
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
-    const { applicationFormModal, setApplicationFormModal } = HomeStore();
+    const { applicationFormModal, setApplicationFormModal, setIsFromPortal } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
     const StepperPercent = [20, 40, 60, 80, 100];
@@ -120,7 +120,7 @@ export default function index() {
                                             setSubmit(true)
                                         }
                                         setOpened(false)
-
+                                        setIsFromPortal(false)
                                     }}>
                                         <div className='flex'>
 

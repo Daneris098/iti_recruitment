@@ -1,7 +1,6 @@
-import PersonalDetails from "@src/modules/Applicants/components/documents/tabs/PersonalDetails";
-import ApplicationMovement from "@src/modules/Applicants/components/documents/tabs/ApplicationMovement";
-import TransferDetails from "@src/modules/Applicants/components/documents/tabs/TransferDetails";
-
+import PersonalDetails from '@src/modules/Shared/components/viewApplicants/tabs/PersonalDetails';
+import TransferDetails from '@src/modules/Shared/components/viewApplicants/tabs/TransferDetails';
+import ApplicationMovement from '@src/modules/Shared/components/viewApplicants/tabs/ApplicationMovement';
 interface TabParams {
     applicantName: string;
     status: string;

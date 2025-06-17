@@ -10,12 +10,22 @@ import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+import {
+    Combobox,
+    ComboboxTarget,
+    ComboboxDropdown,
+    ComboboxOptions,
+    ComboboxOption,
+    InputBase
+} from '@mantine/core';
+import { useCombobox } from '@mantine/core';
 
 export default function index() {
+
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
+    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent, isFromPortal } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
@@ -165,6 +175,13 @@ export default function index() {
     }, [])
 
     useEffect(() => {
+        if (isFromPortal) {
+            form.setFieldValue('firstChoice', selectedData.position)
+        }
+        // fetchCities()
+    }, [vacancies])
+
+    useEffect(() => {
         const mapVacancies = vacanciesData?.map((item) => ({
             id: item.id,
             value: String(item.id),
@@ -203,46 +220,89 @@ export default function index() {
             });
     }
 
+    const combobox = useCombobox();
+    const combobox2 = useCombobox();
+
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end ">
-                    <Autocomplete
-                        withAsterisk
-                        {...form.getInputProps("firstChoice")}
-                        key={form.key('firstChoice')}
-                        w={isMobile ? '25%' : '100%'}
-                        label="Position Applying for - First Choice"
-                        placeholder={"First Choice"}
-                        radius={8}
-                        data={vacancies}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            form.setFieldValue("firstChoice", val);
-                        })}
-                    />
+                    <Combobox
+                        store={combobox}
+                        onOptionSubmit={(val) => {
+                            form.setFieldValue('firstChoice', val);
+                            combobox.closeDropdown();
+                        }}
+                    >
+                        <ComboboxTarget>
+                            <InputBase
+                                label="Position Applying for - First Choice"
+                                withAsterisk
+                                radius={8}
+                                rightSection={<IconCaretDownFilled size={18} />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps("firstChoice")}
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSectionPointerEvents="none"
+                                onClick={() => combobox.toggleDropdown()}
+                            >
+                                {form.getValues().firstChoice}
+                            </InputBase>
+                        </ComboboxTarget>
 
-                    <Autocomplete
-                        {...form.getInputProps("secondChoice")}
-                        key={form.key('secondChoice')}
-                        w={isMobile ? '25%' : '100%'}
-                        label="Position Applying for - Second Choice"
-                        placeholder={"Second Choice"}
-                        radius={8}
-                        data={form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.value != form.getValues().firstChoice)}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            form.setFieldValue("secondChoice", val);
-                        })}
-                    />
+                        <ComboboxDropdown>
+                            <ComboboxOptions>
+                                {vacancies.map((item) => (
+                                    <ComboboxOption value={item.label} key={item.id}>
+                                        {item.label}
+                                    </ComboboxOption>
+                                ))}
+                            </ComboboxOptions>
+                        </ComboboxDropdown>
+                    </Combobox>
+
+
+                    <Combobox
+                        store={combobox2}
+                        onOptionSubmit={(val) => {
+                            form.setFieldValue('secondChoice', val);
+                            combobox2.closeDropdown();
+                        }}
+                    >
+                        <ComboboxTarget>
+                            <InputBase
+                                label="Position Applying for - Second Choice"
+                                withAsterisk
+                                radius={8}
+                                rightSection={<IconCaretDownFilled size={18} />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps("secondChoice")}
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSectionPointerEvents="none"
+                                onClick={() => combobox2.toggleDropdown()}
+                            >
+                                {form.getValues().secondChoice}
+                            </InputBase>
+                        </ComboboxTarget>
+
+                        <ComboboxDropdown>
+                            <ComboboxOptions>
+                                {(form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.label != form.getValues().firstChoice)).map((item) => (
+                                    <ComboboxOption value={item.label} key={item.id}>
+                                        {item.label}
+                                    </ComboboxOption>
+                                ))}
+                            </ComboboxOptions>
+                        </ComboboxDropdown>
+                    </Combobox>
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -283,7 +343,7 @@ export default function index() {
                 <p className="font-bold">Personal Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
-                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8] text-xs">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' placeholder="First Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' placeholder="Middle Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' placeholder="Suffix(Jr. Sr. etc.)" />
@@ -291,7 +351,7 @@ export default function index() {
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
                     <div className="w-full sp:w-1/2 flex items-end gap-4">
-                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute text-xs">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
                         <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' placeholder="House no." />
                     </div>
                     <div className="w-full sp:w-1/2 flex flex-col sp:flex-row items-end gap-4">
@@ -371,7 +431,7 @@ export default function index() {
                         <Checkbox
                             checked={sameAsPresent}
                             label="Same as Present Address"
-                            classNames={{ label: 'poppins' }}
+                            classNames={{ label: 'poppins text-xs ' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
                             onChange={(value) => {
                                 setSameAsPresent(value.target.checked);

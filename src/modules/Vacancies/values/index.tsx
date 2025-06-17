@@ -50,15 +50,36 @@ export const filterVal: FilterType = {
 }
 
 export const selectedApplicantInitial: selectedApplicant = {
-  applicantId: 0,
-  applicantName: '',
-  email: '',
-  position: '',
-  skills: '',
-  status: '',
-  remarks: '',
-  phone: '',
-  applicationDate: '',
+  nameResponse: {
+    firstName: '',
+    lastName: '',
+    formalName: '',
+  },
+  contact: {
+    emailAddress: '',
+    mobileNo: '',
+  },
+  applicationMovements: [
+    {
+      status: {
+        name: '',
+      },
+    },
+  ],
+  addresses: [
+    {
+      zipCode: {
+        name: '',
+      },
+    },
+  ],
   id: 0,
-  isJobOffer: ""
-}
+  applicantId: 0,
+  position: '',
+  email: '',
+  phone: '',
+  skills: '',
+  remarks: '',
+  applicationDate: '',
+  isJobOffer: '',
+};
