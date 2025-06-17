@@ -93,7 +93,7 @@ export const educationBackgroundVal: EducationBackground[] = [{
     to: new Date('Wed Jan 01 2024 00:00:00 GMT+0800 (Philippine Standard Time)'),
   },
   professionalLicenses: 'AWS Practitioner',
-  certfications: '',
+  certifications: '',
 }];
 
 export const employmentRecordVal: EmploymentRecord[] = [{

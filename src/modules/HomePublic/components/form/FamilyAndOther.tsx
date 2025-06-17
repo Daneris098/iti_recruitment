@@ -163,14 +163,10 @@ export default function index() {
                         form.setFieldError(`siblings.${index}.age`, 'Age is required')
                         invalid = true
                     };
-                    if (item.contactNumber === '') {
-                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required')
+                    if (item.contactNumber.toString() === '' || isNaN(Number(item.contactNumber))) {
+                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required and must be a number')
                         invalid = true
                     };
-                    if (item.contactNumber.toString().length < 11 || isNaN(Number(item.contactNumber))) {
-                        form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number must be at least 11 digits and numeric');
-                        invalid = true;
-                    }
                 }
             });
             const spouse = form.getValues().spouse;
@@ -325,10 +321,10 @@ export default function index() {
                 <p className="font-bold">Other Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center  gap-2">
                     <Combobox store={combobox}  >
                         <Combobox.DropdownTarget>
-                            <PillsInput className="flex-grow" radius={8} onClick={() => combobox.openDropdown()} key={form.getValues().otherInformation.specialTechnicalSkills} {...form.getInputProps("otherInformation.specialTechnicalSkills")}>
+                            <PillsInput label="Special Technical Skills" className="flex-grow" radius={8} onClick={() => combobox.openDropdown()} key={form.getValues().otherInformation.specialTechnicalSkills} {...form.getInputProps("otherInformation.specialTechnicalSkills")}>
                                 <Pill.Group>
                                     {values}
                                     <Combobox.EventsTarget>
@@ -348,7 +344,7 @@ export default function index() {
                             </PillsInput>
                         </Combobox.DropdownTarget>
                     </Combobox>
-                    <IconPlus className="cursor-pointer" onClick={() => { handleAdd() }} />
+                    <IconPlus className="cursor-pointer mt-5" onClick={() => { handleAdd() }} />
                 </div>
 
 
