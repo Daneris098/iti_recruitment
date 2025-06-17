@@ -230,7 +230,10 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={((val) => {
-                            form.setFieldValue("firstChoice", val);
+                            const exists = vacancies.some((item) => item.label === val);
+                            if (exists) {
+                                form.setFieldValue("firstChoice", val);
+                            }
                         })}
                     />
 
@@ -247,7 +250,10 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         onChange={((val) => {
-                            form.setFieldValue("secondChoice", val);
+                            const exists = vacancies.some((item) => item.label === val);
+                            if (exists) {
+                                form.setFieldValue("secondChoice", val);
+                            }
                         })}
                     />
 
