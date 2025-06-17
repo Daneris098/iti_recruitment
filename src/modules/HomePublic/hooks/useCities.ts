@@ -8,7 +8,6 @@ export const useCities = () => {
             let url = `general/cities`;
             const res = await axiosInstance.get(url);
             if (res.status === 200 && Array.isArray(res.data.items)) {
-                console.log('res', res.data.items)
                 const mapCitiesData = res.data.items?.map((item: any) => ({
                     id: item.id,
                     value: `${item.id}`,

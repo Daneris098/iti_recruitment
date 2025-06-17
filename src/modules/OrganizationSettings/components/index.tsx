@@ -90,14 +90,16 @@ const DataTableComp = forwardRef((_, ref) => {
 
   const saveAll = () => {
     if (addOrg) {
-      (addActions as any)[activePanel]?.();
+      addActions[activePanel as Panel]();
       if (alert === AlertType.Saved) {
         setAddOrg(false);
-        setNewRows([]);
       }
+      setAddOrg(false);
+      resetExpandedRows();
+      setExpanded([]);
       setValidationMessage("Add row form is open, Please Fill up before you switch tab");
     } else if (expandedIds.length >= 1) {
-      (editActions as any)[activePanel]?.();
+      editActions[activePanel as Panel]();
       resetExpandedRows();
     } else if (!addOrg && expandedIds.length === 0) {
       setAlert("Validation");

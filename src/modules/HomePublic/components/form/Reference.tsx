@@ -25,7 +25,7 @@ export default function index() {
                 fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => !value.toString().trim() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                ContactNo: (value: string | number) => !value.toString() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
             },
             employmentReference: {
                 fullname: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Fullname is required" : null,
@@ -42,27 +42,12 @@ export default function index() {
         },
     });
 
-
-    useEffect(() => {
-        if (activeStepper === Step.Reference) {
-            console.log('isNoEmploymentRecord: ', isNoEmploymentRecord)
-            console.log('!isNoEmploymentRecord: ', !isNoEmploymentRecord)
-            console.log('applicationForm.educationAndEmployment: ', applicationForm.educationAndEmployment.employmentRecord)
-            console.log('employmentRecordVal: ', employmentRecordVal)
-            console.log(applicationForm.educationAndEmployment.employmentRecord[0] == employmentRecordVal[0])
-        }
-    }, [activeStepper])
-
     useEffect(() => {
         const hasTrue = Object.values(form.getValues().applicationSource).some(value => value === true);
         setIsAlreadyCheck(hasTrue);
         const found = Object.entries(form.getValues().applicationSource).find(([_, value]) => value === true);
         setActiveSource(found ? found[0] : null);
     }, [form.getValues()])
-
-    useEffect(() => {
-        console.log('activeSource: ', activeSource)
-    }, [activeSource])
 
     const onSubmit = async (form: Reference) => {
 
@@ -156,8 +141,8 @@ export default function index() {
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder="Position Held"
                             />
-                            <NumberInput
-                                hideControls
+                            <TextInput
+                                inputMode="numeric"
                                 classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                 {...form.getInputProps(`characterReference.${index}.ContactNo`)}
                                 radius="md"
@@ -165,12 +150,21 @@ export default function index() {
                                 placeholder="Contact Number"
                                 maxLength={11}
                             />
+                            {/* <NumberInput
+                                hideControls
+                                classNames={{ input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps(`characterReference.${index}.ContactNo`)}
+                                radius="md"
+                                w={isMobile ? '25%' : '100%'}
+                                placeholder="Contact Number"
+                                maxLength={11}
+                            /> */}
                             {index === applicationForm.reference.characterReference.length - 1 && index > 0 && (<div>
                                 <IconCircleMinus size={35} className="" onClick={() => { removeFieldCharacter(index) }} />
                             </div>)}
                         </div>
                     ))}
-                    <p className="w-[20%] text-sm bg-[#559cda] text-white px-2 py-1 rounded-md font-semibold cursor-pointer flex gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD CHARACTER REFERENCE</p>
+                    <p className="sp:w-[20%] text-sm bg-[#559cda] text-white p-3 sp:px-2 sp:py-1 rounded-md font-semibold cursor-pointer flex justify-center gap-2 " onClick={addFieldCharacter}><IconCirclePlus size={20} />ADD CHARACTER REFERENCE</p>
 
                 </div>
 
@@ -230,41 +224,34 @@ export default function index() {
                 <p className="font-bold">Application Source</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <p>Let us know how did you find our company <span className="text-red-500">*</span></p>
-                <div className="flex gap-2 sm:gap-0">
+                <div className="grid grid-cols-2 sp:grid-cols-3 gap-3">
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'employeeReferal'}
                         {...form.getInputProps(`applicationSource.employeeReferal`, { type: 'checkbox' })}
-                        className="w-[33%]"
-                        label="Employee Refereal"
+                        label="Employee Referal"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'jobStreet'}
                         {...form.getInputProps(`applicationSource.jobStreet`, { type: 'checkbox' })}
-                        className="w-[33%] "
                         label="Jobstreet"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'headHunter'}
                         {...form.getInputProps(`applicationSource.headHunter`, { type: 'checkbox' })}
-                        className="w-[33%] truncate"
                         label="Headhunter"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
-                </div>
-                <div className="flex  gap-2 sm:gap-0">
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'wordOfMouth'}
                         {...form.getInputProps(`applicationSource.wordOfMouth`, { type: 'checkbox' })}
-                        className="w-[33%]"
                         label="Word of Mouth"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'walkin'}
                         {...form.getInputProps(`applicationSource.walkin`, { type: 'checkbox' })}
-                        className="w-[33%]"
                         label="Walk-in"
                         classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
@@ -272,7 +259,6 @@ export default function index() {
                         <Checkbox
                             disabled={isAlreadyCheck && activeSource != 'others'}
                             {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
-                            className="w-[33%]"
                             label="Others"
                             classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                         />

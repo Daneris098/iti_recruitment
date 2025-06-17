@@ -5,18 +5,25 @@ import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
+import { useFetchOrganizationSettings } from "../../services/data";
 type AddDivisionProps = {
   code: string;
   name: string;
   isActive: boolean;
   description: string;
+  branch: {
+    id: number;
+    name: string;
+  };
 };
 export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionType>[] {
   const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDivision = useForm<AddDivisionProps>({
-    initialValues: { code: "", name: "", isActive: true, description: "" },
+    initialValues: { code: "", name: "", isActive: true, description: "", branch: { id: 0, name: "" } },
   });
+
+  const { branches } = useFetchOrganizationSettings();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addDivision", addDivision.values);
@@ -69,6 +76,42 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
           );
         }
         return row.name;
+      },
+    },
+    {
+      accessor: "branch",
+      title: <div className="flex flex-row gap-3">Branch {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
+      sortable: true,
+      width: "15%",
+      render: (row: any) => {
+        if (row.id === "NEW" && addOrg) {
+          return (
+            <div className="relative">
+              <Select
+                radius={8}
+                data={branches.data?.items.map((items: any) => ({
+                  value: String(items.id),
+                  label: items.name,
+                }))}
+                rightSection={<IconCaretDownFilled size="18" />}
+                className="border-none text-sm w-full"
+                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
+                styles={{ label: { color: "#6d6d6d" } }}
+                placeholder="Select Company"
+                error={addDivision.values.branch.name === "" ? "Branch is Required" : undefined}
+                onChange={(value) => {
+                  const selectedItem: { id: number; name: string } = branches.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  if (selectedItem) {
+                    addDivision.setFieldValue("branch.id", selectedItem.id);
+                    addDivision.setFieldValue("branch.name", selectedItem.name);
+                  }
+                }}
+              />
+            </div>
+          );
+        }
+
+        return row.branch.name;
       },
     },
     {

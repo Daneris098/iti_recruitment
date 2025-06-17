@@ -96,6 +96,7 @@ export default function DrawerFilter() {
 
             <Divider size={0.5} color="#edeeed" className="w-full" />
             <TextInput
+              size={inputSize}
               radius={8}
               className="border-none w-full text-sm"
               label="Job Title"
@@ -110,6 +111,7 @@ export default function DrawerFilter() {
               size={inputSize}
               defaultValue={storedFilters.DatePosted === null ? "" : storedFilters.DatePosted}
               placeholder={filter.postedDate != null ? "" : "Select Date Posted"}
+              label={"Date Posted"}
               radius={8}
               data={["Last 24 hours", "Last Week", "Last Month", "Anytime"]}
               rightSection={<IconCaretDownFilled size="18" />}

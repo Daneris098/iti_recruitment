@@ -57,7 +57,7 @@ const Photo = forwardRef((_, ref) => {
         }
     };
 
-    const handleUpload = (event:any) => {
+    const handleUpload = (event: any) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -137,12 +137,12 @@ const Photo = forwardRef((_, ref) => {
 
     return (
         <div className="text-[#6D6D6D] flex flex-col gap-4 items-center">
-            <p className="text-center w-[59%]">
+            <p className="text-center sp:w-[59%] ">
                 To complete your application, let's take your photo. Tap the {" "}
                 <span className="text-[#559CDA] cursor-pointer">CAMERA ICON</span> or the {" "}
                 <span className="text-[#559CDA] cursor-pointer">TAKE PHOTO BUTTON</span> to start. Make sure to be in a place with proper lighting.
             </p>
-            <div className="h-[30rem] w-full bg-[#4F4F4F] flex flex-col justify-center items-center overflow-hidden">
+            <div className="h-[30rem] w-full bg-[#4F4F4F] flex flex-col justify-center items-center overflow-hidden ">
                 {capturedImage ? (
                     <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-gray-300">
                         <img src={capturedImage} alt="Profile Picture" className="w-full h-full object-cover" />

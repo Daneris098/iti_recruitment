@@ -3,7 +3,7 @@ import { ApplicationStore } from "@src/modules/HomePublic/store";
 import "@modules/HomePublic/styles/index.css"
 export default function index() {
     const { activeStepper, setActiveStepper } = ApplicationStore();
-    
+
 
     function StyledStepper(props: StepperProps) {
         return (
@@ -23,14 +23,14 @@ export default function index() {
                     },
                     stepIcon: {
                         background: '#cfcfcf',
-                        color:'white',
-                        borderStyle:'hidden'
+                        color: 'white',
+                        borderStyle: 'hidden'
                     },
                     separator: {
                         marginLeft: -2,
                         marginRight: -2,
                         height: 4,
-                        margin:'0.1rem',
+                        margin: '0.1rem',
                         background: '#cfcfcf'
                     },
                 }}
@@ -40,7 +40,7 @@ export default function index() {
     }
 
     return (
-        <StyledStepper active={activeStepper}  onStepClick={(data:number)=>{data < activeStepper && setActiveStepper(data)}}>
+        <StyledStepper active={activeStepper} onStepClick={(data: number) => { data < activeStepper && setActiveStepper(data) }}>
             <Stepper.Step label="" description="General and Personal Information" />
             <Stepper.Step label="" description="Education and Employment Record" />
             <Stepper.Step label="" description="Family Background and Other Information" />

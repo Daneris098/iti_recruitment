@@ -14,12 +14,10 @@ export default function Index() {
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
-
             if (consent === 'true') {
                 setSubmitLoading(true);
                 (async () => {
                     try {
-                        // console.log(' (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any): ', (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.firstChoice)) as any))
                         const formData = new FormData();
                         const split = applicationForm.photo.split('/');
                         const mimeToExtension = (mimeType: string): string => {
@@ -192,24 +190,24 @@ export default function Index() {
                             ],
                             positions: [
                                 {
-                                    id: applicationForm.generalInformation.firstChoice,
-                                    companyId: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).companyDetails.id,
-                                    name: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).position,
+                                    id: (vacanciesData?.find((item) => item.position == (applicationForm.generalInformation.firstChoice)) as any).id,
+                                    companyId: (vacanciesData?.find((item) => item.position == (applicationForm.generalInformation.firstChoice)) as any).companyDetails.id,
+                                    name: (vacanciesData?.find((item) => item.position == (applicationForm.generalInformation.firstChoice)) as any).position,
                                     salary: applicationForm.generalInformation.desiredSalary,
                                     choice: { id: 1, name: 'First Choice' },
                                     availableDateStart: applicationForm.generalInformation.startDateAvailability,
-                                    departmentId: (vacanciesData?.find((item) => item.id == (Number(applicationForm.generalInformation.firstChoice))) as any).departmentDetails.id,
+                                    departmentId: (vacanciesData?.find((item) => item.position == (applicationForm.generalInformation.firstChoice)) as any).departmentDetails.id,
                                 },
-                                (Number(applicationForm.generalInformation.secondChoice) !== 0
-                                    ? [{
-                                        id: applicationForm.generalInformation.secondChoice,
-                                        companyId: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).companyDetails.id,
-                                        name: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).position,
+                                ((applicationForm.generalInformation.secondChoice) != ''
+                                    ? {
+                                        id: (vacanciesData?.find((item) => item.position == applicationForm.generalInformation.secondChoice) as any).id,
+                                        companyId: (vacanciesData?.find((item) => item.position == applicationForm.generalInformation.secondChoice) as any).companyDetails.id,
+                                        name: (vacanciesData?.find((item) => item.position == applicationForm.generalInformation.secondChoice) as any).position,
                                         salary: applicationForm.generalInformation.desiredSalary,
                                         choice: { id: 2, name: 'Second Choice' },
                                         availableDateStart: applicationForm.generalInformation.startDateAvailability,
-                                        departmentId: (vacanciesData?.find((item) => item.id == Number(applicationForm.generalInformation.secondChoice)) as any).departmentDetails.id,
-                                    }]
+                                        departmentId: (vacanciesData?.find((item) => item.position == applicationForm.generalInformation.secondChoice) as any).departmentDetails.id,
+                                    }
                                     : []),
                             ],
                             questionnaires: [
@@ -262,7 +260,6 @@ export default function Index() {
                                 'Content-Type': 'multipart/form-data',
                             },
                         })
-                        console.log(response)
                         if (response.status == 201) {
                             setApplicationForm(ApplicationFormVal)
                             setApplicationFormModal(false);
