@@ -10,8 +10,18 @@ import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+import {
+    Combobox,
+    ComboboxTarget,
+    ComboboxDropdown,
+    ComboboxOptions,
+    ComboboxOption,
+    InputBase
+} from '@mantine/core';
+import { useCombobox } from '@mantine/core';
 
 export default function index() {
+
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
@@ -210,52 +220,91 @@ export default function index() {
             });
     }
 
+    const combobox = useCombobox();
+    const combobox2 = useCombobox();
+
+    const inputProps = form.getInputProps("firstChoice");
+
     return (
         <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end ">
-                    <Autocomplete
-                        withAsterisk
-                        {...form.getInputProps("firstChoice")}
-                        key={form.key('firstChoice')}
-                        w={isMobile ? '25%' : '100%'}
-                        label="Position Applying for - First Choice"
-                        placeholder={"First Choice"}
-                        radius={8}
-                        data={vacancies}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            const exists = vacancies.some((item) => item.label === val);
-                            if (exists) {
-                                form.setFieldValue("firstChoice", val);
-                            }
-                        })}
-                    />
+                    <Combobox
+                        store={combobox}
+                        onOptionSubmit={(val) => {
+                            form.setFieldValue('firstChoice', val);
+                            combobox.closeDropdown();
+                        }}
+                    >
+                        <ComboboxTarget>
+                            <InputBase
+                                label="Position Applying for - First Choice"
+                                withAsterisk
+                                radius={8}
+                                rightSection={<IconCaretDownFilled size={18} />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps("firstChoice")}
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSectionPointerEvents="none"
+                                onClick={() => combobox.toggleDropdown()}
+                            >
+                                {form.getValues().firstChoice}
+                            </InputBase>
+                        </ComboboxTarget>
 
-                    <Autocomplete
-                        {...form.getInputProps("secondChoice")}
-                        key={form.key('secondChoice')}
-                        w={isMobile ? '25%' : '100%'}
-                        label="Position Applying for - Second Choice"
-                        placeholder={"Second Choice"}
-                        radius={8}
-                        data={form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.value != form.getValues().firstChoice)}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            const exists = vacancies.some((item) => item.label === val);
-                            if (exists) {
-                                form.setFieldValue("secondChoice", val);
-                            }
-                        })}
-                    />
+                        <ComboboxDropdown>
+                            <ComboboxOptions>
+                                {vacancies.map((item) => (
+                                    <ComboboxOption value={item.label} key={item.id}>
+                                        {item.label}
+                                    </ComboboxOption>
+                                ))}
+                            </ComboboxOptions>
+                        </ComboboxDropdown>
+                    </Combobox>
+
+
+                    <Combobox
+                        store={combobox2}
+                        onOptionSubmit={(val) => {
+                            form.setFieldValue('secondChoice', val);
+                            combobox2.closeDropdown();
+                        }}
+                    >
+                        <ComboboxTarget>
+                            <InputBase
+                                label="Position Applying for - Second Choice"
+                                withAsterisk
+                                radius={8}
+                                rightSection={<IconCaretDownFilled size={18} />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps("secondChoice")}
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSectionPointerEvents="none"
+                                onClick={() => combobox2.toggleDropdown()}
+                            >
+                                {form.getValues().secondChoice}
+                            </InputBase>
+                        </ComboboxTarget>
+
+                        <ComboboxDropdown>
+                            <ComboboxOptions>
+                                {(form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.label != form.getValues().firstChoice)).map((item) => (
+                                    <ComboboxOption value={item.label} key={item.id}>
+                                        {item.label}
+                                    </ComboboxOption>
+                                ))}
+                            </ComboboxOptions>
+                        </ComboboxDropdown>
+                    </Combobox>
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
