@@ -105,6 +105,7 @@ export default function OfferedStatus() {
                     <Combobox store={positionCombobox} withinPortal={false}>
                         <Combobox.Target>
                             <TextInput
+                                disabled
                                 value={position}
                                 onChange={(e) => setPosition(e.currentTarget.value)}
                                 onFocus={() => positionCombobox.openDropdown()}
@@ -147,6 +148,7 @@ export default function OfferedStatus() {
                     <Combobox store={departmentCombobox} withinPortal={false}>
                         <Combobox.Target>
                             <TextInput
+                                disabled
                                 value={department}
                                 onChange={(e) => setDepartment(e.currentTarget.value)}
                                 onFocus={() => departmentCombobox.openDropdown()}
@@ -190,6 +192,7 @@ export default function OfferedStatus() {
                 <Combobox store={divisionCombobox} withinPortal={false}>
                     <Combobox.Target>
                         <TextInput
+                            disabled
                             value={division}
                             onChange={(e) => setDivision(e.currentTarget.value)}
                             onFocus={() => divisionCombobox.openDropdown()}
