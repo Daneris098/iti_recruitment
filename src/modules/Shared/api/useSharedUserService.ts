@@ -31,3 +31,8 @@ export const useSharedViewAcceptedOffer = {
     getAcceptedOfferId: (idOrGuid: string | number) =>
         apiClient.get<AcceptedOffer>(`recruitment/applicants/${idOrGuid}/view-accepted-offer`),
 }
+
+export const useSharedTransferApplicant = {
+    transferById: (id: number) =>
+        apiClient.post(`recruitment/applicants/${id}/transfer-position`),
+};

@@ -112,7 +112,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         setIsModalOpen(false);
       }, 1000);
     };
-  } else if (selectedStatus === "For Interview" || Status === "For Interview") {
+  } else if (selectedStatus === "For Interview") {
     // buttonText = "Schedule Interview";
     buttonText = "Add to Calendar";
     handleClick = async () => {

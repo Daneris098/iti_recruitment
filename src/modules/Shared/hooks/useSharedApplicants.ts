@@ -17,7 +17,7 @@ import {
     useSharedUserService, usePaymentSchemeService,
     useGetDivisions, useGetFeedbacks,
     useGetPositionLevels, useGetDepartments,
-    useSharedTransferredPosition, useSharedViewAcceptedOffer
+    useSharedTransferredPosition, useSharedViewAcceptedOffer, useSharedTransferApplicant
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
@@ -580,15 +580,15 @@ export const useCreateHired = () => {
     })
 }
 
+
 export const useTransferApplicantPosition = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: async (payload: TransferApplicationPositionForm) => {
-
             const formData = payloadMapper(payload);
 
-            return await transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData)
+            return transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData);
         },
 
         onSuccess: () => {
@@ -597,8 +597,28 @@ export const useTransferApplicantPosition = () => {
         onError: (error) => {
             console.error("Failed to transfer applicants", error);
         },
-    })
-}
+    });
+};
+
+// export const useTransferApplicantPosition = () => {
+//     const queryClient = useQueryClient();
+
+//     return useMutation({
+//         mutationFn: async (payload: TransferApplicationPositionForm) => {
+
+//             const formData = payloadMapper(payload);
+
+//             return await transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData)
+//         },
+
+//         onSuccess: () => {
+//             queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+//         },
+//         onError: (error) => {
+//             console.error("Failed to transfer applicants", error);
+//         },
+//     })
+// }
 
 export const useCreateForTransfer = () => {
     const queryClient = useQueryClient();
