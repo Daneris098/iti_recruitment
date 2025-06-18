@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
-import { useApplicantIdStore } from "@src/modules/Shared/store";
+import { useApplicantIdStore, usePositionApplied } from "@src/modules/Shared/store";
 import { PersonalDetailsType } from '@src/modules/Shared/types';
-import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
+import { fetchApplicantByIdService, } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function PersonalDetails() {
+
+    const setFirstPositionApplied = usePositionApplied((s) => s.setFirstPositionApplied);
+
 
     const [error, setError] = useState<unknown>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +26,13 @@ export default function PersonalDetails() {
             .catch(setError)
             .finally(() => setIsLoading(false));
     }, [applicantId, token]);
+
+    useEffect(() => {
+        const firstChoice = applicant?.positionsApplied?.[0];
+        if (firstChoice?.name) {
+            setFirstPositionApplied(firstChoice.name);
+        }
+    }, [applicant, setFirstPositionApplied]);
 
     if (isLoading) return <p>Loading…</p>;
     if (error || !applicant) {

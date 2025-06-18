@@ -11,13 +11,13 @@ import {
 } from "@modules/Applicants/api/userService";
 import {
     applicantsByIdService, getApplicantById,
-    viewApplicantOfferService, useViewInterviewStagesHiring,
+    viewApplicantOfferService, useViewInterviewStagesHiring, useViewInterviewersService
 } from "@modules/Shared/components/api/UserService";
 import {
-    useSharedUserService,
+    useSharedUserService, usePaymentSchemeService,
     useGetDivisions, useGetFeedbacks,
     useGetPositionLevels, useGetDepartments,
-    useSharedTransferredPosition, useSharedViewAcceptedOffer
+    useSharedTransferredPosition, useSharedViewAcceptedOffer, useSharedTransferApplicant
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
@@ -345,6 +345,26 @@ export const useViewInterviewStages = (
     });
 };
 
+export const useViewInterviewers = () => {
+    return useQuery({
+        queryKey: ['interviewers'],
+        queryFn: async () => {
+            const apiFilters: Record<string, any> = {};
+
+            const data = await useViewInterviewersService.getAll(apiFilters);
+
+            const interviewersName = data.items.map((interviewer: any) => ({
+                id: interviewer.id,
+                name: interviewer.name,
+            }));
+
+            return {
+                interviewersName
+            }
+        },
+    });
+};
+
 export const useViewPositionLevels = () => {
     return useQuery({
         queryKey: ['position-levels'],
@@ -365,7 +385,6 @@ export const useViewDepartments = () => {
             const departmentFilters: Record<string, any> = {};
 
             const data = await useGetDepartments.getAll(departmentFilters);
-
             return data.items
         }
     })
@@ -380,6 +399,19 @@ export const useGetCompanyDivisions = () => {
             const data = await useGetDivisions.getAll(divisionFilters);
 
             return data.items
+        }
+    })
+}
+
+export const useGetPaymentSchemes = () => {
+    return useQuery({
+        queryKey: ['paymentscheme'],
+        queryFn: async () => {
+            const paymentSchemeFilters: Record<string, any> = {};
+
+            const data = await usePaymentSchemeService.getAll(paymentSchemeFilters);
+
+            return data.items;
         }
     })
 }
@@ -548,15 +580,15 @@ export const useCreateHired = () => {
     })
 }
 
+
 export const useTransferApplicantPosition = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: async (payload: TransferApplicationPositionForm) => {
-
             const formData = payloadMapper(payload);
 
-            return await transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData)
+            return transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData);
         },
 
         onSuccess: () => {
@@ -565,8 +597,28 @@ export const useTransferApplicantPosition = () => {
         onError: (error) => {
             console.error("Failed to transfer applicants", error);
         },
-    })
-}
+    });
+};
+
+// export const useTransferApplicantPosition = () => {
+//     const queryClient = useQueryClient();
+
+//     return useMutation({
+//         mutationFn: async (payload: TransferApplicationPositionForm) => {
+
+//             const formData = payloadMapper(payload);
+
+//             return await transferApplicantPosition.transferApplicantPositions(payload.applicantId, formData)
+//         },
+
+//         onSuccess: () => {
+//             queryClient.invalidateQueries({ queryKey: applicantKeys.lists() });
+//         },
+//         onError: (error) => {
+//             console.error("Failed to transfer applicants", error);
+//         },
+//     })
+// }
 
 export const useCreateForTransfer = () => {
     const queryClient = useQueryClient();

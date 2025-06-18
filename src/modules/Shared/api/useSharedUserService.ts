@@ -13,6 +13,10 @@ export const useGetPositionLevels = new BaseService(apiClient, "/recruitment/org
 
 export const useSharedUserService = new BaseService<ApplicantResponse>(apiClient, "/recruitment/applicants");
 
+export const usePaymentSchemeService = new BaseService<ApplicantResponse>(apiClient, "/general/payment-schemes");
+
+export const useGetInterviewerService = new BaseService<ApplicantResponse>(apiClient, "/recruitment/hiring/interviewers");
+
 export const useSharedTransferredPosition = new BaseService<JobOpenings>(apiClient, "recruitment/vacancies");
 
 export const useSharedVacanciesService = new BaseService(apiClient, "recruitment/vacancies");
@@ -27,4 +31,8 @@ export const useSharedUserManagementService = (endpoint?: string) => new BaseSer
 
 export const useSharedViewAcceptedOffer = {
   getAcceptedOfferId: (idOrGuid: string | number) => apiClient.get<AcceptedOffer>(`recruitment/applicants/${idOrGuid}/view-accepted-offer`),
+};
+
+export const useSharedTransferApplicant = {
+  transferById: (id: number) => apiClient.post(`recruitment/applicants/${id}/transfer-position`),
 };

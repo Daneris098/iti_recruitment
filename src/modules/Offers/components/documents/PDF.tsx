@@ -1,16 +1,18 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import header from '@src/assets/intellismart-header.png';
-// import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-// import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'\
+import { PDFProps } from "@modules/Offers/types";
+import header from '@src/assets/job-offers-header.png';
+import { useDepartmentStore } from "@src/modules/Shared/store";
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
-import { PDFProps } from "@modules/Offers/types"
+import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
+import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
+import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
 // Register the Poppins font
 Font.register({
   family: 'Poppins',
   fonts: [
-    { src: PoppinsBold, fontWeight: 'bold' }, // Regular weight
+    { src: PoppinsBold, fontWeight: 'bold' },
+    { src: PoppinsRegular, fontWeight: 'normal' }
   ],
 });
 
@@ -40,9 +42,16 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
     color: '#6D6D6D',
     fontWeight: 'semibold'
   },
+  text_description: {
+    fontSize: 11,
+    marginBottom: 13,
+    fontFamily: 'Poppins',
+    color: '#6D6D6D',
+    fontWeight: 'normal'
+  },
   image: {
-    width: 207,
-    height: 30,
+    width: 550,
+    height: 80.
   },
   horizonntalDivider1: {
     width: '100%',
@@ -68,7 +77,7 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
     color: '#6D6D6D',
     fontSize: 11,
     fontFamily: 'Poppins',
-    fontWeight: 'normal',
+    fontWeight: 'bold',
     textAlign: 'left'
   },
   text_data: {
@@ -99,16 +108,22 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
     marginBottom: 1,
     fontFamily: 'Poppins',
   },
+  merit_text: {
+    color: '#6D6D6D',
+    fontSize: 10,
+    marginBottom: 1,
+    fontFamily: 'Poppins',
+  },
 });
 
 // Create Document Component
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
   applicantName,
   position,
-  department,
+  // department,
   remarks,
-  salaryMonthly,
-  salaryYearly,
+  // salaryMonthly,
+  // salaryYearly,
   noteSalary,
   meritIncrease,
   descriptionVL,
@@ -132,6 +147,10 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
     { label: 'Transportation Subsidy', value: descriptionTranspo },
   ];
 
+  const departmentName = useDepartmentStore.getState().departmentName;
+  const { amount } = useDropDownOfferedStore.getState();
+  const annualAmount = amount * 12
+
   return (
     <Document>
       <Page size="LEGAL" style={styles.page}>
@@ -139,7 +158,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
 
           {/* Intellismart PNG header*/}
           <Image src={header} style={styles.image} />
-          <Text style={styles.intellismart_png}>{"strictly confidential".toUpperCase()}</Text>
+          <Text style={[styles.intellismart_png, { marginLeft: 10 }]}>{"strictly confidential".toUpperCase()}</Text>
 
           {/* Horizontal Divider */}
           <Text style={styles.horizonntalDivider1}></Text>
@@ -149,58 +168,64 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             {/* Name */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Name</Text>
-              <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{applicantName ?? "No Data"}</Text>
+              <Text style={[styles.text_description, { flex: 0.3 }]}>:</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{applicantName ?? "No Data"}</Text>
             </View>
 
             {/* Position and Rank */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Position and Rank</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{position ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{position ?? "No Data"}</Text>
             </View>
 
             {/* Department/Division */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Department/Division</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{department ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{departmentName ?? "No Data"}</Text>
             </View>
 
             {/* Status Upon Hiring */}
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Status Upon Hiring</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_data, { flex: 3 }]}>{remarks ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{remarks ?? "No Data"}</Text>
             </View>
 
             {/* Second Section: Salary  & Merits */}
             <View style={{ paddingTop: 6 }}>
-              <Text style={styles.text_title}>
-                Salary {"\n"} <Text style={styles.salary_note}>{noteSalary ?? "No Data"}</Text>
-              </Text>
 
               {/* Actual Salary */}
-              <View style={{ flexDirection: 'row', gap: 100, paddingTop: 6 }}>
-                {/* Monthly */}
-                <Text style={styles.text_title}>
-                  Salary (Monthly) {"\n"}
-                  <Text style={styles.actual_salary}>{salaryMonthly ?? "No Data"}</Text>
+              <View style={{ flexDirection: 'row', gap: 50, paddingTop: 6 }}>
+                {/* Salary with optional note (if needed, re-add noteSalary) */}
+                <Text style={[styles.text_title, { marginRight: 50 }]}>
+                  Salary {"\n"}
                 </Text>
 
-                {/* Annual */}
-                <Text style={styles.text_title}>
-                  Salary (Annual) {"\n"}
-                  <Text style={styles.actual_salary}>{salaryYearly ?? "No Data"}</Text>
+                {/* Monthly Salary */}
+                <Text style={styles.text_data}>
+                  Monthly:
+                  <Text style={styles.actual_salary}>
+                    {`   ${amount ?? "No Data"} (Gross)`}
+                  </Text>
+                </Text>
+                {/* Annual Salary */}
+                <Text style={styles.text_data}>
+                  Annual:
+                  <Text style={styles.actual_salary}>
+                    {`   ${annualAmount ?? "No Data"}`}
+                  </Text>
                 </Text>
               </View>
+              <Text style={[styles.text_title, { marginLeft: 139 }]}>
+                <Text style={styles.salary_note}>{noteSalary ?? "No Data"}</Text>
+              </Text>
 
               {/* Merit Increase */}
-              <View style={{ paddingTop: 6 }}>
-                <Text style={styles.text_title}>
-                  Merit Increase {"\n"}
-                  <Text style={styles.salary_note}>{meritIncrease ?? "No Data"}</Text>
-                </Text>
+              <View style={{ paddingTop: 6, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={[styles.text_title, { paddingRight: 62 }]}>Merit Increase</Text>
+                <Text style={styles.salary_note}>{meritIncrease ?? "No Data"}</Text>
               </View>
             </View>
 
@@ -209,8 +234,8 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
 
               {/* Header Row */}
               <View style={{ flexDirection: 'row', width: '100%', marginBottom: 1, alignItems: 'center' }}>
-                <Text style={[styles.text_title, { flex: 4, fontWeight: 'bold' }]}>Benefits</Text>
-                <Text style={[styles.text_title, { flex: 9, fontWeight: 'bold' }]}>Description</Text>
+                <Text style={[styles.text_title, { flex: 4, fontWeight: 'bold', }]}>Benefits</Text>
+                <Text style={[styles.text_title, { flex: 9, fontWeight: 'bold', textAlign: 'center' }]}>Description</Text>
               </View>
 
               <View>
@@ -222,7 +247,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                     <View key={index} style={{ flexDirection: 'row', width: '100%', marginBottom: 3 }}>
 
                       {/* Label */}
-                      <Text style={[styles.benefits_label, { flex: 3 }]}>{description.label}</Text>
+                      <Text style={[styles.benefits_label, { flex: 3, fontWeight: 'bold' }]}>{description.label}</Text>
                       <Text style={[styles.benefits_label, { flex: 1, textAlign: 'center' }]}>:</Text>
 
                       {/* Value */}
@@ -240,10 +265,10 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                                 {/* Headers: Maternity & Paternity Leave */}
                                 <View style={{ flexDirection: 'row' }}>
                                   <Text style={[styles.benefits_label, { flex: 8, fontWeight: 'bold', textAlign: 'left' }]}>
-                                    Maternity Leave Benefit
+                                    Maternity Leave Benefit:
                                   </Text>
                                   <Text style={[styles.benefits_label, { flex: 8, fontWeight: 'bold', textAlign: 'left' }]}>
-                                    Paternity Leave Benefit
+                                    Paternity Leave Benefit:
                                   </Text>
                                 </View>
 
@@ -296,33 +321,48 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
 
               {/* First Column */}
               <View style={{ flex: 1 }}>
-                <Text style={{ marginBottom: 28, fontSize: 10 }}>
+                <Text style={{ marginBottom: 9, fontSize: 10 }}>
                   Prepared by:
                 </Text>
-                <Text style={{ marginBottom: 28, fontSize: 10 }}>
+                <Text style={{ marginBottom: 9, fontSize: 10 }}>
                   Noted by:
                 </Text>
-                <Text style={{ marginBottom: 28, fontSize: 10 }}>
+                <Text style={{ marginBottom: 9, fontSize: 10 }}>
                   Approved by:
                 </Text>
-                <Text style={{ marginBottom: 28, fontSize: 10 }}>
-                  Nature of Vacancy:
-                </Text>
-                <Text style={{ marginBottom: 0, fontSize: 10 }}>
+                <Text style={{ marginBottom: 9, fontSize: 10 }}>
                   ePRF No.
                 </Text>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                  <Text style={{ fontSize: 10, marginRight: 14 }}>Nature of Vacancy:</Text>
+
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 50 }}>
+                    <Text style={{ marginLeft: 50 }}>New</Text>
+                    <View style={{ backgroundColor: 'black', paddingHorizontal: 8, paddingVertical: 2, marginLeft: 34 }}>
+                      <Text style={{ color: 'white', fontSize: 10 }}>⬛</Text>
+                    </View>
+                  </View>
+
+
+                  {/* <Text style={{ marginRight: 80, marginLeft: 120 }}>Additional</Text> */}
+                  <Text style={{ marginLeft: 150 }}>Additional</Text>
+                  <Text style={{ marginLeft: 130 }}> Replacement</Text>
+
+                </View>
+
               </View>
 
               {/* Second Column */}
               <View style={{ flex: 1, alignItems: "flex-start" }}>
-                <Text style={{ marginBottom: 28, marginLeft: 26, fontSize: 10 }}>
+                <Text style={{ marginBottom: 9, marginLeft: 26, fontSize: 10 }}>
                   Conforme:
                 </Text>
-                <Text style={{ marginBottom: 28, marginLeft: 26, fontSize: 10 }}>
+                <Text style={{ marginBottom: 9, marginLeft: 26, fontSize: 10 }}>
                   Date Signed:
                 </Text>
-                <Text style={{ marginBottom: 70, marginLeft: 26, fontSize: 10 }}>
-                  Date Signed:
+                <Text style={{ marginBottom: 9, marginLeft: 26, fontSize: 10 }}>
+                  Reporting Date:
                 </Text>
                 <Text style={{ marginBottom: 0, marginLeft: 26, fontSize: 10 }}>
                   Cost Center:
@@ -333,7 +373,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
           </View>
         </View>
       </Page>
-    </Document>
+    </Document >
   );
 };
 

@@ -1,6 +1,7 @@
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
-import { useApplicantIdStore } from "@modules/Applicants/store";
+// import { useApplicantIdStore } from "@modules/Applicants/store";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
 import { JobOpenings, ApplicantTransfereeName, Slot } from "@modules/Shared/types";
@@ -13,9 +14,10 @@ import { useTransferApplicantPosition } from "@modules/Shared/hooks/useSharedApp
 
 export default function TransferPosition({ Applicant_Name, onClose }: ApplicantTransfereeName) {
 
-    const { mutate: transferPosition } = useTransferApplicantPosition();
+    const { mutateAsync: transferPosition } = useTransferApplicantPosition();
     const applicantId = useApplicantIdStore((state) => state.id);
 
+    console.log(applicantId)
     const [localPageSize] = useState(10);
     const [localPage, setLocalPage] = useState(1);
     const setJobOpenings = useJobOpeningStore((state) => state.setJobOpenings);
@@ -158,7 +160,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 >
                     Cancel
                 </Button>
-                <Button
+                {/* <Button
                     className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[14px] poppins"
                     onClick={async () => {
                         if (!selectedSlots.length) return;
@@ -194,6 +196,46 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                         }
                     }}
 
+                >
+                    TRANSFER POSITION
+                </Button> */}
+                <Button
+                    className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[14px] poppins"
+                    onClick={async () => {
+                        if (!selectedSlots.length) return;
+
+                        setIsTransferred(true);
+
+                        const selectedSlot = selectedSlots[0];
+                        const fullVacancy = allVacancies?.find(v => v.id === selectedSlot.id);
+                        if (!fullVacancy) {
+                            console.error("Matching vacancy not found");
+                            return;
+                        }
+
+                        try {
+                            await transferPosition({          // <-- mutateAsync lets you await
+                                applicantId: applicantId,
+                                position: {
+                                    id: selectedSlot.id,
+                                    name: selectedSlot.position,
+                                    salary: 1,
+                                    choice: { id: 2, name: "" },
+                                    availableDateStart: fullVacancy.vacancyDuration.dateStart,
+                                    companyId: selectedSlot.company?.id ?? 0,
+                                    departmentId: fullVacancy.departmentResponse?.id ?? 0
+                                },
+                                comment: comments,
+                            });
+
+                            setSelectedIds([]);
+                            onClose();
+                        } catch (err) {
+                            console.error("Failed to transfer position", err);
+                        } finally {
+                            setIsTransferred(false);
+                        }
+                    }}
                 >
                     TRANSFER POSITION
                 </Button>
@@ -295,6 +337,6 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                     />
                 </div>
             </ModalWrapper>
-        </div>
+        </div >
     );
 }

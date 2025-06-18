@@ -6,23 +6,37 @@ import { interviewStagesOption } from "@modules/Applicants/types";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import {
     useViewPositionLevels, useViewDepartments,
-    useGetCompanyDivisions,
+    useGetCompanyDivisions, useGetPaymentSchemes
 } from "@modules/Shared/hooks/useSharedApplicants";
+import { usePositionApplied, useDepartmentStore, useDivisionStore } from "@src/modules/Shared/store";
 
 export default function OfferedStatus() {
 
+    const setDepartmentName = useDepartmentStore((state) => state.setDepartmentName);
+    const setDivisionName = useDivisionStore((state) => state.setDivisionName)
 
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
     const { data: compDivisions } = useGetCompanyDivisions();
+    const { data: paymentSchemes } = useGetPaymentSchemes();
 
     const [getPositionLevels, setPositionLevels] = useState<interviewStagesOption[]>([]);
     const [getDepartments, setDepartments] = useState<interviewStagesOption[]>([]);
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
+    const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
 
+    const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
+    const departmentName = useDepartmentStore((state) => state.departmentName);
+    const divisionName = useDivisionStore((state) => state.divisionName)
 
     useEffect(() => {
-        if (!positionLevels || !orgDepartments || !compDivisions) return;
+        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) return;
+
+        const schemes = paymentSchemes.map((payments: any) => ({
+            value: payments.id,
+            label: payments.name
+        }))
+        setPaymentSchemes(schemes);
 
         const positions = positionLevels.map((position: any) => ({
             value: position.id,
@@ -42,14 +56,13 @@ export default function OfferedStatus() {
         }))
         setDivisions(divisions);
 
-
-
     }, [positionLevels, orgDepartments])
 
     useEffect(() => {
         if (getDepartments.length > 0) {
             setDepartment(getDepartments[0].label);
             setDepartmentId(getDepartments[0].value)
+            setDepartmentName(getDepartments[0].label);
         }
         if (getPositionLevels.length > 0) {
             setPosition(getPositionLevels[0].label)
@@ -58,19 +71,21 @@ export default function OfferedStatus() {
         if (getDivisions.length > 0) {
             setDivision(getDivisions[0].label)
             setDivisionId(getDivisions[0].value)
+            setDivisionName(getDivisions[0].label)
+        }
+        if (getPaymentSchemes.length > 0) {
+            setSalaryTypes(getPaymentSchemes[0].label)
+            setPaymentSchemeId(getPaymentSchemes[0].value)
         }
 
     }, [getPositionLevels, getDepartments, getDivisions])
 
-    const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
     const {
-        setDivisionId,
-        amount, setAmount,
-        position, setPosition,
-        division, setDivision,
-        department, setDepartment,
+        setDivision, setDepartment,
+        amount, setAmount, setPosition,
         getSalaryTypes, setSalaryTypes,
         setPositionId, setDepartmentId,
+        setDivisionId, setPaymentSchemeId,
     } = useDropDownOfferedStore();
 
     // Independent Combobox hooks
@@ -105,7 +120,8 @@ export default function OfferedStatus() {
                     <Combobox store={positionCombobox} withinPortal={false}>
                         <Combobox.Target>
                             <TextInput
-                                value={position}
+                                disabled
+                                value={positionsApplied || ""}
                                 onChange={(e) => setPosition(e.currentTarget.value)}
                                 onFocus={() => positionCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -147,7 +163,8 @@ export default function OfferedStatus() {
                     <Combobox store={departmentCombobox} withinPortal={false}>
                         <Combobox.Target>
                             <TextInput
-                                value={department}
+                                disabled
+                                value={departmentName || ""}
                                 onChange={(e) => setDepartment(e.currentTarget.value)}
                                 onFocus={() => departmentCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -190,7 +207,8 @@ export default function OfferedStatus() {
                 <Combobox store={divisionCombobox} withinPortal={false}>
                     <Combobox.Target>
                         <TextInput
-                            value={division}
+                            disabled
+                            value={divisionName || ""}
                             onChange={(e) => setDivision(e.currentTarget.value)}
                             onFocus={() => divisionCombobox.openDropdown()}
                             rightSection={<IconChevronDown size={16} />}
@@ -244,19 +262,20 @@ export default function OfferedStatus() {
                             />
                         </Combobox.Target>
 
-                        {salaryTypes.length > 0 && (
+                        {getPaymentSchemes.length > 0 && (
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg">
-                                {salaryTypes.map((salary) => (
+                                {getPaymentSchemes.map((salary) => (
                                     <Combobox.Option
-                                        key={salary}
-                                        value={salary}
+                                        key={salary.value}
+                                        value={salary.label}
                                         onClick={() => {
-                                            setSalaryTypes(salary);
+                                            setSalaryTypes(salary.label);
+                                            setPaymentSchemeId(salary.value)
                                             salaryComboBox.closeDropdown();
                                         }}
                                         className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
                                     >
-                                        {salary}
+                                        {salary.label}
                                     </Combobox.Option>
                                 ))}
                             </Combobox.Dropdown>

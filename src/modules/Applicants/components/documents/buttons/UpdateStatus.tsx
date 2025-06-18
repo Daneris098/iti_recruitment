@@ -2,6 +2,7 @@
 import { useHiredStartDate } from "@modules/Shared/store";
 import { useStatusStore } from "@src/modules/Applicants/store";
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
@@ -16,8 +17,9 @@ import ForInterviewStatus from "@modules/Applicants/components/documents/movemen
 import ScheduleInterview from "@src/modules/Applicants/components/documents/movement/ScheduleInterview";
 import TransferApplicantLoader from "@modules/Applicants/components/documents/movement/TransferApplicants";
 import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Shared/hooks/useSharedApplicants";
-import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types"
-import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
+import { useDropDownOfferedStore, useCloseModal, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
+import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types";
+import { useEffect, useState } from "react";
 
 interface UpdateStatusProps {
   Status: string;
@@ -27,6 +29,16 @@ interface UpdateStatusProps {
 }
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
+  const [, setIsOpen] = useState(false);
+
+  // Auto-open when status becomes 'For Interview'
+  useEffect(() => {
+    if (Status === 'For Interview') {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false); // Auto-close if status changes
+    }
+  }, [Status]);
 
   const { mutateAsync: movementHired } = useCreateHired();
   const { mutateAsync: movementArchive } = usePOSTArchive();
@@ -84,8 +96,8 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         File: file,
         Feedback: feedback,
         ApplicantFeedback: applicantFeedback,
-        Comments: comments
-      })
+        Comments: comments,
+      });
 
       setIsDropdownOpen(false);
       setIsFeedbackSent(true);
@@ -100,9 +112,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         setIsModalOpen(false);
       }, 1000);
     };
-  }
-
-  else if (selectedStatus === "For Interview") {
+  } else if (selectedStatus === "For Interview") {
     // buttonText = "Schedule Interview";
     buttonText = "Add to Calendar";
     handleClick = async () => {
@@ -114,7 +124,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
           Location: interviewLocation,
           Interviewer: {
             Id: interviewerId,
-            Name: getInterviewer
+            Name: getInterviewer,
           },
           InterviewStage: {
             Id: interviewStagesId,
@@ -126,13 +136,22 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
         setIsContactApplicant(true);
         setIsDropdownOpen(false);
+
+        setTimeout(() => {
+          setIsContactApplicant(false);
+          setSelectedStatus(null);
+        }, 1000);
+
       } catch (error) {
         console.error("Error scheduling interview:", error);
       }
     };
-  } else if (selectedStatus === "Offered") {
-    buttonText = "Generate Offer"
-    handleClick = () => setIsOffered(true);
+  }
+  else if (selectedStatus === "Offered") {
+    buttonText = "Generate Offer";
+    handleClick = () => {
+      setIsOffered(true);
+    };
   }
   else if (selectedStatus === "Hired") {
     buttonText = "Upload";
@@ -141,24 +160,32 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         ApplicantId: applicantId,
         FileAttachment: file ?? null,
         Order: interviewStagesId,
-        DateStart: selectedDate
-      })
+        DateStart: selectedDate,
+      });
+
       setIsFeedbackSent(true);
-      setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
+      setIsDropdownOpen(false);
+
       setTimeout(() => {
         setIsFeedbackSent(false);
         setIsViewApplicant(false);
         setIsUpdateStatusButtonModalOpen(false);
-        setSelectedStatus(null)
-        onClose();  // Close DropDown.tsx
+        setSelectedStatus(null);
+        onClose(); // Close DropDown.tsx
       }, 1000);
     };
   }
+
   else {
-    buttonText = "Update"
+    buttonText = "Update";
     handleClick = () => {
       setIsDefaultUpdated(true);
-    }
+
+      setTimeout(() => {
+        setIsDefaultUpdated(false);
+        setSelectedStatus(null);
+      }, 1000);
+    };
   }
 
   // This is the array of possible drop down options for update status button depending on the user's selected status.
@@ -290,6 +317,10 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
               <TransferApplicantLoader
               //  onClose={onClose} 
               />
+            )}
+
+            {(Status === 'For Interview' && !selectedStatus) && (
+              <ForInterviewStatus />
             )}
           </>
           {/* End of Transferred Status */}
