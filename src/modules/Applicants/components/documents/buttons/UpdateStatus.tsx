@@ -96,8 +96,8 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         File: file,
         Feedback: feedback,
         ApplicantFeedback: applicantFeedback,
-        Comments: comments
-      })
+        Comments: comments,
+      });
 
       setIsDropdownOpen(false);
       setIsFeedbackSent(true);
@@ -112,9 +112,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         setIsModalOpen(false);
       }, 1000);
     };
-  }
-
-  else if (selectedStatus === "For Interview" || Status === "For Interview") {
+  } else if (selectedStatus === "For Interview" || Status === "For Interview") {
     // buttonText = "Schedule Interview";
     buttonText = "Add to Calendar";
     handleClick = async () => {
@@ -126,7 +124,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
           Location: interviewLocation,
           Interviewer: {
             Id: interviewerId,
-            Name: getInterviewer
+            Name: getInterviewer,
           },
           InterviewStage: {
             Id: interviewStagesId,
@@ -138,13 +136,22 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
         setIsContactApplicant(true);
         setIsDropdownOpen(false);
+
+        setTimeout(() => {
+          setIsContactApplicant(false);
+          setSelectedStatus(null);
+        }, 1000);
+
       } catch (error) {
         console.error("Error scheduling interview:", error);
       }
     };
-  } else if (selectedStatus === "Offered") {
-    buttonText = "Generate Offer"
-    handleClick = () => setIsOffered(true);
+  }
+  else if (selectedStatus === "Offered") {
+    buttonText = "Generate Offer";
+    handleClick = () => {
+      setIsOffered(true);
+    };
   }
   else if (selectedStatus === "Hired") {
     buttonText = "Upload";
@@ -153,24 +160,32 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         ApplicantId: applicantId,
         FileAttachment: file ?? null,
         Order: interviewStagesId,
-        DateStart: selectedDate
-      })
+        DateStart: selectedDate,
+      });
+
       setIsFeedbackSent(true);
-      setIsDropdownOpen(false);  //  Close dropdown when clicking "Save Feedback"
+      setIsDropdownOpen(false);
+
       setTimeout(() => {
         setIsFeedbackSent(false);
         setIsViewApplicant(false);
         setIsUpdateStatusButtonModalOpen(false);
-        setSelectedStatus(null)
-        onClose();  // Close DropDown.tsx
+        setSelectedStatus(null);
+        onClose(); // Close DropDown.tsx
       }, 1000);
     };
   }
+
   else {
-    buttonText = "Update"
+    buttonText = "Update";
     handleClick = () => {
       setIsDefaultUpdated(true);
-    }
+
+      setTimeout(() => {
+        setIsDefaultUpdated(false);
+        setSelectedStatus(null);
+      }, 1000);
+    };
   }
 
   // This is the array of possible drop down options for update status button depending on the user's selected status.
