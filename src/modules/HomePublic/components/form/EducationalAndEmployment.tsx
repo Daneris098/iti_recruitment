@@ -264,36 +264,44 @@ export default function index() {
                 if (item.employerCompany != '' || item.location != '' || item.positionHeld != '' || item.inclusiveDate.from != null || item.inclusiveDate.to != null || (item.salary != '' && Number(item.salary) > 0) || item.reasonForLeaving != '') {
                     if (item.employerCompany === '') {
                         form.setFieldError(`employmentRecord.${index}.employerCompany`, 'Employer/Company is required');
+                        form.getInputNode?.(`employmentRecord.${index}.employerCompany`)?.focus();
                         invalid = true
                     }
 
                     if (item.location === '') {
                         form.setFieldError(`employmentRecord.${index}.location`, 'Location is required');
+                        form.getInputNode?.(`employmentRecord.${index}.location`)?.focus();
                         invalid = true
                     }
 
                     if (item.positionHeld === '') {
                         form.setFieldError(`employmentRecord.${index}.positionHeld`, 'Position Held is required');
+                        form.getInputNode?.(`employmentRecord.${index}.positionHeld`)?.focus();
                         invalid = true
                     }
 
                     if (item.inclusiveDate.from == null || item.inclusiveDate.from == "") {
                         form.setFieldError(`employmentRecord.${index}.inclusiveDate.from`, 'Inclusive date from is required');
+                        form.getInputNode?.(`employmentRecord.${index}.inclusiveDate.from`)?.focus();
                         invalid = true
                     }
 
                     if (item.inclusiveDate.to == null || item.inclusiveDate.to == "") {
                         form.setFieldError(`employmentRecord.${index}.inclusiveDate.to`, 'Inclusive date to is required');
+                        form.getInputNode?.(`employmentRecord.${index}.inclusiveDate.to`)?.focus();
                         invalid = true
                     }
 
                     if (item.salary === 0) {
                         form.setFieldError(`employmentRecord.${index}.salary`, 'Salary is required');
+                        form.getInputNode?.(`employmentRecord.${index}.salary`)?.focus();
+
                         invalid = true
                     }
 
                     if (item.reasonForLeaving === '') {
                         form.setFieldError(`employmentRecord.${index}.reasonForLeaving`, 'Reason for leaving is required');
+                        form.getInputNode?.(`employmentRecord.${index}.reasonForLeaving`)?.focus();
                         invalid = true
                     }
                 }
@@ -386,7 +394,21 @@ export default function index() {
     }, [vacancyDuration])
 
     return (
-        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
+        <form
+            ref={formRef}
+            onSubmit={
+                async (e) => {
+                    e.preventDefault(); // Prevent default submission first
+                    const isValid = form.validate(); // Runs validation on all fields
+                    if (!isValid.hasErrors) {
+                        const values = form.getValues(); // safely get form values
+                        await onSubmit(values);
+                    } else {
+                        const firstErrorPath = Object.keys(isValid.errors)[0];
+                        form.getInputNode(firstErrorPath)?.focus();
+                    }
+                }}
+        >
             <div className="text-[#6D6D6D] flex flex-col gap-4">
 
                 <p className="font-bold">Educational Background</p>

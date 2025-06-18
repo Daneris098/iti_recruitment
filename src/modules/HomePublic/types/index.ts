@@ -273,6 +273,7 @@ export enum AlertType {
   cancelApplication = "cancelApplication",
   cancelledApplication = "cancelledApplication",
   submitResponse = "submitResponse",
+  required = "required",
 }
 
 export enum StepperTitle {

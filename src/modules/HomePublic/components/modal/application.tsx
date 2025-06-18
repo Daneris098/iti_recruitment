@@ -9,8 +9,8 @@ import Photo from "@modules/HomePublic/components/form/Photo";
 import Preview from "@modules/HomePublic/components/form/Preview";
 import Oath from "@modules/HomePublic/components/Oath"
 import { cn } from "@src/lib/utils";
-import { PhotoRef, Step, StepperTitle } from '@modules/HomePublic/types';
-import { useRef, useState } from 'react';
+import { AlertType, PhotoRef, Step, StepperTitle } from '@modules/HomePublic/types';
+import { useEffect, useRef, useState } from 'react';
 import { IconCaretDownFilled, IconX } from '@tabler/icons-react';
 import "@modules/HomePublic/styles/index.css"
 import { useMediaQuery } from "@mantine/hooks";
@@ -18,11 +18,12 @@ import { RingProgress } from '@mantine/core';
 
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
-    const { applicationFormModal, setApplicationFormModal, setIsFromPortal } = HomeStore();
+    const { applicationFormModal, setApplicationFormModal, setIsFromPortal, setAlert } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
     const StepperPercent = [20, 40, 60, 80, 100];
     const StepperLabel = ['1 of 5', '2 of 5', '3 of 5', '4 of 5', '5 of 5'];
+    const [cameraAllowed, setCameraAllowed] = useState<boolean | null>(false);
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
@@ -49,9 +50,51 @@ export default function index() {
 
     const [opened, setOpened] = useState(false);
 
+    useEffect(() => {
+        const checkCameraPermission = async () => {
+            try {
+                // Use Permissions API if available
+                if (navigator.permissions) {
+                    const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
+
+                    if (result.state === 'granted') {
+                        setCameraAllowed(true);
+                    } else if (result.state === 'denied') {
+                        setCameraAllowed(false);
+                    } else {
+                        // state = 'prompt' → user hasn't decided yet
+                        setCameraAllowed(null);
+                    }
+
+                    // Listen to changes (if permission changes while app is open)
+                    result.onchange = () => {
+                        setCameraAllowed(result.state === 'granted');
+                    };
+                } else {
+                    // Fallback: Try requesting access
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    setCameraAllowed(true);
+                    stream.getTracks().forEach(track => track.stop()); // clean up
+                }
+            } catch (error: any) {
+                if (error.name === 'NotAllowedError') {
+                    setCameraAllowed(false);
+                } else if (error.name === 'NotFoundError') {
+                    setCameraAllowed(false);
+                } else {
+                    console.error('Unexpected camera access error:', error);
+                    setCameraAllowed(null);
+                }
+            }
+        };
+
+        checkCameraPermission();
+    }, []);
+
+
     return (
         <>
-            <Modal radius="lg" size='80%' opened={applicationFormModal} fullScreen={!isGreaterThanSp} centered onClose={() => setApplicationFormModal(false)}
+            <Modal radius="lg" size='80%' opened={applicationFormModal} fullScreen={!isGreaterThanSp} centered onClose={() => { setApplicationFormModal(false); }}
                 withCloseButton={false}
                 className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
                 styles={{
@@ -64,7 +107,9 @@ export default function index() {
                     <div className='top-0 z-50 sticky bg-white m-auto w-[95%]'>
                         <div className='flex justify-between items-center'>
                             <p className='text-[#559CDA] text-[22px] font-bold py-2'>{(activeStepper == Step.Preview ? 'Preview Application Details' : activeStepper == Step.Oath ? 'Oath of Application' : 'Application Form')}</p>
-                            <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => { setApplicationFormModal(false); }} />
+                            <IconX size={30} className="text-[#6D6D6D] cursor-pointer" onClick={() => {
+                                setAlert(AlertType.cancelApplication);
+                            }} />
                         </div>
                         {isGreaterThanSp && (<Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full py-2" />)}
                     </div>
@@ -115,7 +160,11 @@ export default function index() {
                                 <Popover.Target>
                                     <div className={cn("relative br-gradient border-none w-[50%] rounded-md text-white flex  justify-center  items-center cursor-pointer", activeStepper === Step.GeneralInformation && 'w-[155.547px] h-[36px]', (activeStepper === Step.Oath) && 'sm:w-[15%]')} onClick={() => {
                                         if (activeStepper === Step.Photo && !isPhotoCaptured) {
-                                            setIsPhotoCapture(true)
+                                            if (cameraAllowed) {
+                                                setIsPhotoCapture(true)
+                                            } else {
+                                                photo?.current?.upload();
+                                            }
                                         } else {
                                             setSubmit(true)
                                         }
@@ -124,7 +173,7 @@ export default function index() {
                                     }}>
                                         <div className='flex'>
 
-                                            <p className='w-24 text-center'>{activeStepper === Step.Photo && !isPhotoCaptured ? 'TAKE PHOTO' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'SUBMIT' : 'NEXT'}</p>
+                                            <p className='w-24 text-center'>{activeStepper === Step.Photo && !isPhotoCaptured && cameraAllowed ? 'TAKE PHOTO' : (activeStepper === Step.Photo && !isPhotoCaptured) ? 'UPLOAD' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'SUBMIT' : 'NEXT'}</p>
 
                                             {activeStepper === Step.Photo && (
                                                 <div className='right-[0%] absolute py-[6px] bottom-[0%] text-white' onClick={(e) => {
@@ -139,7 +188,7 @@ export default function index() {
                                 </Popover.Target>
                                 <Popover.Dropdown className="p-0 rounded-lg flex flex-col">
                                     {isPhotoCaptured && (<Button variant="transparent" onClick={() => { photo?.current?.retakePhoto() }}>RETAKE</Button>)}
-                                    <Button variant="transparent" onClick={() => { photo?.current?.upload(); }}>UPLOAD</Button>
+                                    {cameraAllowed && (<Button variant="transparent" onClick={() => { photo?.current?.upload(); }}>UPLOAD</Button>)}
                                     <Button variant="transparent" onClick={() => { photo?.current?.skip(); setSubmit(true); setOpened(false); }}>SKIP THIS STEP</Button>
                                 </Popover.Dropdown>
                             </Popover>
