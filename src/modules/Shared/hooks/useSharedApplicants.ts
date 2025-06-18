@@ -14,7 +14,7 @@ import {
     viewApplicantOfferService, useViewInterviewStagesHiring, useViewInterviewersService
 } from "@modules/Shared/components/api/UserService";
 import {
-    useSharedUserService,
+    useSharedUserService, usePaymentSchemeService,
     useGetDivisions, useGetFeedbacks,
     useGetPositionLevels, useGetDepartments,
     useSharedTransferredPosition, useSharedViewAcceptedOffer
@@ -400,6 +400,19 @@ export const useGetCompanyDivisions = () => {
             const data = await useGetDivisions.getAll(divisionFilters);
 
             return data.items
+        }
+    })
+}
+
+export const useGetPaymentSchemes = () => {
+    return useQuery({
+        queryKey: ['paymentscheme'],
+        queryFn: async () => {
+            const paymentSchemeFilters: Record<string, any> = {};
+
+            const data = await usePaymentSchemeService.getAll(paymentSchemeFilters);
+
+            return data.items;
         }
     })
 }

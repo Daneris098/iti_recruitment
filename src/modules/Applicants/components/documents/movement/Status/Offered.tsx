@@ -6,7 +6,7 @@ import { interviewStagesOption } from "@modules/Applicants/types";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import {
     useViewPositionLevels, useViewDepartments,
-    useGetCompanyDivisions,
+    useGetCompanyDivisions, useGetPaymentSchemes
 } from "@modules/Shared/hooks/useSharedApplicants";
 
 export default function OfferedStatus() {
@@ -15,14 +15,21 @@ export default function OfferedStatus() {
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
     const { data: compDivisions } = useGetCompanyDivisions();
+    const { data: paymentSchemes } = useGetPaymentSchemes();
 
     const [getPositionLevels, setPositionLevels] = useState<interviewStagesOption[]>([]);
     const [getDepartments, setDepartments] = useState<interviewStagesOption[]>([]);
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
-
+    const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
 
     useEffect(() => {
-        if (!positionLevels || !orgDepartments || !compDivisions) return;
+        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) return;
+
+        const schemes = paymentSchemes.map((payments: any) => ({
+            value: payments.id,
+            label: payments.name
+        }))
+        setPaymentSchemes(schemes);
 
         const positions = positionLevels.map((position: any) => ({
             value: position.id,
@@ -42,8 +49,6 @@ export default function OfferedStatus() {
         }))
         setDivisions(divisions);
 
-
-
     }, [positionLevels, orgDepartments])
 
     useEffect(() => {
@@ -59,10 +64,14 @@ export default function OfferedStatus() {
             setDivision(getDivisions[0].label)
             setDivisionId(getDivisions[0].value)
         }
+        if (getPaymentSchemes.length > 0) {
+            setSalaryTypes(getPaymentSchemes[0].label)
+            setPaymentSchemeId(getPaymentSchemes[0].value)
+        }
 
     }, [getPositionLevels, getDepartments, getDivisions])
 
-    const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
+    // const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
     const {
         setDivisionId,
         amount, setAmount,
@@ -70,6 +79,7 @@ export default function OfferedStatus() {
         division, setDivision,
         department, setDepartment,
         getSalaryTypes, setSalaryTypes,
+        setPaymentSchemeId,
         setPositionId, setDepartmentId,
     } = useDropDownOfferedStore();
 
@@ -91,6 +101,7 @@ export default function OfferedStatus() {
     const divisionCombobox = useCombobox({
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
+
 
     return (
         <div>
@@ -247,19 +258,20 @@ export default function OfferedStatus() {
                             />
                         </Combobox.Target>
 
-                        {salaryTypes.length > 0 && (
+                        {getPaymentSchemes.length > 0 && (
                             <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg">
-                                {salaryTypes.map((salary) => (
+                                {getPaymentSchemes.map((salary) => (
                                     <Combobox.Option
-                                        key={salary}
-                                        value={salary}
+                                        key={salary.value}
+                                        value={salary.label}
                                         onClick={() => {
-                                            setSalaryTypes(salary);
+                                            setSalaryTypes(salary.label);
+                                            setPaymentSchemeId(salary.value)
                                             salaryComboBox.closeDropdown();
                                         }}
                                         className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
                                     >
-                                        {salary}
+                                        {salary.label}
                                     </Combobox.Option>
                                 ))}
                             </Combobox.Dropdown>
