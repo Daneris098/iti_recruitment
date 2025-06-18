@@ -10,10 +10,8 @@ import { IconCamera } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import axiosInstance from "@src/api/authApi";
-import { useUserDataStore } from "@src/global/store/auth";
 
 export const ProfileSettings = () => {
-  const { setData } = useUserDataStore();
   const { setAlert, activePanel, setActivePanel } = ProfileSettingsStore();
   const { userDetails } = GlobalStore();
   const formRef = useRef<HTMLFormElement>(null);
@@ -132,15 +130,22 @@ export const ProfileSettings = () => {
       const file = new File([blob], "profile.jpg", { type: contentType });
       formData.append("Photo", file);
     }
-    await axiosInstance
-      .post("user-management/users/me/profile", formData)
-      .then(() => {
-        setAlert(AlertType.saved);
-        setData({ Name: form.firstName });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      await axiosInstance.post("user-management/users/me/profile", formData);
+      setAlert(AlertType.saved);
+
+      const { data } = await axiosInstance.get("user-management/users/me/profile");
+      let parsedPhotoPath = null;
+      try {
+        const parsedPhotoArray = JSON.parse(data.photo);
+        parsedPhotoPath = parsedPhotoArray?.[0]?.path || null;
+      } catch (err) {
+        console.error("Failed to parse photo field:", err);
+      }
+      GlobalStore.getState().setUserDetails({ ...data, photo: parsedPhotoPath });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onSubmit2 = async (form: any) => {

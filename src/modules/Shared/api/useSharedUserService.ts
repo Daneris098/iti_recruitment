@@ -15,6 +15,8 @@ export const useSharedUserService = new BaseService<ApplicantResponse>(apiClient
 
 export const useSharedTransferredPosition = new BaseService<JobOpenings>(apiClient, "recruitment/vacancies");
 
+export const useSharedVacanciesService = new BaseService(apiClient, "recruitment/vacancies");
+
 export const useSharedGeneralService = (endpoint?: string) => new BaseService<any>(apiClient, `/general${endpoint}`);
 
 export const useSharedHiringService = (endpoint?: string) => new BaseService(apiClient, `/recruitment/hiring${endpoint}`);
@@ -24,6 +26,5 @@ export const useSharedOrgService = (endpoint?: string) => new BaseService(apiCli
 export const useSharedUserManagementService = (endpoint?: string) => new BaseService(apiClient, `/user-management/users/me${endpoint}`);
 
 export const useSharedViewAcceptedOffer = {
-    getAcceptedOfferId: (idOrGuid: string | number) =>
-        apiClient.get<AcceptedOffer>(`recruitment/applicants/${idOrGuid}/view-accepted-offer`),
-}
+  getAcceptedOfferId: (idOrGuid: string | number) => apiClient.get<AcceptedOffer>(`recruitment/applicants/${idOrGuid}/view-accepted-offer`),
+};

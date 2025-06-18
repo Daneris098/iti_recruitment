@@ -1,16 +1,12 @@
+import { ReportStore } from "@src/modules/Reports/store";
+
 export default function index() {
-
-    return (
-        <div className="flex flex-col gap-8 text-[#6D6D6D]">
-
-            <div className="grid grid-cols-2 gap-2 justify-between">
-                <p>Company: ABC Company</p>
-                <p>Date Range: January 1, 2024 - January 1, 2025</p>
-
-                <p>Department:</p>
-                <p>Position:</p>
-            </div>
-
-        </div>
-    )
+  const ActivityReport = ReportStore((state) => state.getForm("activityReport"));
+  return (
+    <iframe
+      src={`${import.meta.env.VITE_REPORTS_BASE_URL}/Report/Get/?filter=ReportFilename=HRDotNet_Recruitment_Activity_Report_v1@ID_Company=${ActivityReport?.companyId}@ID_Department=${ActivityReport?.departmentId}@ID_Vacancy=${ActivityReport?.vacancyId}@DateFrom=${ActivityReport?.dateFrom}@DateTo=${ActivityReport?.dateTo}@ID_PrintedBy=${ActivityReport?.printedBy}`}
+      title="Activity Report"
+      allowFullScreen
+      className="h-[90vh]"></iframe>
+  );
 }
