@@ -83,7 +83,7 @@ export const useVacancies = () => {
           interviewer: "N/A",
           department: item.department?.name || "-",
           quantity: item.availableSlot,
-          totalApplicant: item.availableSlot,
+          totalApplicant: item.totalApplicants,
           status: item.status.name,
         }));
         const endTime = performance.now();

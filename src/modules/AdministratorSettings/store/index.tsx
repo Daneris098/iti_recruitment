@@ -1,14 +1,20 @@
 import { create } from "zustand";
-import { DialogState, AdministratorSettingsState, user, UserForm,  } from "@modules/AdministratorSettings/types";
-import { panel, DataTableState, ResetCredentialForm } from "@modules/AdministratorSettings/types"
+import { DialogState, AdministratorSettingsState, user, UserForm } from "@modules/AdministratorSettings/types";
+import { panel, DataTableState, ResetCredentialForm } from "@modules/AdministratorSettings/types";
 import { selectedDataInitialVal, UserFormVal, ResetCredentialFormVal } from "@modules/AdministratorSettings/value";
 
 export const AdministratorSettingsStore = create<AdministratorSettingsState>((set) => ({
-  alert: '',
+  alert: "",
   activePanel: panel.userAccounts,
   selectedUser: selectedDataInitialVal,
   newlyAddedUser: UserFormVal,
   resetCredentials: ResetCredentialFormVal,
+
+  emailError: "",
+  setEmailError: (emailError: string) => set({ emailError: emailError }),
+
+  usernameError: "",
+  setUsernameError: (usernameError: string) => set({ usernameError: usernameError }),
 
   setResetCredentials: (resetCredentials: ResetCredentialForm) => set({ resetCredentials: resetCredentials }),
   setNewlyAddedUser: (newlyAddedUser: UserForm) => set({ newlyAddedUser: newlyAddedUser }),
@@ -17,9 +23,8 @@ export const AdministratorSettingsStore = create<AdministratorSettingsState>((se
   setAlert: (alert: string) => set({ alert: alert }),
 }));
 
-
 export const DialogStore = create<DialogState>((set) => ({
-  action: '',
+  action: "",
   loading: false,
 
   setLoading: (loading: boolean) => set({ loading: loading }),
@@ -27,12 +32,12 @@ export const DialogStore = create<DialogState>((set) => ({
 }));
 
 export const DataTableStore = create<DataTableState>((set) => ({
-  time: '',
-  search: '',
+  time: "",
+  search: "",
   totalRecords: 0,
   page: 1,
   pageSize: 10,
-  sortStatus: { columnAccessor: 'guid', direction: 'desc' },
+  sortStatus: { columnAccessor: "guid", direction: "desc" },
 
   setTime: (time: string) => set({ time: time }),
   setSearch: (search: string) => set({ search: search }),

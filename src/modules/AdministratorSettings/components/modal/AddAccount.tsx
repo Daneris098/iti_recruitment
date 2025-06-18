@@ -6,9 +6,10 @@ import { UserForm } from "@modules/AdministratorSettings/types";
 import { UserFormVal } from "@modules/AdministratorSettings/value";
 import { generatePassword } from "@src/utils/GeneratePassword";
 import { useCreateUser } from "@modules/AdministratorSettings/hooks/useCreateUser";
+import axiosInstance from "@src/api";
 
 export default function index() {
-  const { setAlert, setNewlyAddedUser } = AdministratorSettingsStore();
+  const { alert, setAlert, setNewlyAddedUser, emailError, usernameError, setUsernameError, setEmailError } = AdministratorSettingsStore();
   const { action, setAction } = DialogStore();
   const formRef = useRef<HTMLFormElement>(null);
   const [isGenerated, setIsGenerated] = useState(true);
@@ -20,8 +21,12 @@ export default function index() {
     validate: {
       firstName: (value: string) => (value.length === 0 ? "Firstname is required" : null),
       lastName: (value: string) => (value.length === 0 ? "Lastname is required" : null),
-      email: (value: string) => (value.length === 0 ? "Email is required" : null),
-      username: (value: string) => (value.length === 0 ? "Username is required" : null),
+      email: (value: string) => {
+        if (value.length === 0) return "Email is required";
+      },
+      username: (value: string) => {
+        if (value.length === 0) return "Username is required";
+      },
       password: (value: string) => {
         if (value.length === 0) return "Password is required";
         if (value.length < 8) return "Password must be at least 8 characters long";
