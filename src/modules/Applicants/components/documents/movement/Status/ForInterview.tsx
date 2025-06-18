@@ -107,17 +107,19 @@ export default function ForInterview() {
                 <Combobox store={interviewStagesComboBox} withinPortal={false}>
                     <Combobox.Target>
                         <TextInput
+                            readOnly
                             value={interviewStages}
-                            onChange={(e) => setInterviewStages(e.currentTarget.value)}
-                            onFocus={(e) => {
-                                if (document.activeElement === e.currentTarget) {
-                                    interviewStagesComboBox.openDropdown();
-                                }
-                            }}
-                            rightSection={<IconCaretDownFilled size={16} />}
-                            placeholder="Select Interviewer"
+                            onClick={() => interviewStagesComboBox.toggleDropdown()}
+                            rightSection={
+                                <IconCaretDownFilled
+                                    size={16}
+                                    className="pointer-events-none"
+                                />
+                            }
+                            placeholder="Select Interview Stage"
                             classNames={{
-                                input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                input:
+                                    "poppins relative cursor-pointer flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] text-[14px]",
                             }}
                             required
                         />
@@ -125,20 +127,27 @@ export default function ForInterview() {
 
                     {interviewStagesOptions.length > 0 && (
                         <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                            {interviewStagesOptions.map((interviewStages) => (
-                                <Combobox.Option
-                                    key={interviewStages.value}
-                                    value={interviewStages.label}
-                                    onClick={() => {
-                                        setInterviewStages(interviewStages.label);
-                                        setInterviewStagesId(interviewStages.value);
-                                        interviewStagesComboBox.closeDropdown();
-                                    }}
-                                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
-                                >
-                                    {interviewStages.label}
-                                </Combobox.Option>
-                            ))}
+                            {interviewStagesOptions.map((opt) => {
+                                const isCurrent = opt.value === interviewStagesFromLastSchedule?.id;
+                                return (
+                                    <Combobox.Option
+                                        key={opt.value}
+                                        value={opt.label}
+                                        onClick={() => {
+                                            if (isCurrent) return;
+                                            setInterviewStages(opt.label);
+                                            setInterviewStagesId(opt.value);
+                                            interviewStagesComboBox.closeDropdown();
+                                        }}
+                                        className={`px-4 py-2 transition poppins ${isCurrent
+                                            ? "text-gray-400 cursor-not-allowed bg-gray-50"
+                                            : "text-gray-700 hover:bg-gray-100 cursor-pointer"
+                                            }`}
+                                    >
+                                        {opt.label}
+                                    </Combobox.Option>
+                                );
+                            })}
                         </Combobox.Dropdown>
                     )}
                 </Combobox>
