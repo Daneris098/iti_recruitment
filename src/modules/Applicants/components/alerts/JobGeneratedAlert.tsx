@@ -3,13 +3,14 @@ import { Button, Divider } from "@mantine/core";
 import { IconChecklist } from "@tabler/icons-react";
 import { PDFProps } from "@modules/Applicants/types";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import MyDocument from "@modules/Offers/components/documents/PDF"
 import { useCreateOffer } from "@modules/Shared/hooks/useSharedApplicants";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
-import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
-import { useCloseModal, useStatusStore, useApplicantIdStore, useDropDownOfferedStore, useApplicantStore } from "@src/modules/Applicants/store";
 import { JOB_OFFER_CONSTANTS } from "@modules/Applicants/constants/pdf/descriptions";
+import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
+import { useCloseModal, useStatusStore, useDropDownOfferedStore, useApplicantStore } from "@src/modules/Applicants/store";
 interface JobGeneratedAlertProps extends Partial<PDFProps> {
     onClose: () => void;
     title: string | null;
