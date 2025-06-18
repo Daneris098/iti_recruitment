@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import { ApplicationStore } from "../../store";
 import { Step } from "../../types";
+import "@mantine/dropzone/styles.css";
+import { useMediaQuery } from '@mantine/hooks';
+import { IconX } from "@tabler/icons-react";
 
 const Photo = forwardRef((_, ref) => {
     const videoRef = useRef<any>(null);
@@ -9,6 +12,49 @@ const Photo = forwardRef((_, ref) => {
     const [capturedImage, setCapturedImage] = useState('');
     const [stream, setStream] = useState<any>(null);
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm, setIsPhotoCaptured, isPhotoCapture, setIsPhotoCapture } = ApplicationStore();
+    const [cameraAllowed, setCameraAllowed] = useState<boolean | null>(false);
+
+    useEffect(() => {
+        const checkCameraPermission = async () => {
+            try {
+                if (navigator.permissions) {
+                    const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
+
+                    if (result.state === 'granted') {
+                        setCameraAllowed(true);
+                    } else if (result.state === 'denied') {
+                        setCameraAllowed(false);
+                    } else {
+                        setCameraAllowed(null);
+                    }
+
+                    result.onchange = () => {
+                        setCameraAllowed(result.state === 'granted');
+                    };
+                } else {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    setCameraAllowed(true);
+                    stream.getTracks().forEach(track => track.stop()); // clean up
+                }
+            } catch (error: any) {
+                if (error.name === 'NotAllowedError') {
+                    setCameraAllowed(false);
+                } else if (error.name === 'NotFoundError') {
+                    setCameraAllowed(false);
+                } else {
+                    console.error('Unexpected camera access error:', error);
+                    setCameraAllowed(null);
+                }
+            }
+        };
+
+        checkCameraPermission();
+    }, []);
+
+    useEffect(() => {
+        console.log('cameraAllowed: ', cameraAllowed)
+    }, [cameraAllowed])
+
 
     useEffect(() => {
         startCamera();
@@ -134,18 +180,26 @@ const Photo = forwardRef((_, ref) => {
     useEffect(() => {
         setIsPhotoCaptured(false);
     }, []);
+    const isMobile = useMediaQuery('(max-width: 770px)');
 
     return (
         <div className="text-[#6D6D6D] flex flex-col gap-4 items-center">
-            <p className="text-center sp:w-[59%] ">
+
+            {!isMobile && (<p className={`text-center sp:w-[59%] ${!cameraAllowed ? 'opacity-0' : ''}`}>
                 To complete your application, let's take your photo. Tap the {" "}
                 <span className="text-[#559CDA] cursor-pointer">CAMERA ICON</span> or the {" "}
                 <span className="text-[#559CDA] cursor-pointer">TAKE PHOTO BUTTON</span> to start. Make sure to be in a place with proper lighting.
-            </p>
-            <div className="h-[30rem] w-full bg-[#4F4F4F] flex flex-col justify-center items-center overflow-hidden ">
+            </p>)}
+
+            <div className="h-[30rem] w-full flex flex-col justify-center items-center overflow-hidden ">
                 {capturedImage ? (
-                    <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-gray-300">
+                    <div className=" overflow-hidden border-4 border-gray-300 relative">
                         <img src={capturedImage} alt="Profile Picture" className="w-full h-full object-cover" />
+                        <IconX size={30} className="text-white p-1 m-1 bg-[#6D6D6D] rounded-2xl top-0 right-0 cursor-pointer absolute" onClick={() => {
+                            setCapturedImage('');
+                            setIsPhotoCaptured(false);
+                            fileInputRef.current.value = '';
+                        }} />
                     </div>
                 ) : (
                     <div className="relative">
