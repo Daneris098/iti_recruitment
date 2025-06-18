@@ -11,7 +11,7 @@ import {
 } from "@modules/Applicants/api/userService";
 import {
     applicantsByIdService, getApplicantById,
-    viewApplicantOfferService, useViewInterviewStagesHiring,
+    viewApplicantOfferService, useViewInterviewStagesHiring, useViewInterviewersService
 } from "@modules/Shared/components/api/UserService";
 import {
     useSharedUserService,
@@ -341,6 +341,26 @@ export const useViewInterviewStages = (
                 stages,
                 total: data.total,
             };
+        },
+    });
+};
+
+export const useViewInterviewers = () => {
+    return useQuery({
+        queryKey: ['interviewers'],
+        queryFn: async () => {
+            const apiFilters: Record<string, any> = {};
+
+            const data = await useViewInterviewersService.getAll(apiFilters);
+
+            const interviewersName = data.items.map((interviewer: any) => ({
+                id: interviewer.id,
+                name: interviewer.name,
+            }));
+
+            return {
+                interviewersName
+            }
         },
     });
 };

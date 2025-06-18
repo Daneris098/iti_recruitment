@@ -2,6 +2,7 @@
 import { useHiredStartDate } from "@modules/Shared/store";
 import { useStatusStore } from "@src/modules/Applicants/store";
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import FeedbackSent from "@src/modules/Applicants/components/alerts/FeedbackSent";
@@ -16,8 +17,8 @@ import ForInterviewStatus from "@modules/Applicants/components/documents/movemen
 import ScheduleInterview from "@src/modules/Applicants/components/documents/movement/ScheduleInterview";
 import TransferApplicantLoader from "@modules/Applicants/components/documents/movement/TransferApplicants";
 import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Shared/hooks/useSharedApplicants";
-import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types"
-import { useDropDownOfferedStore, useCloseModal, useApplicantIdStore, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
+import { useDropDownOfferedStore, useCloseModal, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
+import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types";
 
 interface UpdateStatusProps {
   Status: string;

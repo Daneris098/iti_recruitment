@@ -5,23 +5,31 @@ import { interviewStagesOption } from "@modules/Applicants/types";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import DatePicker from "@modules/Applicants/components/picker/DatePicker"
 import TimePicker from "@modules/Applicants/components/picker/TimePicker";
-import interviewJSON from "@modules/Applicants/constants/json/interview.json";
-import { useViewInterviewStages } from "@modules/Shared/hooks/useSharedApplicants"
+import { useViewInterviewStages, useViewInterviewers } from "@modules/Shared/hooks/useSharedApplicants"
 
 export default function ForInterview() {
 
     const { data: getInterviewStages } = useViewInterviewStages();
+    const { data: getInterviewers } = useViewInterviewers();
+
     const [interviewStagesOptions, setInterviewStagesOptions] = useState<interviewStagesOption[]>([]);
+    const [getInterViewerNames, setInterviewerNames] = useState<interviewStagesOption[]>([]);
 
     useEffect(() => {
-        if (!getInterviewStages) return;
+        if (!getInterviewStages || !getInterviewers) return;
 
-        const options = getInterviewStages.stages.map((stage: any) => ({
+        const interviewStages = getInterviewStages.stages.map((stage: any) => ({
             value: stage.id,
             label: stage.name,
         }));
+        setInterviewStagesOptions(interviewStages);
 
-        setInterviewStagesOptions(options);
+        const interviewersName = getInterviewers.interviewersName.map((names: any) => ({
+            value: names.id,
+            label: names.name
+        }))
+        setInterviewerNames(interviewersName);
+
     }, [getInterviewStages]);
 
     const {
@@ -35,11 +43,6 @@ export default function ForInterview() {
     const interviewerCombobox = useCombobox({ onDropdownClose: () => interviewerCombobox.resetSelectedOption() })
     const interviewStagesComboBox = useCombobox({ onDropdownClose: () => interviewStagesComboBox.resetSelectedOption() })
 
-    const interviewerOptions = interviewJSON[0].interviewer.map((interviewer) => ({
-        value: interviewer.id,
-        label: interviewer.name
-    }));
-
     const defaultLocation = "12 Catanduanes, Quezon City, 1105 Metro Manila";
 
     const handleBlur = () => {
@@ -49,12 +52,22 @@ export default function ForInterview() {
     };
 
     useEffect(() => {
-        if (interviewStagesOptions.length > 0) {
-            setInterviewStages(interviewStagesOptions[0].label);
-            setInterviewStagesId(interviewStagesOptions[0].value);
+        if (Array.isArray(interviewStagesOptions) && interviewStagesOptions.length > 0) {
+            const [firstStage] = interviewStagesOptions;
+            if (firstStage?.label && firstStage?.value !== undefined) {
+                setInterviewStages(firstStage.label);
+                setInterviewStagesId(firstStage.value);
+            }
         }
-    }, [interviewStagesOptions]);
 
+        if (Array.isArray(getInterViewerNames) && getInterViewerNames.length > 0) {
+            const [firstInterviewer] = getInterViewerNames;
+            if (firstInterviewer?.label && firstInterviewer?.value !== undefined) {
+                setInterviewer(firstInterviewer.label);
+                setInterviewerID(firstInterviewer.value);
+            }
+        }
+    }, [interviewStagesOptions, getInterViewerNames]);
 
     return (
         <div>
@@ -151,9 +164,9 @@ export default function ForInterview() {
                         />
                     </Combobox.Target>
 
-                    {interviewerOptions.length > 0 && (
+                    {getInterViewerNames.length > 0 && (
                         <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg poppins">
-                            {interviewerOptions.map((interview) => (
+                            {getInterViewerNames.map((interview) => (
                                 <Combobox.Option
                                     key={interview.value}
                                     value={interview.label}
