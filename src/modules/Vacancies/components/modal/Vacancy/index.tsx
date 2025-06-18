@@ -200,46 +200,37 @@ export default function index() {
 
   const onSubmit = async (form: any) => {
     formRef.current?.requestSubmit();
-
+    console.log('form: ', form)
     let mappedForm = {};
     if (action == Action.New) {
       mappedForm = {
         position: form.positionTitle,
         company: {
-          id: 1,
-          name: form.company,
+          id: form.company
         },
         branch: {
-          id: 1,
-          name: form.branch,
+          id: form.branch
         },
         division: {
-          id: 1,
-          name: form.division,
+          id: form.division
         },
         department: {
-          id: 1,
-          name: form.department,
+          id: form.department
         },
         section: {
-          id: 1,
-          name: form.section,
+          id: form.section,
         },
         employmentType: {
-          id: 1,
-          name: form.employmentType,
+          id: form.employmentType
         },
         workplaceType: {
-          id: 1,
-          name: form.workplaceType,
+          id: form.workplaceType,
         },
         vacancyType: {
-          id: 1,
-          name: form.vacancyType,
+          id: form.vacancyType,
         },
         experienceLevel: {
-          id: 1,
-          name: form.experienceLevel,
+          id: form.experienceLevel,
         },
         vacancyDuration: {
           dateStart: toPHISOString(form.duration.start),
@@ -437,7 +428,7 @@ export default function index() {
               radius={8}
               data={companies.data?.items.map((company: any) => ({
                 id: company.id,
-                value: company.name,
+                value: String(company.id),
                 label: company.name,
               }))}
               rightSection={<IconCaretDownFilled size="18" />}
@@ -456,7 +447,7 @@ export default function index() {
                 radius={8}
                 data={branches.data?.items.map((branch: any) => ({
                   id: branch.id,
-                  value: branch.name,
+                  value: String(branch.id),
                   label: branch.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -473,7 +464,7 @@ export default function index() {
                 radius={8}
                 data={divisions.data?.items.map((division: any) => ({
                   id: division.id,
-                  value: division.name,
+                  value: String(division.id),
                   label: division.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -493,7 +484,7 @@ export default function index() {
                 radius={8}
                 data={departments.data?.items.map((department: any) => ({
                   id: department.id,
-                  value: department.name,
+                  value: String(department.id),
                   label: department.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -510,7 +501,7 @@ export default function index() {
                 radius={8}
                 data={sections.data?.items.map((section: any) => ({
                   id: section.id,
-                  value: section.name,
+                  value: String(section.id),
                   label: section.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -530,7 +521,7 @@ export default function index() {
                 radius={8}
                 data={employmentType.data?.items.map((empType: any) => ({
                   id: empType.id,
-                  value: empType.name,
+                  value: String(empType.id),
                   label: empType.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -547,7 +538,7 @@ export default function index() {
                 radius={8}
                 data={workPlaces.data?.items.map((workPlace: any) => ({
                   id: workPlace.id,
-                  value: workPlace.name,
+                  value: String(workPlace.id),
                   label: workPlace.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -567,7 +558,7 @@ export default function index() {
                 radius={8}
                 data={vacancyTypes.data?.items.map((vactype: any) => ({
                   id: vactype.id,
-                  value: vactype.name,
+                  value: String(vactype.id),
                   label: vactype.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}
@@ -584,7 +575,7 @@ export default function index() {
                 radius={8}
                 data={experienceLevel.data?.items.map((expLevel: any) => ({
                   id: expLevel.id,
-                  value: expLevel.name,
+                  value: String(expLevel.id),
                   label: expLevel.name,
                 }))}
                 rightSection={<IconCaretDownFilled size="18" />}

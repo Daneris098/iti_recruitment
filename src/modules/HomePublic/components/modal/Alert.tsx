@@ -6,6 +6,7 @@ import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "../../types";
 import { cn } from "@src/lib/utils";
 import { IconHelp } from "@tabler/icons-react";
+import { ApplicationFormVal } from "@modules/HomePublic/values/cleanState";
 
 // Define auto-close behavior
 const AlertAutoClose: Record<AlertType, boolean> = {
@@ -16,7 +17,7 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const { setActiveStepper } = ApplicationStore();
+    const { setActiveStepper, setApplicationForm } = ApplicationStore();
     const { setApplicationFormModal, setAlert, alert, alertBody } = HomeStore();
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
@@ -128,6 +129,7 @@ export default function AlertModals() {
                             variant="outline"
                             className={cn("w-1/2 rounded-md")}
                             onClick={() => {
+                                setApplicationForm(ApplicationFormVal)
                                 setApplicationFormModal(false);
                                 setActiveStepper(Step.GeneralInformation);
                                 setAlert(AlertType.cancelledApplication)
