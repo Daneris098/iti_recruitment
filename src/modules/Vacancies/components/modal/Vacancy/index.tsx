@@ -156,16 +156,18 @@ export default function index() {
     });
 
     if (action == "Edit") {
+      // console.log((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any))
+      // console.log('selectedVacancy: ', selectedVacancy)
       form.setFieldValue("positionTitle", selectedVacancy.position);
-      form.setFieldValue("company", selectedVacancy.company);
-      form.setFieldValue("branch", selectedVacancy.branch);
-      form.setFieldValue("division", selectedVacancy.division);
-      form.setFieldValue("department", selectedVacancy.department);
-      form.setFieldValue("section", selectedVacancy.section);
-      form.setFieldValue("employmentType", selectedVacancy.employmentType);
-      form.setFieldValue("workplaceType", selectedVacancy.workplace);
-      form.setFieldValue("vacancyType", selectedVacancy.vacancyType);
-      form.setFieldValue("experienceLevel", selectedVacancy.experienceLevel);
+      form.setFieldValue("company", String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id));
+      form.setFieldValue("branch", String((branches.data?.items.find((item: any) => item.name === selectedVacancy.branch) as any).id));
+      form.setFieldValue("division", String((divisions.data?.items.find((item: any) => item.name === selectedVacancy.division) as any).id));
+      form.setFieldValue("department", String((departments.data?.items.find((item: any) => item.name === selectedVacancy.department) as any).id));
+      form.setFieldValue("section", String((sections.data?.items.find((item: any) => item.name === selectedVacancy.section) as any).id));
+      form.setFieldValue("employmentType", String((employmentType.data?.items.find((item: any) => item.name === selectedVacancy.employmentType) as any).id));
+      form.setFieldValue("workplaceType", String((workPlaces.data?.items.find((item: any) => item.name === selectedVacancy.workplace) as any).id));
+      form.setFieldValue("vacancyType", String((vacancyTypes.data?.items.find((item: any) => item.name === selectedVacancy.vacancyType) as any).id));
+      form.setFieldValue("experienceLevel", String((experienceLevel.data?.items.find((item: any) => item.name === selectedVacancy.experienceLevel) as any).id));
       form.setFieldValue("duration.start", formattedDate);
       form.setFieldValue("duration.end", formattedDate2);
       form.setFieldValue("noOfOpenPosition", selectedVacancy.quantity);
@@ -283,40 +285,31 @@ export default function index() {
         id: selectedVacancy.id,
         position: form.positionTitle,
         company: {
-          id: 1,
-          name: form.company,
+          id: form.company
         },
         branch: {
-          id: 1,
-          name: form.branch,
+          id: form.branch
         },
         division: {
-          id: 1,
-          name: form.division,
+          id: form.division
         },
         department: {
-          id: 1,
-          name: form.department,
+          id: form.department
         },
         section: {
-          id: 1,
-          name: form.section,
+          id: form.section,
         },
         employmentType: {
-          id: 1,
-          name: form.employmentType,
+          id: form.employmentType
         },
         workplaceType: {
-          id: 1,
-          name: form.workplaceType,
+          id: form.workplaceType,
         },
         vacancyType: {
-          id: 1,
-          name: form.vacancyType,
+          id: form.vacancyType,
         },
         experienceLevel: {
-          id: 1,
-          name: form.experienceLevel,
+          id: form.experienceLevel,
         },
         vacancyDuration: {
           dateStart: new Date(form.duration.start).toISOString(),
