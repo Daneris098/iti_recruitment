@@ -8,6 +8,7 @@ import { useForm } from "@mantine/form";
 import { PillsInput, Pill, Combobox, useCombobox } from '@mantine/core';
 
 export default function index() {
+    const skillsFieldRef = useRef<HTMLInputElement>(null);
     const { isMobile } = GlobalStore()
     const formRef = useRef<HTMLFormElement>(null);
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
@@ -115,36 +116,44 @@ export default function index() {
             if (father.fullname != '' || (father.age != '' && Number(father.age) > 0) || father.occupation != '' || father.contactNumber.toString() != '') {
                 if (father.fullname === '') {
                     form.setFieldError(`father.fullname`, 'Fullname is required');
+                    form.getInputNode?.(`father.fullname`)?.focus();
                     invalid = true
                 }
-                if (father.age != '' && Number(father.age) <= 0) {
+                if (father.age == '' || Number(father.age) <= 0) {
                     form.setFieldError(`father.age`, 'Age is required');
+                    form.getInputNode?.(`father.age`)?.focus();
                     invalid = true
                 }
                 if (father.occupation === '') {
                     form.setFieldError(`father.occupation`, 'Occupation is required');
+                    form.getInputNode?.(`father.occupation`)?.focus();
                     invalid = true
                 }
                 if (father.contactNumber.toString() === '' || isNaN(Number(father.contactNumber))) {
                     form.setFieldError(`father.contactNumber`, 'Contact Number is required and must be a number');
+                    form.getInputNode?.(`father.contactNumber`)?.focus();
                     invalid = true;
                 }
             }
             if (mother.fullname != '' || (mother.age != '' && Number(mother.age) > 0) || mother.occupation != '' || mother.contactNumber.toString() != '') {
                 if (mother.fullname === '') {
                     form.setFieldError(`mother.fullname`, 'Fullname is required');
+                    form.getInputNode?.(`mother.fullname`)?.focus();
                     invalid = true
                 }
-                if (mother.age == '' && Number(mother.age) > 0) {
+                if (mother.age == '' || Number(mother.age) <= 0) {
                     form.setFieldError(`mother.age`, 'Age is required');
+                    form.getInputNode?.(`mother.age`)?.focus();
                     invalid = true
                 }
                 if (mother.occupation === '') {
                     form.setFieldError(`mother.occupation`, 'Occupation is required');
+                    form.getInputNode?.(`mother.occupation`)?.focus();
                     invalid = true
                 }
                 if (mother.contactNumber.toString() === '' || isNaN(Number(mother.contactNumber))) {
                     form.setFieldError(`mother.contactNumber`, 'Contact Number is required and must be a number');
+                    form.getInputNode?.(`mother.contactNumber`)?.focus();
                     invalid = true;
                 }
             }
@@ -153,42 +162,50 @@ export default function index() {
                 if (item.fullname != '' || item.age > 0 || item.occupation != '' || (item.contactNumber != '' && item.contactNumber.toString() != '')) {
                     if (item.fullname === '') {
                         form.setFieldError(`siblings.${index}.fullname`, 'Fullname is required');
+                        form.getInputNode?.(`siblings.${index}.fullname`)?.focus();
                         invalid = true
                     };
                     if (item.occupation === '') {
                         form.setFieldError(`siblings.${index}.occupation`, 'Occupation is required');
+                        form.getInputNode?.(`siblings.${index}.occupation`)?.focus();
                         invalid = true
                     }
                     if (item.age <= 0) {
                         form.setFieldError(`siblings.${index}.age`, 'Age is required')
+                        form.getInputNode?.(`siblings.${index}.age`)?.focus();
                         invalid = true
                     };
                     if (item.contactNumber.toString() === '' || isNaN(Number(item.contactNumber))) {
                         form.setFieldError(`siblings.${index}.contactNumber`, 'Contact Number is required and must be a number')
+                        form.getInputNode?.(`siblings.${index}.contactNumber`)?.focus();
                         invalid = true
                     };
                 }
             });
             const spouse = form.getValues().spouse;
-            if (spouse?.fullname != '' || spouse?.occupation != '' || (spouse.age != '' && Number(spouse.age) > 0) || spouse.contactNumber != '' && spouse.contactNumber.toString().length < 11) {
+            if (spouse?.fullname != '' || spouse?.occupation != '' || (spouse.age != '' && Number(spouse.age) > 0) || spouse.contactNumber != '' && spouse.contactNumber.toString().length < 11 && spouse != undefined) {
                 if (spouse?.fullname == '') {
                     form.setFieldError(`spouse.fullname`, 'Fullname is required');
+                    form.getInputNode?.(`spouse.fullname`)?.focus();
                     invalid = true
                 };
                 if (spouse?.occupation == '') {
                     form.setFieldError(`spouse.occupation`, 'Occupation is required');
                     invalid = true
                 }
-                if (spouse?.age != undefined && spouse.age == 0) {
+                if (spouse && Number(spouse.age) <= 0) {
                     form.setFieldError(`spouse.age`, 'Age is required')
+                    form.getInputNode?.(`spouse.age`)?.focus();
                     invalid = true
                 };
                 if (spouse?.contactNumber != undefined && spouse.contactNumber == '') {
                     form.setFieldError(`spouse.contactNumber`, 'Contact Number is required')
+                    form.getInputNode?.(`spouse.contactNumber`)?.focus();
                     invalid = true
                 };
                 if (spouse?.contactNumber != undefined && spouse.contactNumber.toString().length < 11) {
                     form.setFieldError(`spouse.contactNumber`, 'Contact Number Minimum length 11')
+                    form.getInputNode?.(`spouse.contactNumber`)?.focus();
                     invalid = true
                 };
             }
@@ -251,7 +268,23 @@ export default function index() {
     }, [applicationForm])
 
     return (
-        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
+        <form
+            ref={formRef}
+            onSubmit={
+                (e) => {
+                    e.preventDefault(); // Prevent default submission first
+                    const isValid = form.validate(); // Runs validation on all fields
+                    if (!isValid.hasErrors) {
+                        onSubmit(form.values); // Proceed with submission
+                    } else {
+                        const firstErrorPath = Object.keys(isValid.errors)[0];
+                        if (firstErrorPath === 'otherInformation.specialTechnicalSkills') {
+                            skillsFieldRef.current?.focus();
+                        }
+                        form.getInputNode(firstErrorPath)?.focus();
+                    }
+                }}
+        >
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">Family Background</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
@@ -283,7 +316,7 @@ export default function index() {
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end">
                     <TextInput {...form.getInputProps("spouse.fullname")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} label="Spouse (If Married)" placeholder="Full Name" />
-                    <TextInput {...form.getInputProps("spouse.age")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
+                    <NumberInput maxLength={11} hideControls {...form.getInputProps("spouse.age")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Age" />
                     <TextInput {...form.getInputProps("spouse.occupation")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Occupation" />
                     <TextInput maxLength={11}  {...form.getInputProps("spouse.contactNumber")} inputMode="numeric" classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '25%' : '100%'} placeholder="Contact Number" />
                 </div>
@@ -329,6 +362,7 @@ export default function index() {
                                     {values}
                                     <Combobox.EventsTarget>
                                         <PillsInput.Field
+                                            ref={skillsFieldRef}
                                             onFocus={() => combobox.openDropdown()}
                                             onBlur={() => combobox.closeDropdown()}
                                             value={search}
