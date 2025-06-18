@@ -318,9 +318,9 @@ export const referenceValue2: Reference = {
 
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal2,
-  educationAndEmployment: educationAndEmploymentVal2,
-  familyBackground: familyBackgroundVal2,
+  generalInformation: GeneralInformationVal,
+  educationAndEmployment: educationAndEmploymentVal,
+  familyBackground: familyBackgroundVal,
   reference: referenceValue,
   photo: ''
 }

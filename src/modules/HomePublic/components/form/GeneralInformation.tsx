@@ -100,7 +100,7 @@ export default function index() {
         const isPermanentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.permanentAddress.city)
 
         const isPresentBarangayValid = barangays.some((item) => item.label == form.getValues().personalInformation.presentAddress.barangay)
-        const isPermanentBarangayValid = barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
+        const isPermanentBarangayValid = sameAsPresent ? barangays.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay) : barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
 
         console.log('isPermanentBarangayValid: ', isPermanentBarangayValid)
         console.log('form.getValues().personalInformation.permanentAddress.city: ', form.getValues().personalInformation.permanentAddress.barangay)
