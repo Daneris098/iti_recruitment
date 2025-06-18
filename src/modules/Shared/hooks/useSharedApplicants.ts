@@ -385,7 +385,6 @@ export const useViewDepartments = () => {
             const departmentFilters: Record<string, any> = {};
 
             const data = await useGetDepartments.getAll(departmentFilters);
-
             return data.items
         }
     })

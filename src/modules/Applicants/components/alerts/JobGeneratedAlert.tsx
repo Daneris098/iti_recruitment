@@ -1,6 +1,6 @@
 import { PDFViewer } from "@react-pdf/renderer";
 import { Button, Divider } from "@mantine/core";
-import { Icon12Hours, IconChecklist } from "@tabler/icons-react";
+import { IconChecklist } from "@tabler/icons-react";
 import { PDFProps } from "@modules/Applicants/types";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import { useApplicantIdStore } from "@src/modules/Shared/store";
@@ -12,6 +12,7 @@ import { JOB_OFFER_CONSTANTS } from "@modules/Applicants/constants/pdf/descripti
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import { useCloseModal, useStatusStore, useDropDownOfferedStore, useApplicantStore } from "@src/modules/Applicants/store";
 import { X } from "lucide-react";
+// import { usePositionApplied, useDepartmentStore, useDivisionStore } from "@src/modules/Shared/store";
 interface JobGeneratedAlertProps extends Partial<PDFProps> {
     onClose: () => void;
     title: string | null;
@@ -33,10 +34,6 @@ export default function JobGeneratedAlert({ title, onClose, Department }: JobGen
 
     const annualSalary = (Number(applicantsById?.generalInformation?.desiredSalary) || 0) * 12;
 
-
-    console.log(applicantsById)
-    // debugger;
-    // zustand store.
     const {
         isViewPDF, setIsViewPDF,
         isUpdateSuccessful, setIsUpdateSuccessful,

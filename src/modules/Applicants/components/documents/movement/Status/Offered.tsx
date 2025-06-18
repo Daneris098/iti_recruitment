@@ -8,9 +8,12 @@ import {
     useViewPositionLevels, useViewDepartments,
     useGetCompanyDivisions, useGetPaymentSchemes
 } from "@modules/Shared/hooks/useSharedApplicants";
+import { usePositionApplied, useDepartmentStore, useDivisionStore } from "@src/modules/Shared/store";
 
 export default function OfferedStatus() {
 
+    const setDepartmentName = useDepartmentStore((state) => state.setDepartmentName);
+    const setDivisionName = useDivisionStore((state) => state.setDivisionName)
 
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
@@ -21,6 +24,10 @@ export default function OfferedStatus() {
     const [getDepartments, setDepartments] = useState<interviewStagesOption[]>([]);
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
     const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
+
+    const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
+    const departmentName = useDepartmentStore((state) => state.departmentName);
+    const divisionName = useDivisionStore((state) => state.divisionName)
 
     useEffect(() => {
         if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) return;
@@ -55,6 +62,7 @@ export default function OfferedStatus() {
         if (getDepartments.length > 0) {
             setDepartment(getDepartments[0].label);
             setDepartmentId(getDepartments[0].value)
+            setDepartmentName(getDepartments[0].label);
         }
         if (getPositionLevels.length > 0) {
             setPosition(getPositionLevels[0].label)
@@ -63,6 +71,7 @@ export default function OfferedStatus() {
         if (getDivisions.length > 0) {
             setDivision(getDivisions[0].label)
             setDivisionId(getDivisions[0].value)
+            setDivisionName(getDivisions[0].label)
         }
         if (getPaymentSchemes.length > 0) {
             setSalaryTypes(getPaymentSchemes[0].label)
@@ -71,16 +80,12 @@ export default function OfferedStatus() {
 
     }, [getPositionLevels, getDepartments, getDivisions])
 
-    // const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
     const {
-        setDivisionId,
-        amount, setAmount,
-        position, setPosition,
-        division, setDivision,
-        department, setDepartment,
+        setDivision, setDepartment,
+        amount, setAmount, setPosition,
         getSalaryTypes, setSalaryTypes,
-        setPaymentSchemeId,
         setPositionId, setDepartmentId,
+        setDivisionId, setPaymentSchemeId,
     } = useDropDownOfferedStore();
 
     // Independent Combobox hooks
@@ -102,7 +107,6 @@ export default function OfferedStatus() {
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
 
-
     return (
         <div>
 
@@ -117,7 +121,7 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 disabled
-                                value={position}
+                                value={positionsApplied || ""}
                                 onChange={(e) => setPosition(e.currentTarget.value)}
                                 onFocus={() => positionCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -160,7 +164,7 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 disabled
-                                value={department}
+                                value={departmentName || ""}
                                 onChange={(e) => setDepartment(e.currentTarget.value)}
                                 onFocus={() => departmentCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -204,7 +208,7 @@ export default function OfferedStatus() {
                     <Combobox.Target>
                         <TextInput
                             disabled
-                            value={division}
+                            value={divisionName || ""}
                             onChange={(e) => setDivision(e.currentTarget.value)}
                             onFocus={() => divisionCombobox.openDropdown()}
                             rightSection={<IconChevronDown size={16} />}

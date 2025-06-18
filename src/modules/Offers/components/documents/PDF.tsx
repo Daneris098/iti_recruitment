@@ -1,10 +1,11 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import { PDFProps } from "@modules/Offers/types";
 import header from '@src/assets/job-offers-header.png';
-import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-// import PoppinsBold from '@shared/assets/fonts/Poppins/Poppins-Bold.ttf'\
+import { useDepartmentStore } from "@src/modules/Shared/store";
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
-import { PDFProps } from "@modules/Offers/types"
+import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
+import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
+import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
 // Register the Poppins font
 Font.register({
@@ -119,10 +120,10 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
   applicantName,
   position,
-  department,
+  // department,
   remarks,
-  salaryMonthly,
-  salaryYearly,
+  // salaryMonthly,
+  // salaryYearly,
   noteSalary,
   meritIncrease,
   descriptionVL,
@@ -145,6 +146,10 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
     },
     { label: 'Transportation Subsidy', value: descriptionTranspo },
   ];
+
+  const departmentName = useDepartmentStore.getState().departmentName;
+  const { amount } = useDropDownOfferedStore.getState();
+  const annualAmount = amount * 12
 
   return (
     <Document>
@@ -178,7 +183,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Department/Division</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_title, { flex: 3 }]}>{department ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{departmentName ?? "No Data"}</Text>
             </View>
 
             {/* Status Upon Hiring */}
@@ -202,14 +207,14 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                 <Text style={styles.text_data}>
                   Monthly:
                   <Text style={styles.actual_salary}>
-                    {`   ${salaryMonthly ?? "No Data"} (Gross)`}
+                    {`   ${amount ?? "No Data"} (Gross)`}
                   </Text>
                 </Text>
                 {/* Annual Salary */}
                 <Text style={styles.text_data}>
                   Annual:
                   <Text style={styles.actual_salary}>
-                    {`   ${salaryYearly ?? "No Data"}`}
+                    {`   ${annualAmount ?? "No Data"}`}
                   </Text>
                 </Text>
               </View>

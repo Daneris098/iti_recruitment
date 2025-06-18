@@ -88,3 +88,45 @@ export const useHiredStartDate = create<SelectedDateStore>((set) => ({
     selectedDate: null,
     setSelectedDate: (date) => set({ selectedDate: date })
 }))
+
+interface PositionAppliedState {
+    firstPositionApplied: string;
+    setFirstPositionApplied: (position: string) => void;
+}
+
+export const usePositionApplied = create<PositionAppliedState>()((set) => ({
+    firstPositionApplied: '',
+    setFirstPositionApplied: (position) =>
+        set({ firstPositionApplied: position }),
+}));
+
+interface DepartmentState {
+    departmentName: string;
+    setDepartmentName: (position: string) => void;
+}
+
+export const useDepartmentStore = create<DepartmentState>()((set) => ({
+    departmentName: '',
+    setDepartmentName: (position) =>
+        set({ departmentName: position }),
+}));
+
+interface DivisionState {
+    divisionName: string;
+    setDivisionName: (position: string) => void;
+}
+
+export const useDivisionStore = create<DivisionState>()((set) => ({
+    divisionName: '',
+    setDivisionName: (position) => set({ divisionName: position }),
+}));
+
+interface AmountState {
+    totalAmount: number;
+    setTotalAmount: (position: number) => void;
+}
+
+export const useAmountStore = create<AmountState>()((set) => ({
+    totalAmount: 0,
+    setTotalAmount: (position) => set({ totalAmount: position }),
+}));
