@@ -1,6 +1,6 @@
 import { PDFViewer } from "@react-pdf/renderer";
 import { Button, Divider } from "@mantine/core";
-import { IconChecklist } from "@tabler/icons-react";
+import { Icon12Hours, IconChecklist } from "@tabler/icons-react";
 import { PDFProps } from "@modules/Applicants/types";
 import ViewPDF from "@modules/Offers/components/modal/pdfModal"
 import { useApplicantIdStore } from "@src/modules/Shared/store";
@@ -11,6 +11,7 @@ import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants
 import { JOB_OFFER_CONSTANTS } from "@modules/Applicants/constants/pdf/descriptions";
 import UpdateApplicantSucessful from "@src/modules/Applicants/components/alerts/UpdateApplicantSuccessful";
 import { useCloseModal, useStatusStore, useDropDownOfferedStore, useApplicantStore } from "@src/modules/Applicants/store";
+import { X } from "lucide-react";
 interface JobGeneratedAlertProps extends Partial<PDFProps> {
     onClose: () => void;
     title: string | null;
@@ -97,9 +98,17 @@ export default function JobGeneratedAlert({ title, onClose, Department }: JobGen
             {/* Header */}
             <div>
                 <div className="flex justify-between items-center">
-                    <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">Generate Offer</h1>
+                    <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">
+                        Generate Offer
+                    </h1>
+                    <button
+                        onClick={onClose}
+                        className="text-[#6D6D6D] hover:text-[#F14336] transition-colors"
+                        aria-label="Close"
+                    >
+                        <X size={20} />
+                    </button>
                 </div>
-
                 <Divider size={2} color="#6D6D6D99" className="w-full mt-2 poppins" />
             </div>
 
