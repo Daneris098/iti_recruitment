@@ -1,19 +1,40 @@
 import { useEffect, useState } from "react";
 import { IconCaretDownFilled } from "@tabler/icons-react";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import { Combobox, TextInput, useCombobox } from "@mantine/core";
 import { interviewStagesOption } from "@modules/Applicants/types";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import DatePicker from "@modules/Applicants/components/picker/DatePicker"
 import TimePicker from "@modules/Applicants/components/picker/TimePicker";
 import { useViewInterviewStages, useViewInterviewers } from "@modules/Shared/hooks/useSharedApplicants"
+import { fetchApplicantByIdService, } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function ForInterview() {
+    const [, setError] = useState<unknown>(null);
+    const [, setIsLoading] = useState(false);
+
+    const token = sessionStorage.getItem("accessToken") ?? undefined;
+    const applicantId = useApplicantIdStore((state) => state.id);
+
+    const [applicant, setApplicant] = useState<any | null>(null);
+
+    useEffect(() => {
+        if (!applicantId || !token) return;
+
+        setIsLoading(true);
+        fetchApplicantByIdService(applicantId, token)
+            .then(setApplicant)
+            .catch(setError)
+            .finally(() => setIsLoading(false));
+    }, [applicantId, token]);
 
     const { data: getInterviewStages } = useViewInterviewStages();
     const { data: getInterviewers } = useViewInterviewers();
 
     const [interviewStagesOptions, setInterviewStagesOptions] = useState<interviewStagesOption[]>([]);
     const [getInterViewerNames, setInterviewerNames] = useState<interviewStagesOption[]>([]);
+
+    const interviewStagesFromLastSchedule = applicant?.interviewSchedules?.at(-1)?.schedule?.interviewStage;
 
     useEffect(() => {
         if (!getInterviewStages || !getInterviewers) return;
@@ -31,6 +52,13 @@ export default function ForInterview() {
         setInterviewerNames(interviewersName);
 
     }, [getInterviewStages]);
+
+    useEffect(() => {
+        if (interviewStagesFromLastSchedule) {
+            setInterviewStages(interviewStagesFromLastSchedule.name);
+            setInterviewStagesId(interviewStagesFromLastSchedule.id);
+        }
+    }, [interviewStagesFromLastSchedule]);
 
     const {
         getInterviewer, setInterviewer,
@@ -69,6 +97,7 @@ export default function ForInterview() {
         }
     }, [interviewStagesOptions, getInterViewerNames]);
 
+
     return (
         <div>
             <div>
@@ -88,7 +117,7 @@ export default function ForInterview() {
                             rightSection={<IconCaretDownFilled size={16} />}
                             placeholder="Select Interviewer"
                             classNames={{
-                                input: "poppins relative flex items-center w-wull h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                                input: "poppins relative flex items-center w-full h-[56px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
                             }}
                             required
                         />

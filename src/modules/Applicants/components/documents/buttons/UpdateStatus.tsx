@@ -19,6 +19,7 @@ import TransferApplicantLoader from "@modules/Applicants/components/documents/mo
 import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Shared/hooks/useSharedApplicants";
 import { useDropDownOfferedStore, useCloseModal, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
 import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types";
+import { useEffect, useState } from "react";
 
 interface UpdateStatusProps {
   Status: string;
@@ -28,6 +29,16 @@ interface UpdateStatusProps {
 }
 
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
+  const [, setIsOpen] = useState(false);
+
+  // Auto-open when status becomes 'For Interview'
+  useEffect(() => {
+    if (Status === 'For Interview') {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false); // Auto-close if status changes
+    }
+  }, [Status]);
 
   const { mutateAsync: movementHired } = useCreateHired();
   const { mutateAsync: movementArchive } = usePOSTArchive();
@@ -103,7 +114,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     };
   }
 
-  else if (selectedStatus === "For Interview") {
+  else if (selectedStatus === "For Interview" || Status === "For Interview") {
     // buttonText = "Schedule Interview";
     buttonText = "Add to Calendar";
     handleClick = async () => {
@@ -291,6 +302,10 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
               <TransferApplicantLoader
               //  onClose={onClose} 
               />
+            )}
+
+            {(Status === 'For Interview' && !selectedStatus) && (
+              <ForInterviewStatus />
             )}
           </>
           {/* End of Transferred Status */}
