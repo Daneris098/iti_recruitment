@@ -20,12 +20,12 @@ export async function getApplicantPDFPath(applicantId: number): Promise<string> 
 export async function getPendingApplicantPDFPath(
     applicantId: number
 ): Promise<string> {
-    return (
-        "/proxy/pdf/Report/Get/?" +
-        "filter=ReportFilename=HRDotNet_Recruitment_Activity_Report_v1" +
-        "@ID_Company=1@ID_Department=1@ID_Vacancy=1" +
-        "@DateFrom=20250605@DateTo=20250610@ID_PrintedBy=0"
-    );
+    const filter =
+        `ReportFilename=HRDotNet_Recruitment_Job_Offer_v1` +
+        `@ID_Applicant=${applicantId}`;
+
+    // leave the “@” separators un‑encoded; Crystal’s parser expects them
+    return `/proxy/pdf/Report/Get/?filter=${filter}`;
 }
 
 /**

@@ -1,5 +1,9 @@
 // proxy.config.ts
-// import type { ProxyOptions } from 'vite';
+const REPORT_SERVER =
+  process.env.VITE_REPORT_SERVER ||
+  (process.env.NODE_ENV === "production"
+    ? "http://recruitment.intellismartinc.com:7111"
+    : "http://localhost:1371");
 
 export const proxyConfig = {
   "/api": {
@@ -13,7 +17,7 @@ export const proxyConfig = {
     rewrite: (path) => path.replace(/^\/files/, ""),
   },
   '/proxy/pdf': {
-    target: 'http://recruitment.intellismartinc.com:7111',
+    target: 'http://10.0.1.246:7111',
     changeOrigin: true,
     rewrite: p => p.replace(/^\/proxy\/pdf/, '')
   }
