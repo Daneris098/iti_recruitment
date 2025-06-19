@@ -1,8 +1,7 @@
-import { MultiSelect, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { DateRange } from "@modules/Reports/components/DateRange";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
-import { source } from "@modules/Reports/values";
 import { useForm } from "@mantine/form";
 import { useFetchReport } from "../services/data";
 import { useEffect } from "react";
@@ -95,7 +94,7 @@ export default function index() {
         <Select
           classNames={{ input: "poppins text-[#6D6D6D]", dropdown: "poppins text-[#6D6D6D]" }}
           radius={8}
-          data={vacancies.data?.items.map((items: any) => ({
+          data={vacancies!.data?.items.map((items: any) => ({
             value: String(items.id),
             label: items.position,
           }))}
@@ -104,7 +103,7 @@ export default function index() {
           label="Position"
           placeholder="Specify Position"
           onChange={(value) => {
-            const selectedItem: { id: number; name: string } = vacancies.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+            const selectedItem: { id: number; name: string } = vacancies!.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
             if (selectedItem) {
               form.setFieldValue("vacancyId", selectedItem.id);
             }
@@ -112,16 +111,6 @@ export default function index() {
           rightSection={<IconCaretDownFilled size="18" />}
         />
       </div>
-      <MultiSelect
-        classNames={{ input: "poppins text-[#6D6D6D]", pill: "poppins text-[#6D6D6D]", dropdown: "poppins text-[#6D6D6D]" }}
-        radius={8}
-        data={source}
-        className="w-full text-[#6D6D6D]"
-        size="md"
-        label="Source Type"
-        placeholder="Select Source Type"
-        rightSection={<IconCaretDownFilled size="18" />}
-      />
     </div>
   );
 }

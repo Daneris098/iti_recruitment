@@ -1,4 +1,4 @@
-import { MultiSelect, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 import { IconCaretDownFilled } from "@tabler/icons-react";
 import { DateRange } from "@modules/Reports/components/DateRange";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
@@ -111,16 +111,6 @@ export default function index() {
           rightSection={<IconCaretDownFilled size="18" />}
         />
       </div>
-      <MultiSelect
-        classNames={{ input: "poppins text-[#6D6D6D]", pill: "poppins text-[#6D6D6D]", dropdown: "poppins text-[#6D6D6D]" }}
-        radius={8}
-        data={["ITI", "ALL"]}
-        className="w-full text-[#6D6D6D]"
-        size="md"
-        label="Applicant Status"
-        placeholder="ALL"
-        rightSection={<IconCaretDownFilled size="18" />}
-      />
     </div>
   );
 }

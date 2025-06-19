@@ -54,7 +54,7 @@ export default function index() {
     //   </Stack>
     // </div>
     <iframe
-      src={`${import.meta.env.VITE_REPORTS_BASE_URL}/Report/Get/?filter=ReportFilename=HRDotNet_Recruitment_Offer_Acceptance_Report_v1@ID_Company=${OfferAcceptanceReport?.companyId}@ID_Department=${OfferAcceptanceReport?.departmentId}@ID_Vacancy=${OfferAcceptanceReport?.vacancyId}@DateFrom=${OfferAcceptanceReport?.dateFrom}@DateTo=${OfferAcceptanceReport?.dateTo}@ID_PrintedBy=${OfferAcceptanceReport?.printedBy}`}
+      src={`${import.meta.env.VITE_REPORTS_BASE_URL}/Report/Get/?filter=ReportFilename=HRDotNet_Recruitment_Offer_Acceptance_Report_v1@ID_Company=${OfferAcceptanceReport?.companyId}@ID_Department=${OfferAcceptanceReport?.departmentId}@DateFrom=${OfferAcceptanceReport?.dateFrom}@DateTo=${OfferAcceptanceReport?.dateTo}@ID_PrintedBy=${OfferAcceptanceReport?.printedBy}`}
       title="Offer Acceptance Report"
       allowFullScreen
       className="h-[90vh]"></iframe>
