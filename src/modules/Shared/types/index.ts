@@ -176,12 +176,15 @@ export interface JobOpenings {
     };
     id: string | number;
     position: string;
+    department: {
+        id: number
+    }
     company: {
         name: string;
         [key: string]: any;
     } | null;
     availableSlot: number;
-    vacancyDurationResponse: {
+    vacancyDuration: {
         dateStart: string;
     }
 }

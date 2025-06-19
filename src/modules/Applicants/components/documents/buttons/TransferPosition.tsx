@@ -65,11 +65,12 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
 
         return data.map((item) => ({
             id: item.id,
+            department: item.department.id,
             position: item.position,
             company: item.company,
             availableSlot: item.slots,
             departmentResponse: item.departmentResponse ?? { id: 0 },
-            vacancyDurationResponse: item.vacancyDurationResponse ?? { dateStart: "" },
+            vacancyDuration: item.vacancyDurationResponse ?? { dateStart: "" },
         }));
     };
 
@@ -160,45 +161,6 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 >
                     Cancel
                 </Button>
-                {/* <Button
-                    className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[14px] poppins"
-                    onClick={async () => {
-                        if (!selectedSlots.length) return;
-                        setIsTransferred(true);
-
-                        const selectedSlot = selectedSlots[0];
-                        const fullVacancy = allVacancies?.find(v => v.id === selectedSlot.id);
-                        if (!fullVacancy) {
-                            console.error("Matching vacancy not found");
-                            return;
-                        }
-                        try {
-                            transferPosition({
-                                applicantId: applicantId,
-                                position: {
-                                    id: selectedSlot.id,
-                                    name: selectedSlot.position,
-                                    salary: 1,
-                                    choice: {
-                                        id: 2,
-                                        name: ""
-                                    },
-                                    availableDateStart: fullVacancy.vacancyDurationResponse.dateStart,
-                                    companyId: selectedSlot?.company?.id ?? 0,
-                                    departmentId: fullVacancy.departmentResponse?.id ?? 0
-                                },
-                                comment: comments
-                            });
-                            setSelectedIds([]);
-                            onClose();
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    }}
-
-                >
-                    TRANSFER POSITION
-                </Button> */}
                 <Button
                     className="custom-gradient text-white px-6 py-2 rounded-lg font-medium text-[14px] poppins"
                     onClick={async () => {
@@ -214,7 +176,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                         }
 
                         try {
-                            await transferPosition({          // <-- mutateAsync lets you await
+                            await transferPosition({
                                 applicantId: applicantId,
                                 position: {
                                     id: selectedSlot.id,
@@ -223,7 +185,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                                     choice: { id: 2, name: "" },
                                     availableDateStart: fullVacancy.vacancyDuration.dateStart,
                                     companyId: selectedSlot.company?.id ?? 0,
-                                    departmentId: fullVacancy.departmentResponse?.id ?? 0
+                                    departmentId: fullVacancy.department.id ?? 0,
                                 },
                                 comment: comments,
                             });

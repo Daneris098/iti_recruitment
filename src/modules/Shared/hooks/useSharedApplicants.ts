@@ -17,7 +17,7 @@ import {
     useSharedUserService, usePaymentSchemeService,
     useGetDivisions, useGetFeedbacks,
     useGetPositionLevels, useGetDepartments,
-    useSharedTransferredPosition, useSharedViewAcceptedOffer, useSharedTransferApplicant
+    useSharedTransferredPosition, useSharedViewAcceptedOffer,
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
@@ -300,6 +300,7 @@ export const useTransferPositionLookup = (
             return {
                 jobOpenings: data.items.map(item => ({
                     id: item.id,
+                    department: item.department.id,
                     position: item.position,
                     company: item.company,
                     slots: item.availableSlot,
