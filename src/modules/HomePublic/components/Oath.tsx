@@ -11,6 +11,36 @@ export default function Index() {
     const { applicationForm, submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, setSubmitLoading } = ApplicationStore();
     const { setApplicationFormModal, setAlert, setAlertBody } = HomeStore();
     const { data: vacanciesData } = useVacancies();
+    const [cities, setCities] = useState([
+        { id: 1, value: 'MANILA', label: 'MANILA' },
+    ]);
+    const fetchCities = async () => {
+        await axiosInstance
+            .get("/general/cities")
+            .then((response) => {
+                const seen = new Set();
+                const map = response.data.items
+                    .filter((item: any) => {
+                        if (seen.has(item.name)) return false;
+                        seen.add(item.name);
+                        return true;
+                    })
+                    .map((item: any) => ({
+                        id: item.id,
+                        value: `${item.id}`,
+                        label: item.name,
+                    }));
+                setCities(map);
+            })
+            .catch((error) => {
+                const message = error.response.data.errors[0].message;
+                console.error(message)
+            });
+    };
+
+    useEffect(() => {
+        fetchCities()
+    }, [])
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Oath && consent != '') {
@@ -171,7 +201,7 @@ export default function Index() {
                                     street: applicationForm.generalInformation.personalInformation.permanentAddress.street,
                                     subdivision: applicationForm.generalInformation.personalInformation.permanentAddress.subdivision?.trim() || 'N/A',
                                     barangay: applicationForm.generalInformation.personalInformation.permanentAddress.barangay,
-                                    city: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.city },
+                                    city: { id: (cities.find((item) => item.label == applicationForm.generalInformation.personalInformation.permanentAddress.city)?.id), name: applicationForm.generalInformation.personalInformation.permanentAddress.city },
                                     arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: true,
                                     zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.permanentAddress.zipCode.trim() || 'N/A' },
@@ -182,7 +212,7 @@ export default function Index() {
                                     street: applicationForm.generalInformation.personalInformation.presentAddress.street,
                                     subdivision: applicationForm.generalInformation.personalInformation.presentAddress.subdivision?.trim() || 'N/A',
                                     barangay: applicationForm.generalInformation.personalInformation.presentAddress.barangay,
-                                    city: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.city },
+                                    city: { id: (cities.find((item) => item.label == applicationForm.generalInformation.personalInformation.presentAddress.city)?.id), name: applicationForm.generalInformation.personalInformation.presentAddress.city },
                                     arrangement: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.livingArrangement.trim() || 'N/A' },
                                     isPermanent: false,
                                     zipCode: { id: 1, name: applicationForm.generalInformation.personalInformation.presentAddress.zipCode.trim() || 'N/A' },

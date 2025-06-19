@@ -45,7 +45,11 @@ export interface HomeState {
   barangays: Barangay[];
   barangays2: Barangay[];
   sameAsPresent: boolean;
+  isFromPortal: boolean
+  vacancyDetailsModal: boolean;
 
+  setvacancyDetailsModal: (vacancyDetailsModal: boolean) => void;
+  setIsFromPortal: (isFromPortal: boolean) => void;
   setSameAsPresent: (sameAsPresent: boolean) => void;
   setBarangays: (barangays: Barangay[]) => void;
   setBarangays2: (barangays2: Barangay[]) => void;
@@ -167,7 +171,7 @@ export interface EducationBackground {
     to: Date | string | null;
   };
   professionalLicenses: string;
-  certfications: string;
+  certifications: string;
 }
 
 export interface Siblings {
@@ -271,6 +275,7 @@ export enum AlertType {
   cancelApplication = "cancelApplication",
   cancelledApplication = "cancelledApplication",
   submitResponse = "submitResponse",
+  required = "required",
 }
 
 export enum StepperTitle {

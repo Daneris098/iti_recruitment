@@ -97,6 +97,7 @@ const DataTableComp = forwardRef((_, ref) => {
       setAddOrg(false);
       resetExpandedRows();
       setExpanded([]);
+      setNewRows([]);
       setValidationMessage("Add row form is open, Please Fill up before you switch tab");
     } else if (expandedIds.length >= 1) {
       editActions[activePanel as Panel]();
@@ -108,11 +109,14 @@ const DataTableComp = forwardRef((_, ref) => {
   };
 
   const cancelAll = () => {
-    if (addOrg) {
-      setAddOrg(false);
-      setNewRows([]);
-    } else if (!addOrg) {
-      resetExpandedRows();
+    if (addOrg || expandedIds.length > 0) {
+      setAlert(AlertType.Cancel);
+      if (addOrg) {
+        setAddOrg(false);
+        setNewRows([]);
+      } else if (!addOrg) {
+        resetExpandedRows();
+      }
     }
   };
 

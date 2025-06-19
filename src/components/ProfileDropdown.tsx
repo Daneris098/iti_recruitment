@@ -6,26 +6,32 @@ import avatar from "@assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { GlobalStore, userDetailsValue } from "@src/utils/GlobalStore";
 import { ProfileSettingsStore } from "@modules/ProfileSettings/store";
-import { useUserDataStore } from "@src/global/store/auth";
+import { useEffect, useState } from "react";
 
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
   const { setActivePanel, activePanel } = ProfileSettingsStore();
-  const { setUserDetails } = GlobalStore();
-  const { data } = useUserDataStore();
+  const { setUserDetails, userDetails } = GlobalStore();
+
+  const userPhoto = GlobalStore((state) => state.userDetails.photo);
+  const [img, setImg] = useState<string>(avatar);
+  useEffect(() => {
+    const photoVal = userDetails?.photo ? `${import.meta.env.VITE_AUTH_BASE_URL}Uploads/photo/${userPhoto}` : avatar;
+    setImg(photoVal);
+  }, [userPhoto]);
 
   return (
     <Menu shadow="md" width={250} position="bottom-end" radius={10} transitionProps={{ transition: "fade-down", duration: 100 }}>
-      <div className="flex text-center items-center">
+      <div className="flex text-center items-center pr-2">
         {/* {!isMobile && !!userDetails.Name && (userDetails.Name.split(' ')[0])} */}
         <Menu.Target>
-          <Avatar src={avatar} alt="it's me" className="cursor-pointer" size="lg" />
+          <Avatar src={img} alt="it's me" className="cursor-pointer" size="md" />
         </Menu.Target>
       </div>
 
       <Menu.Dropdown className="pt-1 pb-2 px-2">
         <Flex mih={50} justify="center" align="center" direction="column" wrap="wrap">
-          <p className="border-none br-gradient bg-clip-text text-transparent  font-semibold text-xl">Welcome, {data?.Name.split(" ")[0]}!</p>
+          <p className="border-none br-gradient bg-clip-text text-transparent  font-semibold text-xl">Welcome, {userDetails.firstName}</p>
           <p className="text-xs text-gray-600 poppins">Customize your account here</p>
         </Flex>
         <Menu.Item

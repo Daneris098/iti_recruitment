@@ -1,11 +1,10 @@
-import { Divider, Checkbox, TextInput, NumberInput } from "@mantine/core";
+import { Divider, Checkbox, TextInput } from "@mantine/core";
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "@mantine/form";
 import { ApplicationStore } from "../../store";
 import { Reference, Step } from "../../types";
 import { IconCircleMinus, IconCirclePlus } from "@tabler/icons-react";
-import { employmentRecordVal } from "../../values/cleanState";
 import '../../styles/index.css';
 
 export default function index() {
@@ -25,13 +24,13 @@ export default function index() {
                 fullname: (value: string) => value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => !value.toString() ? "Contact Number is required" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                ContactNo: (value: string | number) => /^\d+$/.test(value.toString()) ? (value.toString().length < 11 ? "Enter a valid contact number" : null) : "Contact number must contain digits only",
             },
             employmentReference: {
                 fullname: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Fullname is required" : null,
                 company: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Company is required" : null,
                 positionHeld: (value: string) => (!isNoEmploymentRecord) && value.length === 0 ? "Position Held is required" : null,
-                ContactNo: (value: string | number) => (!isNoEmploymentRecord) && !value.toString().trim() ? "Contact Number is required" : (!isNoEmploymentRecord) && value.toString().length < 11 ? "Contact Number Minimum length 11" : null,
+                ContactNo: (value: string | number) => !isNoEmploymentRecord ? !/^\d+$/.test(value.toString()) ? "Contact number must contain digits only" : value.toString().length < 11 ? "Contact Number Minimum length 11" : null : null,
             },
             applicationSource: {
                 description: (value: string, values) =>
@@ -49,16 +48,29 @@ export default function index() {
         setActiveSource(found ? found[0] : null);
     }, [form.getValues()])
 
-    const onSubmit = async (form: Reference) => {
-
+    const onSubmit = async (formVal: Reference) => {
+        console.log('form: ', form)
+        console.log('activeSource: ', activeSource)
         if (activeSource == null) {
+            form.setFieldError(`applicationSource.jobStreet`, ' ');
+            form.setFieldError(`applicationSource.employeeReferal`, ' ');
+            form.setFieldError(`applicationSource.headHunter`, ' ');
+            form.setFieldError(`applicationSource.wordOfMouth`, ' ');
+            form.setFieldError(`applicationSource.walkin`, ' ');
+            form.setFieldError(`applicationSource.others`, ' ');
+            form.setFieldError(`applicationSource.description`, ' ');
+            form.getInputNode?.(`applicationSource.employeeReferal`)?.focus();
             setCheckboxError(true);
             return;
         }
         setCheckboxError(false);
-        setApplicationForm({ ...applicationForm, reference: form })
+        setApplicationForm({ ...applicationForm, reference: formVal })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
+
+    useEffect(() => {
+        console.log(activeSource)
+    }, [activeSource])
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.Reference && formRef.current) {
@@ -109,7 +121,22 @@ export default function index() {
     }, [applicationForm])
 
     return (
-        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
+        <form
+            ref={formRef}
+            onSubmit={async (e) => {
+                e.preventDefault();
+                const validation = form.validate(); // returns { hasErrors, errors }
+
+                if (!validation.hasErrors) {
+                    const values = form.getValues(); // safely get form values
+                    await onSubmit(values); // pass values to your handler
+                } else {
+                    const firstErrorPath = Object.keys(validation.errors)[0];
+                    form.getInputNode(firstErrorPath)?.focus();
+                }
+            }}
+        >
+
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <div>
                     <p className="font-bold">Character Reference (NOT FAMILY MEMBERS)</p>
@@ -200,8 +227,8 @@ export default function index() {
                                     w={isMobile ? '25%' : '100%'}
                                     placeholder="Position Held"
                                 />
-                                <NumberInput
-                                    hideControls
+                                <TextInput
+                                    inputMode="numeric"
                                     classNames={{ input: 'poppins text-[#6D6D6D]' }}
                                     {...form.getInputProps(`employmentReference.${index}.ContactNo`)}
                                     radius="md"
@@ -229,38 +256,32 @@ export default function index() {
                         disabled={isAlreadyCheck && activeSource != 'employeeReferal'}
                         {...form.getInputProps(`applicationSource.employeeReferal`, { type: 'checkbox' })}
                         label="Employee Referal"
-                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'jobStreet'}
                         {...form.getInputProps(`applicationSource.jobStreet`, { type: 'checkbox' })}
                         label="Jobstreet"
-                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'headHunter'}
                         {...form.getInputProps(`applicationSource.headHunter`, { type: 'checkbox' })}
                         label="Headhunter"
-                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'wordOfMouth'}
                         {...form.getInputProps(`applicationSource.wordOfMouth`, { type: 'checkbox' })}
                         label="Word of Mouth"
-                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <Checkbox
                         disabled={isAlreadyCheck && activeSource != 'walkin'}
                         {...form.getInputProps(`applicationSource.walkin`, { type: 'checkbox' })}
                         label="Walk-in"
-                        classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                     />
                     <div className="flex items-center gap-3">
                         <Checkbox
                             disabled={isAlreadyCheck && activeSource != 'others'}
                             {...form.getInputProps(`applicationSource.others`, { type: 'checkbox' })}
                             label="Others"
-                            classNames={{ input: checkboxError && activeSource == null ? 'input' : '', }}
                         />
 
                         {activeSource === 'others' &&

@@ -121,7 +121,6 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefO
               variant="outline"
               onClick={() => {
                 setAlert(AlertType.Cancelled);
-                dataTableRef.current?.cancelAll();
               }}>
               YES
             </Button>

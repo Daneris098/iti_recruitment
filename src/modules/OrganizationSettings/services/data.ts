@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSharedOrgService, useSharedGeneralService } from "@src/modules/Shared/api/useSharedUserService";
 import { OrganizationSettingsStore } from "../store";
-import { Panel } from "../assets/Enum";
 
 export const useFetchOrganizationSettings = () => {
-  const { sortBy, activePanel, setTime, page, pageSize, ascDesc } = OrganizationSettingsStore();
+  const { sortBy, setTime, page, pageSize, ascDesc } = OrganizationSettingsStore();
 
   let isAscOrDesc: string = ascDesc ? "+" : "-";
 

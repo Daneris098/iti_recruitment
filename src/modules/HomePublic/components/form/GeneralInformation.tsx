@@ -4,18 +4,29 @@ import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore, HomeStore } from "@modules/HomePublic/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { Step, GeneralInformation } from '@modules/HomePublic/types';
+import { Step, GeneralInformation, AlertType } from '@modules/HomePublic/types';
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
 import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
+import {
+    Combobox,
+    ComboboxTarget,
+    ComboboxDropdown,
+    ComboboxOptions,
+    ComboboxOption,
+    InputBase
+} from '@mantine/core';
+import { useCombobox } from '@mantine/core';
+import { values } from "lodash";
 
 export default function index() {
+
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent } = HomeStore();
+    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent, isFromPortal, setAlert } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
@@ -25,9 +36,11 @@ export default function index() {
         { id: 1, value: 'MANILA', label: 'MANILA' },
     ]);
     const [presentBarangayKey, setPresentBarangayKey] = useState('');
+    const [permanentBarangayKey, setPermanentBarangayKey] = useState('');
     const [startDateAvailabilityOpened, setStartDateAvailabilityOpened] = useState(false);
     const [datedOfBirthOpened, setDatedOfBirthOpenedOpened] = useState(false);
     const form = useForm({
+        validateInputOnBlur: true,
         mode: 'uncontrolled',
         initialValues: applicationForm.generalInformation,
         validate: {
@@ -83,15 +96,47 @@ export default function index() {
     const onSubmit = async (formData: GeneralInformation) => {
         const emailAvailable = await checkIfAvailable('email')
         const mobileAvailable = await checkIfAvailable('mobile')
+        const isPresentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.presentAddress.city)
+        const isPermanentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.permanentAddress.city)
+
+        const isPresentBarangayValid = barangays.some((item) => item.label == form.getValues().personalInformation.presentAddress.barangay)
+        const isPermanentBarangayValid = sameAsPresent ? barangays.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay) : barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
+
+        console.log('isPermanentBarangayValid: ', isPermanentBarangayValid)
+        console.log('form.getValues().personalInformation.permanentAddress.city: ', form.getValues().personalInformation.permanentAddress.barangay)
+
         if (!emailAvailable) {
             form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!')
         }
+
         if (!mobileAvailable) {
             form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
         }
-        if (!emailAvailable || !mobileAvailable) {
+
+        if (!isPermanentBarangayValid) {
+            form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
+            form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
+        }
+
+        if (!isPermanentCityValid) {
+            form.setFieldError(`personalInformation.permanentAddress.city`, 'Invalid city');
+            form.getInputNode?.(`personalInformation.permanentAddress.city`)?.focus();
+        }
+
+        if (!isPresentBarangayValid) {
+            form.setFieldError(`personalInformation.presentAddress.barangay`, 'Invalid barangay');
+            form.getInputNode?.(`personalInformation.presentAddress.barangay`)?.focus();
+        }
+
+        if (!isPresentCityValid) {
+            form.setFieldError(`personalInformation.presentAddress.city`, 'Invalid city');
+            form.getInputNode?.(`personalInformation.presentAddress.city`)?.focus();
+        }
+
+        if (!emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid || !isPresentBarangayValid || !isPermanentBarangayValid) {
             return
         }
+
         setApplicationForm({ ...applicationForm, generalInformation: formData })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -123,13 +168,15 @@ export default function index() {
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.GeneralInformation && formRef.current) {
-            form.setValues({
-                ...form.getValues(),
-                personalInformation: {
-                    ...form.getValues().personalInformation,
-                    permanentAddress: form.getValues().personalInformation.presentAddress,
-                },
-            });
+            if (sameAsPresent) {
+                form.setValues({
+                    ...form.getValues(),
+                    personalInformation: {
+                        ...form.getValues().personalInformation,
+                        permanentAddress: form.getValues().personalInformation.presentAddress,
+                    },
+                });
+            }
             formRef.current.requestSubmit(); // Programmatically trigger form submission
         }
         return (setSubmit(false))
@@ -163,6 +210,13 @@ export default function index() {
     useEffect(() => {
         fetchCities()
     }, [])
+
+    useEffect(() => {
+        if (isFromPortal) {
+            form.setFieldValue('firstChoice', selectedData.position)
+        }
+        // fetchCities()
+    }, [vacancies])
 
     useEffect(() => {
         const mapVacancies = vacanciesData?.map((item) => ({
@@ -203,46 +257,105 @@ export default function index() {
             });
     }
 
+    const combobox = useCombobox();
+    const combobox2 = useCombobox();
+
     return (
-        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
+        <form
+            ref={formRef}
+            onSubmit={
+                async (e) => {
+                    console.log('value: ', values)
+                    e.preventDefault(); // Prevent default submission first
+                    const isValid = form.validate(); // Runs validation on all fields
+                    if (!isValid.hasErrors) {
+                        const values = form.getValues(); // safely get form values
+                        await onSubmit(values);
+                    } else {
+                        const firstErrorPath = Object.keys(isValid.errors)[0];
+                        form.getInputNode(firstErrorPath)?.focus();
+                    }
+                }}
+        >
+
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end ">
-                    <Autocomplete
-                        withAsterisk
-                        {...form.getInputProps("firstChoice")}
-                        key={form.key('firstChoice')}
-                        w={isMobile ? '25%' : '100%'}
-                        label="Position Applying for - First Choice"
-                        placeholder={"First Choice"}
-                        radius={8}
-                        data={vacancies}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            form.setFieldValue("firstChoice", val);
-                        })}
-                    />
+                    <Combobox
+                        store={combobox}
+                        onOptionSubmit={(val) => {
+                            form.setFieldValue('firstChoice', val);
+                            combobox.closeDropdown();
+                        }}
+                    >
+                        <ComboboxTarget>
+                            <InputBase
+                                label="Position Applying for - First Choice"
+                                withAsterisk
+                                radius={8}
+                                rightSection={<IconCaretDownFilled size={18} />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps("firstChoice")}
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSectionPointerEvents="none"
+                                onClick={() => combobox.toggleDropdown()}
+                            >
+                                {form.getValues().firstChoice}
+                            </InputBase>
+                        </ComboboxTarget>
 
-                    <Autocomplete
-                        {...form.getInputProps("secondChoice")}
-                        key={form.key('secondChoice')}
-                        w={isMobile ? '25%' : '100%'}
-                        label="Position Applying for - Second Choice"
-                        placeholder={"Second Choice"}
-                        radius={8}
-                        data={form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.value != form.getValues().firstChoice)}
-                        rightSection={<IconCaretDownFilled size='18' />}
-                        className="border-none w-full text-sm"
-                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                        styles={{ label: { color: "#6d6d6d" } }}
-                        onChange={((val) => {
-                            form.setFieldValue("secondChoice", val);
-                        })}
-                    />
+                        <ComboboxDropdown>
+                            <ComboboxOptions>
+                                {vacancies.map((item) => (
+                                    <ComboboxOption value={item.label} key={item.id}>
+                                        {item.label}
+                                    </ComboboxOption>
+                                ))}
+                            </ComboboxOptions>
+                        </ComboboxDropdown>
+                    </Combobox>
+
+
+                    <Combobox
+                        store={combobox2}
+                        onOptionSubmit={(val) => {
+                            form.setFieldValue('secondChoice', val);
+                            combobox2.closeDropdown();
+                        }}
+                    >
+                        <ComboboxTarget>
+                            <InputBase
+                                label="Position Applying for - Second Choice"
+                                withAsterisk
+                                radius={8}
+                                rightSection={<IconCaretDownFilled size={18} />}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                {...form.getInputProps("secondChoice")}
+                                component="button"
+                                type="button"
+                                pointer
+                                rightSectionPointerEvents="none"
+                                onClick={() => combobox2.toggleDropdown()}
+                            >
+                                {form.getValues().secondChoice}
+                            </InputBase>
+                        </ComboboxTarget>
+
+                        <ComboboxDropdown>
+                            <ComboboxOptions>
+                                {(form.getValues().firstChoice == '' ? vacancies : vacancies.filter(item => item.label != form.getValues().firstChoice)).map((item) => (
+                                    <ComboboxOption value={item.label} key={item.id}>
+                                        {item.label}
+                                    </ComboboxOption>
+                                ))}
+                            </ComboboxOptions>
+                        </ComboboxDropdown>
+                    </Combobox>
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -283,7 +396,7 @@ export default function index() {
                 <p className="font-bold">Personal Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
-                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8]">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
+                    <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.lastName")} radius='md' label={<p>Full Name <span className="text-red-500">*</span><span className="text-[#A8A8A8] text-xs">(Leave blank if not applicable)</span></p>} placeholder="Last Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.firstName")} radius='md' placeholder="First Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.middleName")} radius='md' placeholder="Middle Name" />
                     <TextInput className="w-full sp:w-1/4" classNames={{ input: 'poppins text-[#6D6D6D]' }}  {...form.getInputProps("personalInformation.fullname.suffix")} radius='md' placeholder="Suffix(Jr. Sr. etc.)" />
@@ -291,7 +404,7 @@ export default function index() {
 
                 <div className="flex flex-col sm:flex-row gap-4 items-end relative w-full">
                     <div className="w-full sp:w-1/2 flex items-end gap-4">
-                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
+                        <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.unitNo")} key={form.key('personalInformation.presentAddress.unitNo')} radius='md' label={<p>Present Address <span className="text-red-500">*</span><span className="text-[#A8A8A8] absolute text-xs">(Leave blank if not applicable)</span></p>} placeholder="Unit no." />
                         <TextInput className="w-full sp:w-1/2" classNames={{ input: 'poppins text-[#6D6D6D]' }} {...form.getInputProps("personalInformation.presentAddress.houseNo")} key={form.key('personalInformation.presentAddress.houseNo')} radius='md' placeholder="House no." />
                     </div>
                     <div className="w-full sp:w-1/2 flex flex-col sp:flex-row items-end gap-4">
@@ -371,7 +484,7 @@ export default function index() {
                         <Checkbox
                             checked={sameAsPresent}
                             label="Same as Present Address"
-                            classNames={{ label: 'poppins' }}
+                            classNames={{ label: 'poppins text-xs ' }}
                             className="absolute ml-36 text-xs  text-blue-400 sm:px-2 "
                             onChange={(value) => {
                                 setSameAsPresent(value.target.checked);
@@ -421,18 +534,19 @@ export default function index() {
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                                 styles={{ label: { color: "#6d6d6d" } }}
                                 onChange={((val) => {
+                                    console.log('val: ', val)
                                     const selectedCity = cities.find(city => city.label === val);
                                     fetchBarangays(selectedCity?.id ?? 1, 2)
                                     form.setFieldValue("personalInformation.permanentAddress.city", val);
                                     form.setFieldValue("personalInformation.permanentAddress.barangay", '');
-                                    // setPermanentBarangayKey(val)
+                                    setPermanentBarangayKey(val)
                                 })}
                             />
 
                             <Autocomplete
                                 limit={50}
                                 disabled={sameAsPresent}
-                                // key={permanentBarangayKey}
+                                key={permanentBarangayKey}
                                 {...form.getInputProps("personalInformation.permanentAddress.barangay")}
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder={"Barangay"}
