@@ -85,7 +85,7 @@ export default function PersonalDetails() {
         height,
         weight,
         skills = [],
-        mother,
+        // mother,
     } = applicant || {};
 
     const firstChoice = positionsApplied[0] || {};
