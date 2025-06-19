@@ -387,6 +387,9 @@ export type PersonalDetailsType = {
         availableDateStart?: string;
     }[];
     addresses?: {
+        city: any;
+        street: any;
+        houseNo: any;
         subdivision?: string;
     }[];
     identification?: {
@@ -443,7 +446,7 @@ export type PersonalDetailsType = {
     questionnaire?: {
         answer?: string;
     }[];
-    birthDate?: string;
+    birthDate?: any;
     birthPlace?: string;
     civilStatus?: {
         name?: string;
