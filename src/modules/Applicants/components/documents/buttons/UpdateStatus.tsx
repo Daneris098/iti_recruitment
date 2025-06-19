@@ -112,7 +112,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         setIsModalOpen(false);
       }, 1000);
     };
-  } else if (selectedStatus === "For Interview") {
+  } else if (selectedStatus === "For Interview" || Status === 'For Interview') {
     // buttonText = "Schedule Interview";
     buttonText = "Add to Calendar";
     handleClick = async () => {
@@ -139,6 +139,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
         setTimeout(() => {
           setIsContactApplicant(false);
+          setIsUpdateStatusButtonModalOpen(false);
           setSelectedStatus(null);
         }, 1000);
 
@@ -446,6 +447,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 
           // Set the selected status into "Archive" to re-render the update status form with the archived status.
+          // setIsUpdateStatusButtonModalOpen(false);
           setSelectedStatus("Archived")
           setIsScheduleInterview(false);
           setIsAddtoCalendar(false)

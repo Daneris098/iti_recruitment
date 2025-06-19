@@ -182,7 +182,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                                     id: selectedSlot.id,
                                     name: selectedSlot.position,
                                     salary: 1,
-                                    choice: { id: 2, name: "" },
+                                    choice: { id: 1, name: "First Choice" },
                                     availableDateStart: fullVacancy.vacancyDuration.dateStart,
                                     companyId: selectedSlot.company?.id ?? 0,
                                     departmentId: fullVacancy.department.id ?? 0,
