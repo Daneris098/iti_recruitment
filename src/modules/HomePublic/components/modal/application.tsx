@@ -20,7 +20,7 @@ import { RingProgress } from '@mantine/core';
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
     const { applicationFormModal, setApplicationFormModal, setIsFromPortal, setAlert, vacancyDetailsModal, selectedData, setvacancyDetailsModal } = HomeStore();
-    const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading } = ApplicationStore();
+    const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading, applicationForm } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
     const StepperPercent = [20, 40, 60, 80, 100];
     const StepperLabel = ['1 of 5', '2 of 5', '3 of 5', '4 of 5', '5 of 5'];
@@ -239,7 +239,7 @@ export default function index() {
                                         }}>
                                             <div className='flex'>
 
-                                                <p className='w-24 text-center'>{activeStepper === Step.Photo && !isPhotoCaptured && cameraAllowed ? 'TAKE PHOTO' : (activeStepper === Step.Photo && !isPhotoCaptured) ? 'UPLOAD' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'SUBMIT' : 'NEXT'}</p>
+                                                <p className='w-24 text-center'>{activeStepper === Step.Photo && !isPhotoCaptured && cameraAllowed ? 'TAKE PHOTO' : (activeStepper === Step.Photo && !isPhotoCaptured && (applicationForm.photo == '')) ? 'UPLOAD' : (activeStepper === Step.Preview || activeStepper === Step.Oath) ? 'SUBMIT' : 'NEXT'}</p>
 
                                                 {activeStepper === Step.Photo && (
                                                     <div className='right-[0%] absolute py-[6px] bottom-[0%] text-white' onClick={(e) => {
