@@ -320,9 +320,33 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
               />
             )}
 
-            {(Status === 'For Interview' && !selectedStatus) && (
+            {/* {(Status === 'For Interview' && !selectedStatus) && (
               <ForInterviewStatus />
+            )} */}
+            {Status === 'For Interview' && !selectedStatus && (
+              <>
+                <ForInterviewStatus />
+
+                {/* Conditionally show comment box for For Interview stage */}
+                <div className="pt-4">
+                  <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
+                    Comments
+                  </h3>
+                  <Textarea
+                    placeholder="Type here"
+                    value={comments}
+                    onChange={(e) => setComments(e.target.value)}
+                    autosize
+                    minRows={4}
+                    classNames={{
+                      input:
+                        "poppins pt-2 w-[560px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                    }}
+                  />
+                </div>
+              </>
             )}
+
           </>
           {/* End of Transferred Status */}
 
@@ -351,6 +375,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             <div className="flex justify-between pt-6">
               <Button onClick={() => {
                 setIsUpdateStatusButtonModalOpen(false);
+                setSelectedStatus(null);
                 setIsModalOpen(false);
               }}
                 className="bg-transparent text-[#559CDA] px-6 py-1 rounded-lg border-[#559CDA] font-medium text-[14px] poppins">

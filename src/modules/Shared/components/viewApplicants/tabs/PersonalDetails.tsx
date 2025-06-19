@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
-import { useApplicantIdStore, usePositionApplied } from "@src/modules/Shared/store";
+import { useApplicantIdStore, usePositionApplied, useAmountStore } from "@src/modules/Shared/store";
 import { PersonalDetailsType } from '@src/modules/Shared/types';
 import { fetchApplicantByIdService, } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function PersonalDetails() {
 
     const setFirstPositionApplied = usePositionApplied((s) => s.setFirstPositionApplied);
-
+    const setDesiredSalary = useAmountStore((state) => state.setTotalAmount);
 
     const [error, setError] = useState<unknown>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -29,9 +29,16 @@ export default function PersonalDetails() {
 
     useEffect(() => {
         const firstChoice = applicant?.positionsApplied?.[0];
+        const desiredSalary = applicant?.positionsApplied?.[0]?.salary;
+
         if (firstChoice?.name) {
             setFirstPositionApplied(firstChoice.name);
         }
+
+        if (desiredSalary) {
+            setDesiredSalary(Number(desiredSalary))
+        }
+
     }, [applicant, setFirstPositionApplied]);
 
     if (isLoading) return <p>Loading…</p>;

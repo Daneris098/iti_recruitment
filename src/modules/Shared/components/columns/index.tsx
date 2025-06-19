@@ -15,6 +15,8 @@ const statusBgClasses: Record<string, string> = {
   'initial interview': 'bg-[#559CDA]',
   'final interview': 'bg-[#FEC001]',
   'ready for transfer': 'bg-[#6D6D6D]',
+  'final': 'bg-[#ED8028]',
+  'technical': 'bg-[#ED8028]',
 };
 
 const baseStatusClass = 'text-white rounded-xl p-1 inline-block w-[132px] text-center font-medium';

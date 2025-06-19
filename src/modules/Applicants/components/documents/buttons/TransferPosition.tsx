@@ -1,6 +1,5 @@
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
-// import { useApplicantIdStore } from "@modules/Applicants/store";
 import { useApplicantIdStore } from "@src/modules/Shared/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
@@ -11,22 +10,23 @@ import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplic
 import { useJobOpeningStore, useSelectedApplicantsStore } from "@modules/Shared/store";
 import { Button, Divider, Textarea, TextInput, Menu, Pagination } from "@mantine/core";
 import { useTransferApplicantPosition } from "@modules/Shared/hooks/useSharedApplicants";
+import { useAmountStore } from "@src/modules/Shared/store";
 
 export default function TransferPosition({ Applicant_Name, onClose }: ApplicantTransfereeName) {
 
     const { mutateAsync: transferPosition } = useTransferApplicantPosition();
     const applicantId = useApplicantIdStore((state) => state.id);
 
-    console.log(applicantId)
     const [localPageSize] = useState(10);
     const [localPage, setLocalPage] = useState(1);
+    const setDesiredSalary = useAmountStore((state) => state.totalAmount);
     const setJobOpenings = useJobOpeningStore((state) => state.setJobOpenings);
     const selectedIds = useSelectedApplicantsStore((state) => state.selectedIds);
     const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
 
     const [opened, setOpened] = useState(false);
-    const { setIsTransferPosition } = useCloseModal();
     const [filterText, setFilterText] = useState("");
+    const { setIsTransferPosition } = useCloseModal();
     const [isTransferred, setIsTransferred] = useState(false);
     const { comments, setComments } = useDropDownOfferedStore();
     const [loadTime, setLoadTime] = useState<number | null>(null);
@@ -95,6 +95,13 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
         setSelectedIds(selectedSlot ? [selectedSlot.id] : []);
     };
 
+    const handleRefresh = () => {
+        setFilterText("");
+        setSelectedSlots([]);
+        setSelectedIds([]);
+    };
+
+    console.log(selectedIds)
     return (
         <div className="p-9">
             {/* Header */}
@@ -181,8 +188,12 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                                 position: {
                                     id: selectedSlot.id,
                                     name: selectedSlot.position,
-                                    salary: 1,
-                                    choice: { id: 1, name: "First Choice" },
+                                    salary: setDesiredSalary,
+                                    choice: { id: 1, name: selectedSlot.position },
+                                    // choice: {
+                                    //     id: selectedSlot.position.id,
+                                    //     name: selectedSlot.position.name
+                                    // },
                                     availableDateStart: fullVacancy.vacancyDuration.dateStart,
                                     companyId: selectedSlot.company?.id ?? 0,
                                     departmentId: fullVacancy.department.id ?? 0,
@@ -262,7 +273,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                     />
 
                     <Button onClick={() => setFilterText("")}>
-                        <IconRefresh />
+                        <IconRefresh onClick={handleRefresh} />
                     </Button>
                 </div>
 

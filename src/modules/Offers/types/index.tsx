@@ -61,6 +61,7 @@ export interface AllJobOffersFilterType {
 
 //#region PDF PROPS
 export interface PDFProps {
+  status?: string;
   applicantId: number;
   applicantName: string;
   position: string;

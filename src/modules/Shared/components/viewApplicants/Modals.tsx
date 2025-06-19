@@ -1,12 +1,12 @@
 import { ModalsProps } from "@modules/Shared/types";
-import { useApplicantIdStore } from "@modules/Applicants/store";
+import { useApplicantIdStore } from "@src/modules/Shared/store";
 import ViewPDF from "@modules/Applicants/components/modal/pdfModal";
 import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
-import { getApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 import UpdateStatus from "@src/modules/Applicants/components/documents/buttons/UpdateStatus";
 import GenerateNewOffer from "@modules/Applicants/components/documents/buttons/GenerateNewOffer";
 import TransferPosition from "@src/modules/Applicants/components/documents/buttons/TransferPosition";
+import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 
 export default function Modals({
   Status,
@@ -78,7 +78,9 @@ export default function Modals({
         <ViewPDF isOpen onClose={onClosePDF}>
           <PDFViewer
             identifier={applicantId}
-            getPdfPathFn={getApplicantPDFPath}
+            getApplicantStatus={async () => "Accepted"}
+            getPdfPathFnHired={getApplicantPDFPath}
+            getPdfPathFnPending={getPendingApplicantPDFPath}
           />
         </ViewPDF>
       )}

@@ -63,7 +63,7 @@ export const useApplicantById = (
     });
 
 export const formatApplicantById = (applicant: any): ViewApplicantById => {
-
+    // debugger;
     const {
         family, skills,
         applicationMovements,
@@ -218,7 +218,8 @@ export const formatApplicantById = (applicant: any): ViewApplicantById => {
             movements: mapApplicationMovements,
             movementLastModifiedDate: dateApplied
         },
-        commentsByID: mapComments
+        commentsByID: mapComments,
+        applicantPhoto: applicant.data.photo,
     };
 };
 

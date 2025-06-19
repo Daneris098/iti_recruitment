@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Divider } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import profileImage from "@src/assets/jane.png";
@@ -14,6 +14,7 @@ import { ActionButton } from "@modules/Shared/utils/ApplicantModal/actionButton"
 import { TextRenderer } from "@modules/Shared/utils/ApplicantModal/textRenderer";
 import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus";
+import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function ViewApplicant({
   applicantName,
@@ -30,6 +31,22 @@ export default function ViewApplicant({
 
   const applicantId = useApplicantIdStore((state) => state.id);
   const { data: applicantsById } = useApplicantsById(applicantId);
+
+  const token = sessionStorage.getItem("accessToken") ?? undefined;
+  const [applicant, setApplicant] = useState<any | null>(null);
+  const [_isLoading, setLoading] = useState(false);
+  const [_error, setError] = useState<unknown>(null);
+  const photoPath = applicant?.photo?.[0]?.path;
+
+  useEffect(() => {
+    if (!applicantId || !token) return;
+
+    setLoading(true);
+    fetchApplicantByIdService(applicantId, token)
+      .then(setApplicant)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [applicantId, token]);
 
   const {
     setIsOffered,

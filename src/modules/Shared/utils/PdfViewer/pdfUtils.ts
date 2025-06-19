@@ -17,6 +17,16 @@ export async function getApplicantPDFPath(applicantId: number): Promise<string> 
     return fileInfo.path;
 }
 
+export async function getPendingApplicantPDFPath(
+    applicantId: number
+): Promise<string> {
+    return (
+        "/proxy/pdf/Report/Get/?" +
+        "filter=ReportFilename=HRDotNet_Recruitment_Activity_Report_v1" +
+        "@ID_Company=1@ID_Department=1@ID_Vacancy=1" +
+        "@DateFrom=20250605@DateTo=20250610@ID_PrintedBy=0"
+    );
+}
 
 /**
  * Fetches the PDF from a given path and returns a blob URL.
@@ -25,13 +35,21 @@ export async function getApplicantPDFPath(applicantId: number): Promise<string> 
  * @returns A blob URL representing the fetched PDF.
  * @throws If the response is not a valid PDF or if the fetch fails.
  */
-export async function fetchPDFBlobUrl(pdfPath: string, token: string): Promise<string> {
-    const proxiedPdfUrl = `/files/Uploads/applicants/${pdfPath}`;
+export async function fetchPDFBlobUrl(
+    pdfPath: string,
+    token: string
+): Promise<string> {
+    const isAbsolute =
+        pdfPath.startsWith("http") || pdfPath.startsWith("/");
 
-    const response = await fetch(proxiedPdfUrl, {
+    const url = isAbsolute
+        ? pdfPath
+        : `/files/Uploads/applicants/${pdfPath}`;
+
+    const response = await fetch(url, {
         headers: {
             Authorization: `Bearer ${token}`,
-            Accept: 'application/pdf, application/octet-stream, */*',
+            Accept: "application/pdf, application/octet-stream, */*",
         },
     });
 
@@ -39,13 +57,10 @@ export async function fetchPDFBlobUrl(pdfPath: string, token: string): Promise<s
         throw new Error(`Failed to fetch PDF: ${response.statusText}`);
     }
 
-    const pdfBlob = await response.blob();
-
-    if (pdfBlob.type.startsWith('text') || pdfBlob.size < 1000) {
-        const text = await pdfBlob.text();
-        console.error('Not a PDF. Got text:', text);
-        throw new Error('Server did not return a valid PDF file.');
+    const blob = await response.blob();
+    if (blob.type.startsWith("text") || blob.size < 1000) {
+        console.error("Not a PDF:", await blob.text());
+        throw new Error("Server did not return a valid PDF.");
     }
-
-    return URL.createObjectURL(pdfBlob);
+    return URL.createObjectURL(blob);
 }
