@@ -113,9 +113,9 @@ export default function index() {
             form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
         }
 
-        if (!isPresentCityValid) {
-            form.setFieldError(`personalInformation.presentAddress.city`, 'Invalid city');
-            form.getInputNode?.(`personalInformation.presentAddress.city`)?.focus();
+        if (!isPermanentBarangayValid) {
+            form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
+            form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
         }
 
         if (!isPermanentCityValid) {
@@ -128,9 +128,9 @@ export default function index() {
             form.getInputNode?.(`personalInformation.presentAddress.barangay`)?.focus();
         }
 
-        if (!isPermanentBarangayValid) {
-            form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
-            form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
+        if (!isPresentCityValid) {
+            form.setFieldError(`personalInformation.presentAddress.city`, 'Invalid city');
+            form.getInputNode?.(`personalInformation.presentAddress.city`)?.focus();
         }
 
         if (!emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid || !isPresentBarangayValid || !isPermanentBarangayValid) {
