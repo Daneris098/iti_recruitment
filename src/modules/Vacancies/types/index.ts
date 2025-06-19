@@ -2,7 +2,7 @@ export interface VacancyState {
   selectedVacancy: VacancyType;
   applicationFormModal: boolean;
   alert: string;
-  action: Action,
+  action: Action;
 
   setAction: (action: Action) => void;
   setAlert: (alert: string) => void;
@@ -19,7 +19,7 @@ export type FilterState = {
   setIsFiltered: (isFiltered: boolean) => void;
   setFilterDrawer: (filterDrawer: boolean) => void;
   setClearFilter: (clearFilter: boolean) => void;
-}
+};
 
 export interface FilterType {
   dateFrom?: string;
@@ -35,7 +35,6 @@ export interface FilterType {
   workplaceType: string[];
   experienceLevel: string[];
 }
-
 
 export interface VacancyType {
   id: number;
@@ -59,6 +58,7 @@ export interface VacancyType {
   desirable: string[];
   dateCreated: string;
   datePublish: string;
+  dateEnd: string;
   interviewer: string;
   quantity: number;
   status: string;
@@ -66,17 +66,15 @@ export interface VacancyType {
     start: string;
     end: string;
     from: string;
-  }
+  };
   mustHaveSkills: string[];
   qualification: string;
-};
-
+}
 
 export interface FormData {
   title: string;
   amount: number;
 }
-
 
 export interface FetchExpensesParams {
   page: number;
@@ -84,15 +82,15 @@ export interface FetchExpensesParams {
   search: string;
   sortStatus: {
     columnAccessor: string;
-    direction: 'asc' | 'desc';
+    direction: "asc" | "desc";
   };
 }
 
 export interface ApplicantState {
-  selectedData: VacancyType,
-  loading: boolean,
-  isViewApplicant: boolean,
-  selectedApplicant: selectedApplicant,
+  selectedData: VacancyType;
+  loading: boolean;
+  isViewApplicant: boolean;
+  selectedApplicant: selectedApplicant;
 
   setSelectedApplicant: (setSelectedApplicant: any) => void;
   setIsViewApplicant: (isViewApplicant: boolean) => void;
@@ -100,27 +98,27 @@ export interface ApplicantState {
   setLoading: (loading: boolean) => void;
 }
 export interface DataTableState {
-  time: string,
-  search: string,
+  time: string;
+  search: string;
   totalRecords: number;
   page: number;
   pageSize: number;
-  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+  sortStatus: { columnAccessor: string; direction: "asc" | "desc" };
 
   setTime: (time: string) => void;
   setSearch: (action: string) => void;
   setTotalRecords: (total: number) => void;
   setPage: (page: number) => void;
   setPageSize: (size: number) => void;
-  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
+  setSortStatus: (status: { columnAccessor: string; direction: "asc" | "desc" }) => void;
 }
 export interface DataTableState2 {
-  time: string,
-  search: string,
+  time: string;
+  search: string;
   totalRecords: number;
   page: number;
   pageSize: number;
-  sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
+  sortStatus: { columnAccessor: string; direction: "asc" | "desc" };
   counts: { [key: string]: number };
 
   setCounts: (counts: { [key: string]: number }) => void;
@@ -129,24 +127,24 @@ export interface DataTableState2 {
   setTotalRecords: (total: number) => void;
   setPage: (page: number) => void;
   setPageSize: (size: number) => void;
-  setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
+  setSortStatus: (status: { columnAccessor: string; direction: "asc" | "desc" }) => void;
 }
 
 export enum ActionTitle {
-  New = 'Add Vacancy',
-  Edit = 'Edit Vacancy'
+  New = "Add Vacancy",
+  Edit = "Edit Vacancy",
 }
 
 export enum ActionButtonTitle {
-  New = 'ADD',
-  Edit = 'UPDATE'
+  New = "ADD",
+  Edit = "UPDATE",
 }
 
 export enum AlertType {
-  vacancyAddedSuccesfull = 'vacancyAddedSuccesfull',
-  closeVacancy = 'closeVacancy',
-  closeSuccessfully = 'closeSuccessfully',
-  updateSuccessfully = 'updateSuccessfully',
+  vacancyAddedSuccesfull = "vacancyAddedSuccesfull",
+  closeVacancy = "closeVacancy",
+  closeSuccessfully = "closeSuccessfully",
+  updateSuccessfully = "updateSuccessfully",
 }
 
 export interface selectedApplicant {
@@ -197,15 +195,15 @@ export interface StageGroup {
 }
 
 export enum Action {
-  Edit = 'Edit',
-  New = 'New',
-  Null = 'null'
+  Edit = "Edit",
+  New = "New",
+  Null = "null",
 }
 
 export enum Stage {
-  Applied = 'applied',
-  ForInterview = 'forInterview',
-  Offered = 'offered',
-  Hired = 'hired',
-  Archived = 'archived'
+  Applied = "applied",
+  ForInterview = "forInterview",
+  Offered = "offered",
+  Hired = "hired",
+  Archived = "archived",
 }

@@ -4,7 +4,7 @@
  */
 
 //--- Mantine
-import { Stack } from "@mantine/core";
+import { Skeleton, Stack } from "@mantine/core";
 //--- Full Calendar
 import { CalendarApi, EventClickArg } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
@@ -42,11 +42,11 @@ export default function index() {
   const { setIsViewApplicant, isViewApplicant } = ApplicantStore();
   const { selectedApplicant } = useSharedApplicantStore();
 
-  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, setOnViewFilter, setOnMonthYear, setCurrentDate, setDetails } = useCalendarStore();
+  const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate, setDetails } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
   const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
-  const { data, isLoading } = useCalendar();
+  const { data, isError, isLoading, refetch } = useCalendar();
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     const ev = clickInfo.event._def;
@@ -123,20 +123,36 @@ export default function index() {
   };
 
   useEffect(() => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    const formattedDate = `${year}${month}${day}`;
-    setCurrentDate(formattedDate);
-  }, [data]);
+    if (!currentDate) {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+      const formattedDate = `${year}${month}${day}`;
+      setCurrentDate(formattedDate);
+    }
+  }, [currentDate]);
+
+  useEffect(() => {
+    if (isError) {
+      const retryTimeout = setTimeout(() => {
+        refetch();
+      }, 3000); // retry after 3 seconds
+
+      return () => clearTimeout(retryTimeout);
+    }
+  }, [isError]);
+
+  if (!currentDate || isLoading) {
+    return <Skeleton height={400} />;
+  }
 
   return (
     <Stack flex={1} bg="white" w="100%" h="100%">
       <title>Calendar</title>
       <ResponsiveContainer width="100%" height="100%">
         <FullCalendar
-          events={isLoading ? data : undefined}
+          events={isLoading ? data : []}
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
           headerToolbar={{

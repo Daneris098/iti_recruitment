@@ -24,6 +24,8 @@ export const viewApplicantOfferService = {
 
 export const useViewInterviewStagesHiring = new BaseService<ApplicantResponse>(apiClient, "/recruitment/hiring/interview-stages");
 
+export const useViewInterviewersService = new BaseService<ApplicantResponse>(apiClient, "/recruitment/hiring/interviewers");
+
 export const applicantByIdService = {
     /**
      * GET /recruitment/applicants/{id}
@@ -56,5 +58,5 @@ export const getApplicantById = async (
     const res = await axios.get(`/api/recruitment/applicants/${id}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     });
-    return formatApplicantById(res.data);        // map → ViewApplicantById
+    return formatApplicantById(res.data);
 };

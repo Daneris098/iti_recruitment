@@ -1,18 +1,20 @@
 import { useForm } from "@mantine/form";
 import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
-import { IconMail, IconShieldLock } from "@tabler/icons-react";
+import { IconEye, IconEyeOff, IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import loginBg from "@assets/loginBg.png";
 import axiosInstance from "@src/api/authApi";
 import { jwtDecode } from "jwt-decode";
 import { useUserDataStore } from "@src/global/store/auth";
 import { JWTPayload } from "@src/global/types/auth";
+import { useState } from "react";
+import { divide } from "lodash";
 
 export default function Login() {
   const navigate = useNavigate();
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { username: "hrdotrecruitment", password: "SomePass123$%^" },
+    initialValues: { username: "", password: "" },
     validate: {
       username: (value: string) => {
         if (value.length <= 0) {
@@ -54,6 +56,12 @@ export default function Login() {
         const message = error.response.data.errors[0].message;
         form.setErrors({ username: " ", password: message });
       });
+  };
+
+  const [visible, setVisible] = useState<boolean | null>(null);
+
+  const handleVisible = () => {
+    setVisible(!visible);
   };
 
   return (
@@ -98,14 +106,19 @@ export default function Login() {
                 Password
               </Text>
               <PasswordInput
-                classNames={{ input: "poppins text-[#6D6D6D]" }}
+                classNames={{ input: "poppins text-[#6D6D6D] pr-10" }}
                 variant="default"
                 size="md"
                 radius="md"
                 placeholder="Enter your password"
+                onVisibilityChange={() => setVisible((v) => !v)}
+                visible={visible!}
                 rightSection={
-                  <div className="bg-[#ED8028] p-2 rounded-lg text-white">
-                    <IconShieldLock />
+                  <div className="flex flex-row items-center gap-3 pr-7">
+                    <div className=" cursor-pointer">{visible ? <IconEyeOff size={16} onClick={handleVisible} /> : <IconEye size={16} onClick={handleVisible} />}</div>
+                    <div className="bg-[#ED8028] p-2 rounded-lg text-white">
+                      <IconShieldLock />
+                    </div>
                   </div>
                 }
                 {...form.getInputProps("password")}

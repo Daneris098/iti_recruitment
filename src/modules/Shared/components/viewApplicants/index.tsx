@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Divider } from "@mantine/core";
+import { IconX } from "@tabler/icons-react";
 import profileImage from "@src/assets/jane.png";
 import { useCloseModal } from "@modules/Applicants/store";
 import { ViewApplicantsProps } from "@modules/Shared/types";
-import { IconFileUpload, IconX } from "@tabler/icons-react";
 import { useApplicantIdStore } from "@src/modules/Shared/store";
 import Modals from "@modules/Shared/components/viewApplicants/Modals";
 import TabsPanel from "@modules/Shared/components/viewApplicants/TabsPanel";
@@ -51,7 +51,7 @@ export default function ViewApplicant({
           Applicant Profile
         </TextRenderer>
         <div className="flex items-center space-x-2">
-          <IconFileUpload stroke={1} className="w-[20px] h-[25px]" />
+          {/* <IconFileUpload stroke={1} className="w-[20px] h-[25px]" /> */}
           <IconX stroke={1} onClick={onClose} className="cursor-pointer w-[20px] h-[25px]" />
         </div>
       </div>

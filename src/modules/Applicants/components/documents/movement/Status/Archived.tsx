@@ -9,10 +9,7 @@ import { IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
 import { useGetHiringAndApplicantFeedbacks } from "@modules/Shared/hooks/useSharedApplicants";
 
 export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "Status">) {
-    const {
-        feedbacks,
-        setFeedbacks
-    } = useDropDownOfferedStore();
+    const { feedbacks, setFeedbacks } = useDropDownOfferedStore();
 
     const {
         setFeedbacksId,
@@ -31,35 +28,27 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
 
         const feedbacks = applicantFeedbacks.map((feeds: any) => ({
             value: feeds.id,
-            label: feeds.description
+            label: feeds.description,
         }));
 
         const hiringFeedbacksDropdown = hiringFeedback.map((hiringFeeds: any) => ({
             value: hiringFeeds.id,
-            label: hiringFeeds.description
-        }))
+            label: hiringFeeds.description,
+        }));
 
-        hiringFeedbacksDropdown.push({
-            value: "custom_add_feedback",
-            label: "Add Applicant Feedback"
-        });
-
-        feedbacks.push({
-            value: "custom_add_feedback",
-            label: "Add Feedback"
-        });
+        hiringFeedbacksDropdown.push({ value: "custom_add_feedback", label: "Add Applicant Feedback" });
+        feedbacks.push({ value: "custom_add_feedback", label: "Add Feedback" });
 
         setHiringFeedback(hiringFeedbacksDropdown);
         setApplicantFeedbackDropdown(feedbacks);
-    }, [applicantFeedbacks]);
-
+    }, [applicantFeedbacks, hiringFeedback]);
 
     useEffect(() => {
         if (getApplicantFeedback.length > 0) {
             setFeedbacks([getApplicantFeedback[0].label]);
-            setFeedbacksId(getApplicantFeedback[0].value)
+            setFeedbacksId(getApplicantFeedback[0].value);
         }
-    }, [applicantFeedbacks])
+    }, [getApplicantFeedback]);
 
     const feedbacksComboBox = useCombobox({
         onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
@@ -139,11 +128,21 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                 <button
                                     className="bg-[#5A9D27] hover:bg-[#4d8a20] text-white text-sm px-4 py-2 rounded poppins"
                                     onClick={() => {
-                                        if (customFeedback && !feedbacks.includes(customFeedback)) {
-                                            const updated = [...feedbacks];
-                                            updated.splice(-1, 0, customFeedback);
-                                            setFeedbacks(updated);
-                                            setFeedback(customFeedback);
+                                        const trimmed = customFeedback.trim();
+                                        const exists = getHiringFeedback.some(item => item.label === trimmed);
+
+                                        if (trimmed && !exists) {
+                                            const updated = [...getHiringFeedback];
+                                            const nextId = updated
+                                                .filter(it => typeof it.value === "number")
+                                                .reduce((max, it) => Math.max(max, Number(it.value)), 0) + 1;
+
+                                            updated.splice(-1, 0, { label: trimmed, value: nextId });
+
+                                            setHiringFeedback(updated);
+                                            setFeedback(trimmed);
+                                            setFeedbacks([...feedbacks.slice(0, -1), trimmed]);
+
                                             setCustomFeedback("");
                                             setShowCustomFeedbackInput(false);
                                         }
@@ -196,7 +195,7 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                     >
                                         <span>{item.label}</span>
                                         {item.label === "Add Feedback" && (
-                                            <IconCirclePlus className="text-[#5A9D27] ml-auto w-[18px] h-[18px]" />
+                                            <IconCirclePlus className="text-[#559CDA] ml-auto w-[18px] h-[18px]" />
                                         )}
                                     </Combobox.Option>
                                 ))}
@@ -212,21 +211,23 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                     className="w-[560px]"
                                 />
                                 <button
-                                    className="bg-[#559CDA] hover:bg-[#559CDA] text-white text-sm px-4 py-2 rounded poppins"
+                                    className="bg-[#559CDA] hover:bg-[#3e7bb9] text-white text-sm px-4 py-2 rounded poppins"
                                     onClick={() => {
-                                        if (
-                                            customApplicantFeedback &&
-                                            !getHiringFeedback.some(item => item.label === customApplicantFeedback)
-                                        ) {
-                                            const updated = [...getHiringFeedback];
-                                            const newValue = updated.length > 0 ? Math.max(...updated.map(item => item.value)) + 1 : 1;
+                                        const trimmed = customApplicantFeedback.trim();
+                                        const exists = getApplicantFeedback.some(item => item.label === trimmed);
 
-                                            updated.splice(-1, 0, {
-                                                label: customApplicantFeedback,
-                                                value: newValue,
-                                            });
+                                        if (trimmed && !exists) {
+                                            const updated = [...getApplicantFeedback];
+                                            const nextId = updated
+                                                .filter(it => typeof it.value === "number")
+                                                .reduce((max, it) => Math.max(max, Number(it.value)), 0) + 1;
+
+                                            updated.splice(-1, 0, { label: trimmed, value: nextId });
+
+                                            setApplicantFeedbackDropdown(updated);
                                             setHiringFeedback(updated);
-                                            setApplicantFeedback(customApplicantFeedback);
+                                            setApplicantFeedback(trimmed);
+
                                             setCustomApplicantFeedback("");
                                             setShowCustomApplicantFeedbackInput(false);
                                         }
@@ -238,8 +239,8 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                         )}
 
                         <p className="mt-4 mb-4 font-medium text-[14px] text-[#6D6D6D] poppins">
-                            Please upload the job offer signed by both the authorized signatories and the
-                            applicant. <span className="text-[#F14336]">*</span>
+                            Please upload the job offer signed by both the authorized signatories and the applicant.
+                            <span className="text-[#F14336]">*</span>
                         </p>
                         <DropZone />
                     </div>

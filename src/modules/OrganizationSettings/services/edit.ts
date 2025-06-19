@@ -2,6 +2,7 @@ import { queryClient } from "@src/client/queryClient";
 import { useSharedOrgService } from "@src/modules/Shared/api/useSharedUserService";
 import { useMutation } from "@tanstack/react-query";
 import { OrganizationSettingsStore } from "../store";
+import { ErrorTypes } from "../types";
 
 export const useEditOrganizationSettings = () => {
   const branchData = OrganizationSettingsStore((state) => state.getForm("editBranch"));
@@ -11,7 +12,7 @@ export const useEditOrganizationSettings = () => {
   const positionData = OrganizationSettingsStore((state) => state.getForm("editPosition"));
   const sectionData = OrganizationSettingsStore((state) => state.getForm("editSection"));
 
-  const { setAlert } = OrganizationSettingsStore();
+  const { setAlert, setValidationMessage } = OrganizationSettingsStore();
 
   const { mutate: editBranch } = useMutation({
     mutationFn: async (id: string) => {
@@ -22,9 +23,10 @@ export const useEditOrganizationSettings = () => {
       queryClient.invalidateQueries({ queryKey: ["org_branch"] });
       setAlert("saved");
     },
-    onError: (error: { response: { data: any } }) => {
+    onError: (error: { response: { data: ErrorTypes } }) => {
       console.error(error.response.data);
       setAlert("Validation");
+      setValidationMessage(error.response.data.title);
     },
   });
 
@@ -37,9 +39,10 @@ export const useEditOrganizationSettings = () => {
       queryClient.invalidateQueries({ queryKey: ["org_company"] });
       setAlert("saved");
     },
-    onError: (error: { response: { data: any } }) => {
+    onError: (error: { response: { data: ErrorTypes } }) => {
       console.error(error.response.data);
       setAlert("Validation");
+      setValidationMessage(error.response.data.title);
     },
   });
 
@@ -52,9 +55,10 @@ export const useEditOrganizationSettings = () => {
       queryClient.invalidateQueries({ queryKey: ["org_department"] });
       setAlert("saved");
     },
-    onError: (error: { response: { data: any } }) => {
+    onError: (error: { response: { data: ErrorTypes } }) => {
       console.error(error.response.data);
       setAlert("Validation");
+      setValidationMessage(error.response.data.title);
     },
   });
 
@@ -67,9 +71,10 @@ export const useEditOrganizationSettings = () => {
       queryClient.invalidateQueries({ queryKey: ["org_division"] });
       setAlert("saved");
     },
-    onError: (error: { response: { data: any } }) => {
+    onError: (error: { response: { data: ErrorTypes } }) => {
       console.error(error.response.data);
       setAlert("Validation");
+      setValidationMessage(error.response.data.title);
     },
   });
 
@@ -82,9 +87,10 @@ export const useEditOrganizationSettings = () => {
       queryClient.invalidateQueries({ queryKey: ["org_position"] });
       setAlert("saved");
     },
-    onError: (error: { response: { data: any } }) => {
+    onError: (error: { response: { data: ErrorTypes } }) => {
       console.error(error.response.data);
       setAlert("Validation");
+      setValidationMessage(error.response.data.title);
     },
   });
 
@@ -97,9 +103,10 @@ export const useEditOrganizationSettings = () => {
       queryClient.invalidateQueries({ queryKey: ["org_section"] });
       setAlert("saved");
     },
-    onError: (error: { response: { data: any } }) => {
+    onError: (error: { response: { data: ErrorTypes } }) => {
       console.error(error.response.data);
       setAlert("Validation");
+      setValidationMessage(error.response.data.title);
     },
   });
 

@@ -1,13 +1,14 @@
-import { VacancyType } from "@src/modules/HomePublic/types";
+import { Step, VacancyType } from "@src/modules/HomePublic/types";
 import { MantineSize, Pill, useMatches } from "@mantine/core";
-import { HomeStore } from "@src/modules/HomePublic/store";
+import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import { cn } from "@src/lib/utils";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 import { useMediaQuery } from '@mantine/hooks';
 
 export default function index() {
   const { data } = useVacancies();
-  const { setSelectedData, selectedData, setApplicationFormModal, setIsFromPortal } = HomeStore();
+  const { setSelectedData, selectedData, setApplicationFormModal, setIsFromPortal, setvacancyDetailsModal } = HomeStore();
+  const { setActiveStepper } = ApplicationStore();
   const isMobile = useMediaQuery('(max-width: 770px)');
   const pillSize: MantineSize = useMatches({
     base: "xs",
@@ -24,7 +25,11 @@ export default function index() {
           onClick={() => {
             setSelectedData(job);
             if (isMobile) {
+              setvacancyDetailsModal(true)
               setApplicationFormModal(true);
+            } else {
+              setvacancyDetailsModal(false)
+              setActiveStepper(Step.GeneralInformation)
             }
             setIsFromPortal(true);
           }}>

@@ -53,7 +53,7 @@ export const OrganizationSettings = () => {
             <Button
               className="rounded-md w-[52%]"
               onClick={() => {
-                setAlert(AlertType.Cancel);
+                dataTableRef.current?.cancelAll();
               }}
               color="white"
               variant="outline">

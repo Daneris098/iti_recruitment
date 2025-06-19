@@ -1,11 +1,12 @@
 import { ApplicationStore, HomeStore } from "@modules/HomePublic/store";
 import { Button, Divider, Modal, Text } from "@mantine/core";
 import { useEffect } from "react";
-import { CircleAlert, CircleCheckBig } from "lucide-react";
+import { CircleAlert, CircleAlertIcon, CircleCheckBig } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { AlertType, Step } from "../../types";
 import { cn } from "@src/lib/utils";
 import { IconHelp } from "@tabler/icons-react";
+import { ApplicationFormVal } from "@modules/HomePublic/values/cleanState";
 
 // Define auto-close behavior
 const AlertAutoClose: Record<AlertType, boolean> = {
@@ -13,16 +14,17 @@ const AlertAutoClose: Record<AlertType, boolean> = {
     [AlertType.cancelledApplication]: true,
     [AlertType.cancelApplication]: false,
     [AlertType.submitResponse]: true,
+    [AlertType.required]: true,
 };
 
 export default function AlertModals() {
-    const { setActiveStepper } = ApplicationStore();
+    const { setActiveStepper, setApplicationForm } = ApplicationStore();
     const { setApplicationFormModal, setAlert, alert, alertBody } = HomeStore();
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
                 setAlert("");
-            }, 1600);
+            }, 2600);
             return () => clearTimeout(timer);
         }
     }, [alert, setAlert]);
@@ -79,6 +81,28 @@ export default function AlertModals() {
                     <p>Kindly wait for your interview schedule.</p>
                 </div>
             </Modal>
+            {/* Application Required Modal */}
+            <Modal
+                zIndex={1000}
+                opened={alert === AlertType.required}
+                withCloseButton={false}
+                onClose={() => setAlert("")}
+                styles={{
+                    title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
+                }}
+                title="Application Successful"
+                centered
+                size={modalSize}
+                padding={30}
+            >
+                <Divider size="xs" color="#6D6D6D" />
+                <div className="flex flex-col mt-6 items-center gap-4 text-[#6D6D6D]">
+                    <CircleAlertIcon color="#559cda" size={80} strokeWidth={1} />
+                    <Text className="text-xl text-center font-bold">
+                        Please complete all required inputs.
+                    </Text>
+                </div>
+            </Modal>
 
             {/* Cancelled Application Modal */}
             <Modal
@@ -128,6 +152,7 @@ export default function AlertModals() {
                             variant="outline"
                             className={cn("w-1/2 rounded-md")}
                             onClick={() => {
+                                setApplicationForm(ApplicationFormVal)
                                 setApplicationFormModal(false);
                                 setActiveStepper(Step.GeneralInformation);
                                 setAlert(AlertType.cancelledApplication)

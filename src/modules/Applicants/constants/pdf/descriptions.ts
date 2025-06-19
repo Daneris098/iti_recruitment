@@ -6,10 +6,9 @@ export const JOB_OFFER_CONSTANTS = {
 
     meritIncrease: "* Subject to the Company's income and incumbent's individual performance rating.",
 
-    benefitMaternity: "7 working days",
+    benefitPaternity: "7 working days",
 
-    benefitPaternity:
-        "Normal Delivery - 105 calendar days \nCaesarian Delivery - 105 calendar days \nMiscarriage - 60 days",
+    benefitMaternity: "Normal Delivery - 105 calendar days \nCaesarian Delivery - 105 calendar days \nMiscarriage - 60 days",
 
     descriptionBL:
         "3 days/year; non-convertible to cash; non-accumulation (Immediate family)",

@@ -4,7 +4,7 @@ import { GlobalStore } from "@src/utils/GlobalStore";
 import { ApplicationStore, HomeStore } from "@modules/HomePublic/store"
 import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { Step, GeneralInformation } from '@modules/HomePublic/types';
+import { Step, GeneralInformation, AlertType } from '@modules/HomePublic/types';
 import { DatePicker } from "@mantine/dates";
 import dayjs from "dayjs";
 import { cn } from "@src/lib/utils";
@@ -19,13 +19,14 @@ import {
     InputBase
 } from '@mantine/core';
 import { useCombobox } from '@mantine/core';
+import { values } from "lodash";
 
 export default function index() {
 
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent, isFromPortal } = HomeStore();
+    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent, isFromPortal, setAlert } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },
@@ -35,9 +36,11 @@ export default function index() {
         { id: 1, value: 'MANILA', label: 'MANILA' },
     ]);
     const [presentBarangayKey, setPresentBarangayKey] = useState('');
+    const [permanentBarangayKey, setPermanentBarangayKey] = useState('');
     const [startDateAvailabilityOpened, setStartDateAvailabilityOpened] = useState(false);
     const [datedOfBirthOpened, setDatedOfBirthOpenedOpened] = useState(false);
     const form = useForm({
+        validateInputOnBlur: true,
         mode: 'uncontrolled',
         initialValues: applicationForm.generalInformation,
         validate: {
@@ -93,15 +96,47 @@ export default function index() {
     const onSubmit = async (formData: GeneralInformation) => {
         const emailAvailable = await checkIfAvailable('email')
         const mobileAvailable = await checkIfAvailable('mobile')
+        const isPresentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.presentAddress.city)
+        const isPermanentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.permanentAddress.city)
+
+        const isPresentBarangayValid = barangays.some((item) => item.label == form.getValues().personalInformation.presentAddress.barangay)
+        const isPermanentBarangayValid = sameAsPresent ? barangays.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay) : barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
+
+        console.log('isPermanentBarangayValid: ', isPermanentBarangayValid)
+        console.log('form.getValues().personalInformation.permanentAddress.city: ', form.getValues().personalInformation.permanentAddress.barangay)
+
         if (!emailAvailable) {
             form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!')
         }
+
         if (!mobileAvailable) {
             form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
         }
-        if (!emailAvailable || !mobileAvailable) {
+
+        if (!isPermanentBarangayValid) {
+            form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
+            form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
+        }
+
+        if (!isPermanentCityValid) {
+            form.setFieldError(`personalInformation.permanentAddress.city`, 'Invalid city');
+            form.getInputNode?.(`personalInformation.permanentAddress.city`)?.focus();
+        }
+
+        if (!isPresentBarangayValid) {
+            form.setFieldError(`personalInformation.presentAddress.barangay`, 'Invalid barangay');
+            form.getInputNode?.(`personalInformation.presentAddress.barangay`)?.focus();
+        }
+
+        if (!isPresentCityValid) {
+            form.setFieldError(`personalInformation.presentAddress.city`, 'Invalid city');
+            form.getInputNode?.(`personalInformation.presentAddress.city`)?.focus();
+        }
+
+        if (!emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid || !isPresentBarangayValid || !isPermanentBarangayValid) {
             return
         }
+
         setApplicationForm({ ...applicationForm, generalInformation: formData })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
@@ -133,13 +168,15 @@ export default function index() {
 
     useEffect(() => {
         if (submit === true && activeStepper === Step.GeneralInformation && formRef.current) {
-            form.setValues({
-                ...form.getValues(),
-                personalInformation: {
-                    ...form.getValues().personalInformation,
-                    permanentAddress: form.getValues().personalInformation.presentAddress,
-                },
-            });
+            if (sameAsPresent) {
+                form.setValues({
+                    ...form.getValues(),
+                    personalInformation: {
+                        ...form.getValues().personalInformation,
+                        permanentAddress: form.getValues().personalInformation.presentAddress,
+                    },
+                });
+            }
             formRef.current.requestSubmit(); // Programmatically trigger form submission
         }
         return (setSubmit(false))
@@ -224,7 +261,23 @@ export default function index() {
     const combobox2 = useCombobox();
 
     return (
-        <form ref={formRef} onSubmit={form.onSubmit(onSubmit)}>
+        <form
+            ref={formRef}
+            onSubmit={
+                async (e) => {
+                    console.log('value: ', values)
+                    e.preventDefault(); // Prevent default submission first
+                    const isValid = form.validate(); // Runs validation on all fields
+                    if (!isValid.hasErrors) {
+                        const values = form.getValues(); // safely get form values
+                        await onSubmit(values);
+                    } else {
+                        const firstErrorPath = Object.keys(isValid.errors)[0];
+                        form.getInputNode(firstErrorPath)?.focus();
+                    }
+                }}
+        >
+
             <div className="text-[#6D6D6D] flex flex-col gap-4 relative">
                 <p className="font-bold">General Information</p>
                 <Divider size={1} opacity={'60%'} color="#6D6D6D" className="w-full " />
@@ -481,18 +534,19 @@ export default function index() {
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                                 styles={{ label: { color: "#6d6d6d" } }}
                                 onChange={((val) => {
+                                    console.log('val: ', val)
                                     const selectedCity = cities.find(city => city.label === val);
                                     fetchBarangays(selectedCity?.id ?? 1, 2)
                                     form.setFieldValue("personalInformation.permanentAddress.city", val);
                                     form.setFieldValue("personalInformation.permanentAddress.barangay", '');
-                                    // setPermanentBarangayKey(val)
+                                    setPermanentBarangayKey(val)
                                 })}
                             />
 
                             <Autocomplete
                                 limit={50}
                                 disabled={sameAsPresent}
-                                // key={permanentBarangayKey}
+                                key={permanentBarangayKey}
                                 {...form.getInputProps("personalInformation.permanentAddress.barangay")}
                                 w={isMobile ? '25%' : '100%'}
                                 placeholder={"Barangay"}
