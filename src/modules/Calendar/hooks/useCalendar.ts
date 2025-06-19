@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
 import { DataTableStore } from "@src/modules/Vacancies/store";
 import { useCalendarStore } from "../store";
+import { useEffect } from "react";
 
 export const useCalendar = () => {
   const { page, pageSize, sortStatus } = DataTableStore();
-  const { currentDate, filterInterviewer, filterDepartmentIds, filterCompanyId } = useCalendarStore();
+  const { currentDate, setCurrentDate, filterInterviewer, filterDepartmentIds, filterCompanyId } = useCalendarStore();
 
   const fetchData = async () => {
     try {
@@ -65,6 +66,8 @@ export const useCalendar = () => {
   return useQuery<[]>({
     queryKey: ["recruitment/calendar", { page, pageSize, sortStatus, currentDate, filterDepartmentIds, filterCompanyId, filterInterviewer }],
     queryFn: fetchData,
-    staleTime: 60 * 1000, // Data is fresh for 5 minutes
+    staleTime: 60 * 1000,
+    enabled: !!currentDate,
+    retry: 3,
   });
 };
