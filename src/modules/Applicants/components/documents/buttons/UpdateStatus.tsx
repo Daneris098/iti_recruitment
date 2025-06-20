@@ -112,7 +112,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
         setIsModalOpen(false);
       }, 1000);
     };
-  } else if (selectedStatus === "For Interview" || Status === 'For Interview') {
+  } else if (selectedStatus === "For Interview") {
     // buttonText = "Schedule Interview";
     buttonText = "Add to Calendar";
     handleClick = async () => {
@@ -188,6 +188,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
       }, 1000);
     };
   }
+  const effectiveStatus = selectedStatus ?? Status;
 
   // This is the array of possible drop down options for update status button depending on the user's selected status.
   let availableStatuses = (
@@ -280,8 +281,33 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
           {/* For Interview Status */}
           <>
             {/* If the chosen status from Update Applicant Drop down is "For Interview" then show the below form fields */}
-            {selectedStatus === "For Interview" && (
+            {/* {selectedStatus === "For Interview" && (
               <ForInterviewStatus />
+            )} */}
+            {effectiveStatus === 'For Interview' && (
+              <>
+                <ForInterviewStatus />
+
+                {/* Comments box only while the user hasn’t chosen an alternative status */}
+                {!selectedStatus && (
+                  <div className="pt-4">
+                    <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
+                      Comments
+                    </h3>
+                    <Textarea
+                      placeholder="Type here"
+                      value={comments}
+                      onChange={(e) => setComments(e.target.value)}
+                      autosize
+                      minRows={4}
+                      classNames={{
+                        input:
+                          "poppins pt-2 w-[560px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                      }}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </>
 
@@ -323,33 +349,9 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             {/* {(Status === 'For Interview' && !selectedStatus) && (
               <ForInterviewStatus />
             )} */}
-            {Status === 'For Interview' && !selectedStatus && (
-              <>
-                <ForInterviewStatus />
-
-                {/* Conditionally show comment box for For Interview stage */}
-                <div className="pt-4">
-                  <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
-                    Comments
-                  </h3>
-                  <Textarea
-                    placeholder="Type here"
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                    autosize
-                    minRows={4}
-                    classNames={{
-                      input:
-                        "poppins pt-2 w-[560px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
-                    }}
-                  />
-                </div>
-              </>
-            )}
 
           </>
           {/* End of Transferred Status */}
-
           {/* Comment and suggestion text input */}
           {/* If the selected Status is "Hired" then do not show the comment and suggestion text input */}
           {(selectedStatus !== "Hired" && selectedStatus !== "Transferred" && selectedStatus && Status !== "Offered") && (
