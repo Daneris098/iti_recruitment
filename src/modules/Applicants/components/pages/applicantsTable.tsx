@@ -55,7 +55,7 @@ export default function index() {
   const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
   const setApplicantName = useApplicantNameStore((state) => state.setApplicantName);
   const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
-  
+
   const loadTime = useLoadTimeStore((s) => s.loadTime);
   const setLoadTime = useLoadTimeStore((s) => s.setLoadTime);
 
@@ -276,8 +276,7 @@ export default function index() {
         {/* Record count */}
         <p className="job-offers-table text-sm">
           {`Showing data ${sortedRecords.length === 0 ? 0 : (page - 1) * pageSize + 1
-            } to ${Math.min(page * pageSize, sortedRecords.length)} of ${getApplicants?.total ?? 0
-            } entries`}
+            } to ${Math.min(page * pageSize, sortedRecords.length)} of ${Math.min(page * pageSize, sortedRecords.length)} entries`}
           {loadTime !== null && ` found in (${loadTime.toFixed(3)}) seconds`}
         </p>
 
