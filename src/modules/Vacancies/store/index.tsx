@@ -56,7 +56,7 @@ export const DataTableStore = create<DataTableState>((set) => ({
   search: '',
   totalRecords: 0,
   page: 1,
-  pageSize: 20,
+  pageSize: 2,
   sortStatus: { columnAccessor: 'id', direction: 'desc' },
 
   setSortStatus: (status: any) => set({ sortStatus: status }),

@@ -50,7 +50,7 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: null,
     civilStatus: "",
     religion: "",
-    mobileNumber: 63,
+    mobileNumber: 0,
     workingEmailAddress: "",
     landlineNumber: "",
   },
@@ -322,9 +322,9 @@ export const referenceValue2: Reference = {
 };
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal,
-  educationAndEmployment: educationAndEmploymentVal,
-  familyBackground: familyBackgroundVal,
-  reference: referenceValue,
+  generalInformation: GeneralInformationVal2,
+  educationAndEmployment: educationAndEmploymentVal2,
+  familyBackground: familyBackgroundVal2,
+  reference: referenceValue2,
   photo: "",
 };

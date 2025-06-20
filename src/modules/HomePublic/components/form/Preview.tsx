@@ -78,7 +78,7 @@ export default function index() {
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Desired Salary</p>
-                                    <p className="text-[#6D6D6D] font-bold">PHP {applicationForm.generalInformation.desiredSalary}</p>
+                                    <p className="text-[#6D6D6D] font-bold">  PHP {Number(applicationForm.generalInformation.desiredSalary).toFixed(2)}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Present Address</p>
@@ -112,7 +112,7 @@ export default function index() {
                             <div className="flex flex-col p-2 gap-5 w-1/2 ">
                                 <div>
                                     <p className="text-[#6D6D6D]">Applying for (Second Choice)</p>
-                                    <p className="font-bold">{applicationForm.generalInformation.secondChoice}</p>
+                                    <p className="font-bold">{applicationForm.generalInformation.secondChoice != '' ? applicationForm.generalInformation.secondChoice : 'N/A'}</p>
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Availability to start</p>

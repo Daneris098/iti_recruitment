@@ -99,11 +99,9 @@ export default function index() {
         const isPresentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.presentAddress.city)
         const isPermanentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.permanentAddress.city)
 
-        const isPresentBarangayValid = barangays.some((item) => item.label == form.getValues().personalInformation.presentAddress.barangay)
-        const isPermanentBarangayValid = sameAsPresent ? barangays.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay) : barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
+        // const isPresentBarangayValid = barangays.some((item) => item.label == form.getValues().personalInformation.presentAddress.barangay)
+        // const isPermanentBarangayValid = sameAsPresent ? barangays.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay) : barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
 
-        console.log('isPermanentBarangayValid: ', isPermanentBarangayValid)
-        console.log('form.getValues().personalInformation.permanentAddress.city: ', form.getValues().personalInformation.permanentAddress.barangay)
 
         if (!emailAvailable) {
             form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!')
@@ -113,27 +111,27 @@ export default function index() {
             form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
         }
 
-        if (!isPermanentBarangayValid) {
-            form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
-            form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
-        }
+        // if (!isPermanentBarangayValid) {
+        //     form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
+        //     form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
+        // }
 
         if (!isPermanentCityValid) {
             form.setFieldError(`personalInformation.permanentAddress.city`, 'Invalid city');
             form.getInputNode?.(`personalInformation.permanentAddress.city`)?.focus();
         }
 
-        if (!isPresentBarangayValid) {
-            form.setFieldError(`personalInformation.presentAddress.barangay`, 'Invalid barangay');
-            form.getInputNode?.(`personalInformation.presentAddress.barangay`)?.focus();
-        }
+        // if (!isPresentBarangayValid) {
+        //     form.setFieldError(`personalInformation.presentAddress.barangay`, 'Invalid barangay');
+        //     form.getInputNode?.(`personalInformation.presentAddress.barangay`)?.focus();
+        // }
 
         if (!isPresentCityValid) {
             form.setFieldError(`personalInformation.presentAddress.city`, 'Invalid city');
             form.getInputNode?.(`personalInformation.presentAddress.city`)?.focus();
         }
 
-        if (!emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid || !isPresentBarangayValid || !isPermanentBarangayValid) {
+        if (!emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid) {
             return
         }
 
@@ -435,8 +433,16 @@ export default function index() {
                                 setPresentBarangayKey(val)
                             })}
                         />
-
-                        <Autocomplete
+                        <TextInput
+                            {...form.getInputProps("personalInformation.presentAddress.barangay")}
+                            placeholder={"Barangay"}
+                            key={presentBarangayKey}
+                            radius={8}
+                            className="border-none w-full sp:w-1/2 text-sm"
+                            classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                            styles={{ label: { color: "#6d6d6d" } }}
+                        />
+                        {/* <Autocomplete
                             {...form.getInputProps("personalInformation.presentAddress.barangay")}
                             key={presentBarangayKey}
                             limit={50}
@@ -450,7 +456,7 @@ export default function index() {
                             onChange={((val) => {
                                 form.setFieldValue("personalInformation.presentAddress.barangay", val);
                             })}
-                        />
+                        /> */}
                     </div>
 
                     <div className="flex gap-4  w-full sp:w-1/2">
@@ -543,23 +549,35 @@ export default function index() {
                                 })}
                             />
 
-                            <Autocomplete
+                            {/* <Autocomplete
                                 limit={50}
                                 disabled={sameAsPresent}
                                 key={permanentBarangayKey}
                                 {...form.getInputProps("personalInformation.permanentAddress.barangay")}
-                                w={isMobile ? '25%' : '100%'}
                                 placeholder={"Barangay"}
                                 radius={8}
                                 data={sameAsPresent ? barangays : barangays2}
                                 rightSection={<IconCaretDownFilled size='18' />}
+                                w={isMobile ? '25%' : '100%'}
                                 className="border-none w-full text-sm"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                                 styles={{ label: { color: "#6d6d6d" } }}
                                 onChange={((val) => {
                                     form.setFieldValue("personalInformation.permanentAddress.barangay", val);
                                 })}
+                            /> */}
+
+                            <TextInput
+                                {...form.getInputProps("personalInformation.permanentAddress.barangay")}
+                                w={isMobile ? '25%' : '100%'}
+                                className="border-none w-full text-sm"
+                                classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                                placeholder={"Barangay"}
+                                key={permanentBarangayKey}
+                                radius={8}
+                                styles={{ label: { color: "#6d6d6d" } }}
                             />
+
                         </div>
 
                         <div className="flex flex-row gap-4  w-full sp:w-1/2">

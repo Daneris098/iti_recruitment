@@ -15,7 +15,7 @@ enum StatusColor {
 }
 
 export default function index() {
-  const { page, pageSize, sortStatus, setPage, setSortStatus, time } = DataTableStore();
+  const { page, pageSize, sortStatus, setPage, setSortStatus, time, totalRecords } = DataTableStore();
   const { selectedData, setSelectedData } = ApplicantStore();
   const { isFetching, data } = useVacancies();
   const { setSelectedVacancy } = VacancyStore();
@@ -95,7 +95,7 @@ export default function index() {
       ]}
       paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (${time}) seconds`}
       records={data}
-      totalRecords={data?.length}
+      totalRecords={totalRecords}
       recordsPerPage={pageSize}
       page={page}
       onPageChange={setPage}
