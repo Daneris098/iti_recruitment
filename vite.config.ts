@@ -1,6 +1,6 @@
-import path from 'path';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import path from "path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 import { proxyConfig } from "./proxy.config";
 
 // https://vitejs.dev/config/
@@ -18,7 +18,7 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0",
-    port: 5173,
-    proxy: proxyConfig
+    port: 5174,
+    proxy: proxyConfig,
   },
-}); 
+});
