@@ -80,7 +80,11 @@ export default function ForInterview() {
     };
 
     useEffect(() => {
-        if (Array.isArray(interviewStagesOptions) && interviewStagesOptions.length > 0) {
+        if (
+            !interviewStages &&  // Only set default if not already set
+            Array.isArray(interviewStagesOptions) &&
+            interviewStagesOptions.length > 0
+        ) {
             const [firstStage] = interviewStagesOptions;
             if (firstStage?.label && firstStage?.value !== undefined) {
                 setInterviewStages(firstStage.label);
@@ -88,7 +92,11 @@ export default function ForInterview() {
             }
         }
 
-        if (Array.isArray(getInterViewerNames) && getInterViewerNames.length > 0) {
+        if (
+            !getInterviewer &&
+            Array.isArray(getInterViewerNames) &&
+            getInterViewerNames.length > 0
+        ) {
             const [firstInterviewer] = getInterViewerNames;
             if (firstInterviewer?.label && firstInterviewer?.value !== undefined) {
                 setInterviewer(firstInterviewer.label);
@@ -96,6 +104,7 @@ export default function ForInterview() {
             }
         }
     }, [interviewStagesOptions, getInterViewerNames]);
+
 
 
     return (
