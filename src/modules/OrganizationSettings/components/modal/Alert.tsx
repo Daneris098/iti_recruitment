@@ -29,6 +29,8 @@ export default function AlertModals({ dataTableRef }: { dataTableRef: React.RefO
     lg: "30%",
   });
 
+  console.log(dataTableRef)
+
   return (
     <>
       <Modal opened={alert === AlertType.Saved} withCloseButton={false} onClose={() => setAlert("")} centered size={modalSize} padding={30}>

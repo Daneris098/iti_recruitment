@@ -22,6 +22,7 @@ export const selectedDataVal: VacancyType = {
   desirable: [],
   dateCreated: "",
   datePublish: "",
+  dateEnd: "",
   interviewer: "",
   quantity: 0,
   status: "",

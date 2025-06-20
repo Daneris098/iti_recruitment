@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover, LoadingOverlay, Center, ActionIcon, MantineSize, useMatches } from '@mantine/core';
+import { Modal, Divider, Button, Popover, LoadingOverlay, MantineSize, useMatches } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
@@ -26,7 +26,6 @@ export default function index() {
     const StepperLabel = ['1 of 5', '2 of 5', '3 of 5', '4 of 5', '5 of 5'];
     const [cameraAllowed, setCameraAllowed] = useState<boolean | null>(false);
     const pillSize: MantineSize = useMatches({ base: "lg" });
-    const iconSize: MantineSize = useMatches({ base: "lg" });
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {

@@ -106,48 +106,48 @@ const Photo = forwardRef((_, ref) => {
         }
     };
 
-    const handleUpload = (event: any) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const img = new Image();
-                img.onload = () => {
-                    if (canvasRef.current) {
-                        const canvas = canvasRef.current;
-                        const context = canvas.getContext("2d");
-                        if (!context) return;
+    // const handleUpload = (event: any) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             const img = new Image();
+    //             img.onload = () => {
+    //                 if (canvasRef.current) {
+    //                     const canvas = canvasRef.current;
+    //                     const context = canvas.getContext("2d");
+    //                     if (!context) return;
 
-                        const videoWidth = videoRef.current?.videoWidth || 640;
-                        const videoHeight = videoRef.current?.videoHeight || 480;
-                        const imgRatio = img.width / img.height;
-                        const canvasRatio = videoWidth / videoHeight;
+    //                     const videoWidth = videoRef.current?.videoWidth || 640;
+    //                     const videoHeight = videoRef.current?.videoHeight || 480;
+    //                     const imgRatio = img.width / img.height;
+    //                     const canvasRatio = videoWidth / videoHeight;
 
-                        let drawWidth = videoWidth;
-                        let drawHeight = videoHeight;
-                        let offsetX = 0;
-                        let offsetY = 0;
+    //                     let drawWidth = videoWidth;
+    //                     let drawHeight = videoHeight;
+    //                     let offsetX = 0;
+    //                     let offsetY = 0;
 
-                        if (imgRatio > canvasRatio) {
-                            drawWidth = videoHeight * imgRatio;
-                            offsetX = (videoWidth - drawWidth) / 2;
-                        } else {
-                            drawHeight = videoWidth / imgRatio;
-                            offsetY = (videoHeight - drawHeight) / 2;
-                        }
+    //                     if (imgRatio > canvasRatio) {
+    //                         drawWidth = videoHeight * imgRatio;
+    //                         offsetX = (videoWidth - drawWidth) / 2;
+    //                     } else {
+    //                         drawHeight = videoWidth / imgRatio;
+    //                         offsetY = (videoHeight - drawHeight) / 2;
+    //                     }
 
-                        canvas.width = videoWidth;
-                        canvas.height = videoHeight;
-                        context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-                        setCapturedImage(canvas.toDataURL("image/png"));
-                        setIsPhotoCaptured(true);
-                    }
-                };
-                (img as any).src = reader.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    //                     canvas.width = videoWidth;
+    //                     canvas.height = videoHeight;
+    //                     context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    //                     setCapturedImage(canvas.toDataURL("image/png"));
+    //                     setIsPhotoCaptured(true);
+    //                 }
+    //             };
+    //             (img as any).src = reader.result;
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
 
     const upload = () => {
         // fileInputRef.current?.click()

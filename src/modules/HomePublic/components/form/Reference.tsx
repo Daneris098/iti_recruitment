@@ -13,7 +13,7 @@ export default function index() {
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
     const [isAlreadyCheck, setIsAlreadyCheck] = useState(false)
     const [activeSource, setActiveSource] = useState<string | null>(null);
-    const [checkboxError, setCheckboxError] = useState(false);
+    // const [checkboxError, setCheckboxError] = useState(false);
     const isNoEmploymentRecord = (applicationForm.educationAndEmployment.employmentRecord.length == 1 && applicationForm.educationAndEmployment.employmentRecord[0].employerCompany === '')
 
     const form = useForm({
@@ -60,10 +60,10 @@ export default function index() {
             form.setFieldError(`applicationSource.others`, ' ');
             form.setFieldError(`applicationSource.description`, ' ');
             form.getInputNode?.(`applicationSource.employeeReferal`)?.focus();
-            setCheckboxError(true);
+            // setCheckboxError(true);
             return;
         }
-        setCheckboxError(false);
+        // setCheckboxError(false);
         setApplicationForm({ ...applicationForm, reference: formVal })
         setActiveStepper(activeStepper < Step.Photo ? activeStepper + 1 : activeStepper)
     };
