@@ -105,6 +105,17 @@ interface DepartmentState {
     setDepartmentName: (position: string) => void;
 }
 
+interface ApplicantNameState {
+    applicantName: string;
+    setApplicantName: (name: string) => void;
+}
+
+export const useApplicantNameStore = create<ApplicantNameState>()((set) => ({
+    applicantName: '',
+    setApplicantName: (name) =>
+        set({ applicantName: name }),
+}));
+
 export const useDepartmentStore = create<DepartmentState>()((set) => ({
     departmentName: '',
     setDepartmentName: (position) =>

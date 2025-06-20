@@ -20,7 +20,7 @@ import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
-import { usePositionFilterStore, useStatusFilterStore, } from "@modules/Shared/store";
+import { usePositionFilterStore, useStatusFilterStore, useApplicantNameStore } from "@modules/Shared/store";
 import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
 
@@ -53,6 +53,7 @@ export default function index() {
   const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 
   const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
+  const setApplicantName = useApplicantNameStore((state) => state.setApplicantName);
   const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
 
   //local states
@@ -80,6 +81,13 @@ export default function index() {
     setApplicantId(applicant.id);
     setIsViewApplicant(true);
   };
+
+  useEffect(() => {
+    if (selectedApplicant?.applicantName) {
+      const fullName = selectedApplicant?.applicantName;
+      setApplicantName(fullName);
+    }
+  }, [selectedApplicant, setApplicantName]);
 
   const { page, pageSize } = useMemo(() => {
     return {
