@@ -356,7 +356,7 @@ export default function index() {
 
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <NumberInput withAsterisk hideControls min={1} {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
+                    <NumberInput maxLength={11} withAsterisk hideControls min={1} {...form.getInputProps("desiredSalary")} classNames={{ input: 'poppins text-[#6D6D6D]' }} radius='md' w={isMobile ? '50%' : '100%'} label="Desired Salary" placeholder="Desired Salary in PESO" />
                     <Popover
                         position="bottom"
                         shadow="md"
