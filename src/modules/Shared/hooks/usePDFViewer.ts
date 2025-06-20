@@ -1,46 +1,57 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { PDFViewerProps } from "@modules/Shared/types";
 import { fetchPDFBlobUrl } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 
-export function usePDFViewer<T>({ identifier, getPdfPathFn }: PDFViewerProps<T>) {
+export function usePDFViewer<T>({
+    identifier,
+    getApplicantStatus,
+    getPdfPathFnHired,
+    token,
+    getPdfPathFnPending,
+}: PDFViewerProps<T>) {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        let objectUrl: string | null;
+        let objectUrl: string | null = null;
 
         const loadPDF = async () => {
             setLoading(true);
             setError(null);
-
             try {
-                const token = sessionStorage.getItem('accessToken');
-                if (!token) {
-                    throw new Error("Access token not found.");
-                }
+                const token = sessionStorage.getItem("accessToken");
+                if (!token) throw new Error("Access token not found.");
 
-                const pdfPath = await getPdfPathFn(identifier);
+                const status = await getApplicantStatus(identifier);
+                const pdfPath =
+                    status === "Accepted"
+                        ? await getPdfPathFnHired(identifier)
+                        : await getPdfPathFnPending(identifier);
+
                 objectUrl = await fetchPDFBlobUrl(pdfPath, token);
-
                 setPdfUrl(objectUrl);
-            }
-            catch (error) {
-                console.error(error instanceof Error ? error.message : 'Error Unknown');
-            }
-            finally {
+            } catch (err) {
+                setError((err as Error).message);
+                console.error(err);
+            } finally {
                 setLoading(false);
             }
         };
+
         loadPDF();
 
         return () => {
-            if (objectUrl) {
-                URL.revokeObjectURL(objectUrl);
-            }
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
             setPdfUrl(null);
         };
+    }, [
+        identifier,
+        getApplicantStatus,
+        token,
+        getPdfPathFnHired,
+        getPdfPathFnPending,
+    ]);
 
-    }, [identifier, getPdfPathFn])
     return { pdfUrl, loading, error };
 }

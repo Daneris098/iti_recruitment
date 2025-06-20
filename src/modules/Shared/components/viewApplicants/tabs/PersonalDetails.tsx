@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
-import { useApplicantIdStore, usePositionApplied } from "@src/modules/Shared/store";
+import { useApplicantIdStore, usePositionApplied, useAmountStore } from "@src/modules/Shared/store";
 import { PersonalDetailsType } from '@src/modules/Shared/types';
 import { fetchApplicantByIdService, } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function PersonalDetails() {
 
     const setFirstPositionApplied = usePositionApplied((s) => s.setFirstPositionApplied);
-
+    const setDesiredSalary = useAmountStore((state) => state.setTotalAmount);
 
     const [error, setError] = useState<unknown>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -29,9 +29,16 @@ export default function PersonalDetails() {
 
     useEffect(() => {
         const firstChoice = applicant?.positionsApplied?.[0];
+        const desiredSalary = applicant?.positionsApplied?.[0]?.salary;
+
         if (firstChoice?.name) {
             setFirstPositionApplied(firstChoice.name);
         }
+
+        if (desiredSalary) {
+            setDesiredSalary(Number(desiredSalary))
+        }
+
     }, [applicant, setFirstPositionApplied]);
 
     if (isLoading) return <p>Loading…</p>;
@@ -51,6 +58,16 @@ export default function PersonalDetails() {
     );
     if (!fetchApplicantByIdService) return <p>Loading…</p>;
 
+    function getApplicantCurrentAge(dateString: string): number {
+        const today = new Date();
+        const birthDate = new Date(dateString);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
     const {
         positionsApplied = [],
         addresses = [],
@@ -68,13 +85,14 @@ export default function PersonalDetails() {
         height,
         weight,
         skills = [],
-        mother,
+        // mother,
     } = applicant || {};
 
     const firstChoice = positionsApplied[0] || {};
     const secondChoice = positionsApplied[1] || {};
     const address = addresses[0] || {};
     const education = educations[0] || {};
+    const education1 = educations[1] || {};
     const prevEmployment1 = previousEmployments[0] || {};
     const prevEmployment2 = previousEmployments[1] || {};
     const sibling1 = family.siblings?.[0] || {};
@@ -91,7 +109,12 @@ export default function PersonalDetails() {
                     {/* Left Column: First Section */}
                     {renderField("Applying for (first choice):", firstChoice.name)}
                     {renderField("Desired Salary", firstChoice.salary)}
-                    {renderField("Present Address", address.subdivision)}
+                    {renderField(
+                        "Permanent Address",
+                        [address?.houseNo, address?.street, address?.city?.name]
+                            .filter(Boolean)
+                            .join(", ")
+                    )}
                     {renderField("Date of Birth", DateTimeUtils.dateDefaultToHalfMonthWord(birthDate ?? "N/A"))}
                     {renderField("Place of Birth", birthPlace)}
                     {renderField("Civil Status", civilStatus?.name)}
@@ -99,9 +122,9 @@ export default function PersonalDetails() {
                     {/* Left Column: Second Section */}
                     < div >
                         <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Government ID Number(s)</h2>
-                        {renderField("GSIS No.", identification.gsisNo)}
-                        {renderField("SSS No.", identification.hdmfNo)}
-                        {renderField("PagIbig No.", identification.phicNo)}
+                        {renderField("GSIS No.", identification.gsisNo ?? "N/A")}
+                        {renderField("SSS No.", identification.hdmfNo ?? "N/A")}
+                        {renderField("PagIbig No.", identification.phicNo ?? "N/A")}
 
                         < h2 className="text-[#6D6D6D] text-[12px] mt-4" ></h2>
                         <p className="font-semibold text-[#6D6D6D] text-[14px]"></p>
@@ -164,7 +187,7 @@ export default function PersonalDetails() {
                     {/* Left Column: Sixth Section */}
                     <div>
                         <h2 className="text-[#559CDA] text-[16px] mt-8 mb-3 font-bold">Other Information</h2>
-                        {renderField("Special Technical Skills", skills[1]?.keyword)}
+                        {renderField("Special Technical Skills", skills[0]?.keyword)}
                         {renderField("Convicted of a crime", questionnaire[0]?.answer)}
                     </div>
 
@@ -193,13 +216,19 @@ export default function PersonalDetails() {
                 <div className="">
                     {renderField("Applying for (second choice):", secondChoice.name)}
                     {renderField("Availability to start", DateTimeUtils.dateDefaultToHalfMonthWord(secondChoice.availableDateStart ?? "N/A"))}
-                    {renderField("Permanent Address", address.subdivision)}
+                    {renderField(
+                        "Permanent Address",
+                        [address?.houseNo, address?.street, address?.city?.name]
+                            .filter(Boolean)
+                            .join(", ")
+                    )}
 
                     {/* Sub-Columns */}
                     <div className="flex gap-8">
                         {/* Left Sub-Column */}
                         <div className="w-1/2">
-                            {renderField("Age", "N/A")}
+                            {/* {renderField("Age", "N/A")} */}
+                            {renderField("Age", getApplicantCurrentAge(birthDate))}
                             {renderField("Height", height)}
                         </div>
 
@@ -238,19 +267,19 @@ export default function PersonalDetails() {
                     <div className="pt-6">
                         <h2 className="text-[#559CDA] text-[16px] mt-7 font-bold"></h2>
 
-                        {renderField("School Name", education.school)}
-                        {renderField("Course", education.course)}
-                        {renderField("Educational Level", education.level?.name)}
+                        {renderField("School Name", education1.school ?? "N/A")}
+                        {renderField("Course", education1.course ?? "N/A")}
+                        {renderField("Educational Level", education1.level?.name ?? "N/A")}
 
                         <div className="flex gap-8">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(education.yearFrom ?? "N/A"))}
+                                {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(education1.yearFrom ?? "N/A"))}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(education.yearTo ?? "N/A"))}
+                                {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(education1.yearTo ?? "N/A"))}
                             </div>
                         </div>
                     </div>
@@ -276,7 +305,7 @@ export default function PersonalDetails() {
 
                     {/* Parents & Siblings */}
                     <div className="pt-16 mt-1">
-                        {renderField("Father's Name", mother?.name)}
+                        {renderField("Mother's Name", family.mother?.name)}
                         {renderField("Age", family.mother?.age)}
                         {renderField("Occupation", family.mother?.occupation)}
                         {renderField("Contact", family.mother?.contactNo)}

@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Divider } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import profileImage from "@src/assets/jane.png";
+import profileImage from "@src/assets/defaultphoto.png";
+import { useEffect, useMemo, useState } from "react";
 import { useCloseModal } from "@modules/Applicants/store";
 import { ViewApplicantsProps } from "@modules/Shared/types";
 import { useApplicantIdStore } from "@src/modules/Shared/store";
@@ -14,6 +14,7 @@ import { ActionButton } from "@modules/Shared/utils/ApplicantModal/actionButton"
 import { TextRenderer } from "@modules/Shared/utils/ApplicantModal/textRenderer";
 import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus";
+import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function ViewApplicant({
   applicantName,
@@ -31,6 +32,42 @@ export default function ViewApplicant({
   const applicantId = useApplicantIdStore((state) => state.id);
   const { data: applicantsById } = useApplicantsById(applicantId);
 
+  const token = sessionStorage.getItem("accessToken") ?? undefined;
+  const [applicant, setApplicant] = useState<any | null>(null);
+  const [_isLoading, setLoading] = useState(false);
+  const [_error, setError] = useState<unknown>(null);
+
+  const fullUrl = useMemo(() => {
+    const photoPath = extractPhotoPath(applicant?.photo);
+    return photoPath
+      ? `/files/Uploads/applicants/${photoPath}`
+      : profileImage;
+  }, [applicant?.photo]);
+  const [imgSrc, setImgSrc] = useState(fullUrl);
+
+  const memoizedImage = useMemo(() => (
+    <img
+      src={imgSrc}
+      alt="Applicant"
+      onError={() => {
+        if (imgSrc !== profileImage) setImgSrc(profileImage);
+      }}
+      className="w-[100px] h-[100px] rounded-full shadow-sm object-cover"
+    />
+  ), [fullUrl]);
+
+  
+  useEffect(() => setImgSrc(fullUrl), [fullUrl]);
+  useEffect(() => {
+    if (!applicantId || !token) return;
+
+    setLoading(true);
+    fetchApplicantByIdService(applicantId, token)
+      .then(setApplicant)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [applicantId, token]);
+
   const {
     setIsOffered,
     isTransferPosition, setIsTransferPosition,
@@ -41,6 +78,28 @@ export default function ViewApplicant({
   const [isViewPDF, togglePDF] = useState(false);
   const displayStatus = getDisplayStatus(status);
   const changeTabs = getTabs({ applicantName, status: status, remarks: remarks });
+
+  function extractPhotoPath(raw: unknown): string | undefined {
+    if (!raw) return;
+
+    // ① API sometimes sends it as a JSON string
+    if (typeof raw === "string") {
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) && parsed[0]?.path;
+      } catch {
+        console.warn("photo field is not valid JSON:", raw);
+        return;
+      }
+    }
+
+    // ② Already an array
+    if (Array.isArray(raw)) {
+      return raw[0]?.path;
+    }
+
+    return;
+  }
 
   return (
     <div className="h-screen w-full p-4">
@@ -62,7 +121,8 @@ export default function ViewApplicant({
         {/* Sidebar */}
         <div className="w-1/4 p-2 sticky top-0 h-screen overflow-y-auto">
           <div className="flex flex-col items-start mt-3">
-            <img src={profileImage} className="w-[100px] h-[100px] rounded-full shadow-sm" />
+            {/* <img src={profileImage} className="w-[100px] h-[100px] rounded-full shadow-sm" /> */}
+            {memoizedImage}
             <TextRenderer as="p" className="text-[#559CDA] text-[20px] font-bold mt-2">
               {applicantName}
             </TextRenderer>

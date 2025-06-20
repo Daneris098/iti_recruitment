@@ -1,4 +1,5 @@
 import { apiClient } from "@shared/services/apiClient";
+import { FeedbackBody } from '@src/modules/Shared/types';
 import { ApplicationMovementHired } from "@modules/Applicants/types";
 
 export const applicationMovementArchive = {
@@ -54,3 +55,10 @@ export const transferApplicantPosition = {
             }
         })
 }
+
+export const useUpdateFeedbacks = {
+    updateFeedback: (body: FeedbackBody) =>
+        apiClient.post("recruitment/hiring/feedbacks", body, {
+            headers: { "Content-Type": "application/json" },
+        }),
+};
