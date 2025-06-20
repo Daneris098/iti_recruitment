@@ -141,3 +141,13 @@ export const useAmountStore = create<AmountState>()((set) => ({
     totalAmount: 0,
     setTotalAmount: (position) => set({ totalAmount: position }),
 }));
+
+interface LoadTimeState {
+    loadTime: number | null;
+    setLoadTime: (t: number) => void;
+}
+
+export const useLoadTimeStore = create<LoadTimeState>()((set) => ({
+    loadTime: null,
+    setLoadTime: (t) => set({ loadTime: t }),
+}));

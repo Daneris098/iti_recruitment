@@ -12,7 +12,7 @@ import {
   FilterStore, useCloseModal,
   useSortStore, useApplicantStore
 } from "@modules/Applicants/store";
-import { useApplicantIdStore } from '@src/modules/Shared/store';
+import { useApplicantIdStore, useLoadTimeStore } from '@src/modules/Shared/store';
 import Filter from "@src/modules/Applicants/components/filter/Filter";
 import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
 import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
@@ -46,7 +46,7 @@ export default function index() {
 
   //#region STORES
   const { setPage } = usePaginationStore();
-  const records = useApplicantStore((s) => s.records)
+  // const records = useApplicantStore((s) => s.records)
   const { sortedRecords, setSort, setRecords } = useSortStore();
   const { isViewApplicant, setIsViewApplicant } = useCloseModal();
 
@@ -55,9 +55,12 @@ export default function index() {
   const setApplicantRecords = useApplicantStore((s) => s.setApplicantRecords);
   const setApplicantName = useApplicantNameStore((state) => state.setApplicantName);
   const setSelectedIds = useSelectedApplicantsStore((state) => state.setSelectedIds);
+  
+  const loadTime = useLoadTimeStore((s) => s.loadTime);
+  const setLoadTime = useLoadTimeStore((s) => s.setLoadTime);
 
   //local states
-  const [loadTime, setLoadTime] = useState<number | null>(null);
+  // const [loadTime, setLoadTime] = useState<number | null>(null);
 
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
 
@@ -272,10 +275,9 @@ export default function index() {
       <div className="flex justify-between items-center p-2.5">
         {/* Record count */}
         <p className="job-offers-table text-sm">
-          {`Showing data ${(page - 1) * pageSize + 1} to ${Math.min(
-            page * pageSize,
-            records.length
-          )} of ${getApplicants?.total} entries`}
+          {`Showing data ${sortedRecords.length === 0 ? 0 : (page - 1) * pageSize + 1
+            } to ${Math.min(page * pageSize, sortedRecords.length)} of ${getApplicants?.total ?? 0
+            } entries`}
           {loadTime !== null && ` found in (${loadTime.toFixed(3)}) seconds`}
         </p>
 
