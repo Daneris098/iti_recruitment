@@ -140,9 +140,9 @@ export default function Index() {
                                     ? {
                                         spouse: {
                                             name: applicationForm.familyBackground.spouse.fullname,
-                                            age: applicationForm.familyBackground.spouse.age,
-                                            contactNo: applicationForm.familyBackground.spouse.contactNumber,
-                                            occupation: applicationForm.familyBackground.spouse.occupation,
+                                            age: applicationForm.familyBackground.spouse.age || 0,
+                                            contactNo: applicationForm.familyBackground.spouse.contactNumber?.toString()?.trim() || 'N/A',
+                                            occupation: applicationForm.familyBackground.spouse.occupation?.toString()?.trim() || 'N/A',
                                         }
                                     }
                                     : {}),
@@ -150,9 +150,9 @@ export default function Index() {
                                     .filter(item => !(item.fullname === '' && item.age === 0 && item.occupation === '' && item.contactNumber === ''))
                                     .map(item => ({
                                         name: item.fullname,
-                                        age: item.age,
-                                        contactNo: item.contactNumber,
-                                        occupation: item.occupation,
+                                        age: item.age || 0,
+                                        contactNo: item.contactNumber?.toString()?.trim() || 'N/A',
+                                        occupation: item.occupation?.toString()?.trim() || 'N/A',
                                     })),
                                 childCount: applicationForm.familyBackground.children.numberOfChildren,
                                 childAgeRangeFrom: 1,
