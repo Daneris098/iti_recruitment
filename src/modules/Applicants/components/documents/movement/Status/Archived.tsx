@@ -6,43 +6,78 @@ import { interviewStagesOption } from "@modules/Applicants/types";
 import DropZone from "@modules/Applicants/components/dropzone/Dropzone";
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import { IconCaretDownFilled, IconCirclePlus } from "@tabler/icons-react";
-import { useGetHiringAndApplicantFeedbacks } from "@modules/Shared/hooks/useSharedApplicants";
+import { useGetHiringAndApplicantFeedbacks, useUpdateApplicantFeedback } from "@modules/Shared/hooks/useSharedApplicants";
 
-export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "Status">) {
+export default function ArchivedStatus({
+    Status,
+}: Pick<ViewApplicantsProps, "Status">) {
+    /* ---------------------------------------------------------------------- */
+    /*  GLOBAL STORES                                                          */
+    /* ---------------------------------------------------------------------- */
     const { feedbacks, setFeedbacks } = useDropDownOfferedStore();
-
     const {
         setFeedbacksId,
-        feedback, setFeedback,
-        applicantFeedback, setApplicantFeedback,
+        feedback,
+        setFeedback,
+        applicantFeedback,
+        setApplicantFeedback,
     } = useFeedbacksStore();
 
+    /* ---------------------------------------------------------------------- */
+    /*  SERVER DATA                                                             */
+    /* ---------------------------------------------------------------------- */
     const { data: hiringFeedback } = useGetHiringAndApplicantFeedbacks(false);
     const { data: applicantFeedbacks } = useGetHiringAndApplicantFeedbacks(true);
+    
+    const { mutate: saveFeedback } = useUpdateApplicantFeedback();
 
-    const [getHiringFeedback, setHiringFeedback] = useState<interviewStagesOption[]>([]);
-    const [getApplicantFeedback, setApplicantFeedbackDropdown] = useState<interviewStagesOption[]>([]);
+    /* ---------------------------------------------------------------------- */
+    /*  LOCAL STATE                                                            */
+    /* ---------------------------------------------------------------------- */
+    const [getHiringFeedback, setHiringFeedback] =
+        useState<interviewStagesOption[]>([]);
+    const [getApplicantFeedback, setApplicantFeedbackDropdown] =
+        useState<interviewStagesOption[]>([]);
 
+    /* dropdown stores */
+    const feedbacksComboBox = useCombobox({
+        onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
+    });
+    const applicantFeedbackComboBox = useCombobox({
+        onDropdownClose: () => applicantFeedbackComboBox.resetSelectedOption(),
+    });
+
+    /* ad‑hoc custom feedback inputs */
+    const [customFeedback, setCustomFeedback] = useState("");
+    const [showCustomFeedbackInput, setShowCustomFeedbackInput] = useState(false);
+
+    const [customApplicantFeedback, setCustomApplicantFeedback] = useState("");
+    const [showCustomApplicantFeedbackInput, setShowCustomApplicantFeedbackInput] =
+        useState(false);
+
+    /* ---------------------------------------------------------------------- */
+    /*  EFFECTS: build dropdown options                                        */
+    /* ---------------------------------------------------------------------- */
     useEffect(() => {
         if (!applicantFeedbacks || !hiringFeedback) return;
 
-        const feedbacks = applicantFeedbacks.map((feeds: any) => ({
-            value: feeds.id,
-            label: feeds.description,
+        const applicantOpts = applicantFeedbacks.map((f: any) => ({
+            value: f.id,
+            label: f.description,
+        }));
+        const hiringOpts = hiringFeedback.map((f: any) => ({
+            value: f.id,
+            label: f.description,
         }));
 
-        const hiringFeedbacksDropdown = hiringFeedback.map((hiringFeeds: any) => ({
-            value: hiringFeeds.id,
-            label: hiringFeeds.description,
-        }));
+        hiringOpts.push({ value: "custom_add_feedback", label: "Add Applicant Feedback" });
+        applicantOpts.push({ value: "custom_add_feedback", label: "Add Feedback" });
 
-        hiringFeedbacksDropdown.push({ value: "custom_add_feedback", label: "Add Applicant Feedback" });
-        feedbacks.push({ value: "custom_add_feedback", label: "Add Feedback" });
-
-        setHiringFeedback(hiringFeedbacksDropdown);
-        setApplicantFeedbackDropdown(feedbacks);
+        setHiringFeedback(hiringOpts);
+        setApplicantFeedbackDropdown(applicantOpts);
     }, [applicantFeedbacks, hiringFeedback]);
 
+    /* auto‑select first applicant feedback */
     useEffect(() => {
         if (getApplicantFeedback.length > 0) {
             setFeedbacks([getApplicantFeedback[0].label]);
@@ -50,23 +85,22 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
         }
     }, [getApplicantFeedback]);
 
-    const feedbacksComboBox = useCombobox({
-        onDropdownClose: () => feedbacksComboBox.resetSelectedOption(),
-    });
+    /* ---------------------------------------------------------------------- */
+    /*  HELPERS                                                                */
+    /* ---------------------------------------------------------------------- */
+    const persistFeedback = (description: string, isApplicantFeedback: boolean) => {
+        /* 🚀 new payload: only description + isApplicantFeedback */
+        saveFeedback({ description, isApplicantFeedback });
+    };
 
-    const applicantFeedbackComboBox = useCombobox({
-        onDropdownClose: () => applicantFeedbackComboBox.resetSelectedOption(),
-    });
-
-    const [customFeedback, setCustomFeedback] = useState("");
-    const [showCustomFeedbackInput, setShowCustomFeedbackInput] = useState(false);
-
-    const [customApplicantFeedback, setCustomApplicantFeedback] = useState("");
-    const [showCustomApplicantFeedbackInput, setShowCustomApplicantFeedbackInput] = useState(false);
-
-    const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(Status);
+    const forInterviewStatus = ["Assessment", "Final Interview", "Initial Interview"].includes(
+        Status
+    );
     const forInterviewDisplayText = forInterviewStatus ? "For Interview" : Status;
 
+    /* ---------------------------------------------------------------------- */
+    /*  RENDER                                                                 */
+    /* ---------------------------------------------------------------------- */
     return (
         <div>
             <div className="pt-4">
@@ -76,6 +110,7 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                             Feedback <span className="text-[#F14336]">*</span>
                         </h3>
 
+                        {/* ---------------- Hiring Feedback Dropdown ---------------- */}
                         <Combobox store={feedbacksComboBox} withinPortal={false}>
                             <Combobox.Target>
                                 <TextInput
@@ -117,6 +152,7 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                             </Combobox.Dropdown>
                         </Combobox>
 
+                        {/* custom hiring feedback */}
                         {showCustomFeedbackInput && (
                             <div className="mt-2 flex gap-2 items-center">
                                 <TextInput
@@ -129,19 +165,22 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                     className="bg-[#5A9D27] hover:bg-[#4d8a20] text-white text-sm px-4 py-2 rounded poppins"
                                     onClick={() => {
                                         const trimmed = customFeedback.trim();
-                                        const exists = getHiringFeedback.some(item => item.label === trimmed);
+                                        const exists = getHiringFeedback.some((i) => i.label === trimmed);
 
                                         if (trimmed && !exists) {
                                             const updated = [...getHiringFeedback];
-                                            const nextId = updated
-                                                .filter(it => typeof it.value === "number")
-                                                .reduce((max, it) => Math.max(max, Number(it.value)), 0) + 1;
+                                            const nextId =
+                                                updated
+                                                    .filter((i) => typeof i.value === "number")
+                                                    .reduce((m, i) => Math.max(m, Number(i.value)), 0) + 1;
 
                                             updated.splice(-1, 0, { label: trimmed, value: nextId });
 
                                             setHiringFeedback(updated);
                                             setFeedback(trimmed);
                                             setFeedbacks([...feedbacks.slice(0, -1), trimmed]);
+
+                                            persistFeedback(trimmed, false); // 🔥 save hiring feedback
 
                                             setCustomFeedback("");
                                             setShowCustomFeedbackInput(false);
@@ -155,6 +194,9 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                     </div>
                 )}
 
+                {/* ------------------------------------------------------------------ */}
+                {/*  APPLICANT FEEDBACK (Status === "Offered")                          */}
+                {/* ------------------------------------------------------------------ */}
                 {Status === "Offered" && (
                     <div>
                         <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
@@ -202,6 +244,7 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                             </Combobox.Dropdown>
                         </Combobox>
 
+                        {/* custom applicant feedback */}
                         {showCustomApplicantFeedbackInput && (
                             <div className="mt-2 flex gap-2 items-center">
                                 <TextInput
@@ -214,19 +257,22 @@ export default function ArchivedStatus({ Status }: Pick<ViewApplicantsProps, "St
                                     className="bg-[#559CDA] hover:bg-[#3e7bb9] text-white text-sm px-4 py-2 rounded poppins"
                                     onClick={() => {
                                         const trimmed = customApplicantFeedback.trim();
-                                        const exists = getApplicantFeedback.some(item => item.label === trimmed);
+                                        const exists = getApplicantFeedback.some((i) => i.label === trimmed);
 
                                         if (trimmed && !exists) {
                                             const updated = [...getApplicantFeedback];
-                                            const nextId = updated
-                                                .filter(it => typeof it.value === "number")
-                                                .reduce((max, it) => Math.max(max, Number(it.value)), 0) + 1;
+                                            const nextId =
+                                                updated
+                                                    .filter((i) => typeof i.value === "number")
+                                                    .reduce((m, i) => Math.max(m, Number(i.value)), 0) + 1;
 
                                             updated.splice(-1, 0, { label: trimmed, value: nextId });
 
                                             setApplicantFeedbackDropdown(updated);
                                             setHiringFeedback(updated);
                                             setApplicantFeedback(trimmed);
+
+                                            persistFeedback(trimmed, true); // 🔥 save applicant feedback
 
                                             setCustomApplicantFeedback("");
                                             setShowCustomApplicantFeedbackInput(false);

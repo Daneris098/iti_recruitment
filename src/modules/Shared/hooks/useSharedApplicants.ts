@@ -2,10 +2,11 @@ import {
     ArchiveForm,
     HiredForm, OfferForm,
     Applicant, ForInterviewForm,
-    TransferApplicationPositionForm
+    TransferApplicationPositionForm,
 } from "@modules/Shared/types";
 import {
     applicationMovementHired, transferApplicantPosition,
+    useUpdateFeedbacks,
     applicationMovementArchive, applicationMovementForTransfer,
     applicationMovementOffered, applicationMovementForInterview,
 } from "@modules/Applicants/api/userService";
@@ -428,6 +429,28 @@ export const useGetHiringAndApplicantFeedbacks = (isApplicantFeedback: boolean =
             const data = await useGetFeedbacks.getAll(feedbacksFilter);
             return data.items;
         }
+    });
+};
+export interface FeedbackBody {
+    description: string;
+    isApplicantFeedback: boolean;
+}
+
+export const useUpdateApplicantFeedback = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload: FeedbackBody) => {
+            return useUpdateFeedbacks.updateFeedback(payload);
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: sharedApplicantKeys.lists() });
+        },
+
+        onError: (error) => {
+            console.error("Failed to update feedback", error);
+        },
     });
 };
 

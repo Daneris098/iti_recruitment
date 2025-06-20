@@ -498,3 +498,7 @@ export type Props = {
     applicantName: string;
     remarks: string;
 };
+export interface FeedbackBody {
+    description: string;
+    isApplicantFeedback: boolean;
+}
