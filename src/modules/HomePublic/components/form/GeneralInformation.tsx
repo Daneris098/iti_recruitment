@@ -328,7 +328,6 @@ export default function index() {
                         <ComboboxTarget>
                             <InputBase
                                 label="Position Applying for - Second Choice"
-                                withAsterisk
                                 radius={8}
                                 rightSection={<IconCaretDownFilled size={18} />}
                                 className="border-none w-full text-sm"

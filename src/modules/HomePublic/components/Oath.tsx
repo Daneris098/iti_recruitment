@@ -156,7 +156,7 @@ export default function Index() {
                                     })),
                                 childCount: applicationForm.familyBackground.children.numberOfChildren,
                                 childAgeRangeFrom: 1,
-                                childAgeRangeTo: 2,
+                                childAgeRangeTo: 20,
                             },
                             postingType: {
                                 fromEmployeeReferral: applicationForm.reference.applicationSource.employeeReferal,
