@@ -10,48 +10,48 @@ export const useApplicants = () => {
         setTime,
         setCounts
     } = ViewApplicantsDataTableStore();
-    const { selectedData, selectedApplicant, setSelectedApplicant } = ApplicantStore();
+    const { selectedData, selectedApplicant, setSelectedApplicant, setMaxLength, maxLength: maxLengthGlobal } = ApplicantStore();
 
     const fetchData = async () => {
         try {
             const startTime = performance.now();
             const appliedResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
-                    sortBy: sortStatus.columnAccessor,
+                    // pageSize,
+                    // page,
+                    // sortBy: sortStatus.columnAccessor,
                     StatusIds: 1,
                 },
             });
             const forInterviewResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
-                    sortBy: sortStatus.columnAccessor,
+                    // pageSize,
+                    // page,
+                    // sortBy: sortStatus.columnAccessor,
                     StatusIds: 2,
                 },
             });
             const offeredResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
-                    sortBy: sortStatus.columnAccessor,
+                    // pageSize,
+                    // page,
+                    // sortBy: sortStatus.columnAccessor,
                     StatusIds: 3,
                 },
             });
             const hiredResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
-                    sortBy: sortStatus.columnAccessor,
+                    // pageSize,
+                    // page,
+                    // sortBy: sortStatus.columnAccessor,
                     StatusIds: 5,
                 },
             });
             const archivedResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
-                    sortBy: sortStatus.columnAccessor,
+                    // pageSize,
+                    // page,
+                    // sortBy: sortStatus.columnAccessor,
                     StatusIds: 4,
                 },
             });
@@ -144,7 +144,7 @@ export const useApplicants = () => {
             });
 
             archivedResponse.data.items.forEach((item: any) => {
-                const positionAppliedId = item.positionsApplied[0].name;
+                const positionAppliedId = item.positionsApplied[0].id;
                 const applicantStatus: string = item.applicationMovements[item.applicationMovements.length - 1]?.status.name ?? '';
                 const firstName: string = item.nameResponse.firstName ?? '';
                 const applicantId: number = item.id;
@@ -161,6 +161,28 @@ export const useApplicants = () => {
                     setSelectedApplicant(candidate.applicantId);
                 }
             });
+
+            const appliedResponseTotal = appliedResponse.data.total
+            const forInterviewResponseTotal = forInterviewResponse.data.total
+            const offeredResponseTotal = offeredResponse.data.total
+            const hiredResponseTotal = hiredResponse.data.total
+            const archivedResponseTotal = archivedResponse.data.total
+
+            if (appliedResponseTotal > maxLengthGlobal) {
+                setMaxLength(appliedResponseTotal)
+            }
+            if (forInterviewResponseTotal > maxLengthGlobal) {
+                setMaxLength(forInterviewResponseTotal)
+            }
+            if (offeredResponseTotal > maxLengthGlobal) {
+                setMaxLength(offeredResponseTotal)
+            }
+            if (hiredResponseTotal > maxLengthGlobal) {
+                setMaxLength(hiredResponseTotal)
+            }
+            if (archivedResponseTotal > maxLengthGlobal) {
+                setMaxLength(archivedResponseTotal)
+            }
 
             // Find the maximum length of any stage
             const maxLength = Math.max(

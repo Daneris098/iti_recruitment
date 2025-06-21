@@ -28,7 +28,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFormDataResponse } from "@src/modules/Vacancies/hooks/useFetchData";
 
 export default function index() {
-  const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy } = VacancyStore();
+  const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy, setSelectedCompanyId, setSelectedBranchId, setSelectedDivisionId, setSelectedDepartmentId, selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId } = VacancyStore();
   const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
   const formRef = useRef<HTMLFormElement>(null);
   const [mustHaveSkills, setMustHaveSkills] = useState<string[]>([]);
@@ -374,6 +374,35 @@ export default function index() {
 
   const { companies, branches, divisions, departments, sections, workPlaces, employmentType, vacancyTypes, experienceLevel } = useFormDataResponse();
 
+  useEffect(() => {
+    queryClient.refetchQueries({ queryKey: ["branches"], type: 'active' });
+    queryClient.refetchQueries({ queryKey: ["divisions"], type: 'active' });
+    queryClient.refetchQueries({ queryKey: ["departments"], type: 'active' });
+    queryClient.refetchQueries({ queryKey: ["sections"], type: 'active' });
+  }, [selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId])
+
+  useEffect(() => {
+    form.setFieldValue('branch', '');
+    form.setFieldValue('division', '');
+    form.setFieldValue('department', '');
+    form.setFieldValue('section', '');
+  }, [form.getValues().company])
+
+  useEffect(() => {
+    form.setFieldValue('division', '');
+    form.setFieldValue('department', '');
+    form.setFieldValue('section', '');
+  }, [form.getValues().branch])
+
+  useEffect(() => {
+    form.setFieldValue('department', '');
+    form.setFieldValue('section', '');
+  }, [form.getValues().division])
+
+  useEffect(() => {
+    form.setFieldValue('section', '');
+  }, [form.getValues().department])
+
   return (
     <Modal
       radius="lg"
@@ -429,6 +458,10 @@ export default function index() {
               classNames={{ label: "p-1", input: "poppins text-[#6D6D6D] ", dropdown: "poppins text-[#6D6D6D]" }}
               styles={{ label: { color: "#6d6d6d" } }}
               size="lg"
+              onChange={(val) => {
+                form.setFieldValue('company', String(val));
+                setSelectedCompanyId(String(val));
+              }}
             />
 
             <div className="flex flex-col lg:flex-row gap-4  w-full">
@@ -448,6 +481,10 @@ export default function index() {
                 classNames={{ label: "p-1", input: "poppins text-[#6D6D6D] ", dropdown: "poppins text-[#6D6D6D]" }}
                 styles={{ label: { color: "#6d6d6d" } }}
                 size="lg"
+                onChange={(val) => {
+                  form.setFieldValue('branch', String(val));
+                  setSelectedBranchId(String(val));
+                }}
               />
               <Select
                 {...form.getInputProps("division")}
@@ -465,6 +502,10 @@ export default function index() {
                 classNames={{ label: "p-1", input: "poppins text-[#6D6D6D] ", dropdown: "poppins text-[#6D6D6D]" }}
                 styles={{ label: { color: "#6d6d6d" } }}
                 size="lg"
+                onChange={(val) => {
+                  form.setFieldValue('division', String(val))
+                  setSelectedDivisionId(String(val))
+                }}
               />
             </div>
 
@@ -485,6 +526,10 @@ export default function index() {
                 classNames={{ label: "p-1", input: "poppins text-[#6D6D6D] ", dropdown: "poppins text-[#6D6D6D]" }}
                 styles={{ label: { color: "#6d6d6d" } }}
                 size="lg"
+                onChange={(val) => {
+                  form.setFieldValue('department', String(val))
+                  setSelectedDepartmentId(String(val))
+                }}
               />
               <Select
                 {...form.getInputProps("section")}

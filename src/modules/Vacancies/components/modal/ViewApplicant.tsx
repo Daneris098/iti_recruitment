@@ -10,18 +10,18 @@ import "@modules/Vacancies/style.css"
 import { useApplicants } from "@modules/Vacancies/hooks/useApplicants";
 import { useApplicantIdStore } from "@modules/Applicants/store";
 import { applicantsByIdService } from "@src/modules/Shared/components/api/UserService";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function index() {
-    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
+    const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant, maxLength } = ApplicantStore();
     const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
-
-    const [page, setPage] = useState(1);
+    const queryClient = useQueryClient();
     const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
         columnAccessor: "position", // Use a valid key from VacancyType
         direction: "asc",
     });
     const { data: applicants, isFetching } = useApplicants();
-    const { counts, pageSize } = ViewApplicantsDataTableStore();
+    const { counts, pageSize, setPage, page } = ViewApplicantsDataTableStore();
     const [appliedCount, setAppliedCount] = useState(0);
     const [forInterviewCount, setForInterviewCount] = useState(0);
     const [offeredCount, setOfferedCount] = useState(0);
@@ -42,6 +42,15 @@ export default function index() {
         setSelectedApplicant(applicantDetails)
         setIsViewApplicant(true)
     }
+
+    useEffect(() => {
+        console.log('maxLength: ', maxLength)
+    }, [maxLength])
+
+    useEffect(() => {
+        console.log('page effect: ', page)
+        queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: 'active' });
+    }, [page])
 
     return (
         <>
@@ -72,7 +81,7 @@ export default function index() {
                             withTableBorder
                             borderRadius="sm"
                             records={applicants}
-                            paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (0.225) seconds`}
+                            // paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (0.225) seconds`}
                             columns={[
                                 {
                                     accessor: 'applied', render: (data: any) => (<>{data.applied.name}</>),
@@ -117,10 +126,10 @@ export default function index() {
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6], background: "rgb(255,203,199, 0.3)", fontWeight: 'normal' })
                                 },
                             ]}
-                            totalRecords={10}
-                            recordsPerPage={pageSize}
-                            page={page}
-                            onPageChange={setPage}
+                            // totalRecords={maxLength}
+                            // recordsPerPage={pageSize}
+                            // page={page}
+                            // onPageChange={setPage}
                             sortStatus={sortStatus}
                             onCellClick={(val) => {
                                 handleRowClick(val.record[val.column.accessor]?.applicantId)

@@ -3,7 +3,17 @@ export interface VacancyState {
   applicationFormModal: boolean;
   alert: string;
   action: Action;
+  selectedCompanyId: string;
+  selectedBranchId: string;
+  selectedDivisionId: string;
+  selectedDepartmentId: string;
+  selectedSectionId: string;
 
+  setSelectedCompanyId: (action: string) => void;
+  setSelectedBranchId: (action: string) => void;
+  setSelectedDivisionId: (action: string) => void;
+  setSelectedDepartmentId: (action: string) => void;
+  setSelectedSectionId: (action: string) => void;
   setAction: (action: Action) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
@@ -91,7 +101,10 @@ export interface ApplicantState {
   loading: boolean;
   isViewApplicant: boolean;
   selectedApplicant: selectedApplicant;
+  maxLength: number;
 
+
+  setMaxLength: (maxLength: number) => void;
   setSelectedApplicant: (setSelectedApplicant: any) => void;
   setIsViewApplicant: (isViewApplicant: boolean) => void;
   setSelectedData: (action: VacancyType) => void;
