@@ -24,6 +24,7 @@ export enum Reports {
   timeToFill = "timeToFill",
   applicantStatusReport = "applicantStatusReport",
   recruitmentActivityReport = "recruitmentActivityReport",
+  applicationForm = "applicationForm",
   timeToHire = "timeToHire",
   offerAcceptanceReport = "offerAcceptanceReport",
   offerRejectionSummary = "offerRejectionSummary",

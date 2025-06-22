@@ -58,13 +58,6 @@ export default function EditDivision({ record }: { record: DivisionType }) {
         {...editDivision.getInputProps("name")}
         error={editDivision.values.name === "" ? "Required" : undefined}
       />
-      <TextInput
-        className="w-[50%]"
-        classNames={{ input: "poppins text-[#6D6D6D]" }}
-        defaultValue={record.description}
-        {...editDivision.getInputProps("description")}
-        error={editDivision.values.description === "" ? "Required" : undefined}
-      />
       <Select
         radius={8}
         data={branches.data?.items.map((items: any) => ({
@@ -84,6 +77,13 @@ export default function EditDivision({ record }: { record: DivisionType }) {
             editDivision.setFieldValue("branch.name", selectedItem.name);
           }
         }}
+      />
+      <TextInput
+        className="w-[50%]"
+        classNames={{ input: "poppins text-[#6D6D6D]" }}
+        defaultValue={record.description}
+        {...editDivision.getInputProps("description")}
+        error={editDivision.values.description === "" ? "Required" : undefined}
       />
       <div className="w-[10%] flex flex-row items-center gap-10">
         <Select

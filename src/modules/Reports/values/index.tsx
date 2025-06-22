@@ -1,4 +1,4 @@
-import { IconAlarmPlus, IconCalendarPlus, IconFileCheck, IconFileExcel, IconUserPin, IconUsers, IconUserUp } from "@tabler/icons-react";
+import { IconAlarmPlus, IconCalendarPlus, IconFileCheck, IconFileExcel, IconFileInfo, IconUserPin, IconUsers, IconUserUp } from "@tabler/icons-react";
 import { ChartNoAxesCombined, Trello } from "lucide-react";
 import { Reports } from "@modules/Reports/types";
 export const reports = [
@@ -32,6 +32,15 @@ export const reports = [
     name: "Source Efficiency Report",
     description: "Analyzes the effectiveness of various recruiting sources.",
     type: Reports.sourceEfficiencyReport,
+    comingSoon: false,
+  },
+
+  {
+    title: "Generate Applicant Form",
+    icon: <IconFileInfo strokeWidth={1} />,
+    name: "Application Form",
+    description: "Analyzes the effectiveness of various recruiting sources.",
+    type: Reports.applicationForm,
     comingSoon: false,
   },
   {
