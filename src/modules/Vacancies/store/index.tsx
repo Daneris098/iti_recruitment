@@ -8,7 +8,17 @@ export const VacancyStore = create<VacancyState>((set) => ({
   applicationFormModal: false,
   alert: '',
   action: Action.Null,
+  selectedCompanyId: '',
+  selectedBranchId: '',
+  selectedDivisionId: '',
+  selectedDepartmentId: '',
+  selectedSectionId: '',
 
+  setSelectedCompanyId: (selectedCompanyId: string) => set({ selectedCompanyId: selectedCompanyId }),
+  setSelectedBranchId: (selectedBranchId: string) => set({ selectedBranchId: selectedBranchId }),
+  setSelectedDivisionId: (selectedDivisionId: string) => set({ selectedDivisionId: selectedDivisionId }),
+  setSelectedDepartmentId: (selectedDepartmentId: string) => set({ selectedDepartmentId: selectedDepartmentId }),
+  setSelectedSectionId: (selectedSectionId: string) => set({ selectedSectionId: selectedSectionId }),
   setAction: (action: Action) => set({ action: action }),
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
@@ -43,8 +53,10 @@ export const ApplicantStore = create<ApplicantState>((set) => ({
   loading: false,
   isViewApplicant: false,
   selectedApplicant: selectedApplicantInitial,
+  maxLength: 0,
 
   // Methods to update state
+  setMaxLength: (maxLength: number) => set({ maxLength }),
   setSelectedApplicant: (selectedApplicant: selectedApplicant) => set({ selectedApplicant }),
   setIsViewApplicant: (isViewApplicant: boolean) => set({ isViewApplicant }),
   setLoading: (loading: boolean) => set({ loading }),
@@ -72,7 +84,7 @@ export const ViewApplicantsDataTableStore = create<DataTableState2>((set) => ({
   search: '',
   totalRecords: 0,
   page: 1,
-  pageSize: 20,
+  pageSize: 10,
   sortStatus: { columnAccessor: 'guid', direction: 'desc' },
   counts: {},
 

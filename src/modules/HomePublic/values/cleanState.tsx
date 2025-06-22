@@ -299,7 +299,7 @@ export const referenceValue2: Reference = {
       fullname: "Mary Ann Santiago",
       company: "Intellismart",
       positionHeld: "Project Manager",
-      ContactNo: "+63 94 7744 3626",
+      ContactNo: "09234586758",
     },
   ],
   employmentReference: [
@@ -322,9 +322,9 @@ export const referenceValue2: Reference = {
 };
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal2,
-  educationAndEmployment: educationAndEmploymentVal2,
-  familyBackground: familyBackgroundVal2,
-  reference: referenceValue2,
+  generalInformation: GeneralInformationVal,
+  educationAndEmployment: educationAndEmploymentVal,
+  familyBackground: familyBackgroundVal,
+  reference: referenceValue,
   photo: "",
 };
