@@ -214,7 +214,10 @@ export const familyBackgroundVal: FamilyBackground = {
   },
   children: {
     numberOfChildren: 0,
-    ageRange: "",
+    ageRange: {
+      min: 0,
+      max: 0
+    },
   },
   otherInformation: {
     specialTechnicalSkills: "",
@@ -254,7 +257,10 @@ export const familyBackgroundVal2: FamilyBackground = {
   },
   children: {
     numberOfChildren: 0,
-    ageRange: "",
+    ageRange: {
+      min: 0,
+      max: 0
+    },
   },
   otherInformation: {
     specialTechnicalSkills: "",
@@ -322,9 +328,9 @@ export const referenceValue2: Reference = {
 };
 
 export const ApplicationFormVal: ApplicationForm = {
-  generalInformation: GeneralInformationVal,
-  educationAndEmployment: educationAndEmploymentVal,
-  familyBackground: familyBackgroundVal,
-  reference: referenceValue,
+  generalInformation: GeneralInformationVal2,
+  educationAndEmployment: educationAndEmploymentVal2,
+  familyBackground: familyBackgroundVal2,
+  reference: referenceValue2,
   photo: "",
 };

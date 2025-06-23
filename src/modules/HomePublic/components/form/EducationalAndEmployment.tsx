@@ -350,7 +350,9 @@ export default function index() {
 
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
-                ...applicationForm.educationAndEmployment, employmentRecord: [...form.getValues().employmentRecord, {
+                ...applicationForm.educationAndEmployment,
+                educationBackground: [...form.getValues().educationBackground],
+                employmentRecord: [...form.getValues().employmentRecord, {
                     id: uniqueId,
                     employerCompany: '',
                     location: '',
@@ -376,7 +378,9 @@ export default function index() {
 
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
-                ...applicationForm.educationAndEmployment, educationBackground: [...form.getValues().educationBackground, {
+                ...applicationForm.educationAndEmployment,
+                employmentRecord: [...form.getValues().employmentRecord],
+                educationBackground: [...form.getValues().educationBackground, {
                     id: uniqueId,
                     nameOfSchool: '',
                     educationalLevel: '',

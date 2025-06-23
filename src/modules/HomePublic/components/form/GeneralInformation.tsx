@@ -84,7 +84,7 @@ export default function index() {
                     pagibigNo: (value: string) => value && value.length !== 12 ? "Please input a valid Pag-IBIG Number" : null,
                     driversLicense: (value: string) => value && value.length !== 11 ? "Please input a valid Driver's License Number" : null,
                     philhealthNo: (value: string) => value && value.length !== 12 ? "Please input a valid Philhealth Number" : null,
-                    passport: (value: string) => value && value.length >= 12 ? "Please input a valid Passport Number" : null,
+                    passport: (value: string) => value && value.length > 12 ? "Please input a valid Passport Number" : null,
                     tinNo: (value: string) => value && (value.length < 9 || value.length > 12) ? "Please input a valid Tin Number" : null,
                     rdoCode: (value: string) => value && value.length !== 3 ? "RDO Code is required" : null,
                 }
@@ -100,10 +100,8 @@ export default function index() {
         const isPermanentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.permanentAddress.city)
 
         const isFirstChoiceValid = vacancies.some((item) => item.label == form.getValues().firstChoice)
-        const isSecondChoiceValid = vacancies.some((item) => item.label == form.getValues().secondChoice)
-
-        console.log('form.getValues().secondChoice: ', form.getValues().secondChoice)
-        console.log('form.getValues().secondChoice: ', form.getValues().secondChoice)
+        const secondChoice = form.getValues().secondChoice?.trim();
+        const isSecondChoiceValid = !secondChoice || vacancies.some((item) => item.label === secondChoice);
 
         if (!isFirstChoiceValid) {
             form.setFieldError('firstChoice', 'First Choice is Invalid!')
