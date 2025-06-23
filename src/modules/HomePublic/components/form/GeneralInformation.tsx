@@ -81,10 +81,10 @@ export default function index() {
                 governmentIdOrNumber: {
                     sssNo: (value: string) => value && value.length !== 10 ? "Please input a valid SSS Number" : null,
                     gsisNo: (value: string) => value && value.length !== 11 ? "Please input a valid GSIS Number" : null,
-                    pagibigNo: (value: string) => value && value.length !== 11 ? "Please input a valid Pag-IBIG Number" : null,
+                    pagibigNo: (value: string) => value && value.length !== 12 ? "Please input a valid Pag-IBIG Number" : null,
                     driversLicense: (value: string) => value && value.length !== 11 ? "Please input a valid Driver's License Number" : null,
                     philhealthNo: (value: string) => value && value.length !== 12 ? "Please input a valid Philhealth Number" : null,
-                    passport: (value: string) => value && value.length !== 12 ? "Please input a valid Passport Number" : null,
+                    passport: (value: string) => value && value.length >= 12 ? "Please input a valid Passport Number" : null,
                     tinNo: (value: string) => value && (value.length < 9 || value.length > 12) ? "Please input a valid Tin Number" : null,
                     rdoCode: (value: string) => value && value.length !== 3 ? "RDO Code is required" : null,
                 }
@@ -99,9 +99,21 @@ export default function index() {
         const isPresentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.presentAddress.city)
         const isPermanentCityValid = cities.some((item) => item.label == form.getValues().personalInformation.permanentAddress.city)
 
-        // const isPresentBarangayValid = barangays.some((item) => item.label == form.getValues().personalInformation.presentAddress.barangay)
-        // const isPermanentBarangayValid = sameAsPresent ? barangays.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay) : barangays2.some((item) => item.label == form.getValues().personalInformation.permanentAddress.barangay)
+        const isFirstChoiceValid = vacancies.some((item) => item.label == form.getValues().firstChoice)
+        const isSecondChoiceValid = vacancies.some((item) => item.label == form.getValues().secondChoice)
 
+        console.log('form.getValues().secondChoice: ', form.getValues().secondChoice)
+        console.log('form.getValues().secondChoice: ', form.getValues().secondChoice)
+
+        if (!isFirstChoiceValid) {
+            form.setFieldError('firstChoice', 'First Choice is Invalid!')
+            form.getInputNode?.(`firstChoice`)?.focus();
+        }
+
+        if (!isSecondChoiceValid) {
+            form.setFieldError('secondChoice', 'Second Choice is Invalid!')
+            form.getInputNode?.(`secondChoice`)?.focus();
+        }
 
         if (!emailAvailable) {
             form.setFieldError('personalInformation.workingEmailAddress', 'Email Already Exist!')
@@ -111,27 +123,17 @@ export default function index() {
             form.setFieldError('personalInformation.mobileNumber', 'Mobile Number Already Exist!')
         }
 
-        // if (!isPermanentBarangayValid) {
-        //     form.setFieldError(`personalInformation.permanentAddress.barangay`, 'Invalid barangay');
-        //     form.getInputNode?.(`personalInformation.permanentAddress.barangay`)?.focus();
-        // }
-
         if (!isPermanentCityValid) {
             form.setFieldError(`personalInformation.permanentAddress.city`, 'Invalid city');
             form.getInputNode?.(`personalInformation.permanentAddress.city`)?.focus();
         }
-
-        // if (!isPresentBarangayValid) {
-        //     form.setFieldError(`personalInformation.presentAddress.barangay`, 'Invalid barangay');
-        //     form.getInputNode?.(`personalInformation.presentAddress.barangay`)?.focus();
-        // }
 
         if (!isPresentCityValid) {
             form.setFieldError(`personalInformation.presentAddress.city`, 'Invalid city');
             form.getInputNode?.(`personalInformation.presentAddress.city`)?.focus();
         }
 
-        if (!emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid) {
+        if (!isFirstChoiceValid || !isSecondChoiceValid || !emailAvailable || !mobileAvailable || !isPresentCityValid || !isPermanentCityValid) {
             return
         }
 
@@ -263,7 +265,6 @@ export default function index() {
             ref={formRef}
             onSubmit={
                 async (e) => {
-                    console.log('value: ', values)
                     e.preventDefault(); // Prevent default submission first
                     const isValid = form.validate(); // Runs validation on all fields
                     if (!isValid.hasErrors) {
@@ -289,26 +290,26 @@ export default function index() {
                     >
                         <ComboboxTarget>
                             <InputBase
+                                {...form.getInputProps("firstChoice")}
                                 label="Position Applying for - First Choice"
                                 withAsterisk
                                 radius={8}
                                 rightSection={<IconCaretDownFilled size={18} />}
                                 className="border-none w-full text-sm"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                                {...form.getInputProps("firstChoice")}
-                                component="button"
-                                type="button"
-                                pointer
-                                rightSectionPointerEvents="none"
+                                value={form.getValues().firstChoice}
+                                onChange={(e) => {
+                                    form.setFieldValue('firstChoice', e.currentTarget.value)
+                                    combobox.openDropdown();
+                                }}
                                 onClick={() => combobox.toggleDropdown()}
-                            >
-                                {form.getValues().firstChoice}
-                            </InputBase>
+                                placeholder="Search or select"
+                            />
                         </ComboboxTarget>
 
                         <ComboboxDropdown>
                             <ComboboxOptions>
-                                {vacancies.map((item) => (
+                                {(form.getValues().secondChoice == '' ? vacancies : vacancies.filter(item => item.label != form.getValues().secondChoice)).map((item) => (
                                     <ComboboxOption value={item.label} key={item.id}>
                                         {item.label}
                                     </ComboboxOption>
@@ -327,20 +328,21 @@ export default function index() {
                     >
                         <ComboboxTarget>
                             <InputBase
+                                {...form.getInputProps("secondChoice")}
                                 label="Position Applying for - Second Choice"
+                                withAsterisk
                                 radius={8}
                                 rightSection={<IconCaretDownFilled size={18} />}
                                 className="border-none w-full text-sm"
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
-                                {...form.getInputProps("secondChoice")}
-                                component="button"
-                                type="button"
-                                pointer
-                                rightSectionPointerEvents="none"
+                                value={form.getValues().secondChoice}
+                                onChange={(e) => {
+                                    form.setFieldValue('secondChoice', e.currentTarget.value)
+                                    combobox2.openDropdown();
+                                }}
                                 onClick={() => combobox2.toggleDropdown()}
-                            >
-                                {form.getValues().secondChoice}
-                            </InputBase>
+                                placeholder="Search or select"
+                            />
                         </ComboboxTarget>
 
                         <ComboboxDropdown>
@@ -539,7 +541,6 @@ export default function index() {
                                 classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                                 styles={{ label: { color: "#6d6d6d" } }}
                                 onChange={((val) => {
-                                    console.log('val: ', val)
                                     const selectedCity = cities.find(city => city.label === val);
                                     fetchBarangays(selectedCity?.id ?? 1, 2)
                                     form.setFieldValue("personalInformation.permanentAddress.city", val);

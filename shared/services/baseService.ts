@@ -25,7 +25,6 @@ export class BaseService<T> {
         config?: Record<string, any>
     ): Promise<U> {
         try {
-            console.log('config: ', config)
             const response: AxiosResponse<U> = await this.client.request({
                 method,
                 url,

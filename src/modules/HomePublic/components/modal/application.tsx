@@ -13,13 +13,13 @@ import { cn } from "@src/lib/utils";
 import { AlertType, PhotoRef, Step, StepperTitle } from '@modules/HomePublic/types';
 import { useEffect, useRef, useState } from 'react';
 import { IconArrowRight, IconCaretDownFilled, IconX } from '@tabler/icons-react';
-import "@modules/HomePublic/styles/index.css"
 import { useMediaQuery } from "@mantine/hooks";
 import { RingProgress } from '@mantine/core';
+import "@modules/HomePublic/styles/index.css"
 
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
-    const { applicationFormModal, setApplicationFormModal, setIsFromPortal, setAlert, vacancyDetailsModal, selectedData, setvacancyDetailsModal } = HomeStore();
+    const { applicationFormModal, setApplicationFormModal, setIsFromPortal, setAlert, vacancyDetailsModal, selectedData, setvacancyDetailsModal, } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading, applicationForm } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
     const StepperPercent = [20, 40, 60, 80, 100];
@@ -98,6 +98,8 @@ export default function index() {
         <>
             <Modal radius="lg" size='80%' opened={applicationFormModal} fullScreen={!isGreaterThanSp} centered onClose={() => { setApplicationFormModal(false); }}
                 withCloseButton={false}
+                closeOnClickOutside={false}
+                closeOnEscape={false}
                 className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
                 styles={{
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },

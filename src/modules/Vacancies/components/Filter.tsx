@@ -3,8 +3,9 @@ import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { FilterStore } from "@src/modules/Vacancies/store";
 import { useEffect } from "react";
-import { filterVal } from "@src/modules/Vacancies/values";
+import { cleanFilterVal, filterVal } from "@src/modules/Vacancies/values";
 import dayjs from 'dayjs';
+import { queryClient } from "@src/client/queryClient";
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
@@ -13,6 +14,7 @@ export default function Filter() {
     if (filter === filterVal) {
       setIsFiltered(false)
     }
+    // queryClient.refetchQueries({ queryKey: ["recruitment/vacancies"], type: 'active' }); 
   }, [filter])
 
   const formatDate = (dateString: string) => {
@@ -115,6 +117,9 @@ export default function Filter() {
     }
 
     setFilter(updatedFilter);
+    // setIsFiltered(false)
+    // setIsFiltered(true)
+    // console.log('tangalll')
   };
 
   const iconSize: MantineSize = useMatches({

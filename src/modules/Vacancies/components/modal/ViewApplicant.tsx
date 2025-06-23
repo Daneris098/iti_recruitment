@@ -44,11 +44,6 @@ export default function index() {
     }
 
     useEffect(() => {
-        console.log('maxLength: ', maxLength)
-    }, [maxLength])
-
-    useEffect(() => {
-        console.log('page effect: ', page)
         queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: 'active' });
     }, [page])
 
@@ -81,7 +76,7 @@ export default function index() {
                             withTableBorder
                             borderRadius="sm"
                             records={applicants}
-                            // paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (0.225) seconds`}
+                            paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} esntries (0.225) seconds`}
                             columns={[
                                 {
                                     accessor: 'applied', render: (data: any) => (<>{data.applied.name}</>),
@@ -126,10 +121,10 @@ export default function index() {
                                     , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6], background: "rgb(255,203,199, 0.3)", fontWeight: 'normal' })
                                 },
                             ]}
-                            // totalRecords={maxLength}
-                            // recordsPerPage={pageSize}
-                            // page={page}
-                            // onPageChange={setPage}
+                            totalRecords={maxLength}
+                            recordsPerPage={pageSize}
+                            page={page}
+                            onPageChange={setPage}
                             sortStatus={sortStatus}
                             onCellClick={(val) => {
                                 handleRowClick(val.record[val.column.accessor]?.applicantId)

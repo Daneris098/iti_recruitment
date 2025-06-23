@@ -15,45 +15,49 @@ export const useVacancies = () => {
             const sortVal = `?${sortStatus.direction === "asc" ? "+" : "-"}${sortStatus.columnAccessor}`;
             url += sortVal;
 
-            if (filter.company.length) {
-                const filtered = companies
-                    .filter((item) => filter.company.includes(item.value))
-                    .map((item) => `&CompanyIds=${item.id}`)
-                    .join("");
-                url += filtered;
+            if (isFiltered) {
+                if (filter.company.length) {
+                    const filtered = companies
+                        .filter((item) => filter.company.includes(item.value))
+                        .map((item) => `&CompanyIds=${item.id}`)
+                        .join("");
+                    url += filtered;
+                }
+
+                if (filter.vacancy.length) {
+                    const filtered = vacancies
+                        .filter((item) => filter.vacancy.includes(item.value))
+                        .map((item) => `&VacancyIds=${item.id}`)
+                        .join("");
+                    url += filtered;
+                }
+
+                if (filter.dateFrom) {
+                    url += `&DateFrom=${filter.dateFrom}`;
+                }
+
+                if (filter.dateTo) {
+                    url += `&DateTo=${filter.dateTo}`;
+                }
+
+                if (filter.department.length) {
+                    const filtered = departments
+                        .filter((item) => filter.department.includes(item.value))
+                        .map((item) => `&DepartmentIds=${item.id}`)
+                        .join("");
+                    url += filtered;
+                }
+
+                if (filter.status.length) {
+                    const filtered = status
+                        .filter((item) => filter.status.includes(item.value))
+                        .map((item) => `&StatusIds=${item.id}`)
+                        .join("");
+                    url += filtered;
+                }
             }
 
-            if (filter.vacancy.length) {
-                const filtered = vacancies
-                    .filter((item) => filter.vacancy.includes(item.value))
-                    .map((item) => `&VacancyIds=${item.id}`)
-                    .join("");
-                url += filtered;
-            }
-
-            if (filter.dateFrom) {
-                url += `&DateFrom=${filter.dateFrom}`;
-            }
-
-            if (filter.dateTo) {
-                url += `&DateTo=${filter.dateTo}`;
-            }
-
-            if (filter.department.length) {
-                const filtered = departments
-                    .filter((item) => filter.department.includes(item.value))
-                    .map((item) => `&DepartmentIds=${item.id}`)
-                    .join("");
-                url += filtered;
-            }
-
-            if (filter.status.length) {
-                const filtered = status
-                    .filter((item) => filter.status.includes(item.value))
-                    .map((item) => `&StatusIds=${item.id}`)
-                    .join("");
-                url += filtered;
-            }
+            console.log('url: ', url)
             const startTime = performance.now();
             const res = await axiosInstance.get(url, {
                 params: {
@@ -101,7 +105,7 @@ export const useVacancies = () => {
     };
 
     return useQuery<VacancyType[]>({
-        queryKey: ["recruitment/vacancies", { page, pageSize, sortStatus, isFiltered }],
+        queryKey: ["recruitment/vacancies", { page, pageSize, sortStatus, filter, isFiltered }],
         queryFn: fetchData,
         staleTime: 60 * 1000, // Data is fresh for 5 minutes
     });
