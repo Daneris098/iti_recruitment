@@ -57,7 +57,7 @@ export default function EditCompany({ record }: { record: CompanyType }) {
             styles={{ label: { color: "#6d6d6d" } }}
             {...editCompany.getInputProps("isActive")}
             error={editCompany.values.isActive === null ? "Required" : undefined}
-            defaultValue={editCompany.values.isActive ? "Active" : "Inactive"}
+            value={editCompany.values.isActive ? "Active" : "Inactive"}
             onChange={(value) => {
               editCompany.setFieldValue("isActive", value === "Active");
             }}

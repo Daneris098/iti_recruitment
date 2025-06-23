@@ -2,10 +2,11 @@ import {
     ArchiveForm,
     HiredForm, OfferForm,
     Applicant, ForInterviewForm,
-    TransferApplicationPositionForm
+    TransferApplicationPositionForm,
 } from "@modules/Shared/types";
 import {
     applicationMovementHired, transferApplicantPosition,
+    useUpdateFeedbacks,
     applicationMovementArchive, applicationMovementForTransfer,
     applicationMovementOffered, applicationMovementForInterview,
 } from "@modules/Applicants/api/userService";
@@ -17,7 +18,7 @@ import {
     useSharedUserService, usePaymentSchemeService,
     useGetDivisions, useGetFeedbacks,
     useGetPositionLevels, useGetDepartments,
-    useSharedTransferredPosition, useSharedViewAcceptedOffer, useSharedTransferApplicant
+    useSharedTransferredPosition, useSharedViewAcceptedOffer,
 } from "@modules/Shared/api/useSharedUserService";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 import { ViewApplicantById } from "@modules/Applicants/types"
@@ -63,7 +64,7 @@ export const useApplicantById = (
     });
 
 export const formatApplicantById = (applicant: any): ViewApplicantById => {
-
+    // debugger;
     const {
         family, skills,
         applicationMovements,
@@ -218,7 +219,8 @@ export const formatApplicantById = (applicant: any): ViewApplicantById => {
             movements: mapApplicationMovements,
             movementLastModifiedDate: dateApplied
         },
-        commentsByID: mapComments
+        commentsByID: mapComments,
+        applicantPhoto: applicant.data.photo,
     };
 };
 
@@ -300,6 +302,7 @@ export const useTransferPositionLookup = (
             return {
                 jobOpenings: data.items.map(item => ({
                     id: item.id,
+                    department: item.department.id,
                     position: item.position,
                     company: item.company,
                     slots: item.availableSlot,
@@ -426,6 +429,28 @@ export const useGetHiringAndApplicantFeedbacks = (isApplicantFeedback: boolean =
             const data = await useGetFeedbacks.getAll(feedbacksFilter);
             return data.items;
         }
+    });
+};
+export interface FeedbackBody {
+    description: string;
+    isApplicantFeedback: boolean;
+}
+
+export const useUpdateApplicantFeedback = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (payload: FeedbackBody) => {
+            return useUpdateFeedbacks.updateFeedback(payload);
+        },
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: sharedApplicantKeys.lists() });
+        },
+
+        onError: (error) => {
+            console.error("Failed to update feedback", error);
+        },
     });
 };
 

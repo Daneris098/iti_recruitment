@@ -105,6 +105,17 @@ interface DepartmentState {
     setDepartmentName: (position: string) => void;
 }
 
+interface ApplicantNameState {
+    applicantName: string;
+    setApplicantName: (name: string) => void;
+}
+
+export const useApplicantNameStore = create<ApplicantNameState>()((set) => ({
+    applicantName: '',
+    setApplicantName: (name) =>
+        set({ applicantName: name }),
+}));
+
 export const useDepartmentStore = create<DepartmentState>()((set) => ({
     departmentName: '',
     setDepartmentName: (position) =>
@@ -129,4 +140,14 @@ interface AmountState {
 export const useAmountStore = create<AmountState>()((set) => ({
     totalAmount: 0,
     setTotalAmount: (position) => set({ totalAmount: position }),
+}));
+
+interface LoadTimeState {
+    loadTime: number | null;
+    setLoadTime: (t: number) => void;
+}
+
+export const useLoadTimeStore = create<LoadTimeState>()((set) => ({
+    loadTime: null,
+    setLoadTime: (t) => set({ loadTime: t }),
 }));

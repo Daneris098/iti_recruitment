@@ -1,6 +1,7 @@
 import { apiClient } from "@shared/services/apiClient";
 import { BaseService } from "@shared/services/baseService";
 import { ApplicantResponse, JobOpenings, AcceptedOffer } from "@modules/Shared/types";
+// import axios from "axios";
 // import { Organization } from "@src/modules/OrganizationSettings/assets/Types";
 
 export const useGetFeedbacks = new BaseService(apiClient, "recruitment/hiring/feedbacks");

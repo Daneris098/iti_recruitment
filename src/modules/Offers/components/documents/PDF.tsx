@@ -1,10 +1,10 @@
 import React from 'react';
 import { PDFProps } from "@modules/Offers/types";
 import header from '@src/assets/job-offers-header.png';
-import { useDepartmentStore } from "@src/modules/Shared/store";
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
+import { useDepartmentStore, useApplicantNameStore } from "@src/modules/Shared/store";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
 // Register the Poppins font
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 
 // Create Document Component
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
-  applicantName,
+  // applicantName,
   position,
   // department,
   remarks,
@@ -147,9 +147,10 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
     { label: 'Transportation Subsidy', value: descriptionTranspo },
   ];
 
-  const departmentName = useDepartmentStore.getState().departmentName;
   const { amount } = useDropDownOfferedStore.getState();
   const annualAmount = amount * 12
+  const departmentName = useDepartmentStore.getState().departmentName;
+  const getApplicantName = useApplicantNameStore.getState().applicantName
 
   return (
     <Document>
@@ -169,7 +170,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Name</Text>
               <Text style={[styles.text_description, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_title, { flex: 3 }]}>{applicantName ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{getApplicantName ?? "No Data"}</Text>
             </View>
 
             {/* Position and Rank */}

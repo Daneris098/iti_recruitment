@@ -28,7 +28,21 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useFormDataResponse } from "@src/modules/Vacancies/hooks/useFetchData";
 
 export default function index() {
-  const { action, setAction, setAlert, setSelectedVacancy, selectedVacancy, setSelectedCompanyId, setSelectedBranchId, setSelectedDivisionId, setSelectedDepartmentId, selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId } = VacancyStore();
+  const {
+    action,
+    setAction,
+    setAlert,
+    setSelectedVacancy,
+    selectedVacancy,
+    setSelectedCompanyId,
+    setSelectedBranchId,
+    setSelectedDivisionId,
+    setSelectedDepartmentId,
+    selectedCompanyId,
+    selectedBranchId,
+    selectedDivisionId,
+    selectedDepartmentId,
+  } = VacancyStore();
   const [vacancyDuration, setVacancyDuration] = useState<[Date | null, Date | null]>([null, null]);
   const formRef = useRef<HTMLFormElement>(null);
   const [mustHaveSkills, setMustHaveSkills] = useState<string[]>([]);
@@ -213,28 +227,28 @@ export default function index() {
 
   const onSubmit = async (form: any) => {
     formRef.current?.requestSubmit();
-    console.log('form: ', form)
+    console.log("form: ", form);
     let mappedForm = {};
     if (action == Action.New) {
       mappedForm = {
         position: form.positionTitle,
         company: {
-          id: form.company
+          id: form.company,
         },
         branch: {
-          id: form.branch
+          id: form.branch,
         },
         division: {
-          id: form.division
+          id: form.division,
         },
         department: {
-          id: form.department
+          id: form.department,
         },
         section: {
           id: form.section,
         },
         employmentType: {
-          id: form.employmentType
+          id: form.employmentType,
         },
         workplaceType: {
           id: form.workplaceType,
@@ -267,11 +281,11 @@ export default function index() {
       let updatedSkills: any[] = [];
 
       // Create a Set for quick lookup of selected keywords
-      const selectedKeywordsSet = new Set(form.mustHaveSkills.map((k: string) => k.toLowerCase()));
+      const selectedKeywordsSet = new Set(form.mustHaveSkills.map((k: string) => k!.toLowerCase()));
 
       // Go through all existing skills in the vacancy
       (selectedVacancy as any).skills.forEach((skill: any) => {
-        const isStillSelected = selectedKeywordsSet.has(skill.keyword.toLowerCase());
+        const isStillSelected = selectedKeywordsSet.has(skill.keyword!.toLowerCase());
 
         updatedSkills.push({
           id: skill.id,
@@ -282,7 +296,7 @@ export default function index() {
 
       // Handle any new skills that are in the form but not in the vacancy
       form.mustHaveSkills.forEach((skillKeyword: string) => {
-        const alreadyExists = (selectedVacancy as any).skills.some((skill: any) => skill.keyword.toLowerCase() === skillKeyword.toLowerCase());
+        const alreadyExists = (selectedVacancy as any).skills.some((skill: any) => skill.keyword!.toLowerCase() === skillKeyword!.toLowerCase());
 
         if (!alreadyExists) {
           updatedSkills.push({
@@ -296,22 +310,22 @@ export default function index() {
         id: selectedVacancy.id,
         position: form.positionTitle,
         company: {
-          id: form.company
+          id: form.company,
         },
         branch: {
-          id: form.branch
+          id: form.branch,
         },
         division: {
-          id: form.division
+          id: form.division,
         },
         department: {
-          id: form.department
+          id: form.department,
         },
         section: {
           id: form.section,
         },
         employmentType: {
-          id: form.employmentType
+          id: form.employmentType,
         },
         workplaceType: {
           id: form.workplaceType,
@@ -481,7 +495,7 @@ export default function index() {
               styles={{ label: { color: "#6d6d6d" } }}
               size="lg"
               onChange={(val) => {
-                form.setFieldValue('company', String(val));
+                form.setFieldValue("company", String(val));
                 setSelectedCompanyId(String(val));
               }}
             />
@@ -517,8 +531,7 @@ export default function index() {
                   refetchLookup()
                 }}
                 onChange={(val) => {
-                  console.log(val)
-                  form.setFieldValue('branch', String(val));
+                  form.setFieldValue("branch", String(val));
                   setSelectedBranchId(String(val));
                 }}
               />
@@ -547,8 +560,8 @@ export default function index() {
                 styles={{ label: { color: "#6d6d6d" } }}
                 size="lg"
                 onChange={(val) => {
-                  form.setFieldValue('division', String(val))
-                  setSelectedDivisionId(String(val))
+                  form.setFieldValue("division", String(val));
+                  setSelectedDivisionId(String(val));
                 }}
               />
             </div>
@@ -578,8 +591,8 @@ export default function index() {
                 styles={{ label: { color: "#6d6d6d" } }}
                 size="lg"
                 onChange={(val) => {
-                  form.setFieldValue('department', String(val))
-                  setSelectedDepartmentId(String(val))
+                  form.setFieldValue("department", String(val));
+                  setSelectedDepartmentId(String(val));
                 }}
               />
               <Select

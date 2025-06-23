@@ -176,12 +176,15 @@ export interface JobOpenings {
     };
     id: string | number;
     position: string;
+    department: {
+        id: number
+    }
     company: {
         name: string;
         [key: string]: any;
     } | null;
     availableSlot: number;
-    vacancyDurationResponse: {
+    vacancyDuration: {
         dateStart: string;
     }
 }
@@ -361,10 +364,21 @@ export interface SelectedDateStore {
     setSelectedDate: (date: string | null) => void;
 }
 
+// export type PDFViewerProps<T> = {
+//     identifier: T;
+//     getApplicantStatus: (identifier: T) => Promise<"Accepted" | "Pending">;
+//     getPdfPathFnHired: (identifier: T) => Promise<string>;
+//     getPdfPathFnPending: (identifier: T) => Promise<string>;
+// };
+// @modules/Shared/types/PDFViewerProps.ts
 export type PDFViewerProps<T> = {
     identifier: T;
-    getPdfPathFn: (identifier: T) => Promise<string>;
+    token?: string;                                         // ← NEW
+    getApplicantStatus: (id: T) => Promise<"Accepted" | "Pending">;
+    getPdfPathFnHired: (id: T) => Promise<string>;
+    getPdfPathFnPending: (id: T) => Promise<string>;
 };
+
 
 export type PersonalDetailsType = {
     positionsApplied?: {
@@ -373,6 +387,9 @@ export type PersonalDetailsType = {
         availableDateStart?: string;
     }[];
     addresses?: {
+        city: any;
+        street: any;
+        houseNo: any;
         subdivision?: string;
     }[];
     identification?: {
@@ -429,7 +446,7 @@ export type PersonalDetailsType = {
     questionnaire?: {
         answer?: string;
     }[];
-    birthDate?: string;
+    birthDate?: any;
     birthPlace?: string;
     civilStatus?: {
         name?: string;
@@ -462,8 +479,18 @@ export type Movement = {
     audit: { id: number; date: string };
 };
 
+export interface InterviewSchedule {
+    schedule: {
+        interviewDate?: string;
+        date?: any;
+        interviewStage?: {
+            name: string;
+        };
+    };
+}
 export type ApplicantMovementsProps = {
     applicationMovements: Movement[];
+    interviewSchedules: InterviewSchedule[];
 };
 
 export type Props = {
@@ -471,3 +498,7 @@ export type Props = {
     applicantName: string;
     remarks: string;
 };
+export interface FeedbackBody {
+    description: string;
+    isApplicantFeedback: boolean;
+}

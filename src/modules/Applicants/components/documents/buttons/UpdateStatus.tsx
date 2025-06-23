@@ -20,7 +20,7 @@ import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Sh
 import { useDropDownOfferedStore, useCloseModal, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
 import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types";
 import { useEffect, useState } from "react";
-
+import { toast } from 'sonner';
 interface UpdateStatusProps {
   Status: string;
   onClose: () => void;
@@ -31,12 +31,11 @@ interface UpdateStatusProps {
 export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   const [, setIsOpen] = useState(false);
 
-  // Auto-open when status becomes 'For Interview'
   useEffect(() => {
     if (Status === 'For Interview') {
       setIsOpen(true);
     } else {
-      setIsOpen(false); // Auto-close if status changes
+      setIsOpen(false);
     }
   }, [Status]);
 
@@ -79,114 +78,135 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
     setIsModalOpen(true);
   };
 
-  // For Interview 
-  // const handleDropdownToggle = (event: React.MouseEvent) => {
-  //   event.stopPropagation();
-  //   setIsDropdownOpen(!isDropdownOpen);
-  // };
+  const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-  let handleClick = () => { };
-  let buttonText = "Update"
+  const resetAll = () => {
+    setIsDropdownOpen(false);
+    setIsViewApplicant(false);
+    setIsModalOpen(false);
+    setIsUpdateStatusButtonModalOpen(false);
+    setIsGenerateNewOffer(false);
+    setIsOffered(false);
+    setSelectedStatus(null);
+  };
 
-  if (selectedStatus === "Archived") {
-    buttonText = "Save Feedback";
-    handleClick = async () => {
-      await movementArchive({
-        ApplicantId: applicantId,
-        File: file,
-        Feedback: feedback,
-        ApplicantFeedback: applicantFeedback,
-        Comments: comments,
-      });
+  /* ------------------------------------------------------------------ */
+  /* declaration‑driven config ---------------------------------------- */
+  /* ------------------------------------------------------------------ */
+  type StatusKey = "Archived" | "For Interview" | "Offered" | "Hired" | "Default";
 
-      setIsDropdownOpen(false);
-      setIsFeedbackSent(true);
+  const statusMap: Record<StatusKey, { label: string; onClick: () => Promise<void> | void }> =
+  {
+    Archived: {
+      label: "Save Feedback",
+      onClick: async () => {
+        try {
+          await movementArchive({
+            ApplicantId: applicantId,
+            File: file,
+            Feedback: feedback,
+            ApplicantFeedback: applicantFeedback,
+            Comments: comments,
+          });
+          toast.success("Feedback Saved!");
+          setIsFeedbackSent(true);
 
-      setTimeout(() => {
-        setIsFeedbackSent(false);
-        setIsUpdateStatusButtonModalOpen(false);
-        setIsViewApplicant(false);
-        setSelectedStatus(null);
-        setIsGenerateNewOffer(false);
-        setIsOffered(false);
-        setIsModalOpen(false);
-      }, 1000);
-    };
-  } else if (selectedStatus === "For Interview") {
-    // buttonText = "Schedule Interview";
-    buttonText = "Add to Calendar";
-    handleClick = async () => {
-      try {
-        await movementScheduleInterview({
-          ApplicantId: applicantId,
-          Date: interviewDate,
-          Time: interviewTime,
-          Location: interviewLocation,
-          Interviewer: {
-            Id: interviewerId,
-            Name: getInterviewer,
-          },
-          InterviewStage: {
-            Id: interviewStagesId,
-            Name: interviewStages,
-          },
-          Order: interviewStagesId,
-          Comment: comments,
-        });
+          await delay(1000);
+          setIsFeedbackSent(false);
+          resetAll();
+        } catch (e: any) {
+          toast.error(
+            e?.status === 500
+              ? "Please fill all the required fields"
+              : "Failed to Update Status"
+          );
+        }
+      },
+    },
 
-        setIsContactApplicant(true);
-        setIsDropdownOpen(false);
+    "For Interview": {
+      label: "Add to Calendar",
+      onClick: async () => {
+        try {
+          await movementScheduleInterview({
+            ApplicantId: applicantId,
+            Date: interviewDate,
+            Time: interviewTime,
+            Location: interviewLocation,
+            Interviewer: { Id: interviewerId, Name: getInterviewer },
+            InterviewStage: { Id: interviewStagesId, Name: interviewStages },
+            Order: interviewStagesId,
+            Comment: comments,
+          });
 
-        setTimeout(() => {
+          setIsContactApplicant(true);
+          setIsDropdownOpen(false);
+
+          await delay(1000);
           setIsContactApplicant(false);
+          setIsUpdateStatusButtonModalOpen(false);
           setSelectedStatus(null);
-        }, 1000);
+        } catch (e) {
+          toast.error("Please fill all the required fields");
+        }
+      },
+    },
 
-      } catch (error) {
-        console.error("Error scheduling interview:", error);
-      }
-    };
-  }
-  else if (selectedStatus === "Offered") {
-    buttonText = "Generate Offer";
-    handleClick = () => {
-      setIsOffered(true);
-    };
-  }
-  else if (selectedStatus === "Hired") {
-    buttonText = "Upload";
-    handleClick = async () => {
-      await movementHired({
-        ApplicantId: applicantId,
-        FileAttachment: file ?? null,
-        Order: interviewStagesId,
-        DateStart: selectedDate,
-      });
+    Offered: {
+      label: "Generate Offer",
+      onClick: () => {
+        setIsOffered(true);
+      },
+    },
 
-      setIsFeedbackSent(true);
-      setIsDropdownOpen(false);
+    Hired: {
+      label: "Upload",
+      onClick: async () => {
+        try {
+          await movementHired({
+            ApplicantId: applicantId,
+            FileAttachment: file ?? null,
+            Order: interviewStagesId,
+            DateStart: selectedDate,
+          });
+          toast.success("Applicant is now Hired!");
+          setIsFeedbackSent(true);
+          setIsDropdownOpen(false);
 
-      setTimeout(() => {
-        setIsFeedbackSent(false);
-        setIsViewApplicant(false);
-        setIsUpdateStatusButtonModalOpen(false);
-        setSelectedStatus(null);
-        onClose(); // Close DropDown.tsx
-      }, 1000);
-    };
-  }
+          await delay(1000);
+          setIsFeedbackSent(false);
+          resetAll();
+          onClose();
+        }
+        catch (error: any) {
+          toast.error("Error updating status.");
+        }
+      },
+    },
 
-  else {
-    buttonText = "Update";
-    handleClick = () => {
-      setIsDefaultUpdated(true);
+    Default: {
+      label: "Update",
+      onClick: () => {
+        setIsDefaultUpdated(true);
+        delay(1000).then(() => {
+          setIsDefaultUpdated(false);
+          setSelectedStatus(null);
+        });
+      },
+    },
+  };
 
-      setTimeout(() => {
-        setIsDefaultUpdated(false);
-        setSelectedStatus(null);
-      }, 1000);
-    };
-  }
+  /* ------------------------------------------------------------------ */
+  /* derive current handler + label ----------------------------------- */
+  /* ------------------------------------------------------------------ */
+  const effectiveStatus = selectedStatus ?? Status;
+  const key = (effectiveStatus in statusMap
+    ? (effectiveStatus as StatusKey)
+    : "Default") as StatusKey;
+
+  const { label: buttonText, onClick: handleClick } = statusMap[key];
+  // const { label: buttonText, onClick: handleClick } = statusMap[key];
+
 
   // This is the array of possible drop down options for update status button depending on the user's selected status.
   let availableStatuses = (
@@ -279,8 +299,33 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
           {/* For Interview Status */}
           <>
             {/* If the chosen status from Update Applicant Drop down is "For Interview" then show the below form fields */}
-            {selectedStatus === "For Interview" && (
+            {/* {selectedStatus === "For Interview" && (
               <ForInterviewStatus />
+            )} */}
+            {effectiveStatus === 'For Interview' && (
+              <>
+                <ForInterviewStatus />
+
+                {/* Comments box only while the user hasn’t chosen an alternative status */}
+                {!selectedStatus && (
+                  <div className="pt-4">
+                    <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
+                      Comments
+                    </h3>
+                    <Textarea
+                      placeholder="Type here"
+                      value={comments}
+                      onChange={(e) => setComments(e.target.value)}
+                      autosize
+                      minRows={4}
+                      classNames={{
+                        input:
+                          "poppins pt-2 w-[560px] h-[98px] px-4 bg-white border border-[#6D6D6D] rounded-lg text-[#6D6D6D] hover:bg-white hover:border-[#6D6D6D] hover:text-[#6D6D6D] text-[14px] text-[#6D6D6D99]",
+                      }}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </>
 
@@ -319,12 +364,12 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
               />
             )}
 
-            {(Status === 'For Interview' && !selectedStatus) && (
+            {/* {(Status === 'For Interview' && !selectedStatus) && (
               <ForInterviewStatus />
-            )}
+            )} */}
+
           </>
           {/* End of Transferred Status */}
-
           {/* Comment and suggestion text input */}
           {/* If the selected Status is "Hired" then do not show the comment and suggestion text input */}
           {(selectedStatus !== "Hired" && selectedStatus !== "Transferred" && selectedStatus && Status !== "Offered") && (
@@ -350,6 +395,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             <div className="flex justify-between pt-6">
               <Button onClick={() => {
                 setIsUpdateStatusButtonModalOpen(false);
+                setSelectedStatus(null);
                 setIsModalOpen(false);
               }}
                 className="bg-transparent text-[#559CDA] px-6 py-1 rounded-lg border-[#559CDA] font-medium text-[14px] poppins">
@@ -446,6 +492,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
 
           // If the user clicked the "Schedule Interview button and then proceeded to click "No", 
           // Set the selected status into "Archive" to re-render the update status form with the archived status.
+          // setIsUpdateStatusButtonModalOpen(false);
           setSelectedStatus("Archived")
           setIsScheduleInterview(false);
           setIsAddtoCalendar(false)

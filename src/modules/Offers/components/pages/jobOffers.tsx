@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useStatusFilterStore } from "@modules/Shared/store";
 import Filter from "@modules/Offers/components/filter/Filter";
-import { IconFileCheck, IconFileX } from "@tabler/icons-react";
+import { IconFile, IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useApplicantIdStore } from "@modules/Applicants/store";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
@@ -14,7 +14,7 @@ import { useApplicants } from "@modules/Shared/hooks/useSharedApplicants";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
-import { getApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
+import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 import { useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
 import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
@@ -27,7 +27,7 @@ import {
     LABEL_PENDING, LABEL_ACCEPTED,
     DATE_TRANSACTION, DATE_FORMAT,
     STATUS, ATTACHMENTS, LABEL_OFFERS,
-    CURSOR_NOT_ALLOWED, CURSOR_POINTER,
+    // CURSOR_NOT_ALLOWED, CURSOR_POINTER,
     BASE_COLUMNS_WITH_STATUS_ATTACHMENTS,
     DEFAULT_PAGE_COUNT, DEFAULT_PAGE_NUMBER,
     LABEL_ARCHIVED, BASE_COLUMNS_WITH_STATUS,
@@ -228,7 +228,7 @@ export default function index() {
     const handleRowClick = (row: ExtendedPDFProps) => {
         const id = (row as any).id || row.applicantId;
 
-        if (row.status !== "Accepted") { return; }
+        if (row.status !== "Accepted" && row.status !== "Pending") { return; }
 
         if (id) {
             setApplicantId(id);
@@ -241,12 +241,16 @@ export default function index() {
     const renderCell = (col: { accessor: string }, row: Row) => {
         let content = col.accessor === STATUS ? checkStatus(row.status) : row[col.accessor as keyof Row];
         // Determine cursor class based on status
-        const cursorClass = row.status !== "Accepted" ? "cursor-not-allowed" : "cursor-pointer";
+        const cursorClass = row.status !== "Accepted" && row.status !== "Pending" ? "cursor-not-allowed" : "cursor-pointer";
 
         if (col.accessor === ATTACHMENTS) {
-            if (!row.attachments) return null;
             const isPending = row.status?.toLowerCase() === LABEL_PENDING.toLowerCase();
-            const Icon = isPending ? IconFileX : IconFileCheck;
+            const isAccepted = row.status?.toLowerCase() === LABEL_ACCEPTED.toLowerCase();
+
+            let Icon;
+            if (isPending) Icon = IconFile;
+            else if (isAccepted) Icon = IconFileCheck;
+            else Icon = IconFileX;
 
             return (
                 <span className="flex justify-center mr-5">
@@ -277,6 +281,7 @@ export default function index() {
         render: (row: JobOfferRecord) => renderCell(col, row),
     }));
     //#endregion
+    const accessToken = sessionStorage.getItem("accessToken") ?? "";
 
     //#region MAIN
     return (
@@ -316,9 +321,6 @@ export default function index() {
                                                 handleRowClick(record);
                                             }
                                         }}
-                                        rowClassName={({ status }) =>
-                                            status?.toLowerCase() === LABEL_PENDING.toLowerCase() ? CURSOR_NOT_ALLOWED : CURSOR_POINTER
-                                        }
                                     />
                                 </div>
                             </Tabs.Panel>
@@ -346,11 +348,20 @@ export default function index() {
             </div>
 
             {/* PDF Modal */}
-            <PDFModal isOpen={!!selectedRow} onClose={() => setSelectedRow(null)} header={HEADER_GENERATE_JOB_OFFER}>
+            <PDFModal
+                isOpen={!!selectedRow}
+                onClose={() => setSelectedRow(null)}
+                header={HEADER_GENERATE_JOB_OFFER}
+            >
                 {selectedRow && (
                     <PDFViewer
                         identifier={applicantId}
-                        getPdfPathFn={getApplicantPDFPath}
+                        token={accessToken}
+                        getApplicantStatus={async () =>
+                            (selectedRow.status as "Accepted" | "Pending")
+                        }
+                        getPdfPathFnHired={getApplicantPDFPath}
+                        getPdfPathFnPending={getPendingApplicantPDFPath}
                     />
                 )}
             </PDFModal>
