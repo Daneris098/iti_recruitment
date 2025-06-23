@@ -223,7 +223,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                 <Text style={styles.text_data}>
                   Annual: PHP
                   <Text style={styles.actual_salary}>
-                    {amount != null ? ` ${formatPHPNumber(amount)} (Gross)` : " No Data"}
+                    {amount != null ? ` ${formatPHPNumber(amount)}` : " No Data"}
                   </Text>
                 </Text>
 
