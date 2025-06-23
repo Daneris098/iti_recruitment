@@ -4,9 +4,9 @@ import header from '@src/assets/job-offers-header.png';
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-import { useDepartmentStore, useApplicantNameStore } from "@src/modules/Shared/store";
+import { useDepartmentStore, useApplicantNameStore, usePositionApplied } from "@src/modules/Shared/store";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
-
+// import { re,  } from "@src/modules/Applicants/store";
 // Register the Poppins font
 Font.register({
   family: 'Poppins',
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
   },
   actual_salary: {
     color: '#6D6D6D',
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'Poppins',
     fontWeight: 'bold',
     textAlign: 'left'
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({  // General styles for Generative PDF
 // Create Document Component
 const PDFDocument: React.FC<Partial<PDFProps>> = ({
   // applicantName,
-  position,
+  // position,
   // department,
   remarks,
   // salaryMonthly,
@@ -151,6 +151,21 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
   const annualAmount = amount * 12
   const departmentName = useDepartmentStore.getState().departmentName;
   const getApplicantName = useApplicantNameStore.getState().applicantName
+  const getPosition = usePositionApplied.getState().firstPositionApplied;
+
+  const formatPHPNumber = (value: number | string) => {
+    const num = Number(value);
+
+    // Guard against non-numeric inputs
+    if (Number.isNaN(num)) return "0.00";
+
+    // "en-PH" gives 55,555.00 but *without* the ₱ sign
+    return new Intl.NumberFormat("en-PH", {
+      style: "decimal",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(num);
+  };
 
   return (
     <Document>
@@ -177,7 +192,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Position and Rank</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_title, { flex: 3 }]}>{position ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{getPosition ?? "No Data"}</Text>
             </View>
 
             {/* Department/Division */}
@@ -206,18 +221,20 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
 
                 {/* Monthly Salary */}
                 <Text style={styles.text_data}>
-                  Monthly:
+                  Annual: PHP
                   <Text style={styles.actual_salary}>
-                    {`   ${amount ?? "No Data"} (Gross)`}
+                    {amount != null ? ` ${formatPHPNumber(amount)} (Gross)` : " No Data"}
                   </Text>
                 </Text>
+
                 {/* Annual Salary */}
                 <Text style={styles.text_data}>
-                  Annual:
+                  Annual: PHP
                   <Text style={styles.actual_salary}>
-                    {`   ${annualAmount ?? "No Data"}`}
+                    {annualAmount != null ? ` ${formatPHPNumber(annualAmount)} (Gross)` : " No Data"}
                   </Text>
                 </Text>
+
               </View>
               <Text style={[styles.text_title, { marginLeft: 139 }]}>
                 <Text style={styles.salary_note}>{noteSalary ?? "No Data"}</Text>

@@ -1,6 +1,6 @@
 import { Divider } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import profileImage from "@src/assets/defaultphoto.png";
+import profileImage from "@src/assets/unknown.png";
 import { useEffect, useMemo, useState } from "react";
 import { useCloseModal } from "@modules/Applicants/store";
 import { ViewApplicantsProps } from "@modules/Shared/types";
@@ -54,9 +54,8 @@ export default function ViewApplicant({
       }}
       className="w-[100px] h-[100px] rounded-full shadow-sm object-cover"
     />
-  ), [fullUrl]);
+  ), [imgSrc]);
 
-  
   useEffect(() => setImgSrc(fullUrl), [fullUrl]);
   useEffect(() => {
     if (!applicantId || !token) return;
