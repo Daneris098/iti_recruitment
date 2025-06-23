@@ -19,9 +19,7 @@ export default function ApplicationForm() {
   });
 
   const form = useForm({
-    initialValues: {
-      applicantId: 0,
-    },
+    initialValues: { applicantId: 0 },
   });
 
   const options =
@@ -68,7 +66,7 @@ export default function ApplicationForm() {
         className="w-full text-[#6D6D6D]"
         size="md"
         label="Applicants"
-        placeholder="Type full name (4 words)..."
+        placeholder="Enter a name (4 letters)"
         rightSection={<IconCaretDownFilled size="18" />}
         maxDropdownHeight={200}
         nothingFoundMessage="No applicants"
