@@ -45,13 +45,7 @@ export default function EditPosition({ record }: { record: PositionType }) {
         {...editPosition.getInputProps("name")}
         error={editPosition.values.name === "" ? "Required" : undefined}
       />
-      <TextInput
-        className="w-[50%]"
-        classNames={{ input: "poppins text-[#6D6D6D]" }}
-        defaultValue={record.description}
-        {...editPosition.getInputProps("description")}
-        error={editPosition.values.description === "" ? "Required" : undefined}
-      />
+      <TextInput className="w-[50%]" classNames={{ input: "poppins text-[#6D6D6D]" }} defaultValue={record.description} {...editPosition.getInputProps("description")} />
       <div className="w-[10%] flex flex-row items-center gap-10">
         <Select
           radius={8}

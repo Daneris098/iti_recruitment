@@ -8,15 +8,18 @@ import { Flex, Stack } from "@mantine/core";
 
 import "./assets/index.css";
 
-import { sourceEfficiencyData, applicantsData, offerAcceptanceData } from "./assets/sample-data";
+import { sourceEfficiencyData, offerAcceptanceData } from "./assets/sample-data";
 
 //--- Home Dashboard Components
 import { ApplicantSummaryCard } from "./components/ApplicantSummaryCard";
 import { RecruitmentFunnel } from "./components/RecruitmentFunnel";
 import { ApplicationSource } from "./components/ApplicationSource";
 import { OfferAcceptance } from "./components/OfferAcceptance";
+import { useApplicantsData } from "./services/data";
 
 export default function index() {
+  const { applicantsData } = useApplicantsData();
+
   return (
     <Stack className="w-full h-[1200px] sm:h-[1000px] xl:h-full">
       <title>Dashboard</title>

@@ -78,13 +78,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
           }
         }}
       />
-      <TextInput
-        className="w-[50%]"
-        classNames={{ input: "poppins text-[#6D6D6D]" }}
-        defaultValue={record.description}
-        {...editDivision.getInputProps("description")}
-        error={editDivision.values.description === "" ? "Required" : undefined}
-      />
+      <TextInput className="w-[50%]" classNames={{ input: "poppins text-[#6D6D6D]" }} defaultValue={record.description} {...editDivision.getInputProps("description")} />
       <div className="w-[10%] flex flex-row items-center gap-10">
         <Select
           radius={8}
