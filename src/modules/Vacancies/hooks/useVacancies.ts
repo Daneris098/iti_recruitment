@@ -67,11 +67,16 @@ export const useVacancies = () => {
             });
 
             if (res.status === 200 && Array.isArray(res.data.items)) {
+                console.log('raw: ', res.data.items)
                 const mapped = res.data.items.map((item: any) => ({
                     ...item,
                     mustHaveSkills: item.skills,
                     company: item.company.name,
                     branch: item.branch.name,
+                    branchObj: [{ ...item.branch, value: item.branch.id, label: item.branch.name }],
+                    divisionObj: [{ ...item.division, value: item.division.id, label: item.division.name }],
+                    departmentObj: [{ ...item.department, value: item.department.id, label: item.department.name }],
+                    sectionObj: [{ ...item.section, value: item.section.id, label: item.section.name }],
                     division: item.division.name,
                     experienceLevel: item.experienceLevel.name,
                     vacancyType: item.vacancyType.name,
@@ -89,6 +94,7 @@ export const useVacancies = () => {
                     totalApplicant: item.totalApplicants,
                     status: item.status.name,
                 }));
+                console.log('mapped: ', mapped)
                 setTotalRecords(res.data.total)
                 const endTime = performance.now();
                 const executionTime = (endTime - startTime) / 1000;

@@ -79,6 +79,10 @@ export interface VacancyType {
   };
   mustHaveSkills: string[];
   qualification: string;
+  branchObj: any
+  divisionObj: any
+  departmentObj: any
+  sectionObj: any
 }
 
 export interface FormData {

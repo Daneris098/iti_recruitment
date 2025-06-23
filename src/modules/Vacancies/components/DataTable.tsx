@@ -102,6 +102,7 @@ export default function index() {
       sortStatus={sortStatus}
       onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
       onRowClick={(val) => {
+        console.log('val: ', val)
         setSelectedVacancy(val.record);
       }}
     />
