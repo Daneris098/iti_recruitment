@@ -4,7 +4,7 @@ import { useApplicantIdStore } from "@src/modules/Shared/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
 import { JobOpenings, ApplicantTransfereeName, Slot } from "@modules/Shared/types";
-import { IconDots, IconRefresh, IconX, IconChevronDown, IconCirclePlus, IconCirclePlusFilled, IconPlus } from "@tabler/icons-react";
+import { IconDots, IconRefresh, IconX, IconChevronDown, IconPlus } from "@tabler/icons-react";
 import TransferredPosition from "@modules/Applicants/components/alerts/Transferred";
 import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
 import { useJobOpeningStore, useSelectedApplicantsStore } from "@modules/Shared/store";
