@@ -17,25 +17,37 @@ import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus
 import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function ViewApplicant({
-  applicantName,
-  position,
   status,
   email,
   phone,
   remarks,
-  applicationDate,
   onClose,
+  location,
+  position,
   IsJobOffer,
-  location
+  applicantName,
+  applicationDate,
 }: ViewApplicantsProps) {
 
   const applicantId = useApplicantIdStore((state) => state.id);
   const { data: applicantsById } = useApplicantsById(applicantId);
 
-  const token = sessionStorage.getItem("accessToken") ?? undefined;
-  const [applicant, setApplicant] = useState<any | null>(null);
   const [_isLoading, setLoading] = useState(false);
   const [_error, setError] = useState<unknown>(null);
+  const [showImage, setShowImage] = useState(false);
+  const [applicant, setApplicant] = useState<any | null>(null);
+  const token = sessionStorage.getItem("accessToken") ?? undefined;
+
+  const {
+    setIsOffered,
+    isTransferPosition, setIsTransferPosition,
+    isGenerateNewOffer, setIsGenerateNewOffer,
+    isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
+  } = useCloseModal();
+
+  const [isViewPDF, togglePDF] = useState(false);
+  const displayStatus = getDisplayStatus(status);
+  const changeTabs = getTabs({ applicantName, status: status, remarks: remarks });
 
   const fullUrl = useMemo(() => {
     const photoPath = extractPhotoPath(applicant?.photo);
@@ -57,6 +69,7 @@ export default function ViewApplicant({
   ), [imgSrc]);
 
   useEffect(() => setImgSrc(fullUrl), [fullUrl]);
+
   useEffect(() => {
     if (!applicantId || !token) return;
 
@@ -67,21 +80,9 @@ export default function ViewApplicant({
       .finally(() => setLoading(false));
   }, [applicantId, token]);
 
-  const {
-    setIsOffered,
-    isTransferPosition, setIsTransferPosition,
-    isGenerateNewOffer, setIsGenerateNewOffer,
-    isUpdateStatusButtonModalOpen, setIsUpdateStatusButtonModalOpen,
-  } = useCloseModal();
-
-  const [isViewPDF, togglePDF] = useState(false);
-  const displayStatus = getDisplayStatus(status);
-  const changeTabs = getTabs({ applicantName, status: status, remarks: remarks });
-
   function extractPhotoPath(raw: unknown): string | undefined {
     if (!raw) return;
 
-    // ① API sometimes sends it as a JSON string
     if (typeof raw === "string") {
       try {
         const parsed = JSON.parse(raw);
@@ -92,7 +93,6 @@ export default function ViewApplicant({
       }
     }
 
-    // ② Already an array
     if (Array.isArray(raw)) {
       return raw[0]?.path;
     }
@@ -120,8 +120,9 @@ export default function ViewApplicant({
         {/* Sidebar */}
         <div className="w-1/4 p-2 sticky top-0 h-screen overflow-y-auto">
           <div className="flex flex-col items-start mt-3">
-            {/* <img src={profileImage} className="w-[100px] h-[100px] rounded-full shadow-sm" /> */}
-            {memoizedImage}
+            <div className="cursor-pointer" onClick={() => setShowImage(true)}>
+              {memoizedImage}
+            </div>
             <TextRenderer as="p" className="text-[#559CDA] text-[20px] font-bold mt-2">
               {applicantName}
             </TextRenderer>
@@ -207,6 +208,23 @@ export default function ViewApplicant({
         <div className="w-4/5 p-4 overflow-y-auto h-screen">
           <TabsPanel tabs={changeTabs} />
         </div>
+
+        <>
+          {showImage && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+              onClick={() => setShowImage(false)}
+            >
+              <div className="max-w-[90%] max-h-[90%]">
+                <img
+                  src={memoizedImage?.props?.src || ""}
+                  alt="Enlarged"
+                  className="w-full h-full object-contain rounded-lg shadow-lg"
+                />
+              </div>
+            </div>
+          )}
+        </>
       </div>
 
       {/* PDF Modal */}
@@ -234,6 +252,6 @@ export default function ViewApplicant({
         Acknowledgement={""}
         Department={""}
       />
-    </div>
+    </div >
   );
 }
