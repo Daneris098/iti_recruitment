@@ -4,7 +4,7 @@ import header from '@src/assets/job-offers-header.png';
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-import { useDepartmentStore, useApplicantNameStore, usePositionApplied } from "@src/modules/Shared/store";
+import { useDepartmentStore, useApplicantNameStore, usePositionApplied, useChoiceStore } from "@src/modules/Shared/store";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 // import { re,  } from "@src/modules/Applicants/store";
 // Register the Poppins font
@@ -147,11 +147,15 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
     { label: 'Transportation Subsidy', value: descriptionTranspo },
   ];
 
+
   const { amount } = useDropDownOfferedStore.getState();
   const annualAmount = amount * 12
   const departmentName = useDepartmentStore.getState().departmentName;
   const getApplicantName = useApplicantNameStore.getState().applicantName
   const getPosition = usePositionApplied.getState().firstPositionApplied;
+
+  // const transferredPosition = useChoiceStore((state) => state.transferredPositionName);
+  const transferredPosition = useChoiceStore.getState().transferredPositionName
 
   const formatPHPNumber = (value: number | string) => {
     const num = Number(value);
@@ -189,10 +193,17 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             </View>
 
             {/* Position and Rank */}
-            <View style={{ flexDirection: 'row', width: '70%' }}>
-              <Text style={[styles.text_title, { flex: 2 }]}>Position and Rank</Text>
+            <View style={{ flexDirection: 'row', width: '100%' }}>
+              <Text style={[styles.text_title, { flex: 1.5 }]}>Position and Rank</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_title, { flex: 3 }]}>{getPosition ?? "No Data"}</Text>
+              <Text
+                style={[styles.text_title, { flex: 4 }]}
+                wrap={false}
+              >
+                {`${transferredPosition ?? getPosition} / ${departmentName}`.slice(0, 50)}
+
+                {/* {`${getPosition} / ${departmentName}`.slice(0, 50)} */}
+              </Text>
             </View>
 
             {/* Department/Division */}

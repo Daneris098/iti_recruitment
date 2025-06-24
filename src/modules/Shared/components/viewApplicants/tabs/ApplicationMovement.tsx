@@ -81,7 +81,7 @@ export default function ApplicationMovement({ status }: Props) {
     );
 
     const records = [...movementRecords, ...stageRecords]
-        .sort((a, b) => b._sortDate - a._sortDate).reverse()
+        .sort((a, b) => b._sortDate - a._sortDate)
         .map(({ _sortDate, ...rest }) => rest);
 
     /* ------------------------- helpers ---------------------------- */
