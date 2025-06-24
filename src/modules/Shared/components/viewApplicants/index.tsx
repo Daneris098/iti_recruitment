@@ -12,7 +12,6 @@ import { getTabs } from "@modules/Shared/utils/ApplicantModal/tabConfiguration";
 import { StatusBadge } from "@modules/Shared/utils/ApplicantModal/statusColors";
 import { ActionButton } from "@modules/Shared/utils/ApplicantModal/actionButton";
 import { TextRenderer } from "@modules/Shared/utils/ApplicantModal/textRenderer";
-import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus";
 import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
@@ -30,7 +29,6 @@ export default function ViewApplicant({
 }: ViewApplicantsProps) {
 
   const applicantId = useApplicantIdStore((state) => state.id);
-  const { data: applicantsById } = useApplicantsById(applicantId);
 
   const [_isLoading, setLoading] = useState(false);
   const [_error, setError] = useState<unknown>(null);
@@ -161,9 +159,11 @@ export default function ViewApplicant({
           <div className="mt-8 text-[12px] text-[#6D6D6D] pb-4">
             <TextRenderer as="h1">Skills</TextRenderer>
             <div className="flex gap-2 mt-2 flex-wrap">
-              {applicantsById?.generalInformation?.skills?.length ? (
-                applicantsById.generalInformation.skills.map((skill: string, index: number) => (
-                  <SkillChip key={index} skill={skill} />
+            </div>
+            <div className="flex gap-2 mt-2 flex-wrap">
+              {applicant?.skills?.length ? (
+                applicant?.skills?.map((skill: { keyword: string }, index: number) => (
+                  <SkillChip key={index} skill={skill.keyword} />
                 ))
               ) : (
                 <TextRenderer as="p" className='text-[#6D6D6D] poppins'>No Skills Listed</TextRenderer>
