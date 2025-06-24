@@ -241,7 +241,11 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                     </h1>
                     <IconX
                         className="w-[16px] h-[16px] cursor-pointer"
-                        onClick={() => setOpened(false)}
+                        // onClick={() => setOpened(false)}
+                        onClick={() => {
+                            setOpened(false);
+                            handleRefresh();
+                        }}
                     />
                 </div>
 
@@ -276,13 +280,22 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                         style={{ flexGrow: 1 }}
                     />
 
-                    <div className="flex items-center gap-2">
-                        <Button className="custom-gradient">
-                            <span><IconPlus size={16} stroke={4} /></span>
-                            Select
+                    <div className="flex items-center gap-1">
+                        <Button
+                            onClick={() => setFilterText("")}
+                            variant="outline"
+                            color="gray"
+                            size="sm"
+                            className="p-2"
+                        >
+                            <IconRefresh onClick={handleRefresh} className="text-[#6d6d6d]" />
                         </Button>
-                        <Button onClick={() => setFilterText("")}>
-                            <IconRefresh onClick={handleRefresh} />
+
+                        <Button
+                            onClick={() => setOpened(false)}
+                            className="custom-gradient text-white px-4 py-2 text-base font-normal" size="sm">
+                            <IconPlus size={16} stroke={5} className="mr-1" />
+                            Select
                         </Button>
                     </div>
                 </div>
