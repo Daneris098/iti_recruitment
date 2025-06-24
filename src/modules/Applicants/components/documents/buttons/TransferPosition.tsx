@@ -4,7 +4,7 @@ import { useApplicantIdStore } from "@src/modules/Shared/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
 import { JobOpenings, ApplicantTransfereeName, Slot } from "@modules/Shared/types";
-import { IconDots, IconRefresh, IconX, IconChevronDown } from "@tabler/icons-react";
+import { IconDots, IconRefresh, IconX, IconChevronDown, IconCirclePlus, IconCirclePlusFilled, IconPlus } from "@tabler/icons-react";
 import TransferredPosition from "@modules/Applicants/components/alerts/Transferred";
 import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
 import { useJobOpeningStore, useSelectedApplicantsStore } from "@modules/Shared/store";
@@ -101,7 +101,11 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
         setSelectedIds([]);
     };
 
-    console.log(selectedIds)
+    const headerColor = (text: string) => <span className='text-[#464646] font-medium poppins'>{text}</span>
+    const grayCell = (text: string | null | undefined) => (
+        <span className="text-gray-700 font-light poppins">{text ?? "—"}</span>
+    );
+
     return (
         <div className="p-9">
             {/* Header */}
@@ -236,7 +240,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                         Vacancies
                     </h1>
                     <IconX
-                        className="w-[15px] h-[15px] cursor-pointer"
+                        className="w-[16px] h-[16px] cursor-pointer"
                         onClick={() => setOpened(false)}
                     />
                 </div>
@@ -246,7 +250,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 {/* Filter Controls */}
                 <div className="flex gap-3 mb-4 items-center mt-2">
                     <Menu withinPortal={false}>
-                        <h1>Search By:</h1>
+                        <h1 className="poppins text-[#323232]">Search by:</h1>
                         <Menu.Target>
                             <Button variant="light" size="sm">
                                 {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
@@ -272,22 +276,41 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                         style={{ flexGrow: 1 }}
                     />
 
-                    <Button onClick={() => setFilterText("")}>
-                        <IconRefresh onClick={handleRefresh} />
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button className="custom-gradient">
+                            <span><IconPlus size={16} stroke={4} /></span>
+                            Select
+                        </Button>
+                        <Button onClick={() => setFilterText("")}>
+                            <IconRefresh onClick={handleRefresh} />
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Job Openings DataTable */}
                 <DataTable
                     records={filteredSlots}
                     columns={[
-                        { accessor: "position", title: "Position", render: ({ position }) => position ?? "—" },
-                        { accessor: "company", title: "Company", render: ({ company }) => company?.name ?? "—" },
-                        { accessor: "slots", title: "Slots" },
+                        {
+                            accessor: "position",
+                            title: headerColor("Position"),
+                            render: ({ position }) => grayCell(position),
+                        },
+                        {
+                            accessor: "company",
+                            title: headerColor("Company"),
+                            render: ({ company }) => grayCell(company?.name),
+                        },
+                        {
+                            accessor: "slots",
+                            title: headerColor("Slots"),
+                            render: ({ slots }) => grayCell(slots?.toString()),
+                        },
                     ]}
                     selectedRecords={selectedSlots}
                     onSelectedRecordsChange={handleSelectedRecordsChange}
                 />
+
 
                 {/* Footer */}
                 <div className="flex-shrink-0 mt-4 pt-2 border-t flex justify-between items-center">
