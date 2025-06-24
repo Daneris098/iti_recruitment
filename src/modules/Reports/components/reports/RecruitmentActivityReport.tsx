@@ -113,16 +113,23 @@ export default function index() {
         <Select
           classNames={{ input: "poppins text-[#6D6D6D]", dropdown: "poppins text-[#6D6D6D]" }}
           radius={8}
-          data={vacancies!.data?.items.map((items: any) => ({
-            value: String(items.id),
-            label: items.position,
-          }))}
+          data={
+            vacancies?.data?.items?.length
+              ? vacancies.data.items
+                  .filter((item: any) => item?.id && item?.position)
+                  .map((item: any) => ({
+                    value: String(item.id),
+                    label: item.position,
+                  }))
+              : []
+          }
           className="w-full text-[#6D6D6D]"
           size="md"
           label="Position"
           placeholder="Specify Position"
           onChange={(value) => {
-            const selectedItem: { id: number; name: string } = vacancies!.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+            const selectedItem = vacancies?.data?.items.find((item: any) => item.id === Number(value)) as { id: number; position: string } | undefined;
+
             if (selectedItem) {
               form.setFieldValue("vacancyId", selectedItem.id);
             }
