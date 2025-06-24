@@ -17,40 +17,40 @@ export const useApplicants = () => {
             const startTime = performance.now();
             const appliedResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    // pageSize,
-                    // page,
+                    pageSize,
+                    page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 1,
                 },
             });
             const forInterviewResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    // pageSize,
-                    // page,
+                    pageSize,
+                    page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 2,
                 },
             });
             const offeredResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    // pageSize,
-                    // page,
+                    pageSize,
+                    page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 3,
                 },
             });
             const hiredResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    // pageSize,
-                    // page,
+                    pageSize,
+                    page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 5,
                 },
             });
             const archivedResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    // pageSize,
-                    // page,
+                    pageSize,
+                    page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 4,
                 },

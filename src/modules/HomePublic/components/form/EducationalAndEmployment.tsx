@@ -57,15 +57,16 @@ export default function index() {
     }
 
     const handleAdd = (mode: string, index: number) => {
-        if (mode == 'professionaLicenses') {
-            const newValue = professionaLicensesInput[index];
-            if (!profesionalLicenses[index]?.includes(newValue)) {
+        if (mode === 'professionaLicenses') {
+            const rawValue = professionaLicensesInput[index];
+            const newValue = rawValue.trim();
+            if (newValue !== '' && !profesionalLicenses[index]?.includes(newValue)) {
                 setProfesionalLicenses((prev) => {
                     const updated = [...prev];
                     if (!Array.isArray(updated[index])) {
                         updated[index] = [];
                     }
-                    const newVal = [...updated[index], newValue]
+                    const newVal = [...updated[index], newValue];
                     updated[index] = newVal;
                     form.setFieldValue(`educationBackground.${index}.professionalLicenses`, newVal);
                     return updated;
@@ -76,16 +77,16 @@ export default function index() {
                     return updated;
                 });
             }
-        }
-        else {
-            const newValue = certificationsInput[index];
-            if (!certifications[index]?.includes(newValue)) {
+        } else {
+            const rawValue = certificationsInput[index];
+            const newValue = rawValue.trim();
+            if (newValue !== '' && !certifications[index]?.includes(newValue)) {
                 setCertifications((prev) => {
                     const updated = [...prev];
                     if (!Array.isArray(updated[index])) {
                         updated[index] = [];
                     }
-                    const newVal = [...updated[index], newValue]
+                    const newVal = [...updated[index], newValue];
                     updated[index] = newVal;
                     form.setFieldValue(`educationBackground.${index}.certifications`, newVal);
                     return updated;
@@ -97,24 +98,28 @@ export default function index() {
                 });
             }
         }
-    }
+    };
 
-    const handleKeyDown = (event: any, mode: string, index: number) => {
-        if (event.key === 'Enter' && event.target.value) {
-            const newValue = event.target.value.trim();
-            if (mode == 'professionaLicenses') {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>, mode: string, index: number) => {
+        if (event.key === 'Enter') {
+            const newValue = event.currentTarget.value.trim();
+            if (newValue === '') {
+                event.preventDefault(); // prevent Enter from submitting empty/whitespace input
+                return;
+            }
+
+            if (mode === 'professionaLicenses') {
                 if (!profesionalLicenses[index]?.includes(newValue)) {
                     setProfesionalLicenses((prev) => {
                         const updated = [...prev];
                         if (!Array.isArray(updated[index])) {
                             updated[index] = [];
                         }
-                        const newVal = [...updated[index], newValue]
+                        const newVal = [...updated[index], newValue];
                         updated[index] = newVal;
                         form.setFieldValue(`educationBackground.${index}.professionalLicenses`, newVal);
                         return updated;
                     });
-
 
                     setProfessionaLicensesInput((prev) => {
                         const updated = [...prev];
@@ -122,19 +127,19 @@ export default function index() {
                         return updated;
                     });
                 }
-            }
-            else {
+            } else {
                 if (!certifications[index]?.includes(newValue)) {
                     setCertifications((prev) => {
                         const updated = [...prev];
                         if (!Array.isArray(updated[index])) {
                             updated[index] = [];
                         }
-                        const newVal = [...updated[index], newValue]
+                        const newVal = [...updated[index], newValue];
                         updated[index] = newVal;
                         form.setFieldValue(`educationBackground.${index}.certifications`, newVal);
                         return updated;
                     });
+
                     setCertificationsInput((prev) => {
                         const updated = [...prev];
                         updated[index] = '';
@@ -142,9 +147,11 @@ export default function index() {
                     });
                 }
             }
-            event.preventDefault();
+
+            event.preventDefault(); // prevent default after handling valid input
         }
     };
+
 
     const handleValueRemove = (mode: string, val: string, index: number) => {
         if (mode == 'professionaLicenses') {
@@ -226,8 +233,14 @@ export default function index() {
     const onSubmit = async (form: EducationalAndEmployment) => {
         let educationBackground = form.educationBackground
         for (let i = 0; i < educationBackground.length; i++) {
-            educationBackground[i].professionalLicenses = profesionalLicenses[i].toString()
-            educationBackground[i].certifications = certifications[i].toString()
+            if (profesionalLicenses[i] !== undefined && profesionalLicenses[i] !== null) {
+                educationBackground[i].professionalLicenses = profesionalLicenses[i].toString();
+            }
+            if (certifications[i] !== undefined && certifications[i] !== null) {
+                educationBackground[i].certifications = certifications[i].toString();
+            }
+            // educationBackground[i].professionalLicenses = profesionalLicenses[i].toString()
+            // educationBackground[i].certifications = certifications[i].toString()
         }
         form.educationBackground = educationBackground
         setApplicationForm({ ...applicationForm, educationAndEmployment: form })
@@ -337,7 +350,9 @@ export default function index() {
 
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
-                ...applicationForm.educationAndEmployment, employmentRecord: [...form.getValues().employmentRecord, {
+                ...applicationForm.educationAndEmployment,
+                educationBackground: [...form.getValues().educationBackground],
+                employmentRecord: [...form.getValues().employmentRecord, {
                     id: uniqueId,
                     employerCompany: '',
                     location: '',
@@ -363,7 +378,9 @@ export default function index() {
 
         setApplicationForm({
             ...applicationForm, educationAndEmployment: {
-                ...applicationForm.educationAndEmployment, educationBackground: [...form.getValues().educationBackground, {
+                ...applicationForm.educationAndEmployment,
+                employmentRecord: [...form.getValues().employmentRecord],
+                educationBackground: [...form.getValues().educationBackground, {
                     id: uniqueId,
                     nameOfSchool: '',
                     educationalLevel: '',

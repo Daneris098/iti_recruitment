@@ -100,6 +100,9 @@ export default function Filter() {
     }
 
     setFilter(updatedFilter);
+    // setIsFiltered(false)
+    // setIsFiltered(true)
+    // console.log('tangalll')
   };
 
   const iconSize: MantineSize = useMatches({

@@ -155,8 +155,8 @@ export default function Index() {
                                         occupation: item.occupation?.toString()?.trim() || 'N/A',
                                     })),
                                 childCount: applicationForm.familyBackground.children.numberOfChildren,
-                                childAgeRangeFrom: 1,
-                                childAgeRangeTo: 20,
+                                childAgeRangeFrom: applicationForm.familyBackground.children.ageRange.min,
+                                childAgeRangeTo: applicationForm.familyBackground.children.ageRange.max,
                             },
                             postingType: {
                                 fromEmployeeReferral: applicationForm.reference.applicationSource.employeeReferal,

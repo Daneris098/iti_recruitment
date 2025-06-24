@@ -357,7 +357,7 @@ export default function index() {
                                 </div>
                                 <div>
                                     <p className="text-[#6D6D6D]">Age Range</p>
-                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.children.ageRange != '' ? applicationForm.familyBackground.children.ageRange : 'N/A'}</p>
+                                    <p className="text-[#6D6D6D] font-bold">{applicationForm.familyBackground.children.ageRange.min == 0 && applicationForm.familyBackground.children.ageRange.max == 0 ? 'N/A' : applicationForm.familyBackground.children.ageRange.min + '-' + applicationForm.familyBackground.children.ageRange.max}</p>
                                 </div>
                             </div>
                             <div className="flex flex-col p-2 gap-5 w-1/2">

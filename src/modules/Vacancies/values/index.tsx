@@ -50,6 +50,21 @@ export const filterVal: FilterType = {
   experienceLevel: [],
 }
 
+export const cleanFilterVal: FilterType = {
+  dateFrom: '',
+  dateTo: '',
+  postedDate: null,
+  jobTitle: '',
+  vacancy: [],
+  company: [],
+  interviewer: [],
+  status: [],
+  department: [],
+  employmentType: [],
+  workplaceType: [],
+  experienceLevel: [],
+}
+
 export const selectedApplicantInitial: selectedApplicant = {
   nameResponse: {
     firstName: '',

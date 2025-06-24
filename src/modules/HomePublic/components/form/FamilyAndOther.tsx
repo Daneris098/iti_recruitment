@@ -25,23 +25,24 @@ export default function index() {
     ));
 
     const handleAdd = () => {
-        const newValue = search;
-        if (!technicalSkills.includes(newValue)) {
+        const newValue = search.trim();
+        if (newValue !== "" && !technicalSkills.includes(newValue)) {
             setTechnicalSkills((prev) => [...prev, newValue]);
-            setSearch("")
-        }
-    }
-
-    const handleKeyDown = (event: any) => {
-        if (event.key === 'Enter' && event.target.value) {
-            const newValue = event.target.value.trim();
-            if (!technicalSkills.includes(newValue)) {
-                setTechnicalSkills((prev) => [...prev, newValue]);
-                setSearch("")
-            }
-            event.preventDefault();
+            setSearch("");
         }
     };
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            const newValue = event.currentTarget.value.trim();
+            if (newValue !== "" && !technicalSkills.includes(newValue)) {
+                setTechnicalSkills((prev) => [...prev, newValue]);
+                setSearch("");
+            }
+            event.preventDefault(); // Prevent form submission or default behavior
+        }
+    };
+
 
     const handleValueRemove = (val: string) => {
         setTechnicalSkills((prev) => prev.filter(item => item != val));
@@ -336,12 +337,27 @@ export default function index() {
                         min={0}
                     />
 
-                    <TextInput
+                    <NumberInput
                         disabled={form.getValues().children.numberOfChildren == '' || Number(form.getValues().children.numberOfChildren) <= 0}
-                        {...form.getInputProps("children.ageRange")}
+                        {...form.getInputProps("children.ageRange.min")}
+                        hideControls
                         w={isMobile ? '100%' : '100%'}
                         label="Age Range"
-                        placeholder={"Age Range"}
+                        placeholder={"Min"}
+                        radius={8}
+                        className="border-none w-full text-sm "
+                        classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
+                        styles={{ label: { color: "#6d6d6d" } }}
+                        min={0}
+                    />
+
+                    <NumberInput
+                        disabled={form.getValues().children.numberOfChildren == '' || Number(form.getValues().children.numberOfChildren) <= 0}
+                        {...form.getInputProps("children.ageRange.max")}
+                        hideControls
+                        w={isMobile ? '100%' : '100%'}
+                        label=""
+                        placeholder={"Max"}
                         radius={8}
                         className="border-none w-full text-sm "
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}

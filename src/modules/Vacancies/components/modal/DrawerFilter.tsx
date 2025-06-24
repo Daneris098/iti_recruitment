@@ -2,12 +2,12 @@ import { Button, Divider, Drawer, Flex, MultiSelect, Text, useMatches, } from "@
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 // import { useMediaQuery } from "@mantine/hooks";
 import { FilterStore, FilterItemsStore } from "@modules/Vacancies/store";
-import { filterVal } from "@modules/Vacancies/values";
+import { cleanFilterVal, filterVal } from "@modules/Vacancies/values";
 import { useEffect } from "react";
 import { DateRange } from "../DateRange";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import axiosInstance from "@src/api";
-import { queryClient } from "@src/client/queryClient";
+// import { queryClient } from "@src/client/queryClient";
 
 export default function DrawerFilter() {
   // const [value, setValue] = useState<Date | null>(null);
@@ -133,10 +133,13 @@ export default function DrawerFilter() {
     fetchLookups()
   }, [])
 
+  useEffect(() => {
+    console.log('filter: ', filter)
+  }, [filter])
+
   const clear = () => {
-    setFilter(filterVal)
+    setFilter(cleanFilterVal)
     setIsFiltered(false)
-    // setValue([null, null])
   }
 
   useEffect(() => {
@@ -232,6 +235,7 @@ export default function DrawerFilter() {
             onChange={(value) => setFilter({ ...filter, company: value })}
           />
           <MultiSelect
+            searchable
             value={filter.vacancy}
             size={inputSize}
             label="Vacancy"
@@ -301,7 +305,7 @@ export default function DrawerFilter() {
             onClick={() => {
               setIsFiltered(true);
               setFilterDrawer(false);
-              queryClient.refetchQueries({ queryKey: ["recruitment/vacancies"], type: 'active' });
+              // queryClient.refetchQueries({ queryKey: ["recruitment/vacancies"], type: 'active' });
             }}
             variant="transparent"
             className="br-gradient border-none"
