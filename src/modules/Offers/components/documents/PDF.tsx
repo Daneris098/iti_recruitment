@@ -189,10 +189,15 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             </View>
 
             {/* Position and Rank */}
-            <View style={{ flexDirection: 'row', width: '70%' }}>
-              <Text style={[styles.text_title, { flex: 2 }]}>Position and Rank</Text>
+            <View style={{ flexDirection: 'row', width: '100%' }}>
+              <Text style={[styles.text_title, { flex: 1.5 }]}>Position and Rank</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_title, { flex: 3 }]}>{getPosition ?? "No Data"}</Text>
+              <Text
+                style={[styles.text_title, { flex: 4 }]}
+                wrap={false}
+              >
+                {`${getPosition} / ${departmentName}`.slice(0, 50)}
+              </Text>
             </View>
 
             {/* Department/Division */}
