@@ -177,18 +177,12 @@ export default function index() {
 
     if (action == "Edit") {
       form.setFieldValue("positionTitle", selectedVacancy.position);
-      // console.log((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any))
-      console.log("selectedVacancy: ", selectedVacancy);
-      // console.log('company val: ', String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id))
       setSelectedCompanyId(String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id));
-      // console.log('branches ', selectedVacancy.branchObj)
-      // console.log('value  ', selectedVacancy.branchObj[0].value)
       form.setFieldValue("company", String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id));
       form.setFieldValue("branch", String(selectedVacancy.branchObj[0].value));
       form.setFieldValue("division", String(selectedVacancy.divisionObj[0].value));
       form.setFieldValue("department", String(selectedVacancy.departmentObj[0].value));
       form.setFieldValue("section", String(selectedVacancy.sectionObj[0].value));
-      // form.setFieldValue("section", String((sections.data?.items.find((item: any) => item.name === selectedVacancy.section) as any).id));
       form.setFieldValue("employmentType", String((employmentType.data?.items.find((item: any) => item.name === selectedVacancy.employmentType) as any).id));
       form.setFieldValue("workplaceType", String((workPlaces.data?.items.find((item: any) => item.name === selectedVacancy.workplace) as any).id));
       form.setFieldValue("vacancyType", String((vacancyTypes.data?.items.find((item: any) => item.name === selectedVacancy.vacancyType) as any).id));
@@ -410,7 +404,7 @@ export default function index() {
   }, [selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
+    if (action != Action.Edit && firstLoad) {
       form.setFieldValue("branch", "");
       form.setFieldValue("division", "");
       form.setFieldValue("department", "");
@@ -419,7 +413,7 @@ export default function index() {
   }, [form.getValues().company]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
+    if (action != Action.Edit && firstLoad) {
       form.setFieldValue("division", "");
       form.setFieldValue("department", "");
       form.setFieldValue("section", "");
@@ -427,14 +421,14 @@ export default function index() {
   }, [form.getValues().branch]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
+    if (action != Action.Edit && firstLoad) {
       form.setFieldValue("department", "");
       form.setFieldValue("section", "");
     }
   }, [form.getValues().division]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
+    if (action != Action.Edit && firstLoad) {
       form.setFieldValue("section", "");
     }
   }, [form.getValues().department]);

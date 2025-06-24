@@ -32,8 +32,13 @@ export const selectedDataVal: VacancyType = {
     from: ""
   },
   mustHaveSkills: [],
-  qualification: ""
+  qualification: "",
+  branchObj: [],
+  divisionObj: [],
+  departmentObj: [],
+  sectionObj: []
 };
+
 
 export const filterVal: FilterType = {
   dateFrom: '',

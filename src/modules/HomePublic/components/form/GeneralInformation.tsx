@@ -12,7 +12,6 @@ import axiosInstance from "@src/api";
 import { useVacancies } from "@modules/HomePublic/hooks/useVacancies";
 import { Combobox, ComboboxTarget, ComboboxDropdown, ComboboxOptions, ComboboxOption, InputBase } from "@mantine/core";
 import { useCombobox } from "@mantine/core";
-import { values } from "lodash";
 
 export default function index() {
   const { isMobile } = GlobalStore();
