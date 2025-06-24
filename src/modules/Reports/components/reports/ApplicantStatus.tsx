@@ -1,12 +1,11 @@
-import { Select } from "@mantine/core";
-import { IconCaretDownFilled } from "@tabler/icons-react";
-import { DateRange } from "@modules/Reports/components/DateRange";
-import { useDateRangeStore } from "@shared/hooks/useDateRange";
+import { Flex, Select } from "@mantine/core";
+import { IconCalendarMonth, IconCaretDownFilled } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { useFetchReport } from "../services/data";
 import { useEffect } from "react";
 import { ReportStore } from "../../store";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
+import { DatePickerInput } from "@mantine/dates";
 
 interface ActivityReportParams {
   companyId: number;
@@ -18,14 +17,13 @@ interface ActivityReportParams {
 }
 
 export default function index() {
-  const { value, setValue } = useDateRangeStore();
   const form = useForm<ActivityReportParams>({
     initialValues: {
       companyId: 0,
       departmentId: 0,
       vacancyId: 0,
-      dateFrom: value[0] ?? null,
-      dateTo: value[1] ?? null,
+      dateFrom: null,
+      dateTo: null,
       printedBy: 1,
     },
   });
@@ -61,16 +59,37 @@ export default function index() {
         }}
         rightSection={<IconCaretDownFilled size="18" />}
       />
-      <DateRange
-        gapValue={20}
-        size="md"
-        value={value}
-        setValue={setValue}
-        fLabel="Date Range From"
-        lLabel="Date Range to"
-        fPlaceholder="Select Start Date"
-        lPlaceholder="Select End Date"
-      />
+      <Flex direction="row" justify="space-between" gap={12} className="w-full items-end">
+        <DatePickerInput
+          label="Date Range From"
+          placeholder="Date Range From"
+          className="w-full text-[#6D6D6D]"
+          size="md"
+          {...form.getInputProps("dateFrom")}
+          key={form.key("dateFrom")}
+          onChange={(e) => {
+            form.setFieldValue("dateFrom", e);
+          }}
+          radius={8}
+          rightSection={<IconCalendarMonth className="cursor-pointer" />}
+          classNames={{ input: "poppins text-[#6D6D6D]" }}
+        />
+        <DatePickerInput
+          label="Date Range To"
+          placeholder="Date Range To"
+          className="w-full text-[#6D6D6D]"
+          size="md"
+          {...form.getInputProps("dateTo")}
+          key={form.key("dateTo")}
+          onChange={(e) => {
+            form.setFieldValue("dateTo", e);
+          }}
+          radius={8}
+          rightSection={<IconCalendarMonth className="cursor-pointer" />}
+          classNames={{ input: "poppins text-[#6D6D6D]" }}
+        />
+      </Flex>
+
       <div className="flex gap-6">
         <Select
           classNames={{ input: "poppins text-[#6D6D6D]", dropdown: "poppins text-[#6D6D6D]" }}
