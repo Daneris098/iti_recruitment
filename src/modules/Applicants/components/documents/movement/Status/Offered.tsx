@@ -107,6 +107,10 @@ export default function OfferedStatus() {
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
 
+    if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) {
+        return <div>Loading...</div>
+    }
+
     return (
         <div>
 
