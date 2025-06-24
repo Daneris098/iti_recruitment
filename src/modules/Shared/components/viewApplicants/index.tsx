@@ -4,7 +4,7 @@ import profileImage from "@src/assets/unknown.png";
 import { useEffect, useMemo, useState } from "react";
 import { useCloseModal } from "@modules/Applicants/store";
 import { ViewApplicantsProps } from "@modules/Shared/types";
-import { useApplicantIdStore } from "@src/modules/Shared/store";
+import { useApplicantIdStore, useChoiceStore } from "@src/modules/Shared/store";
 import Modals from "@modules/Shared/components/viewApplicants/Modals";
 import TabsPanel from "@modules/Shared/components/viewApplicants/TabsPanel";
 import { SkillChip } from "@modules/Shared/utils/ApplicantModal/skillChips";
@@ -21,7 +21,7 @@ export default function ViewApplicant({
   phone,
   remarks,
   onClose,
-  location,
+  // location,
   position,
   IsJobOffer,
   applicantName,
@@ -66,17 +66,33 @@ export default function ViewApplicant({
     />
   ), [imgSrc]);
 
-  useEffect(() => setImgSrc(fullUrl), [fullUrl]);
+  // useEffect(() => {
+  //   if (!applicantId || !token) return;
 
+  //   setLoading(true);
+  //   fetchApplicantByIdService(applicantId, token)
+  //     .then(setApplicant)
+  //     .catch(setError)
+  //     .finally(() => setLoading(false));
+  // }, [applicantId, token]);
+  
+  const positionAppliedFirst = applicant?.positionsApplied?.[0]?.name
   useEffect(() => {
     if (!applicantId || !token) return;
 
     setLoading(true);
     fetchApplicantByIdService(applicantId, token)
-      .then(setApplicant)
+      .then((res) => {
+        setApplicant(res);
+        const latest = res?.positionsApplied?.at(-1);
+        const computed = latest?.choice?.id === 3 ? latest.name : positionAppliedFirst;
+        useChoiceStore.getState().setTransferredPositionName(computed);
+      })
       .catch(setError)
       .finally(() => setLoading(false));
   }, [applicantId, token]);
+
+  // console.log(computed)
 
   function extractPhotoPath(raw: unknown): string | undefined {
     if (!raw) return;
@@ -98,6 +114,11 @@ export default function ViewApplicant({
     return;
   }
 
+
+  const isTransferredPosition = applicant?.positionsApplied?.at(-1)?.choice?.id === 3 ? applicant?.positionsApplied?.at(-1)?.name : position
+  // debugger;
+  // const isTransferredPosition = applicant?.positionsApplied?.find(p => p.choice?.id === 3);
+  // const isTransferredPosition = applicant?.positionsApplied?.find((element: string) => element === ap)
   return (
     <div className="h-screen w-full p-4">
 
@@ -125,7 +146,8 @@ export default function ViewApplicant({
               {applicantName}
             </TextRenderer>
             <TextRenderer as="p" className="text-[#6D6D6D] text-[12px] font-medium">
-              {position}
+              {/* {position} */}
+              {isTransferredPosition}
             </TextRenderer>
           </div>
 
@@ -146,7 +168,9 @@ export default function ViewApplicant({
           {/* Contact */}
           <div className="mt-8 text-[12px] text-[#6D6D6D] space-y-3">
             <TextRenderer as="h1">Location</TextRenderer>
-            <TextRenderer as="p" className="font-bold text-[14px]">{location ?? "Address not found"}</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px]">
+              {`${applicant?.addresses?.[0]?.houseNo}, ${applicant?.addresses?.[0]?.street}, ${applicant?.addresses?.[0]?.city?.name}, ${applicant?.addresses?.[0]?.zipCode?.name}`}
+            </TextRenderer>
 
             <TextRenderer as="h1">Email</TextRenderer>
             <TextRenderer as="p" className="font-bold text-[14px] break-words">{email ?? "No Data"}</TextRenderer>

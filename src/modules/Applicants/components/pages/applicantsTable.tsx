@@ -87,11 +87,12 @@ export default function index() {
 
   useEffect(() => {
     if (selectedApplicant?.applicantName) {
-      const fullName = selectedApplicant?.applicantName;
+      const fullName = selectedApplicant?.generalApplicant.nameResponse.formalName;
+      // const fullName = selectedApplicant?.
       setApplicantName(fullName);
     }
   }, [selectedApplicant, setApplicantName]);
-
+  debugger
   const { page, pageSize } = useMemo(() => {
     return {
       page: parseInt(searchParams.get("page") || "1"),

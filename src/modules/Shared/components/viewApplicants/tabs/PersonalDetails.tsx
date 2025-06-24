@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { DateTimeUtils } from '@shared/utils/DateTimeUtils';
-import { useApplicantIdStore, usePositionApplied, useAmountStore } from "@src/modules/Shared/store";
+import { useApplicantIdStore, usePositionApplied, useAmountStore, useChoiceStore } from "@src/modules/Shared/store";
 import { PersonalDetailsType } from '@src/modules/Shared/types';
 import { fetchApplicantByIdService, } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function PersonalDetails() {
+
+    const transferredPosition = useChoiceStore.getState().transferredPositionName
 
     const setFirstPositionApplied = usePositionApplied((s) => s.setFirstPositionApplied);
     const setDesiredSalary = useAmountStore((state) => state.setTotalAmount);
@@ -99,7 +101,7 @@ export default function PersonalDetails() {
     const sibling2 = family.siblings?.[1] || {};
     const ref1 = characterReferences[0] || {};
     const ref2 = characterReferences[1] || {};
-
+// debugger;
     return (
         <div className="flex gap-8 pb-56">
 
@@ -107,7 +109,8 @@ export default function PersonalDetails() {
             <div className="w-3/5">
                 <div>
                     {/* Left Column: First Section */}
-                    {renderField("Applying for (first choice):", firstChoice.name)}
+                    {/* {renderField("Applying for (first choice):", firstChoice.name)} */}
+                    {renderField("Applying for (first choice):", transferredPosition ?? applicant?.positionsApplied?.[0]?.name)}
                     {renderField("Desired Salary", firstChoice.salary)}
                     {renderField(
                         "Permanent Address",
