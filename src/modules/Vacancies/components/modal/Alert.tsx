@@ -5,6 +5,9 @@ import { CircleCheck, CircleCheckBig, CircleHelp } from "lucide-react";
 import { useMatches } from "@mantine/core";
 import { Action, AlertType } from "../../types";
 import { IconX } from "@tabler/icons-react";
+import axiosInstance from "@src/api";
+import { selectedDataVal } from "../../values";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Define auto-close behavior
 const AlertAutoClose: Record<AlertType, boolean> = {
@@ -15,7 +18,8 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 };
 
 export default function AlertModals() {
-    const { setAlert, alert, setAction } = VacancyStore();
+    const { setAlert, alert, setAction, selectedVacancy, setSelectedVacancy, selectedVacancyApplicantCount, setSelectedVacancyApplicantCount } = VacancyStore();
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
@@ -67,6 +71,7 @@ export default function AlertModals() {
             </Modal>
 
             <Modal
+                zIndex={1000}
                 opened={alert === AlertType.closeVacancy}
                 withCloseButton={false}
                 onClose={() => setAlert("")}
@@ -93,11 +98,27 @@ export default function AlertModals() {
                         Are you sure you want to close this job vacancy?
                     </Text>
                     <div className="flex flex-col self-start">
-                        <p>12 Applicants Applied</p>
-                        <p>12 Applicants for interview</p>
+                        {/* <p>{selectedVacancyApplicantCount.applied} Applicants Applied</p>
+                        <p>{selectedVacancyApplicantCount.forInterview} Applicants for interview</p>
+                        <p>{selectedVacancyApplicantCount.offered} Applicants for Offer</p>
+                        <p>{selectedVacancyApplicantCount.hired} Applicants for Hire</p>
+                        <p>{selectedVacancyApplicantCount.archived} Applicants for Archived</p> */}
                     </div>
-                    <Button className="rounded-lg br-gradient border-none px-14" onClick={() => {
-                        setAlert(AlertType.closeSuccessfully)
+                    <Button className="rounded-lg br-gradient border-none px-14" onClick={async () => {
+                        const payload = {
+                            id: selectedVacancy.id
+                        };
+                        await axiosInstance
+                            .post(`recruitment/vacancies/${selectedVacancy.id}/close`, payload)
+                            .then(() => {
+                                setSelectedVacancy(selectedDataVal);
+                                setAlert(AlertType.closeSuccessfully)
+                                setSelectedVacancyApplicantCount({ applied: 0, forInterview: 0, offered: 0, hired: 0, archived: 0 })
+                                queryClient.refetchQueries({ queryKey: ["recruitment/vacancies"] });
+                            })
+                            .catch((error) => {
+                                console.error(error)
+                            });
                     }}>CONFIRM</Button>
                 </div>
             </Modal>
@@ -130,7 +151,7 @@ export default function AlertModals() {
                     </Text>
                 </div>
             </Modal>
-            
+
 
             <Modal
                 opened={alert === AlertType.updateSuccessfully}

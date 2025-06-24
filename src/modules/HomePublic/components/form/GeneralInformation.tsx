@@ -19,14 +19,13 @@ import {
     InputBase
 } from '@mantine/core';
 import { useCombobox } from '@mantine/core';
-import { values } from "lodash";
 
 export default function index() {
 
     const { isMobile } = GlobalStore()
     const { data: vacanciesData } = useVacancies();
     const { submit, activeStepper, setSubmit, setActiveStepper, setApplicationForm, applicationForm } = ApplicationStore()
-    const { selectedData, barangays, setBarangays, barangays2, setBarangays2, sameAsPresent, setSameAsPresent, isFromPortal, setAlert } = HomeStore();
+    const { selectedData, setBarangays, setBarangays2, sameAsPresent, setSameAsPresent, isFromPortal } = HomeStore();
     const formRef = useRef<HTMLFormElement>(null); // Create a ref for the form
     const [vacancies, setVacancies] = useState([
         { id: 1, value: 'Software Engineer', label: 'Software Engineer' },

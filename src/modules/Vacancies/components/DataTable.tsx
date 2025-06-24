@@ -4,8 +4,7 @@ import "mantine-datatable/styles.layer.css";
 import { DataTable } from "mantine-datatable";
 import { useQueryClient } from "@tanstack/react-query";
 import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
-import { VacancyStore, ApplicantStore, DataTableStore } from "../store";
-
+import { VacancyStore, ApplicantStore, DataTableStore, ComponentsStore, ViewApplicantsDataTableStore } from "../store";
 import { selectedDataVal } from "../values";
 
 enum StatusColor {
@@ -20,6 +19,8 @@ export default function index() {
   const { isFetching, data } = useVacancies();
   const { setSelectedVacancy } = VacancyStore();
   const queryClient = useQueryClient();
+  const { ViewApplicantsModal, setViewApplicantModal } = ComponentsStore();
+  const { setPage: setPageViewApplicant } = ViewApplicantsDataTableStore();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -85,8 +86,10 @@ export default function index() {
             <div
               className="rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]"
               onClick={(e) => {
+                setPageViewApplicant(1)
                 e.stopPropagation();
                 setSelectedData(data);
+                setViewApplicantModal(true)
               }}>
               View Applicants
             </div>
@@ -102,7 +105,8 @@ export default function index() {
       sortStatus={sortStatus}
       onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
       onRowClick={(val) => {
-        console.log('val: ', val)
+        queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: "active" });
+        setSelectedData(val.record);
         setSelectedVacancy(val.record);
       }}
     />

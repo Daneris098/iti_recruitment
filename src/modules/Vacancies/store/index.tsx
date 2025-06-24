@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant, Action, DataTableState2 } from "@modules/Vacancies/types";
+import { ApplicantState, DataTableState, VacancyType, VacancyState, FilterType, FilterState, selectedApplicant, Action, DataTableState2, Components, applicantCount } from "@modules/Vacancies/types";
 import { filterVal, selectedDataVal, selectedApplicantInitial } from "@src/modules/Vacancies/values";
 
 
@@ -13,7 +13,9 @@ export const VacancyStore = create<VacancyState>((set) => ({
   selectedDivisionId: '',
   selectedDepartmentId: '',
   selectedSectionId: '',
+  selectedVacancyApplicantCount: { applied: 0, forInterview: 0, offered: 0, hired: 0, archived: 0 },
 
+  setSelectedVacancyApplicantCount: (selectedVacancyApplicantCount: applicantCount) => set({ selectedVacancyApplicantCount: selectedVacancyApplicantCount }),
   setSelectedCompanyId: (selectedCompanyId: string) => set({ selectedCompanyId: selectedCompanyId }),
   setSelectedBranchId: (selectedBranchId: string) => set({ selectedBranchId: selectedBranchId }),
   setSelectedDivisionId: (selectedDivisionId: string) => set({ selectedDivisionId: selectedDivisionId }),
@@ -23,6 +25,12 @@ export const VacancyStore = create<VacancyState>((set) => ({
   setAlert: (alert: string) => set({ alert: alert }),
   setApplicationFormModal: (applicationFormModal: boolean) => set({ applicationFormModal: applicationFormModal }),
   setSelectedVacancy: (selectedData: VacancyType) => set({ selectedVacancy: selectedData }),
+}));
+
+export const ComponentsStore = create<Components>((set) => ({
+  ViewApplicantsModal: false,
+
+  setViewApplicantModal: (ViewApplicantsModal: boolean) => set({ ViewApplicantsModal: ViewApplicantsModal }),
 }));
 
 export const FilterStore = create<FilterState>((set) => ({
@@ -37,17 +45,7 @@ export const FilterStore = create<FilterState>((set) => ({
   setIsFiltered: (isFiltered: boolean) => set({ isFiltered: isFiltered }),
 }));
 
-// export const ApplicantStore = create<ApplicantState>((set) => ({
-//   selectedData: selectedDataVal,
-//   loading: false,
-//   isViewApplicant: false,
-//   selectedApplicant: selectedApplicantInitial,
 
-//   setSelectedApplicant: (selectedApplicant: selectedApplicant) => set({ selectedApplicant: selectedApplicant }),
-//   setIsViewApplicant: (isViewApplicant: boolean) => set({ isViewApplicant: isViewApplicant }),
-//   setLoading: (loading: boolean) => set({ loading: loading }),
-//   setSelectedData: (selected_data: VacancyType) => set({ selectedData: selected_data }),
-// }));
 export const ApplicantStore = create<ApplicantState>((set) => ({
   selectedData: selectedDataVal,
   loading: false,

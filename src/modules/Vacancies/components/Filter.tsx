@@ -3,9 +3,9 @@ import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { FilterStore } from "@src/modules/Vacancies/store";
 import { useEffect } from "react";
-import { cleanFilterVal, filterVal } from "@src/modules/Vacancies/values";
+import { filterVal } from "@src/modules/Vacancies/values";
 import dayjs from 'dayjs';
-import { queryClient } from "@src/client/queryClient";
+// import { queryClient } from "@src/client/queryClient";
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
