@@ -1,13 +1,17 @@
 {/*Generate new offer button.*/ }
+import { useEffect, useState } from "react";
 import { useCloseModal } from "@modules/Applicants/store"
 import { IconChevronDown, IconX } from "@tabler/icons-react";
+import { useDepartmentStore } from "@src/modules/Shared/store";
+import { interviewStagesOption } from "@modules/Applicants/types";
 import { useDropDownOfferedStore } from "@modules/Applicants/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import JobGeneratedAlert from "@src/modules/Applicants/components/alerts/JobGeneratedAlert"
 import { Button, Combobox, Divider, Textarea, TextInput, useCombobox } from "@mantine/core";
-import { useViewPositionLevels, useViewDepartments, useGetCompanyDivisions } from "@modules/Shared/hooks/useSharedApplicants";
-import { useEffect, useState } from "react";
-import { interviewStagesOption } from "@modules/Applicants/types";
+import {
+    useViewPositionLevels, useViewDepartments,
+    useGetCompanyDivisions, useGetPaymentSchemes
+} from "@modules/Shared/hooks/useSharedApplicants";
 interface DropDownOfferedProps {
     onClose: () => void;
     ApplicantName: string;
@@ -18,13 +22,25 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
     const { data: compDivisions } = useGetCompanyDivisions();
+    const { data: paymentSchemes } = useGetPaymentSchemes();
+
+    const setDepartmentName = useDepartmentStore((state) => state.setDepartmentName);
 
     const [getPositionLevels, setPositionLevels] = useState<interviewStagesOption[]>([]);
     const [getDepartments, setDepartments] = useState<interviewStagesOption[]>([]);
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
+    const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
+
+    const departmentName = useDepartmentStore((state) => state.departmentName);
 
     useEffect(() => {
-        if (!positionLevels || !orgDepartments || !compDivisions) return;
+        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) return;
+
+        const schemes = paymentSchemes.map((payments: any) => ({
+            value: payments.id,
+            label: payments.name
+        }))
+        setPaymentSchemes(schemes);
 
         const positions = positionLevels.map((position: any) => ({
             value: position.id,
@@ -50,6 +66,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
         if (getDepartments.length > 0) {
             setDepartment(getDepartments[0].label);
             setDepartmentId(getDepartments[0].value)
+            setDepartmentName(getDepartments[0].label)
         }
         if (getPositionLevels.length > 0) {
             setPosition(getPositionLevels[0].label)
@@ -59,22 +76,26 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
             setDivision(getDivisions[0].label)
             setDivisionId(getDivisions[0].value)
         }
+        if (getPaymentSchemes.length > 0) {
+            setSalaryTypes(getPaymentSchemes[0].label)
+            setPaymentSchemeId(getPaymentSchemes[0].value)
+        }
 
     }, [getPositionLevels, getDepartments, getDivisions])
 
     // These are just a hardcoded information. This will be removed during the integration with the backend.
     // const positions = ["HR Specialist", "Engineer", "Doctor"];
     // const divisions = ["Finance", "IT", "HR", "Operations"];
-    const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
+    // const salaryTypes = ["Monthly", "Semi-Monthly", "Anually"];
     const {
+        setDepartment,
         setDivisionId,
         amount, setAmount,
         comments, setComments,
         position, setPosition,
-        department, setDepartment,
         getSalaryTypes, setSalaryTypes,
         setPositionId, setDepartmentId,
-        division, setDivision,
+        division, setDivision, setPaymentSchemeId
     } = useDropDownOfferedStore();
 
     const { isModalOpen, setIsModalOpen } = useCloseModal();
@@ -97,6 +118,10 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
     const divisionCombobox = useCombobox({
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
+
+    // if (!positionLevels || !orgDepartments || !compDivisions || !getSalaryTypes) {
+    //     return <div>Loading...</div>
+    // }
 
     return (
 
@@ -132,6 +157,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                         <Combobox store={positionCombobox} withinPortal={false}>
                             <Combobox.Target>
                                 <TextInput
+                                    disabled
                                     value={position}
                                     onChange={(e) => setPosition(e.currentTarget.value)}
                                     onFocus={() => positionCombobox.openDropdown()}
@@ -174,7 +200,9 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                         <Combobox store={departmentCombobox} withinPortal={false}>
                             <Combobox.Target>
                                 <TextInput
-                                    value={department}
+                                    disabled
+                                    // value={department}
+                                    value={departmentName || ""}
                                     onChange={(e) => setDepartment(e.currentTarget.value)}
                                     onFocus={() => departmentCombobox.openDropdown()}
                                     rightSection={<IconChevronDown size={16} />}
@@ -214,6 +242,7 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                     <Combobox store={divisionCombobox} withinPortal={false}>
                         <Combobox.Target>
                             <TextInput
+                                disabled
                                 value={division}
                                 onChange={(e) => setDivision(e.currentTarget.value)}
                                 onFocus={() => divisionCombobox.openDropdown()}
@@ -267,19 +296,20 @@ export default function DropDownOffered({ onClose, ApplicantName }: DropDownOffe
                                 />
                             </Combobox.Target>
 
-                            {salaryTypes.length > 0 && (
+                            {getPaymentSchemes.length > 0 && (
                                 <Combobox.Dropdown className="border border-gray-300 rounded-md shadow-lg">
-                                    {salaryTypes.map((salary) => (
+                                    {getPaymentSchemes.map((salary) => (
                                         <Combobox.Option
-                                            key={salary}
-                                            value={salary}
+                                            key={salary.value}
+                                            value={salary.label}
                                             onClick={() => {
-                                                setSalaryTypes(salary);
+                                                setSalaryTypes(salary.label);
+                                                setPaymentSchemeId(salary.value)
                                                 salaryComboBox.closeDropdown();
                                             }}
                                             className="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer transition poppins"
                                         >
-                                            {salary}
+                                            {salary.label}
                                         </Combobox.Option>
                                     ))}
                                 </Combobox.Dropdown>
