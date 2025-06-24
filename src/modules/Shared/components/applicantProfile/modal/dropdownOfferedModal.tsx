@@ -1,22 +1,22 @@
-import React from 'react';
-import '@modules/Applicants/styles/index.css'
+// import React from 'react';
+// import '@modules/Applicants/styles/index.css'
 
-interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    children: React.ReactNode;
-}
+// interface ModalProps {
+//     isOpen: boolean;
+//     onClose: () => void;
+//     children: React.ReactNode;
+// }
 
-const OfferedStatus: React.FC<ModalProps> = ({ isOpen, children }) => {
-    if (!isOpen) return null;
+// const OfferedStatus: React.FC<ModalProps> = ({ isOpen, children }) => {
+//     if (!isOpen) return null;
 
-    return (
-        <div className="update-status-offered-modal-overlay">
-          <div className="update-status-offered-modal-content" onClick={(e) => e.stopPropagation()}>
-            {children}
-          </div>
-        </div>
-      );
-}
+//     return (
+//         <div className="update-status-offered-modal-overlay">
+//           <div className="update-status-offered-modal-content" onClick={(e) => e.stopPropagation()}>
+//             {children}
+//           </div>
+//         </div>
+//       );
+// }
 
-export default OfferedStatus;
+// export default OfferedStatus;
