@@ -17,14 +17,8 @@ type EditBranchProps = {
     id: number;
     name: string;
   };
-  location: {
-    id: number;
-    name: string;
-  };
-  area: {
-    id: number;
-    name: string;
-  };
+  location: string;
+  area: string;
 };
 
 export default function EditBranch({ record }: { record: BranchType }) {
@@ -40,20 +34,14 @@ export default function EditBranch({ record }: { record: BranchType }) {
         id: record.company?.id ?? 0,
         name: record.company?.name ?? "",
       },
-      location: {
-        id: record.location?.id ?? 0,
-        name: record.location?.name ?? "",
-      },
-      area: {
-        id: record.area?.id ?? 0,
-        name: record.area?.name ?? "",
-      },
+      location: record.location ?? "",
+      area: record.area ?? "",
       id: record.id,
       guid: record.guid,
     },
   });
 
-  const { locations, areas, companies } = useFetchOrganizationSettings();
+  const { companies } = useFetchOrganizationSettings();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editBranch", editBranch.values);
@@ -96,45 +84,19 @@ export default function EditBranch({ record }: { record: BranchType }) {
             }
           }}
         />
-        <Select
-          radius={8}
-          data={locations.data?.items.map((location: any) => ({
-            value: String(location.id),
-            label: location.name,
-          }))}
-          rightSection={<IconCaretDownFilled size="18" />}
-          className="w-[15%] border-none text-sm"
-          classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-          styles={{ label: { color: "#6d6d6d" } }}
-          placeholder="Select Location"
-          value={String(editBranch.values.location.id)}
-          onChange={(value) => {
-            const selectedItem: { id: number; name: string } = locations.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-            if (selectedItem) {
-              editBranch.setFieldValue("location.id", selectedItem.id);
-              editBranch.setFieldValue("location.name", selectedItem.name);
-            }
-          }}
+        <TextInput
+          className="w-[15%]"
+          classNames={{ input: "poppins text-[#6D6D6D]" }}
+          defaultValue={record.location}
+          {...editBranch.getInputProps("location")}
+          error={editBranch.values.location === "" ? "Required" : undefined}
         />
-        <Select
-          radius={8}
-          data={areas.data?.items.map((area: any) => ({
-            value: String(area.id),
-            label: area.name,
-          }))}
-          rightSection={<IconCaretDownFilled size="18" />}
-          className="w-[15%] border-none text-sm"
-          classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-          styles={{ label: { color: "#6d6d6d" } }}
-          placeholder="Select Area"
-          value={String(editBranch.values.area.id)}
-          onChange={(value) => {
-            const selectedItem: { id: number; name: string } = areas.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-            if (selectedItem) {
-              editBranch.setFieldValue("area.id", selectedItem.id);
-              editBranch.setFieldValue("area.name", selectedItem.name);
-            }
-          }}
+        <TextInput
+          className="w-[15%]"
+          classNames={{ input: "poppins text-[#6D6D6D]" }}
+          defaultValue={record.area}
+          {...editBranch.getInputProps("area")}
+          error={editBranch.values.area === "" ? "Required" : undefined}
         />
         <TextInput className="w-[25%]" classNames={{ input: "poppins text-[#6D6D6D]" }} defaultValue={record.description} {...editBranch.getInputProps("description")} />
         <div className="w-[10%] flex flex-row items-center gap-10">

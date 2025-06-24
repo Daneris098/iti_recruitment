@@ -15,14 +15,8 @@ type AddBranchProps = {
     id: number;
     name: string;
   };
-  location: {
-    id: number;
-    name: string;
-  };
-  area: {
-    id: number;
-    name: string;
-  };
+  location: string;
+  area: string;
 };
 export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[] {
   const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
@@ -38,18 +32,12 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
         id: 0,
         name: "",
       },
-      location: {
-        id: 0,
-        name: "",
-      },
-      area: {
-        id: 0,
-        name: "",
-      },
+      location: "",
+      area: "",
     },
   });
 
-  const { locations, areas, companies } = useFetchOrganizationSettings();
+  const { companies } = useFetchOrganizationSettings();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addBranch", addBranch.values);
@@ -143,74 +131,42 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
     },
     {
       accessor: "location",
-      title: <div className="flex flex-row gap-3">Location {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
+      title: <div className="flex flex-row gap-3">Location</div>,
       sortable: true,
       width: "15%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <div className="relative">
-              <Select
-                radius={8}
-                data={locations.data?.items.map((division: any) => ({
-                  value: String(division.id),
-                  label: division.name,
-                }))}
-                rightSection={<IconCaretDownFilled size="18" />}
-                className="border-none text-sm w-full"
-                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-                styles={{ label: { color: "#6d6d6d" } }}
-                placeholder="Select Location"
-                error={addBranch.values.location.name === "" ? "Location is Required" : undefined}
-                onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = locations.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                  if (selectedItem) {
-                    addBranch.setFieldValue("location.id", selectedItem.id);
-                    addBranch.setFieldValue("location.name", selectedItem.name);
-                  }
-                }}
-              />
-            </div>
+            <TextInput
+              classNames={{ input: "poppins text-[#6D6D6D]" }}
+              placeholder="Location"
+              {...addBranch.getInputProps("location")}
+              error={addBranch.values.location === "" ? "Location is Required" : undefined}
+            />
           );
         }
 
-        return row.location.name;
+        return row.location;
       },
     },
     {
       accessor: "area",
-      title: <div className="flex flex-row gap-3">Area {expandedIds.length === 1 || addOrg ? <Text color="red">*</Text> : ""}</div>,
+      title: <div className="flex flex-row gap-3">Area </div>,
       sortable: true,
       width: "15%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
           return (
-            <div className="relative">
-              <Select
-                radius={8}
-                data={areas.data?.items.map((area: any) => ({
-                  value: String(area.id),
-                  label: area.name,
-                }))}
-                rightSection={<IconCaretDownFilled size="18" />}
-                className="border-none text-sm w-full"
-                classNames={{ label: "p-1", input: "poppins text-[#6D6D6D]" }}
-                styles={{ label: { color: "#6d6d6d" } }}
-                placeholder="Select Area"
-                error={addBranch.values.area.name === "" ? "Area is Required" : undefined}
-                onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = areas.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
-                  if (selectedItem) {
-                    addBranch.setFieldValue("area.id", selectedItem.id);
-                    addBranch.setFieldValue("area.name", selectedItem.name);
-                  }
-                }}
-              />
-            </div>
+            <TextInput
+              classNames={{ input: "poppins text-[#6D6D6D]" }}
+              placeholder="Area"
+              {...addBranch.getInputProps("area")}
+              error={addBranch.values.area === "" ? "Area is Required" : undefined}
+            />
           );
         }
 
-        return row.area.name;
+        return row.area;
       },
     },
     {
