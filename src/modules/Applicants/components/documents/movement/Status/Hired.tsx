@@ -32,7 +32,7 @@ export default function Hired() {
                         <IconPaperclip size={14} />
                         <span>{fileName}</span>
                         <IconTrash
-                            className="text-[#6D6D6D] cursor-pointer ml-16"
+                            className="text-[#6D6D6D] cursor-pointer ml-[80px]"
                             size={22}
                             onClick={clearFile}
                         />
