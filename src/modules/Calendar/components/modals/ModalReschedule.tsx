@@ -13,7 +13,8 @@ import { useCalendarStore, useRescheduleStore } from "../../store";
 import axiosInstance from "@src/api";
 import { useForm } from "@mantine/form";
 import { useRef } from "react";
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useGetInterviewerService } from "@src/modules/Shared/api/useSharedUserService";
 
 export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
   const { setDate, setInterviewer } = useRescheduleStore();
@@ -30,7 +31,7 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
   const submit = async (form: any) => {
     const date = new Date(form.dateAndTime);
     // Helper to zero-pad numbers
-    const pad = (num: number) => String(num).padStart(2, '0');
+    const pad = (num: number) => String(num).padStart(2, "0");
     // Format date as YYYYMMDD
     const formattedDate = `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`;
     // Format time as HH:mm:ss
@@ -42,18 +43,18 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
       location: form.location,
       interviewer: {
         id: 1,
-        name: form.interviewer
+        name: form.interviewer,
       },
-    }
+    };
     await axiosInstance
       .post(`recruitment/calendar/${details.scheduleId}/reschedule`, payload)
       .then(() => {
-        queryClient.refetchQueries({ queryKey: ["recruitment/calendar"], type: 'active' });
+        queryClient.refetchQueries({ queryKey: ["recruitment/calendar"], type: "active" });
         setOnViewUpdate(true);
         updateBtn();
       })
       .catch((error) => {
-        console.error(error)
+        console.error(error);
       });
 
     // if (!date && !interviewer) {
@@ -65,13 +66,22 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
     // setDate(null!);
   };
 
+  const interviewers = useQuery({
+    queryKey: ["interviewers"],
+    queryFn: async () => {
+      const result = await useGetInterviewerService.getAll();
+      return result;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { dateAndTime: "", interviewer: "", location: "" },
     validate: {
-      dateAndTime: (value: string) => value.length === 0 ? "Date and Time is required" : null,
-      interviewer: (value: string) => value.length === 0 ? "Interviewer is required" : null,
-      location: (value: string) => value === null || value === '' ? "Location is required" : null,
+      dateAndTime: (value: string) => (value.length === 0 ? "Date and Time is required" : null),
+      interviewer: (value: string) => (value.length === 0 ? "Interviewer is required" : null),
+      location: (value: string) => (value === null || value === "" ? "Location is required" : null),
     },
   });
 
@@ -81,7 +91,7 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
         <Flex gap={20} direction="column">
           <DateTimePicker
             {...form.getInputProps("dateAndTime")}
-            key={form.key('dateAndTime')}
+            key={form.key("dateAndTime")}
             required
             label="Date and Time"
             placeholder="hh:mm"
@@ -94,15 +104,20 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
           />
           <Select
             {...form.getInputProps("interviewer")}
-            key={form.key('interviewer')}
+            key={form.key("interviewer")}
             label="Interviewer"
             placeholder="Select Interviewer"
             required
-            data={[
-              { value: "john_doe", label: "John Doe" },
-              { value: "jane_smith", label: "Jane Smith" },
-              { value: "michael_jones", label: "Michael Jones" },
-            ]}
+            data={
+              interviewers?.data?.items?.length
+                ? interviewers.data.items
+                    .filter((item: any) => item?.id && item?.name)
+                    .map((item: any) => ({
+                      value: item.name,
+                      label: item.name,
+                    }))
+                : []
+            }
             classNames={{
               input: "h-12 border-[#6d6d6d] border-1",
               root: "text-gray-800",
@@ -111,7 +126,7 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
           />
           <TextInput
             {...form.getInputProps("location")}
-            key={form.key('location')}
+            key={form.key("location")}
             required
             label="Location"
             placeholder="Location"
@@ -139,7 +154,6 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
           </Button>
         </Flex>
       </Modal>
-    </form >
-
+    </form>
   );
 }
