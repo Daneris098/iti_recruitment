@@ -9,17 +9,11 @@ export default function Attachment() {
 
     const openRef = useRef<() => void>(null);
 
-    const { setFile, } = useFileUploadStore();
-
-    // useEffect(() => {
-    //     if (file) {
-    //         console.log("file in store:", file)
-    //     }
-    // }, [])
+    const { setFile, setFileName } = useFileUploadStore();
 
     const handleDrop = (files: File[]) => {
         setFile(files[0]);
-        // console.log("zustand file", files[0])
+        setFileName(files[0].name)
     }
 
     return (
@@ -28,7 +22,7 @@ export default function Attachment() {
                 openRef={openRef}
                 onDrop={handleDrop}
                 onReject={(files) => console.log('Rejected files', files)}
-                maxSize={25 * 1024 * 1024} // 25MB
+                maxSize={25 * 1024 * 1024}
                 multiple={false}
                 accept={[
                     'application/pdf',
