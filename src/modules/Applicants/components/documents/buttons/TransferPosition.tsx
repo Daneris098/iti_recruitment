@@ -7,7 +7,7 @@ import { JobOpenings, ApplicantTransfereeName, Slot } from "@modules/Shared/type
 import { IconDots, IconRefresh, IconX, IconChevronDown, IconPlus } from "@tabler/icons-react";
 import TransferredPosition from "@modules/Applicants/components/alerts/Transferred";
 import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
-import { useJobOpeningStore, useSelectedApplicantsStore } from "@modules/Shared/store";
+import { useJobOpeningStore, useSelectedApplicantsStore, useChoiceStore } from "@modules/Shared/store";
 import { Button, Divider, Textarea, TextInput, Menu, Pagination } from "@mantine/core";
 import { useTransferApplicantPosition } from "@modules/Shared/hooks/useSharedApplicants";
 import { useAmountStore } from "@src/modules/Shared/store";
@@ -32,6 +32,8 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
     const [loadTime, setLoadTime] = useState<number | null>(null);
     const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
     const [filterType, setFilterType] = useState<"position" | "company">("position");
+
+    const transferredPosition = useChoiceStore.getState().transferredPositionName;
 
     const handlePageChange = (newPage: number) => {
         setLocalPage(newPage);
@@ -137,10 +139,16 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 </h1>
                 <Button
                     onClick={() => setOpened(true)}
-                    className="relative w-[540px] h-[56px] px-4 bg-[#6D6D6D10] border border-[#6D6D6D] rounded-lg text-[#6D6D6D99] hover:bg-[#6D6D6D30] flex items-center"
+                    className="
+                    relative w-[540px] h-[56px] px-4
+                     bg-white border border-[#6D6D6D] 
+                     rounded-lg text-[#6D6D6D99] 
+                     hover:bg-[#6D6D6D30] flex items-center"
                 >
+
                     <span className="text-left text-[#6D6D6D99] font-medium text-[16px]">
-                        Select from open vacancies
+                        {/* Select from open vacancies */}
+                        {transferredPosition || "Select from open Vacancies"}
                     </span>
                     <IconDots className="absolute right-4 text-[#6D6D6D99]" />
                 </Button>

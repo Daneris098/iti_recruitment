@@ -431,6 +431,7 @@ export type PersonalDetailsType = {
             occupation?: string;
             contactNo?: string;
         };
+        childCount?: number;
         siblings?: {
             name?: string;
             occupation?: string;
