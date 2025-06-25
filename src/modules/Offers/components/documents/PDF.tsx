@@ -4,7 +4,7 @@ import header from '@src/assets/job-offers-header.png';
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-import { useDepartmentStore, useApplicantNameStore, usePositionApplied, useChoiceStore, useJobOpeningPositionStore } from "@src/modules/Shared/store";
+import { useApplicantNameStore, usePositionApplied, useChoiceStore, useJobOpeningPositionStore } from "@src/modules/Shared/store";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 // import { re,  } from "@src/modules/Applicants/store";
 // Register the Poppins font
