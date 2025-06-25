@@ -384,6 +384,7 @@ export type PDFViewerProps<T> = {
 
 export type PersonalDetailsType = {
     positionsApplied?: {
+        id: number | undefined;
         name?: string;
         salary?: string | number;
         availableDateStart?: string;

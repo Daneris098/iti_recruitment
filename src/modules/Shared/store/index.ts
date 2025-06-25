@@ -91,11 +91,15 @@ export const useHiredStartDate = create<SelectedDateStore>((set) => ({
 
 interface PositionAppliedState {
     firstPositionApplied: string;
+    positionId: number | undefined;
+    setPositionId: (positionId: number) => void;
     setFirstPositionApplied: (position: string) => void;
 }
 
 export const usePositionApplied = create<PositionAppliedState>()((set) => ({
     firstPositionApplied: '',
+    positionId: 0,
+    setPositionId: (positionId) => set({ positionId: positionId }),
     setFirstPositionApplied: (position) =>
         set({ firstPositionApplied: position }),
 }));
