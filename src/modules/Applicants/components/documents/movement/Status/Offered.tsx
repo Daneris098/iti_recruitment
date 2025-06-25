@@ -26,9 +26,11 @@ export default function OfferedStatus() {
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
     const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
 
+    const [localPage, _setLocalPage] = useState(1);
+    const localPageSize = 10;
     const {
         data: jobOpenings,
-    } = useTransferPositionLookup(1, 2);
+    } = useTransferPositionLookup(localPage - 1, localPageSize);
 
     const [openings, setOpenings] = useState<any[]>([]);
 
@@ -40,11 +42,13 @@ export default function OfferedStatus() {
 
     const transferredPosition = useChoiceStore.getState().transferredPositionName;
     const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
+    const getPositionId = usePositionApplied((s) => s.positionId);
+
     // const departmentName = useDepartmentStore((state) => state.departmentName);
     // const divisionName = useDivisionStore((state) => state.divisionName)
 
     useEffect(() => {
-        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) return;
+        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) return;
 
         const schemes = paymentSchemes.map((payments: any) => ({
             value: payments.id,
@@ -123,10 +127,13 @@ export default function OfferedStatus() {
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
 
-    if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) {
+    if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) {
         return <div>Loading...</div>
     }
-
+    const selectedOpening = jobOpenings?.find(
+        (job) => job.id === getPositionId
+    );
+    // debugger;
     return (
         <div>
 
@@ -185,7 +192,8 @@ export default function OfferedStatus() {
                             <TextInput
                                 disabled
                                 // value={departmentName || ""}
-                                value={openings?.[0]?.departmentName}
+                                // value={openings?.[getPositionId ?? 0]?.departmentName}
+                                value={selectedOpening?.departmentName || ""}
                                 onChange={(e) => setDepartment(e.currentTarget.value)}
                                 onFocus={() => departmentCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}

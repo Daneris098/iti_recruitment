@@ -200,7 +200,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
                 style={[styles.text_title, { flex: 4 }]}
                 wrap={false}
               >
-                {`${transferredPosition ?? getPosition} / ${departmentName}`.slice(0, 50)}
+                {`${transferredPosition ?? getPosition}`.slice(0, 50)}
 
                 {/* {`${getPosition} / ${departmentName}`.slice(0, 50)} */}
               </Text>
