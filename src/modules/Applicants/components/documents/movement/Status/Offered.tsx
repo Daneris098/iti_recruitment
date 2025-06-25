@@ -8,14 +8,18 @@ import {
     useViewPositionLevels, useViewDepartments,
     useGetCompanyDivisions, useGetPaymentSchemes
 } from "@modules/Shared/hooks/useSharedApplicants";
-import { usePositionApplied, useDepartmentStore, useDivisionStore, useChoiceStore } from "@src/modules/Shared/store";
+import { usePositionApplied, useDepartmentStore, useDivisionStore, useChoiceStore, useJobOpeningPositionStore } from "@src/modules/Shared/store";
 import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
 
 export default function OfferedStatus() {
 
     const setDepartmentName = useDepartmentStore((state) => state.setDepartmentName);
     const setDivisionName = useDivisionStore((state) => state.setDivisionName)
-
+    const {
+        setJobOpenings,
+        setSelectedOpening,
+        // setDepartmentName,
+    } = useJobOpeningPositionStore()
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
     const { data: compDivisions } = useGetCompanyDivisions();
@@ -126,14 +130,23 @@ export default function OfferedStatus() {
     const divisionCombobox = useCombobox({
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
+    useEffect(() => {
+        if (openings) {
+            setJobOpenings(openings);
 
+            const selected = openings.find((job) => job.id === getPositionId);
+            setSelectedOpening(selected ?? null);
+            setDepartmentName(selected?.departmentName ?? null);
+        }
+    }, [openings, getPositionId]);
     if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) {
         return <div>Loading...</div>
     }
     const selectedOpening = jobOpenings?.find(
         (job) => job.id === getPositionId
     );
-    // debugger;
+
+
     return (
         <div>
 
