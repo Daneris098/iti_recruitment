@@ -92,7 +92,7 @@ export default function index() {
       setApplicantName(fullName);
     }
   }, [selectedApplicant, setApplicantName]);
-  debugger
+
   const { page, pageSize } = useMemo(() => {
     return {
       page: parseInt(searchParams.get("page") || "1"),
