@@ -87,7 +87,6 @@ export default function PersonalDetails() {
         height,
         weight,
         skills = [],
-        // mother,
     } = applicant || {};
 
     const firstChoice = positionsApplied[0] || {};
@@ -101,7 +100,7 @@ export default function PersonalDetails() {
     const sibling2 = family.siblings?.[1] || {};
     const ref1 = characterReferences[0] || {};
     const ref2 = characterReferences[1] || {};
-// debugger;
+
     return (
         <div className="flex gap-8 pb-56">
 
@@ -185,6 +184,7 @@ export default function PersonalDetails() {
                         {renderField("Sibling Name", sibling1.name)}
                         {renderField("Occupation", sibling1.occupation)}
                         {renderField("Contact", sibling1.contact)}
+                        {renderField("Children/s", family?.childCount ?? 0)}
                     </div>
 
                     {/* Left Column: Sixth Section */}

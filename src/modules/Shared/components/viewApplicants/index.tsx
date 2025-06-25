@@ -21,7 +21,6 @@ export default function ViewApplicant({
   phone,
   remarks,
   onClose,
-  // location,
   position,
   IsJobOffer,
   applicantName,
@@ -35,6 +34,7 @@ export default function ViewApplicant({
   const [showImage, setShowImage] = useState(false);
   const [applicant, setApplicant] = useState<any | null>(null);
   const token = sessionStorage.getItem("accessToken") ?? undefined;
+  const isTransferredPosition = applicant?.positionsApplied?.at(-1)?.choice?.id === 3 ? applicant?.positionsApplied?.at(-1)?.name : position
 
   const {
     setIsOffered,
@@ -46,53 +46,6 @@ export default function ViewApplicant({
   const [isViewPDF, togglePDF] = useState(false);
   const displayStatus = getDisplayStatus(status);
   const changeTabs = getTabs({ applicantName, status: status, remarks: remarks });
-
-  const fullUrl = useMemo(() => {
-    const photoPath = extractPhotoPath(applicant?.photo);
-    return photoPath
-      ? `/files/Uploads/applicants/${photoPath}`
-      : profileImage;
-  }, [applicant?.photo]);
-  const [imgSrc, setImgSrc] = useState(fullUrl);
-
-  const memoizedImage = useMemo(() => (
-    <img
-      src={imgSrc}
-      alt="Applicant"
-      onError={() => {
-        if (imgSrc !== profileImage) setImgSrc(profileImage);
-      }}
-      className="w-[100px] h-[100px] rounded-full shadow-sm object-cover"
-    />
-  ), [imgSrc]);
-
-  // useEffect(() => {
-  //   if (!applicantId || !token) return;
-
-  //   setLoading(true);
-  //   fetchApplicantByIdService(applicantId, token)
-  //     .then(setApplicant)
-  //     .catch(setError)
-  //     .finally(() => setLoading(false));
-  // }, [applicantId, token]);
-  
-  const positionAppliedFirst = applicant?.positionsApplied?.[0]?.name
-  useEffect(() => {
-    if (!applicantId || !token) return;
-
-    setLoading(true);
-    fetchApplicantByIdService(applicantId, token)
-      .then((res) => {
-        setApplicant(res);
-        const latest = res?.positionsApplied?.at(-1);
-        const computed = latest?.choice?.id === 3 ? latest.name : positionAppliedFirst;
-        useChoiceStore.getState().setTransferredPositionName(computed);
-      })
-      .catch(setError)
-      .finally(() => setLoading(false));
-  }, [applicantId, token]);
-
-  // console.log(computed)
 
   function extractPhotoPath(raw: unknown): string | undefined {
     if (!raw) return;
@@ -114,11 +67,46 @@ export default function ViewApplicant({
     return;
   }
 
+  const fullUrl = useMemo(() => {
+    const photoPath = extractPhotoPath(applicant?.photo);
+    return photoPath
+      ? `/files/Uploads/applicants/${photoPath}`
+      : profileImage;
+  }, [applicant?.photo]);
 
-  const isTransferredPosition = applicant?.positionsApplied?.at(-1)?.choice?.id === 3 ? applicant?.positionsApplied?.at(-1)?.name : position
-  // debugger;
-  // const isTransferredPosition = applicant?.positionsApplied?.find(p => p.choice?.id === 3);
-  // const isTransferredPosition = applicant?.positionsApplied?.find((element: string) => element === ap)
+  const [imgSrc, setImgSrc] = useState(fullUrl);
+
+  useEffect(() => {
+    setImgSrc(fullUrl);
+  }, [fullUrl]);
+
+  const memoizedImage = useMemo(() => (
+    <img
+      src={imgSrc}
+      alt="Applicant"
+      onError={() => {
+        if (imgSrc !== profileImage) setImgSrc(profileImage);
+      }}
+      className="w-[100px] h-[100px] rounded-full shadow-sm object-cover"
+    />
+  ), [imgSrc]);
+
+  const positionAppliedFirst = applicant?.positionsApplied?.[0]?.name
+  useEffect(() => {
+    if (!applicantId || !token) return;
+
+    setLoading(true);
+    fetchApplicantByIdService(applicantId, token)
+      .then((res) => {
+        setApplicant(res);
+        const latest = res?.positionsApplied?.at(-1);
+        const computed = latest?.choice?.id === 3 ? latest.name : positionAppliedFirst;
+        useChoiceStore.getState().setTransferredPositionName(computed);
+      })
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [applicantId, token]);
+
   return (
     <div className="h-screen w-full p-4">
 
@@ -183,14 +171,22 @@ export default function ViewApplicant({
           <div className="mt-8 text-[12px] text-[#6D6D6D] pb-4">
             <TextRenderer as="h1">Skills</TextRenderer>
             <div className="flex gap-2 mt-2 flex-wrap">
-            </div>
-            <div className="flex gap-2 mt-2 flex-wrap">
               {applicant?.skills?.length ? (
-                applicant?.skills?.map((skill: { keyword: string }, index: number) => (
-                  <SkillChip key={index} skill={skill.keyword} />
-                ))
+                <>
+                  {applicant.skills.slice(0, 5).map((skill: { keyword: string }, index: number) => (
+                    <SkillChip key={index} skill={skill.keyword} />
+                  ))}
+
+                  {applicant.skills.length > 5 && (
+                    <div className="bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full font-medium">
+                      +{applicant.skills.length - 5} more
+                    </div>
+                  )}
+                </>
               ) : (
-                <TextRenderer as="p" className='text-[#6D6D6D] poppins'>No Skills Listed</TextRenderer>
+                <TextRenderer as="p" className="text-[#6D6D6D] poppins">
+                  No Skills Listed
+                </TextRenderer>
               )}
             </div>
           </div>

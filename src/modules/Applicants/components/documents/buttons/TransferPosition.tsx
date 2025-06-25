@@ -7,7 +7,7 @@ import { JobOpenings, ApplicantTransfereeName, Slot } from "@modules/Shared/type
 import { IconDots, IconRefresh, IconX, IconChevronDown, IconPlus } from "@tabler/icons-react";
 import TransferredPosition from "@modules/Applicants/components/alerts/Transferred";
 import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
-import { useJobOpeningStore, useSelectedApplicantsStore } from "@modules/Shared/store";
+import { useJobOpeningStore, useSelectedApplicantsStore, useChoiceStore } from "@modules/Shared/store";
 import { Button, Divider, Textarea, TextInput, Menu, Pagination } from "@mantine/core";
 import { useTransferApplicantPosition } from "@modules/Shared/hooks/useSharedApplicants";
 import { useAmountStore } from "@src/modules/Shared/store";
@@ -32,6 +32,8 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
     const [loadTime, setLoadTime] = useState<number | null>(null);
     const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
     const [filterType, setFilterType] = useState<"position" | "company">("position");
+
+    const transferredPosition = useChoiceStore.getState().transferredPositionName;
 
     const handlePageChange = (newPage: number) => {
         setLocalPage(newPage);
@@ -137,10 +139,16 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 </h1>
                 <Button
                     onClick={() => setOpened(true)}
-                    className="relative w-[540px] h-[56px] px-4 bg-[#6D6D6D10] border border-[#6D6D6D] rounded-lg text-[#6D6D6D99] hover:bg-[#6D6D6D30] flex items-center"
+                    className="
+                    relative w-[540px] h-[56px] px-4
+                     bg-white border border-[#6D6D6D] 
+                     rounded-lg text-[#6D6D6D99] 
+                     hover:bg-[#6D6D6D30] flex items-center"
                 >
+
                     <span className="text-left text-[#6D6D6D99] font-medium text-[16px]">
-                        Select from open vacancies
+                        {/* Select from open vacancies */}
+                        {transferredPosition || "Select from open Vacancies"}
                     </span>
                     <IconDots className="absolute right-4 text-[#6D6D6D99]" />
                 </Button>
@@ -235,115 +243,116 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                 contentClassName="available-positions"
                 onClose={() => setOpened(false)}
             >
-                <div className="flex justify-between items-center">
-                    <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">
-                        Vacancies
-                    </h1>
-                    <IconX
-                        className="w-[16px] h-[16px] cursor-pointer"
-                        // onClick={() => setOpened(false)}
-                        onClick={() => {
-                            setOpened(false);
-                            handleRefresh();
-                        }}
-                    />
-                </div>
-
-                <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
-
-                {/* Filter Controls */}
-                <div className="flex gap-3 mb-4 items-center mt-2">
-                    <Menu withinPortal={false}>
-                        <h1 className="poppins text-[#323232]">Search by:</h1>
-                        <Menu.Target>
-                            <Button variant="light" size="sm">
-                                {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
-                                <span className="pl-2">
-                                    <IconChevronDown size={18} />
-                                </span>
-                            </Button>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            <Menu.Item onClick={() => setFilterType("position")}>
-                                Position
-                            </Menu.Item>
-                            <Menu.Item onClick={() => setFilterType("company")}>
-                                Company
-                            </Menu.Item>
-                        </Menu.Dropdown>
-                    </Menu>
-
-                    <TextInput
-                        placeholder={`Search by ${filterType}`}
-                        value={filterText}
-                        onChange={(e) => setFilterText(e.currentTarget.value)}
-                        style={{ flexGrow: 1 }}
-                    />
-
-                    <div className="flex items-center gap-1">
-                        <Button
-                            onClick={() => setFilterText("")}
-                            variant="outline"
-                            color="gray"
-                            size="sm"
-                            className="p-2"
-                        >
-                            <IconRefresh onClick={handleRefresh} className="text-[#6d6d6d]" />
-                        </Button>
-
-                        <Button
-                            onClick={() => setOpened(false)}
-                            className="custom-gradient text-white px-4 py-2 text-base font-normal" size="sm">
-                            <IconPlus size={16} stroke={5} className="mr-1" />
-                            Select
-                        </Button>
+                <div className="max-h-[90vh] overflow-hidden flex flex-col  rounded-lg w-full max-w-5xl">
+                    {/* Header */}
+                    <div className="flex justify-between items-center flex-shrink-0">
+                        <h1 className="font-semibold text-[#559CDA] text-[22px] poppins">Vacancies</h1>
+                        <IconX
+                            className="w-[16px] h-[16px] cursor-pointer"
+                            onClick={() => {
+                                setOpened(false);
+                                handleRefresh();
+                            }}
+                        />
                     </div>
-                </div>
 
-                {/* Job Openings DataTable */}
-                <DataTable
-                    records={filteredSlots}
-                    columns={[
-                        {
-                            accessor: "position",
-                            title: headerColor("Position"),
-                            render: ({ position }) => grayCell(position),
-                        },
-                        {
-                            accessor: "company",
-                            title: headerColor("Company"),
-                            render: ({ company }) => grayCell(company?.name),
-                        },
-                        {
-                            accessor: "slots",
-                            title: headerColor("Slots"),
-                            render: ({ slots }) => grayCell(slots?.toString()),
-                        },
-                    ]}
-                    selectedRecords={selectedSlots}
-                    onSelectedRecordsChange={handleSelectedRecordsChange}
-                />
+                    <Divider size={2} color="#6D6D6D99" className="w-full mt-2" />
 
+                    {/* Filter Controls */}
+                    <div className="flex gap-3 mb-4 items-center mt-2 flex-shrink-0">
+                        <Menu withinPortal={false}>
+                            <h1 className="poppins text-[#323232]">Search by:</h1>
+                            <Menu.Target>
+                                <Button variant="light" size="sm">
+                                    {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+                                    <span className="pl-2">
+                                        <IconChevronDown size={18} />
+                                    </span>
+                                </Button>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item onClick={() => setFilterType("position")}>Position</Menu.Item>
+                                <Menu.Item onClick={() => setFilterType("company")}>Company</Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
 
-                {/* Footer */}
-                <div className="flex-shrink-0 mt-4 pt-2 border-t flex justify-between items-center">
-                    <p className="job-offers-table text-sm poppins">
-                        {`Showing data ${(localPage - 1) * localPageSize + 1} to ${Math.min(
-                            localPage * localPageSize,
-                            total ?? 0
-                        )} of ${total ?? 0} entries`}
-                        {loadTime !== null && ` found in (${loadTime.toFixed(3)})ms`}
-                    </p>
+                        <TextInput
+                            placeholder={`Search by ${filterType}`}
+                            value={filterText}
+                            onChange={(e) => setFilterText(e.currentTarget.value)}
+                            style={{ flexGrow: 1 }}
+                        />
 
-                    <Pagination
-                        value={localPage}
-                        onChange={handlePageChange}
-                        total={Math.ceil((total ?? 0) / localPageSize)}
-                        radius="md"
-                        size="sm"
-                        siblings={1}
-                        boundaries={1}
-                    />
+                        <div className="flex items-center gap-1">
+                            <Button
+                                onClick={() => setFilterText("")}
+                                variant="outline"
+                                color="gray"
+                                size="sm"
+                                className="p-2"
+                            >
+                                <IconRefresh onClick={handleRefresh} className="text-[#6d6d6d]" />
+                            </Button>
+
+                            <Button
+                                onClick={() => setOpened(false)}
+                                className="custom-gradient text-white px-4 py-2 text-base font-normal"
+                                size="sm"
+                            >
+                                <IconPlus size={16} stroke={5} className="mr-1" />
+                                Select
+                            </Button>
+                        </div>
+                    </div>
+
+                    <div className="relative border-t border-b flex-grow">
+                        <DataTable
+                            records={filteredSlots}
+                            columns={[
+                                {
+                                    accessor: "position",
+                                    title: headerColor("Position"),
+                                    render: ({ position }) => grayCell(position),
+                                },
+                                {
+                                    accessor: "company",
+                                    title: headerColor("Company"),
+                                    render: ({ company }) => grayCell(company?.name),
+                                },
+                                {
+                                    accessor: "slots",
+                                    title: headerColor("Slots"),
+                                    render: ({ slots }) => grayCell(slots?.toString()),
+                                },
+                            ]}
+                            selectedRecords={selectedSlots}
+                            onSelectedRecordsChange={handleSelectedRecordsChange}
+                            striped
+                            highlightOnHover
+                            scrollAreaProps={{ style: { maxHeight: 300, overflowY: "auto" } }}
+                        />
+                    </div>
+
+                    {/* Footer */}
+                    <div className="flex-shrink-0 border-t flex justify-between items-center py-3">
+                        <p className="job-offers-table text-sm poppin">
+                            {`Showing data ${(localPage - 1) * localPageSize + 1} to ${Math.min(
+                                localPage * localPageSize,
+                                total ?? 0
+                            )} of ${total ?? 0} entries`}
+                            {loadTime !== null && ` found in (${loadTime.toFixed(3)})ms`}
+                        </p>
+
+                        <Pagination
+                            value={localPage}
+                            onChange={handlePageChange}
+                            total={Math.ceil((total ?? 0) / localPageSize)}
+                            radius="md"
+                            size="sm"
+                            siblings={1}
+                            boundaries={1}
+                        />
+                    </div>
                 </div>
             </ModalWrapper>
         </div >

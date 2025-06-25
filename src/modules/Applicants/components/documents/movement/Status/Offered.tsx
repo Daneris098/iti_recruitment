@@ -8,7 +8,7 @@ import {
     useViewPositionLevels, useViewDepartments,
     useGetCompanyDivisions, useGetPaymentSchemes
 } from "@modules/Shared/hooks/useSharedApplicants";
-import { usePositionApplied, useDepartmentStore, useDivisionStore } from "@src/modules/Shared/store";
+import { usePositionApplied, useDepartmentStore, useDivisionStore, useChoiceStore } from "@src/modules/Shared/store";
 
 export default function OfferedStatus() {
 
@@ -24,6 +24,8 @@ export default function OfferedStatus() {
     const [getDepartments, setDepartments] = useState<interviewStagesOption[]>([]);
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
     const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
+    
+    const transferredPosition = useChoiceStore.getState().transferredPositionName;
 
     const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
     const departmentName = useDepartmentStore((state) => state.departmentName);
@@ -125,7 +127,7 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 disabled
-                                value={positionsApplied || ""}
+                                value={transferredPosition || positionsApplied}
                                 onChange={(e) => setPosition(e.currentTarget.value)}
                                 onFocus={() => positionCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}

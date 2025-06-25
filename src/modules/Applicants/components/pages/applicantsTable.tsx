@@ -12,7 +12,7 @@ import {
   FilterStore, useCloseModal,
   useSortStore, useApplicantStore
 } from "@modules/Applicants/store";
-import { useApplicantIdStore, useLoadTimeStore } from '@src/modules/Shared/store';
+
 import Filter from "@src/modules/Applicants/components/filter/Filter";
 import { Applicant, ApplicantRoute } from "@src/modules/Shared/types";
 import ViewApplicant from "@src/modules/Shared/components/viewApplicants";
@@ -20,9 +20,10 @@ import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useApplicants } from "@src/modules/Shared/hooks/useSharedApplicants";
 import FilterDrawer from "@modules/Applicants/components/filter/FilterDrawer";
-import { usePositionFilterStore, useStatusFilterStore, useApplicantNameStore } from "@modules/Shared/store";
+import { useApplicantIdStore, useLoadTimeStore } from '@src/modules/Shared/store';
 import { ApplicantRoutes } from "@modules/Applicants/constants/tableRoute/applicantRoute";
 import TransferredStatus from "@modules/Applicants/components/documents/movement/Status/Transferred";
+import { usePositionFilterStore, useStatusFilterStore, useApplicantNameStore } from "@modules/Shared/store";
 
 export default function index() {
 
@@ -46,7 +47,6 @@ export default function index() {
 
   //#region STORES
   const { setPage } = usePaginationStore();
-  // const records = useApplicantStore((s) => s.records)
   const { sortedRecords, setSort, setRecords } = useSortStore();
   const { isViewApplicant, setIsViewApplicant } = useCloseModal();
 
@@ -58,9 +58,6 @@ export default function index() {
 
   const loadTime = useLoadTimeStore((s) => s.loadTime);
   const setLoadTime = useLoadTimeStore((s) => s.setLoadTime);
-
-  //local states
-  // const [loadTime, setLoadTime] = useState<number | null>(null);
 
   const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
 
@@ -86,13 +83,22 @@ export default function index() {
   };
 
   useEffect(() => {
-    if (selectedApplicant?.applicantName) {
-      const fullName = selectedApplicant?.generalApplicant.nameResponse.formalName;
-      // const fullName = selectedApplicant?.
-      setApplicantName(fullName);
-    }
+    if (!selectedApplicant?.applicantName) return;
+
+    const {
+      generalApplicant: {
+        nameResponse: {
+          firstName = "",
+          lastName = "",
+          middleName = "",
+        } = {},
+      } = {},
+    } = selectedApplicant;
+
+    const fullName = `${lastName}, ${firstName} ${middleName !== "N/A" ? middleName : ""}`.trim();
+    setApplicantName(fullName);
   }, [selectedApplicant, setApplicantName]);
-  debugger
+
   const { page, pageSize } = useMemo(() => {
     return {
       page: parseInt(searchParams.get("page") || "1"),
