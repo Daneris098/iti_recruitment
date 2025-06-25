@@ -4,8 +4,7 @@ import "mantine-datatable/styles.layer.css";
 import { DataTable } from "mantine-datatable";
 import { useQueryClient } from "@tanstack/react-query";
 import { useVacancies } from "@modules/Vacancies/hooks/useVacancies";
-import { VacancyStore, ApplicantStore, DataTableStore } from "../store";
-
+import { VacancyStore, ApplicantStore, DataTableStore, ComponentsStore, ViewApplicantsDataTableStore } from "../store";
 import { selectedDataVal } from "../values";
 
 enum StatusColor {
@@ -15,11 +14,16 @@ enum StatusColor {
 }
 
 export default function index() {
-  const { page, pageSize, sortStatus, setPage, setSortStatus, time } = DataTableStore();
+  const { page, pageSize, sortStatus, setPage, setSortStatus, time, totalRecords } = DataTableStore();
   const { selectedData, setSelectedData } = ApplicantStore();
   const { isFetching, data } = useVacancies();
   const { setSelectedVacancy } = VacancyStore();
   const queryClient = useQueryClient();
+  const {
+    // ViewApplicantsModal,
+    setViewApplicantModal,
+  } = ComponentsStore();
+  const { setPage: setPageViewApplicant } = ViewApplicantsDataTableStore();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -85,8 +89,10 @@ export default function index() {
             <div
               className="rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]"
               onClick={(e) => {
+                setPageViewApplicant(1);
                 e.stopPropagation();
                 setSelectedData(data);
+                setViewApplicantModal(true);
               }}>
               View Applicants
             </div>
@@ -95,13 +101,15 @@ export default function index() {
       ]}
       paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (${time}) seconds`}
       records={data}
-      totalRecords={data?.length}
+      totalRecords={totalRecords}
       recordsPerPage={pageSize}
       page={page}
       onPageChange={setPage}
       sortStatus={sortStatus}
       onSortStatusChange={(sort) => setSortStatus(sort as { columnAccessor: keyof VacancyType; direction: "asc" | "desc" })}
       onRowClick={(val) => {
+        queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: "active" });
+        setSelectedData(val.record);
         setSelectedVacancy(val.record);
       }}
     />

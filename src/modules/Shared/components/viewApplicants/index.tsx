@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Divider } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import profileImage from "@src/assets/jane.png";
+import profileImage from "@src/assets/unknown.png";
+import { useEffect, useMemo, useState } from "react";
 import { useCloseModal } from "@modules/Applicants/store";
 import { ViewApplicantsProps } from "@modules/Shared/types";
-import { useApplicantIdStore } from "@src/modules/Shared/store";
+import { useApplicantIdStore, useChoiceStore } from "@src/modules/Shared/store";
 import Modals from "@modules/Shared/components/viewApplicants/Modals";
 import TabsPanel from "@modules/Shared/components/viewApplicants/TabsPanel";
 import { SkillChip } from "@modules/Shared/utils/ApplicantModal/skillChips";
@@ -12,24 +12,29 @@ import { getTabs } from "@modules/Shared/utils/ApplicantModal/tabConfiguration";
 import { StatusBadge } from "@modules/Shared/utils/ApplicantModal/statusColors";
 import { ActionButton } from "@modules/Shared/utils/ApplicantModal/actionButton";
 import { TextRenderer } from "@modules/Shared/utils/ApplicantModal/textRenderer";
-import { useApplicantsById } from "@src/modules/Shared/hooks/useSharedApplicants";
 import { getDisplayStatus } from "@modules/Shared/utils/ApplicantModal/getStatus";
+import { fetchApplicantByIdService } from '@src/modules/Shared/utils/GetApplicantById/applicantServiceById';
 
 export default function ViewApplicant({
-  applicantName,
-  position,
   status,
   email,
   phone,
   remarks,
-  applicationDate,
   onClose,
+  // location,
+  position,
   IsJobOffer,
-  location
+  applicantName,
+  applicationDate,
 }: ViewApplicantsProps) {
 
   const applicantId = useApplicantIdStore((state) => state.id);
-  const { data: applicantsById } = useApplicantsById(applicantId);
+
+  const [_isLoading, setLoading] = useState(false);
+  const [_error, setError] = useState<unknown>(null);
+  const [showImage, setShowImage] = useState(false);
+  const [applicant, setApplicant] = useState<any | null>(null);
+  const token = sessionStorage.getItem("accessToken") ?? undefined;
 
   const {
     setIsOffered,
@@ -42,6 +47,78 @@ export default function ViewApplicant({
   const displayStatus = getDisplayStatus(status);
   const changeTabs = getTabs({ applicantName, status: status, remarks: remarks });
 
+  const fullUrl = useMemo(() => {
+    const photoPath = extractPhotoPath(applicant?.photo);
+    return photoPath
+      ? `/files/Uploads/applicants/${photoPath}`
+      : profileImage;
+  }, [applicant?.photo]);
+  const [imgSrc, setImgSrc] = useState(fullUrl);
+
+  const memoizedImage = useMemo(() => (
+    <img
+      src={imgSrc}
+      alt="Applicant"
+      onError={() => {
+        if (imgSrc !== profileImage) setImgSrc(profileImage);
+      }}
+      className="w-[100px] h-[100px] rounded-full shadow-sm object-cover"
+    />
+  ), [imgSrc]);
+
+  // useEffect(() => {
+  //   if (!applicantId || !token) return;
+
+  //   setLoading(true);
+  //   fetchApplicantByIdService(applicantId, token)
+  //     .then(setApplicant)
+  //     .catch(setError)
+  //     .finally(() => setLoading(false));
+  // }, [applicantId, token]);
+  
+  const positionAppliedFirst = applicant?.positionsApplied?.[0]?.name
+  useEffect(() => {
+    if (!applicantId || !token) return;
+
+    setLoading(true);
+    fetchApplicantByIdService(applicantId, token)
+      .then((res) => {
+        setApplicant(res);
+        const latest = res?.positionsApplied?.at(-1);
+        const computed = latest?.choice?.id === 3 ? latest.name : positionAppliedFirst;
+        useChoiceStore.getState().setTransferredPositionName(computed);
+      })
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, [applicantId, token]);
+
+  // console.log(computed)
+
+  function extractPhotoPath(raw: unknown): string | undefined {
+    if (!raw) return;
+
+    if (typeof raw === "string") {
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) && parsed[0]?.path;
+      } catch {
+        console.warn("photo field is not valid JSON:", raw);
+        return;
+      }
+    }
+
+    if (Array.isArray(raw)) {
+      return raw[0]?.path;
+    }
+
+    return;
+  }
+
+
+  const isTransferredPosition = applicant?.positionsApplied?.at(-1)?.choice?.id === 3 ? applicant?.positionsApplied?.at(-1)?.name : position
+  // debugger;
+  // const isTransferredPosition = applicant?.positionsApplied?.find(p => p.choice?.id === 3);
+  // const isTransferredPosition = applicant?.positionsApplied?.find((element: string) => element === ap)
   return (
     <div className="h-screen w-full p-4">
 
@@ -62,12 +139,15 @@ export default function ViewApplicant({
         {/* Sidebar */}
         <div className="w-1/4 p-2 sticky top-0 h-screen overflow-y-auto">
           <div className="flex flex-col items-start mt-3">
-            <img src={profileImage} className="w-[100px] h-[100px] rounded-full shadow-sm" />
+            <div className="cursor-pointer" onClick={() => setShowImage(true)}>
+              {memoizedImage}
+            </div>
             <TextRenderer as="p" className="text-[#559CDA] text-[20px] font-bold mt-2">
               {applicantName}
             </TextRenderer>
             <TextRenderer as="p" className="text-[#6D6D6D] text-[12px] font-medium">
-              {position}
+              {/* {position} */}
+              {isTransferredPosition}
             </TextRenderer>
           </div>
 
@@ -88,7 +168,9 @@ export default function ViewApplicant({
           {/* Contact */}
           <div className="mt-8 text-[12px] text-[#6D6D6D] space-y-3">
             <TextRenderer as="h1">Location</TextRenderer>
-            <TextRenderer as="p" className="font-bold text-[14px]">{location ?? "Address not found"}</TextRenderer>
+            <TextRenderer as="p" className="font-bold text-[14px]">
+              {`${applicant?.addresses?.[0]?.houseNo}, ${applicant?.addresses?.[0]?.street}, ${applicant?.addresses?.[0]?.city?.name}, ${applicant?.addresses?.[0]?.zipCode?.name}`}
+            </TextRenderer>
 
             <TextRenderer as="h1">Email</TextRenderer>
             <TextRenderer as="p" className="font-bold text-[14px] break-words">{email ?? "No Data"}</TextRenderer>
@@ -101,9 +183,11 @@ export default function ViewApplicant({
           <div className="mt-8 text-[12px] text-[#6D6D6D] pb-4">
             <TextRenderer as="h1">Skills</TextRenderer>
             <div className="flex gap-2 mt-2 flex-wrap">
-              {applicantsById?.generalInformation?.skills?.length ? (
-                applicantsById.generalInformation.skills.map((skill: string, index: number) => (
-                  <SkillChip key={index} skill={skill} />
+            </div>
+            <div className="flex gap-2 mt-2 flex-wrap">
+              {applicant?.skills?.length ? (
+                applicant?.skills?.map((skill: { keyword: string }, index: number) => (
+                  <SkillChip key={index} skill={skill.keyword} />
                 ))
               ) : (
                 <TextRenderer as="p" className='text-[#6D6D6D] poppins'>No Skills Listed</TextRenderer>
@@ -148,6 +232,23 @@ export default function ViewApplicant({
         <div className="w-4/5 p-4 overflow-y-auto h-screen">
           <TabsPanel tabs={changeTabs} />
         </div>
+
+        <>
+          {showImage && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+              onClick={() => setShowImage(false)}
+            >
+              <div className="max-w-[90%] max-h-[90%]">
+                <img
+                  src={memoizedImage?.props?.src || ""}
+                  alt="Enlarged"
+                  className="w-full h-full object-contain rounded-lg shadow-lg"
+                />
+              </div>
+            </div>
+          )}
+        </>
       </div>
 
       {/* PDF Modal */}
@@ -175,6 +276,6 @@ export default function ViewApplicant({
         Acknowledgement={""}
         Department={""}
       />
-    </div>
+    </div >
   );
 }

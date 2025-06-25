@@ -6,10 +6,9 @@ import { UserForm } from "@modules/AdministratorSettings/types";
 import { UserFormVal } from "@modules/AdministratorSettings/value";
 import { generatePassword } from "@src/utils/GeneratePassword";
 import { useCreateUser } from "@modules/AdministratorSettings/hooks/useCreateUser";
-import axiosInstance from "@src/api";
 
 export default function index() {
-  const { alert, setAlert, setNewlyAddedUser, emailError, usernameError, setUsernameError, setEmailError } = AdministratorSettingsStore();
+  const { setAlert, setNewlyAddedUser } = AdministratorSettingsStore();
   const { action, setAction } = DialogStore();
   const formRef = useRef<HTMLFormElement>(null);
   const [isGenerated, setIsGenerated] = useState(true);

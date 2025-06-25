@@ -47,14 +47,8 @@ export type Department = {
 };
 
 export type Branch = {
-  area?: {
-    id: number;
-    name: string;
-  };
-  location?: {
-    id: number;
-    name: string;
-  };
+  area?: string;
+  location?: string;
   company?: {
     id: number;
     name: string;

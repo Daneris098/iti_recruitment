@@ -2,11 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
 import { DataTableStore } from "@src/modules/Vacancies/store";
 import { useCalendarStore } from "../store";
-import { useEffect } from "react";
 
 export const useCalendar = () => {
   const { page, pageSize, sortStatus } = DataTableStore();
-  const { currentDate, setCurrentDate, filterInterviewer, filterDepartmentIds, filterCompanyId } = useCalendarStore();
+  const { currentDate, filterInterviewer, filterDepartmentIds, filterCompanyId } = useCalendarStore();
 
   const fetchData = async () => {
     try {

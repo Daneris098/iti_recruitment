@@ -50,7 +50,7 @@ export const GeneralInformationVal: GeneralInformation = {
     weight: null,
     civilStatus: "",
     religion: "",
-    mobileNumber: 63,
+    mobileNumber: 0,
     workingEmailAddress: "",
     landlineNumber: "",
   },
@@ -214,7 +214,10 @@ export const familyBackgroundVal: FamilyBackground = {
   },
   children: {
     numberOfChildren: 0,
-    ageRange: "",
+    ageRange: {
+      min: 0,
+      max: 0,
+    },
   },
   otherInformation: {
     specialTechnicalSkills: "",
@@ -254,7 +257,10 @@ export const familyBackgroundVal2: FamilyBackground = {
   },
   children: {
     numberOfChildren: 0,
-    ageRange: "",
+    ageRange: {
+      min: 0,
+      max: 0,
+    },
   },
   otherInformation: {
     specialTechnicalSkills: "",
@@ -299,7 +305,7 @@ export const referenceValue2: Reference = {
       fullname: "Mary Ann Santiago",
       company: "Intellismart",
       positionHeld: "Project Manager",
-      ContactNo: "+63 94 7744 3626",
+      ContactNo: "09234586758",
     },
   ],
   employmentReference: [

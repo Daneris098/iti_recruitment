@@ -7,6 +7,7 @@ import { AlertType, Step } from "../../types";
 import { cn } from "@src/lib/utils";
 import { IconHelp } from "@tabler/icons-react";
 import { ApplicationFormVal } from "@modules/HomePublic/values/cleanState";
+import { selectedDataVal } from "@src/modules/HomePublic/values";
 
 // Define auto-close behavior
 const AlertAutoClose: Record<AlertType, boolean> = {
@@ -19,7 +20,7 @@ const AlertAutoClose: Record<AlertType, boolean> = {
 
 export default function AlertModals() {
     const { setActiveStepper, setApplicationForm } = ApplicationStore();
-    const { setApplicationFormModal, setAlert, alert, alertBody } = HomeStore();
+    const { setApplicationFormModal, setAlert, alert, alertBody, setSelectedData } = HomeStore();
     useEffect(() => {
         if (alert && (AlertAutoClose as any)[alert]) {
             const timer = setTimeout(() => {
@@ -156,6 +157,7 @@ export default function AlertModals() {
                                 setApplicationFormModal(false);
                                 setActiveStepper(Step.GeneralInformation);
                                 setAlert(AlertType.cancelledApplication)
+                                setSelectedData(selectedDataVal);
                             }}
                         >
                             YES

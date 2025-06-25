@@ -6,6 +6,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
 import { useFetchOrganizationSettings } from "../../services/data";
+import { AlertType } from "../../assets/Enum";
 type AddSectionProps = {
   code: string;
   name: string;
@@ -21,7 +22,7 @@ type AddSectionProps = {
   };
 };
 export default function AddSection(addOrg: boolean): DataTableColumn<SectionType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addSection = useForm<AddSectionProps>({
     initialValues: {
@@ -44,7 +45,10 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addSection", addSection.values);
-  }, [addSection.values]);
+    if (alert === AlertType.saved) {
+      addSection.reset();
+    }
+  }, [addSection.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);
@@ -195,15 +199,12 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
           <div className="flex flex-row items-center justify-between gap-5">
             <Select
               radius={8}
-              data={[
-                { value: String(1), label: "Active" },
-                { value: String(0), label: "Inactive" },
-              ]}
+              data={["Active", "Inactive"]}
               rightSection={<IconCaretDownFilled size="18" />}
               className="border-none text-sm w-full"
               classNames={{ label: "p-1", input: "poppins text-[#6D6Ddepartments6D]" }}
               styles={{ label: { color: "#6d6d6d" } }}
-              defaultValue={row.isActive ? "Inactive" : "Active"}
+              value={addSection.values.isActive ? "Active" : "Inactive"}
               onChange={(value) => {
                 if (value === "Active") addSection.setFieldValue("isActive", true);
                 else addSection.setFieldValue("isActive", false);

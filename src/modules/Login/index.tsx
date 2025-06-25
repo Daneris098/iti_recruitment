@@ -8,7 +8,6 @@ import { jwtDecode } from "jwt-decode";
 import { useUserDataStore } from "@src/global/store/auth";
 import { JWTPayload } from "@src/global/types/auth";
 import { useState } from "react";
-import { divide } from "lodash";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -65,7 +64,7 @@ export default function Login() {
   };
 
   return (
-    <div className=" h-full flex">
+    <div className="h-screen flex">
       <title>Login</title>
       <div className="bg-cover  w-1/2 hidden sm:block">
         <div style={{ backgroundImage: `url(${loginBg})` }} className="bg-cover h-full w-full flex flex-col p-4 ">
@@ -75,7 +74,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-      <div className=" w-full sm:w-1/2">
+      <div className="w-full sm:w-1/2 h-full">
         <div className="h-full w-full flex flex-col">
           <form onSubmit={form.onSubmit(onSubmit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[65%] m-auto p-4 sm:p-0">
             <div className="w-full flex justify-center items-center">
@@ -125,7 +124,7 @@ export default function Login() {
               />
             </div>
 
-            <Button type="submit" size="lg" className="br-gradient border-none bg-blue-300 mt-7">
+            <Button type="submit" size="lg" className="br-gradient border-none bg-blue-300 mt-2">
               <Text className="poppins text-white ">Login Now</Text>
             </Button>
           </form>

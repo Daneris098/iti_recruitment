@@ -568,6 +568,7 @@ export interface ViewApplicantById {
     commentsByID: {
         item: Comments;
     }
+    applicantPhoto: any;
 }
 
 export enum ApplicantMovementStatus {

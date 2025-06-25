@@ -3,12 +3,39 @@ export interface VacancyState {
   applicationFormModal: boolean;
   alert: string;
   action: Action;
+  selectedCompanyId: string;
+  selectedBranchId: string;
+  selectedDivisionId: string;
+  selectedDepartmentId: string;
+  selectedSectionId: string;
+  selectedVacancyApplicantCount: applicantCount;
 
+  setSelectedVacancyApplicantCount: (data: applicantCount) => void;
+  setSelectedCompanyId: (action: string) => void;
+  setSelectedBranchId: (action: string) => void;
+  setSelectedDivisionId: (action: string) => void;
+  setSelectedDepartmentId: (action: string) => void;
+  setSelectedSectionId: (action: string) => void;
   setAction: (action: Action) => void;
   setAlert: (alert: string) => void;
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedVacancy: (selectedData: VacancyType) => void;
 }
+
+export type applicantCount = {
+  applied: number,
+  forInterview: number,
+  offered: number,
+  hired: number,
+  archived: number,
+}
+
+export type Components = {
+  ViewApplicantsModal: boolean;
+
+  setViewApplicantModal: (ViewApplicantsModal: boolean) => void;
+}
+
 export type FilterState = {
   filter: FilterType;
   isFiltered: boolean;
@@ -69,6 +96,10 @@ export interface VacancyType {
   };
   mustHaveSkills: string[];
   qualification: string;
+  branchObj: any
+  divisionObj: any
+  departmentObj: any
+  sectionObj: any
 }
 
 export interface FormData {
@@ -91,7 +122,10 @@ export interface ApplicantState {
   loading: boolean;
   isViewApplicant: boolean;
   selectedApplicant: selectedApplicant;
+  maxLength: number;
 
+
+  setMaxLength: (maxLength: number) => void;
   setSelectedApplicant: (setSelectedApplicant: any) => void;
   setIsViewApplicant: (isViewApplicant: boolean) => void;
   setSelectedData: (action: VacancyType) => void;

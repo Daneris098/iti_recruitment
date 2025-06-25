@@ -6,7 +6,7 @@ import "@modules/Reports/styles/index.css";
 import { LoadingOverlay, Text } from "@mantine/core";
 
 export const Reports = () => {
-  const { setSelectedReport } = ReportStore();
+  const { setSelectedReport, selectedReport } = ReportStore();
   return (
     <div className="bg-white rounded-md grid grid-cols-1 md:grid-cols-2 gap-12 p-12 relative">
       <Modals />
@@ -16,8 +16,9 @@ export const Reports = () => {
           onClick={() => {
             if (report.comingSoon) return;
             setSelectedReport(report);
+
+            console.log(selectedReport);
           }}>
-          {" "}
           <LoadingOverlay
             visible={report.comingSoon}
             loaderProps={{

@@ -22,6 +22,7 @@ export const selectedDataVal: VacancyType = {
   desirable: [],
   dateCreated: "",
   datePublish: "",
+  dateEnd: "",
   interviewer: "",
   quantity: 0,
   status: "",
@@ -31,10 +32,30 @@ export const selectedDataVal: VacancyType = {
     from: ""
   },
   mustHaveSkills: [],
-  qualification: ""
+  qualification: "",
+  branchObj: [],
+  divisionObj: [],
+  departmentObj: [],
+  sectionObj: []
 };
 
+
 export const filterVal: FilterType = {
+  dateFrom: '',
+  dateTo: '',
+  postedDate: null,
+  jobTitle: '',
+  vacancy: [],
+  company: [],
+  interviewer: [],
+  status: [],
+  department: [],
+  employmentType: [],
+  workplaceType: [],
+  experienceLevel: [],
+}
+
+export const cleanFilterVal: FilterType = {
   dateFrom: '',
   dateTo: '',
   postedDate: null,

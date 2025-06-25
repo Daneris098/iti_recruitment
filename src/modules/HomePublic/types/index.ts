@@ -205,7 +205,10 @@ export interface FamilyBackground {
   };
   children: {
     numberOfChildren: number | string;
-    ageRange: string;
+    ageRange: {
+      min: number,
+      max: number
+    };
   };
 
   otherInformation: {

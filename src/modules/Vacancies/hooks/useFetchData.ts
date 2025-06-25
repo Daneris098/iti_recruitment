@@ -1,7 +1,9 @@
 import { useSharedGeneralService, useSharedOrgService } from "@src/modules/Shared/api/useSharedUserService";
 import { useQuery } from "@tanstack/react-query";
+import { VacancyStore } from "@modules/Vacancies/store";
 
 export const useFormDataResponse = () => {
+  const { selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId } = VacancyStore();
   const companies = useQuery({
     queryKey: ["companies"],
     queryFn: async () => {
@@ -13,7 +15,15 @@ export const useFormDataResponse = () => {
   const branches = useQuery({
     queryKey: ["branches"],
     queryFn: async () => {
-      const result = await useSharedOrgService("/branches").getAll();
+      if (!selectedCompanyId || selectedCompanyId == 'null') {
+        return {
+          items: [],
+          total: 0,
+        };
+      }
+      const result = await useSharedOrgService("/branches").getAll({
+        ...(selectedCompanyId && { CompanyFilter: selectedCompanyId }),
+      });
       return result;
     },
     staleTime: 1000 * 60 * 5,
@@ -22,7 +32,16 @@ export const useFormDataResponse = () => {
   const divisions = useQuery({
     queryKey: ["divisions"],
     queryFn: async () => {
-      const result = await useSharedOrgService("/divisions").getAll();
+      if (!selectedCompanyId || selectedCompanyId == 'null' || !selectedBranchId || selectedBranchId == 'null') {
+        return {
+          items: [],
+          total: 0,
+        };
+      }
+      const result = await useSharedOrgService("/divisions").getAll({
+        ...(selectedCompanyId && { CompanyFilter: selectedCompanyId }),
+        ...(selectedBranchId && { BranchFilter: selectedBranchId }),
+      });
       return result;
     },
     staleTime: 1000 * 60 * 5,
@@ -31,8 +50,20 @@ export const useFormDataResponse = () => {
   const departments = useQuery({
     queryKey: ["departments"],
     queryFn: async () => {
-      const result = await useSharedOrgService("/departments").getAll();
-      return result;
+      if (!selectedCompanyId || selectedCompanyId == 'null' || !selectedBranchId || selectedBranchId == 'null' || !selectedDivisionId || selectedDivisionId == 'null') {
+        return {
+          items: [],
+          total: 0,
+        };
+      }
+      else {
+        const result = await useSharedOrgService("/departments").getAll({
+          ...(selectedCompanyId && { CompanyFilter: selectedCompanyId }),
+          ...(selectedBranchId && { BranchFilter: selectedBranchId }),
+          ...(selectedDivisionId && { DivisionFilter: selectedDivisionId }),
+        });
+        return result;
+      }
     },
     staleTime: 1000 * 60 * 5,
   });
@@ -40,8 +71,22 @@ export const useFormDataResponse = () => {
   const sections = useQuery({
     queryKey: ["sections"],
     queryFn: async () => {
-      const result = await useSharedOrgService("/sections").getAll();
-      return result;
+      if (!selectedCompanyId || selectedCompanyId == 'null' || !selectedBranchId || selectedBranchId == 'null' || !selectedDivisionId || selectedDivisionId == 'null' || !selectedDepartmentId || selectedDepartmentId == 'null') {
+        return {
+          items: [],
+          total: 0,
+        };
+      }
+      else {
+        const result = await useSharedOrgService("/sections").getAll({
+          ...(selectedCompanyId && { CompanyFilter: selectedCompanyId }),
+          ...(selectedBranchId && { BranchFilter: selectedBranchId }),
+          ...(selectedDivisionId && { DivisionFilter: selectedDivisionId }),
+          ...(selectedDepartmentId && { DepartmentFilter: selectedDepartmentId }),
+        });
+        return result;
+      }
+
     },
     staleTime: 1000 * 60 * 5,
   });

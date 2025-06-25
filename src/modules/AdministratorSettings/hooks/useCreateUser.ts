@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@src/api/authApi";
 import { UserForm, AlertType } from "../types";
 import { UseFormReturnType } from "@mantine/form";
-import { AdministratorSettingsStore } from "../store";
 
 interface CreateUserInput {
   formValues: UserForm;

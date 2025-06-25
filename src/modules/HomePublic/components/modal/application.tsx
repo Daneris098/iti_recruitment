@@ -1,4 +1,4 @@
-import { Modal, Divider, Button, Popover, LoadingOverlay, Center, ActionIcon, MantineSize, useMatches } from '@mantine/core';
+import { Modal, Divider, Button, Popover, LoadingOverlay, MantineSize, useMatches } from '@mantine/core';
 import { HomeStore, ApplicationStore } from "@src/modules/HomePublic/store";
 import Stepper from "@modules/HomePublic/components/stepper";
 import GeneralInformation from "@modules/HomePublic/components/form/GeneralInformation";
@@ -13,20 +13,19 @@ import { cn } from "@src/lib/utils";
 import { AlertType, PhotoRef, Step, StepperTitle } from '@modules/HomePublic/types';
 import { useEffect, useRef, useState } from 'react';
 import { IconArrowRight, IconCaretDownFilled, IconX } from '@tabler/icons-react';
-import "@modules/HomePublic/styles/index.css"
 import { useMediaQuery } from "@mantine/hooks";
 import { RingProgress } from '@mantine/core';
+import "@modules/HomePublic/styles/index.css"
 
 export default function index() {
     const isGreaterThanSp = useMediaQuery("(min-width: 769px)");
-    const { applicationFormModal, setApplicationFormModal, setIsFromPortal, setAlert, vacancyDetailsModal, selectedData, setvacancyDetailsModal } = HomeStore();
+    const { applicationFormModal, setApplicationFormModal, setIsFromPortal, setAlert, vacancyDetailsModal, selectedData, setvacancyDetailsModal, } = HomeStore();
     const { activeStepper, setActiveStepper, setSubmit, isPhotoCaptured, setIsPhotoCapture, submitLoading, applicationForm } = ApplicationStore();
     const photo = useRef<PhotoRef | null>(null);
     const StepperPercent = [20, 40, 60, 80, 100];
     const StepperLabel = ['1 of 5', '2 of 5', '3 of 5', '4 of 5', '5 of 5'];
     const [cameraAllowed, setCameraAllowed] = useState<boolean | null>(false);
     const pillSize: MantineSize = useMatches({ base: "lg" });
-    const iconSize: MantineSize = useMatches({ base: "lg" });
 
     let currentStepComponent;
     if (activeStepper === Step.GeneralInformation) {
@@ -99,6 +98,8 @@ export default function index() {
         <>
             <Modal radius="lg" size='80%' opened={applicationFormModal} fullScreen={!isGreaterThanSp} centered onClose={() => { setApplicationFormModal(false); }}
                 withCloseButton={false}
+                closeOnClickOutside={false}
+                closeOnEscape={false}
                 className='text-[#559CDA] scrollbar' classNames={{ content: 'scrollbar' }}
                 styles={{
                     header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
