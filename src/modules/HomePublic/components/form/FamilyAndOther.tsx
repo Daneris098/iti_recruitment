@@ -83,8 +83,13 @@ export default function index() {
                 isBeenHospitalizedDetails: (value: string) => !value.trim() ? "Required" : null,
                 medicalConditionDetails: (value: string) => !value.trim() ? "Required" : null,
                 relativeWorkingWithUsDetails: (value: string) => !value.trim() ? "Required" : null,
+            },
+            children: {
+                ageRange: {
+                    min: (value: number, values) => values.children.ageRange && value < 0 ? "Age range from is required" : null,
+                    max: (value: number, values) => values.children.ageRange && value <= 0 ? "Age range to is required" : null
+                }
             }
-
         }
     });
 
@@ -335,6 +340,13 @@ export default function index() {
                         classNames={{ label: "p-1", input: 'poppins text-[#6D6D6D]' }}
                         styles={{ label: { color: "#6d6d6d" } }}
                         min={0}
+                        onChange={(val) => {
+                            form.setFieldValue('children.numberOfChildren', val)
+                            if (val == 0 || val == '') {
+                                form.setFieldValue('children.ageRange.min', 0)
+                                form.setFieldValue('children.ageRange.max', 0)
+                            }
+                        }}
                     />
 
                     <NumberInput
