@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
 import { ViewApplicantsDataTableStore, ApplicantStore } from "@src/modules/Vacancies/store";
 import { Candidate, StageGroup, VacancyType } from "@src/modules/Vacancies/types";
+import { VacancyStore } from "@modules/Vacancies/store";
 export const useApplicants = () => {
     const {
         page,
@@ -11,48 +12,53 @@ export const useApplicants = () => {
         setCounts
     } = ViewApplicantsDataTableStore();
     const { selectedData, selectedApplicant, setSelectedApplicant, setMaxLength, maxLength: maxLengthGlobal } = ApplicantStore();
-
+    const { selectedVacancy, setSelectedVacancyApplicantCount } = VacancyStore();
     const fetchData = async () => {
         try {
             const startTime = performance.now();
             const appliedResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
+                    // pageSize,
+                    // page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 1,
+                    PositionIds: selectedVacancy.id
                 },
             });
             const forInterviewResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
+                    // pageSize,
+                    // page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 2,
+                    // PositionIds: selectedVacancy.id
                 },
             });
             const offeredResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
+                    // pageSize,
+                    // page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 3,
+                    // PositionIds: selectedVacancy.id
                 },
             });
             const hiredResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
+                    // pageSize,
+                    // page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 5,
+                    // PositionIds: selectedVacancy.id
                 },
             });
             const archivedResponse = await axiosInstance.get('recruitment/applicants', {
                 params: {
-                    pageSize,
-                    page,
+                    // pageSize,
+                    // page,
                     // sortBy: sortStatus.columnAccessor,
                     StatusIds: 4,
+                    PositionIds: selectedVacancy.id
                 },
             });
 
@@ -160,6 +166,16 @@ export const useApplicants = () => {
                 if (applicantId === applicantId) {
                     setSelectedApplicant(candidate.applicantId);
                 }
+            });
+
+            console.log('appliedResponse: ', appliedResponse.data)
+
+            setSelectedVacancyApplicantCount({
+                applied: appliedResponse.data.total,
+                forInterview: forInterviewResponse.data.total,
+                offered: offeredResponse.data.total,
+                hired: hiredResponse.data.total,
+                archived: archivedResponse.data.total,
             });
 
             const appliedResponseTotal = appliedResponse.data.total

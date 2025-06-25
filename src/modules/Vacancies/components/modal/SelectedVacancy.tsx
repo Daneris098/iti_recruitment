@@ -154,7 +154,6 @@ export default function index() {
             <Button
               className="w-1/6 self-end br-gradient border-none rounded-md"
               onClick={() => {
-                setSelectedVacancy(selectedDataVal);
                 setAlert(AlertType.closeVacancy);
               }}>
               CLOSE VACANCY

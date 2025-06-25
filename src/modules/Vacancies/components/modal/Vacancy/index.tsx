@@ -49,7 +49,7 @@ export default function index() {
   const [opened, setOpened] = useState(false);
   const [opened2, setOpened2] = useState(false);
   const queryClient = useQueryClient();
-  const [firstLoad, setFirstLoad] = useState(true)
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
     if (vacancyDuration[0] != null && vacancyDuration[1] != null) {
@@ -154,14 +154,14 @@ export default function index() {
   });
 
   useEffect(() => {
-    refetchLookup()
-  }, [selectedCompanyId])
+    refetchLookup();
+  }, [selectedCompanyId]);
 
   useEffect(() => {
     if (selectedVacancy == selectedDataVal || action === Action.Null) {
       return;
     }
-    setFirstLoad(true)
+    setFirstLoad(true);
     const startDate = new Date(selectedVacancy.vacancyDuration.start);
     const formattedDate = startDate.toLocaleDateString("en-US", {
       year: "numeric",
@@ -177,18 +177,12 @@ export default function index() {
 
     if (action == "Edit") {
       form.setFieldValue("positionTitle", selectedVacancy.position);
-      // console.log((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any))
-      console.log('selectedVacancy: ', selectedVacancy)
-      // console.log('company val: ', String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id))
       setSelectedCompanyId(String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id));
-      // console.log('branches ', selectedVacancy.branchObj)
-      // console.log('value  ', selectedVacancy.branchObj[0].value)
       form.setFieldValue("company", String((companies.data?.items.find((item: any) => item.name === selectedVacancy.company) as any).id));
       form.setFieldValue("branch", String(selectedVacancy.branchObj[0].value));
       form.setFieldValue("division", String(selectedVacancy.divisionObj[0].value));
       form.setFieldValue("department", String(selectedVacancy.departmentObj[0].value));
       form.setFieldValue("section", String(selectedVacancy.sectionObj[0].value));
-      // form.setFieldValue("section", String((sections.data?.items.find((item: any) => item.name === selectedVacancy.section) as any).id));
       form.setFieldValue("employmentType", String((employmentType.data?.items.find((item: any) => item.name === selectedVacancy.employmentType) as any).id));
       form.setFieldValue("workplaceType", String((workPlaces.data?.items.find((item: any) => item.name === selectedVacancy.workplace) as any).id));
       form.setFieldValue("vacancyType", String((vacancyTypes.data?.items.find((item: any) => item.name === selectedVacancy.vacancyType) as any).id));
@@ -281,11 +275,11 @@ export default function index() {
       let updatedSkills: any[] = [];
 
       // Create a Set for quick lookup of selected keywords
-      const selectedKeywordsSet = new Set(form.mustHaveSkills.map((k: string) => k!.toLowerCase()));
+      const selectedKeywordsSet = new Set(form.mustHaveSkills.map((k: string) => k.toLowerCase()));
 
       // Go through all existing skills in the vacancy
       (selectedVacancy as any).skills.forEach((skill: any) => {
-        const isStillSelected = selectedKeywordsSet.has(skill.keyword!.toLowerCase());
+        const isStillSelected = selectedKeywordsSet.has(skill.keyword.toLowerCase());
 
         updatedSkills.push({
           id: skill.id,
@@ -296,7 +290,7 @@ export default function index() {
 
       // Handle any new skills that are in the form but not in the vacancy
       form.mustHaveSkills.forEach((skillKeyword: string) => {
-        const alreadyExists = (selectedVacancy as any).skills.some((skill: any) => skill.keyword!.toLowerCase() === skillKeyword!.toLowerCase());
+        const alreadyExists = (selectedVacancy as any).skills.some((skill: any) => skill.keyword.toLowerCase() === skillKeyword.toLowerCase());
 
         if (!alreadyExists) {
           updatedSkills.push({
@@ -399,45 +393,45 @@ export default function index() {
 
   const { companies, branches, divisions, departments, sections, workPlaces, employmentType, vacancyTypes, experienceLevel } = useFormDataResponse();
   const refetchLookup = () => {
-    queryClient.refetchQueries({ queryKey: ["branches"], type: 'active' });
-    queryClient.refetchQueries({ queryKey: ["divisions"], type: 'active' });
-    queryClient.refetchQueries({ queryKey: ["departments"], type: 'active' });
-    queryClient.refetchQueries({ queryKey: ["sections"], type: 'active' });
-  }
+    queryClient.refetchQueries({ queryKey: ["branches"], type: "active" });
+    queryClient.refetchQueries({ queryKey: ["divisions"], type: "active" });
+    queryClient.refetchQueries({ queryKey: ["departments"], type: "active" });
+    queryClient.refetchQueries({ queryKey: ["sections"], type: "active" });
+  };
 
   useEffect(() => {
-    refetchLookup()
-  }, [selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId])
+    refetchLookup();
+  }, [selectedCompanyId, selectedBranchId, selectedDivisionId, selectedDepartmentId]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
-      form.setFieldValue('branch', '');
-      form.setFieldValue('division', '');
-      form.setFieldValue('department', '');
-      form.setFieldValue('section', '');
+    if (action != Action.Edit && firstLoad) {
+      form.setFieldValue("branch", "");
+      form.setFieldValue("division", "");
+      form.setFieldValue("department", "");
+      form.setFieldValue("section", "");
     }
-  }, [form.getValues().company])
+  }, [form.getValues().company]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
-      form.setFieldValue('division', '');
-      form.setFieldValue('department', '');
-      form.setFieldValue('section', '');
+    if (action != Action.Edit && firstLoad) {
+      form.setFieldValue("division", "");
+      form.setFieldValue("department", "");
+      form.setFieldValue("section", "");
     }
-  }, [form.getValues().branch])
+  }, [form.getValues().branch]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
-      form.setFieldValue('department', '');
-      form.setFieldValue('section', '');
+    if (action != Action.Edit && firstLoad) {
+      form.setFieldValue("department", "");
+      form.setFieldValue("section", "");
     }
-  }, [form.getValues().division])
+  }, [form.getValues().division]);
 
   useEffect(() => {
-    if (action != Action.Edit) {
-      form.setFieldValue('section', '');
+    if (action != Action.Edit && firstLoad) {
+      form.setFieldValue("section", "");
     }
-  }, [form.getValues().department])
+  }, [form.getValues().department]);
 
   return (
     <Modal
@@ -508,29 +502,30 @@ export default function index() {
                 placeholder={"Select Branch"}
                 radius={8}
                 data={
-                  action === Action.Edit && firstLoad ?
-                    (selectedVacancy.branchObj?.map((branch: any) => ({
+                  action === Action.Edit && firstLoad
+                    ? selectedVacancy.branchObj?.map((branch: any) => ({
                       id: branch.id,
                       value: String(branch.id),
                       label: branch.name,
-                    })) || []) : branches.data?.items.map((branch: any) => ({
+                    })) || []
+                    : branches.data?.items.map((branch: any) => ({
                       id: branch.id,
                       value: String(branch.id),
                       label: branch.name,
                     }))
                 }
-
                 rightSection={<IconCaretDownFilled size="18" />}
                 className="border-none w-full text-sm"
                 classNames={{ label: "p-1", input: "poppins text-[#6D6D6D] ", dropdown: "poppins text-[#6D6D6D]" }}
                 styles={{ label: { color: "#6d6d6d" } }}
                 size="lg"
                 onClick={() => {
-                  setFirstLoad(false)
-                  setSelectedCompanyId(form.getValues().company)
-                  refetchLookup()
+                  setFirstLoad(false);
+                  setSelectedCompanyId(form.getValues().company);
+                  refetchLookup();
                 }}
                 onChange={(val) => {
+                  console.log(val);
                   form.setFieldValue("branch", String(val));
                   setSelectedBranchId(String(val));
                 }}
@@ -542,18 +537,18 @@ export default function index() {
                 placeholder={"Select Division"}
                 radius={8}
                 data={
-                  action === Action.Edit && firstLoad ?
-                    (selectedVacancy.divisionObj?.map((division: any) => ({
+                  action === Action.Edit && firstLoad
+                    ? selectedVacancy.divisionObj?.map((division: any) => ({
                       id: division.id,
                       value: String(division.id),
                       label: division.name,
-                    })) || []) : divisions.data?.items.map((division: any) => ({
+                    })) || []
+                    : divisions.data?.items.map((division: any) => ({
                       id: division.id,
                       value: String(division.id),
                       label: division.name,
                     }))
                 }
-
                 rightSection={<IconCaretDownFilled size="18" />}
                 className="border-none w-full text-sm "
                 classNames={{ label: "p-1", input: "poppins text-[#6D6D6D] ", dropdown: "poppins text-[#6D6D6D]" }}
@@ -574,12 +569,13 @@ export default function index() {
                 placeholder={"Select Department"}
                 radius={8}
                 data={
-                  action === Action.Edit && firstLoad ?
-                    (selectedVacancy.departmentObj?.map((department: any) => ({
+                  action === Action.Edit && firstLoad
+                    ? selectedVacancy.departmentObj?.map((department: any) => ({
                       id: department.id,
                       value: String(department.id),
                       label: department.name,
-                    })) || []) : departments.data?.items.map((department: any) => ({
+                    })) || []
+                    : departments.data?.items.map((department: any) => ({
                       id: department.id,
                       value: String(department.id),
                       label: department.name,
@@ -602,12 +598,13 @@ export default function index() {
                 placeholder={"Select Section"}
                 radius={8}
                 data={
-                  action === Action.Edit && firstLoad ?
-                    (selectedVacancy.sectionObj?.map((section: any) => ({
+                  action === Action.Edit && firstLoad
+                    ? selectedVacancy.sectionObj?.map((section: any) => ({
                       id: section.id,
                       value: String(section.id),
                       label: section.name,
-                    })) || []) : sections.data?.items.map((section: any) => ({
+                    })) || []
+                    : sections.data?.items.map((section: any) => ({
                       id: section.id,
                       value: String(section.id),
                       label: section.name,

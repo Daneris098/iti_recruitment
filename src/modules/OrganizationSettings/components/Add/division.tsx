@@ -6,6 +6,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
 import { useFetchOrganizationSettings } from "../../services/data";
+import { AlertType } from "../../assets/Enum";
 type AddDivisionProps = {
   code: string;
   name: string;
@@ -17,7 +18,7 @@ type AddDivisionProps = {
   };
 };
 export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDivision = useForm<AddDivisionProps>({
     initialValues: { code: "", name: "", isActive: true, description: "", branch: { id: 0, name: "" } },
@@ -27,7 +28,10 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addDivision", addDivision.values);
-  }, [addDivision.values]);
+    if (alert === AlertType.saved) {
+      addDivision.reset();
+    }
+  }, [addDivision.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);

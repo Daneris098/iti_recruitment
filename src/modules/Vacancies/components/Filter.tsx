@@ -3,9 +3,8 @@ import { ListFilter } from "lucide-react";
 import { ActionIcon, MantineSize, Pill, Text, useMatches } from "@mantine/core";
 import { FilterStore } from "@src/modules/Vacancies/store";
 import { useEffect } from "react";
-import { cleanFilterVal, filterVal } from "@src/modules/Vacancies/values";
-import dayjs from 'dayjs';
-import { queryClient } from "@src/client/queryClient";
+import { filterVal } from "@src/modules/Vacancies/values";
+import dayjs from "dayjs";
 
 export default function Filter() {
   const { setFilterDrawer, filter, setFilter, setClearFilter, isFiltered, setIsFiltered } = FilterStore();
@@ -14,8 +13,7 @@ export default function Filter() {
     if (filter === filterVal) {
       setIsFiltered(false);
     }
-    // queryClient.refetchQueries({ queryKey: ["recruitment/vacancies"], type: 'active' }); 
-  }, [filter])
+  }, [filter]);
 
   const formatDate = (dateString: string) => {
     const date = dayjs(dateString, "MMDDYYYY");

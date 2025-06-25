@@ -1,6 +1,6 @@
 import { Divider, Modal } from "@mantine/core";
-import { ApplicantStore, ViewApplicantsDataTableStore } from "@modules/Vacancies/store/index";
-import { selectedDataVal } from "../../values";
+import { ApplicantStore, ViewApplicantsDataTableStore, ComponentsStore } from "@modules/Vacancies/store/index";
+// import { selectedDataVal } from "../../values";
 import { useEffect, useState } from "react";
 import { VacancyType } from "../../types";
 // import Vacancies from '@src/modules/Vacancies/values/response/Applicants.json';
@@ -14,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function index() {
   const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant, maxLength } = ApplicantStore();
+  const { ViewApplicantsModal, setViewApplicantModal } = ComponentsStore();
   const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
   const queryClient = useQueryClient();
   const [sortStatus, setSortStatus] = useState<{ columnAccessor: keyof VacancyType; direction: "asc" | "desc" }>({
@@ -44,17 +45,16 @@ export default function index() {
   }
 
   useEffect(() => {
-    console.log('maxLength: ', maxLength)
-  }, [maxLength])
-
-  useEffect(() => {
-    console.log('page effect: ', page)
     queryClient.refetchQueries({ queryKey: ["recruitment/applicants"], type: 'active' });
   }, [page])
 
+  useEffect(() => {
+    console.log('applicants: ', applicants)
+  }, [applicants])
+
   return (
     <>
-      <Modal size={'80%'} opened={selectedData != selectedDataVal} centered onClose={() => setSelectedData(selectedDataVal)} title={'View Applicants'}
+      <Modal size={'80%'} opened={ViewApplicantsModal} centered onClose={() => setViewApplicantModal(false)} title={'View Applicants'}
         className='text-[#559CDA]' styles={{
           header: { width: '95%', margin: 'auto', marginTop: '1.5%' },
           title: { color: "#559CDA", fontSize: 22, fontWeight: 600 },
@@ -81,7 +81,7 @@ export default function index() {
               withTableBorder
               borderRadius="sm"
               records={applicants}
-              // paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} entries (0.225) seconds`}
+              // paginationText={({ from, to, totalRecords }) => `Showing data ${from} to ${to} of ${totalRecords} esntries (0.225) seconds`}
               columns={[
                 {
                   accessor: 'applied', render: (data: any) => (<>{data.applied.name}</>),
@@ -126,10 +126,10 @@ export default function index() {
                   , textAlign: "left", sortable: true, titleStyle: (theme) => ({ color: theme.colors.red[6], background: "rgb(255,203,199, 0.3)", fontWeight: 'normal' })
                 },
               ]}
-              totalRecords={maxLength}
-              recordsPerPage={pageSize}
-              page={page}
-              onPageChange={setPage}
+              // totalRecords={maxLength}
+              // recordsPerPage={pageSize}
+              // page={page}
+              // onPageChange={setPage}
               sortStatus={sortStatus}
               onCellClick={(val) => {
                 handleRowClick(val.record[val.column.accessor]?.applicantId)

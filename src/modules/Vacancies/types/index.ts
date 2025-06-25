@@ -8,7 +8,9 @@ export interface VacancyState {
   selectedDivisionId: string;
   selectedDepartmentId: string;
   selectedSectionId: string;
+  selectedVacancyApplicantCount: applicantCount;
 
+  setSelectedVacancyApplicantCount: (data: applicantCount) => void;
   setSelectedCompanyId: (action: string) => void;
   setSelectedBranchId: (action: string) => void;
   setSelectedDivisionId: (action: string) => void;
@@ -19,6 +21,21 @@ export interface VacancyState {
   setApplicationFormModal: (applicationFormModal: boolean) => void;
   setSelectedVacancy: (selectedData: VacancyType) => void;
 }
+
+export type applicantCount = {
+  applied: number,
+  forInterview: number,
+  offered: number,
+  hired: number,
+  archived: number,
+}
+
+export type Components = {
+  ViewApplicantsModal: boolean;
+
+  setViewApplicantModal: (ViewApplicantsModal: boolean) => void;
+}
+
 export type FilterState = {
   filter: FilterType;
   isFiltered: boolean;

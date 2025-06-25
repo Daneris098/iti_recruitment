@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
 import { VacancyType } from "@src/modules/Vacancies/types";
 import { FilterStore, DataTableStore, FilterItemsStore } from "@modules/Vacancies/store";
+import dayjs from 'dayjs';
 
 export const useVacancies = () => {
     const { page, pageSize, sortStatus, setTime, setTotalRecords } = DataTableStore();
@@ -9,55 +10,59 @@ export const useVacancies = () => {
     const { filter, isFiltered } = FilterStore();
     const { companies, departments, status, vacancies } = FilterItemsStore();
 
+    const formatDate = (dateString: string) => {
+        const date = dayjs(dateString, "MMDDYYYY");
+        return date.format("YYYY-MM-DD");
+    };
+
+
     const fetchData = async () => {
         try {
             let url = "recruitment/vacancies";
             const sortVal = `?${sortStatus.direction === "asc" ? "+" : "-"}${sortStatus.columnAccessor}`;
             url += sortVal;
-
-            if (isFiltered) {
-                if (filter.company.length) {
-                    const filtered = companies
-                        .filter((item) => filter.company.includes(item.value))
-                        .map((item) => `&CompanyIds=${item.id}`)
-                        .join("");
-                    url += filtered;
-                }
-
-                if (filter.vacancy.length) {
-                    const filtered = vacancies
-                        .filter((item) => filter.vacancy.includes(item.value))
-                        .map((item) => `&VacancyIds=${item.id}`)
-                        .join("");
-                    url += filtered;
-                }
-
-                if (filter.dateFrom) {
-                    url += `&DateFrom=${filter.dateFrom}`;
-                }
-
-                if (filter.dateTo) {
-                    url += `&DateTo=${filter.dateTo}`;
-                }
-
-                if (filter.department.length) {
-                    const filtered = departments
-                        .filter((item) => filter.department.includes(item.value))
-                        .map((item) => `&DepartmentIds=${item.id}`)
-                        .join("");
-                    url += filtered;
-                }
-
-                if (filter.status.length) {
-                    const filtered = status
-                        .filter((item) => filter.status.includes(item.value))
-                        .map((item) => `&StatusIds=${item.id}`)
-                        .join("");
-                    url += filtered;
-                }
+            if (filter.company.length) {
+                const filtered = companies
+                    .filter((item) => filter.company.includes(item.value))
+                    .map((item) => `&CopmpanyIds=${item.id}`)
+                    .join("");
+                url += filtered;
             }
 
-            console.log('url: ', url)
+            if (filter.vacancy.length) {
+                const filtered = vacancies
+                    .filter((item) => filter.vacancy.includes(item.value))
+                    .map((item) => `&VacancyIds=${item.id}`)
+                    .join("");
+                url += filtered;
+            }
+
+            console.log('filter.dateFrom: ', formatDate(String(filter.dateFrom)))
+
+            if (filter.dateFrom) {
+                url += `&DateFrom=${formatDate(String(filter.dateFrom))}`;
+            }
+
+            if (filter.dateTo) {
+                url += `&DateTo=${formatDate(String(filter.dateTo))}`;
+            }
+
+            if (filter.department.length) {
+                const filtered = departments
+                    .filter((item) => filter.department.includes(item.value))
+                    .map((item) => `&DepartmentIds=${item.id}`)
+                    .join("");
+                url += filtered;
+            }
+
+            if (filter.status.length) {
+                const filtered = status
+                    .filter((item) => filter.status.includes(item.value))
+                    .map((item) => `&StatusIds=${item.id}`)
+                    .join("");
+                url += filtered;
+            }
+
             const startTime = performance.now();
             const res = await axiosInstance.get(url, {
                 params: {
@@ -67,7 +72,6 @@ export const useVacancies = () => {
             });
 
             if (res.status === 200 && Array.isArray(res.data.items)) {
-                console.log('raw: ', res.data.items)
                 const mapped = res.data.items.map((item: any) => ({
                     ...item,
                     mustHaveSkills: item.skills,
@@ -94,7 +98,6 @@ export const useVacancies = () => {
                     totalApplicant: item.totalApplicants,
                     status: item.status.name,
                 }));
-                console.log('mapped: ', mapped)
                 setTotalRecords(res.data.total)
                 const endTime = performance.now();
                 const executionTime = (endTime - startTime) / 1000;
