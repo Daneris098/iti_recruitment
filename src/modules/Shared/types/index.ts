@@ -170,6 +170,7 @@ export interface SelectedApplicantsStore {
 }
 
 export interface JobOpenings {
+    division: any;
     departmentResponse: {
         id: number;
         name?: string;
@@ -177,6 +178,7 @@ export interface JobOpenings {
     id: string | number;
     position: string;
     department: {
+        name: any;
         id: number
     }
     company: {

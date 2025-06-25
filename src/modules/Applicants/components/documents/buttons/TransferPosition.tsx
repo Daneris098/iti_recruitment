@@ -70,6 +70,8 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
             department: item.department.id,
             position: item.position,
             company: item.company,
+            departmentname: item.departmentName,
+            division: item.divisionName,
             availableSlot: item.slots,
             departmentResponse: item.departmentResponse ?? { id: 0 },
             vacancyDuration: item.vacancyDurationResponse ?? { dateStart: "" },
@@ -202,10 +204,6 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                                     name: selectedSlot.position,
                                     salary: setDesiredSalary,
                                     choice: { id: 1, name: selectedSlot.position },
-                                    // choice: {
-                                    //     id: selectedSlot.position.id,
-                                    //     name: selectedSlot.position.name
-                                    // },
                                     availableDateStart: fullVacancy.vacancyDuration.dateStart,
                                     companyId: selectedSlot.company?.id ?? 0,
                                     departmentId: fullVacancy.department.id ?? 0,
