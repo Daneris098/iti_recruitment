@@ -202,7 +202,7 @@ export const useDropDownOfferedStore = create<useDropDownOfferedState>((set) => 
   status: "Offered",
   setStatus: (status) => set({ status }),
 
-  feedbacks: [], 
+  feedbacks: [],
   setFeedbacks: (feeds) => set({ feedbacks: feeds }),
 
   feedbacksId: 0,
@@ -683,9 +683,12 @@ export const useDateUpdatedRangeStore = create<DateUpdatedRangeState>((set) => (
 }))
 
 export const useFileUploadStore = create<FileUploadStore>((set, get) => ({
+  fileName: null,
+  setFileName: (name: string) => set({ fileName: name }),
   file: null,
   setFile: (file: File) => set({ file }),
-  clearFile: () => set({ file: null }),
+  clearFile: () => set({ file: null, fileName: null }),
+
   handleFileClick: () => {
     const file = get().file;
     if (file) {
