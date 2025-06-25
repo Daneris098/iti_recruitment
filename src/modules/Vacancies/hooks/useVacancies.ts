@@ -90,7 +90,7 @@ export const useVacancies = () => {
                     vacancyDuration: { start: item.vacancyDuration.dateStart, end: item.vacancyDuration.dateEnd },
                     id: item.id,
                     position: item.position,
-                    datePublish: item.vacancyDuration?.dateStart,
+                    datePublish: item.dateCreated,
                     dateEnd: item.vacancyDuration?.dateEnd,
                     interviewer: "N/A",
                     department: item.department?.name || "-",
@@ -98,6 +98,7 @@ export const useVacancies = () => {
                     totalApplicant: item.totalApplicants,
                     status: item.status.name,
                 }));
+                console.log('mapped: ', mapped)
                 setTotalRecords(res.data.total)
                 const endTime = performance.now();
                 const executionTime = (endTime - startTime) / 1000;
