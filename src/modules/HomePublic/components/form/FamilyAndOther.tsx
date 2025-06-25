@@ -86,8 +86,8 @@ export default function index() {
             },
             children: {
                 ageRange: {
-                    min: (value: number, values) => values.children.ageRange && value < 0 ? "Age range from is required" : null,
-                    max: (value: number, values) => values.children.ageRange && value <= 0 ? "Age range to is required" : null
+                    min: (value: number, values) => values.children.numberOfChildren && value < 0 ? "Age range from is required" : null,
+                    max: (value: number, values) => values.children.numberOfChildren && value <= 0 ? "Age range to is required" : null
                 }
             }
         }

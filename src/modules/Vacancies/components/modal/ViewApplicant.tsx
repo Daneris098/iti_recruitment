@@ -13,7 +13,7 @@ import { applicantsByIdService } from "@src/modules/Shared/components/api/UserSe
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function index() {
-  const { selectedData, setSelectedData, setSelectedApplicant, setIsViewApplicant, maxLength } = ApplicantStore();
+  const { setSelectedApplicant, setIsViewApplicant } = ApplicantStore();
   const { ViewApplicantsModal, setViewApplicantModal } = ComponentsStore();
   const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
   const queryClient = useQueryClient();
@@ -22,7 +22,7 @@ export default function index() {
     direction: "asc",
   });
   const { data: applicants, isFetching } = useApplicants();
-  const { counts, pageSize, setPage, page } = ViewApplicantsDataTableStore();
+  const { counts, page } = ViewApplicantsDataTableStore();
   const [appliedCount, setAppliedCount] = useState(0);
   const [forInterviewCount, setForInterviewCount] = useState(0);
   const [offeredCount, setOfferedCount] = useState(0);

@@ -122,13 +122,13 @@ export default function index() {
                                     <p className="text-[#6D6D6D]">Permanent Address</p>
                                     <p className="text-[#6D6D6D] font-bold">
                                         {
-                                            applicationForm.generalInformation.personalInformation.presentAddress.unitNo + " " +
-                                            applicationForm.generalInformation.personalInformation.presentAddress.houseNo + " " +
-                                            applicationForm.generalInformation.personalInformation.presentAddress.zipCode + " " +
-                                            applicationForm.generalInformation.personalInformation.presentAddress.barangay + " " +
-                                            applicationForm.generalInformation.personalInformation.presentAddress.subdivision + " " +
-                                            applicationForm.generalInformation.personalInformation.presentAddress.street + " " +
-                                            applicationForm.generalInformation.personalInformation.presentAddress.city
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.unitNo + " " +
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.houseNo + " " +
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.zipCode + " " +
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.barangay + " " +
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.subdivision + " " +
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.street + " " +
+                                            applicationForm.generalInformation.personalInformation.permanentAddress.city
                                         }
                                     </p>
                                 </div>
