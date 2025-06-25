@@ -6,6 +6,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
 import { useFetchOrganizationSettings } from "../../services/data";
+import { AlertType } from "../../assets/Enum";
 type AddBranchProps = {
   code: string;
   name: string;
@@ -19,7 +20,7 @@ type AddBranchProps = {
   area: string;
 };
 export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
 
   const addBranch = useForm<AddBranchProps>({
@@ -41,7 +42,10 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addBranch", addBranch.values);
-  }, [addBranch.values]);
+    if (alert === AlertType.saved) {
+      addBranch.reset();
+    }
+  }, [addBranch.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);
@@ -136,14 +140,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       width: "15%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Location"
-              {...addBranch.getInputProps("location")}
-              error={addBranch.values.location === "" ? "Location is Required" : undefined}
-            />
-          );
+          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Location" {...addBranch.getInputProps("location")} />;
         }
 
         return row.location;
@@ -156,14 +153,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
       width: "15%",
       render: (row: any) => {
         if (row.id === "NEW" && addOrg) {
-          return (
-            <TextInput
-              classNames={{ input: "poppins text-[#6D6D6D]" }}
-              placeholder="Area"
-              {...addBranch.getInputProps("area")}
-              error={addBranch.values.area === "" ? "Area is Required" : undefined}
-            />
-          );
+          return <TextInput classNames={{ input: "poppins text-[#6D6D6D]" }} placeholder="Area" {...addBranch.getInputProps("area")} />;
         }
 
         return row.area;

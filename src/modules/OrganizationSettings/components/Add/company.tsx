@@ -5,13 +5,14 @@ import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
+import { AlertType } from "../../assets/Enum";
 type AddCompanyProps = {
   code: string;
   name: string;
   isActive: boolean;
 };
 export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addCompany = useForm<AddCompanyProps>({
     initialValues: { code: "", name: "", isActive: true },
@@ -19,7 +20,10 @@ export default function AddCompany(addOrg: boolean): DataTableColumn<CompanyType
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addCompany", addCompany.values);
-  }, [addCompany.values]);
+    if (alert === AlertType.saved) {
+      addCompany.reset();
+    }
+  }, [addCompany.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);

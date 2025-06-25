@@ -5,6 +5,7 @@ import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
+import { AlertType } from "../../assets/Enum";
 type AddPositionProps = {
   code: string;
   name: string;
@@ -12,7 +13,7 @@ type AddPositionProps = {
   description: string;
 };
 export default function AddPosition(addOrg: boolean): DataTableColumn<PositionType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addPosition = useForm<AddPositionProps>({
     initialValues: { code: "", name: "", isActive: true, description: "" },
@@ -20,12 +21,19 @@ export default function AddPosition(addOrg: boolean): DataTableColumn<PositionTy
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addPosition", addPosition.values);
-  }, [addPosition.values]);
+    if (alert === AlertType.saved) {
+      addPosition.reset();
+    }
+  }, [addPosition.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);
     setNewRows([]);
   };
+
+  // useEffect(() => {
+
+  // }, [alert, addPosition.values]);
 
   return [
     {

@@ -19,7 +19,10 @@ export default function index() {
   const { isFetching, data } = useVacancies();
   const { setSelectedVacancy } = VacancyStore();
   const queryClient = useQueryClient();
-  const { ViewApplicantsModal, setViewApplicantModal } = ComponentsStore();
+  const {
+    // ViewApplicantsModal,
+    setViewApplicantModal,
+  } = ComponentsStore();
   const { setPage: setPageViewApplicant } = ViewApplicantsDataTableStore();
 
   const formatDate = (dateString: string) => {
@@ -86,10 +89,10 @@ export default function index() {
             <div
               className="rounded-xl p-1 text-center border border-[#6D6D6D] cursor-pointer text-[#6D6D6D]"
               onClick={(e) => {
-                setPageViewApplicant(1)
+                setPageViewApplicant(1);
                 e.stopPropagation();
                 setSelectedData(data);
-                setViewApplicantModal(true)
+                setViewApplicantModal(true);
               }}>
               View Applicants
             </div>

@@ -6,6 +6,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
 import { useFetchOrganizationSettings } from "../../services/data";
+import { AlertType } from "../../assets/Enum";
 type AddDepartmentProps = {
   code: string;
   name: string;
@@ -18,7 +19,7 @@ type AddDepartmentProps = {
   head: string;
 };
 export default function AddDepartment(addOrg: boolean): DataTableColumn<DepartmentType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addDepartment = useForm<AddDepartmentProps>({
     initialValues: {
@@ -38,7 +39,10 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addDepartment", addDepartment.values);
-  }, [addDepartment.values]);
+    if (alert === AlertType.saved) {
+      addDepartment.reset();
+    }
+  }, [addDepartment.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);

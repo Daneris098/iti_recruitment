@@ -6,6 +6,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
 import { useFetchOrganizationSettings } from "../../services/data";
+import { AlertType } from "../../assets/Enum";
 type AddSectionProps = {
   code: string;
   name: string;
@@ -21,7 +22,7 @@ type AddSectionProps = {
   };
 };
 export default function AddSection(addOrg: boolean): DataTableColumn<SectionType>[] {
-  const { setAddOrg, setNewRows, expandedIds } = OrganizationSettingsStore();
+  const { setAddOrg, setNewRows, expandedIds, alert } = OrganizationSettingsStore();
   const toggleExpand = OrganizationSettingsStore((state) => state.toggleExpand);
   const addSection = useForm<AddSectionProps>({
     initialValues: {
@@ -44,7 +45,10 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addSection", addSection.values);
-  }, [addSection.values]);
+    if (alert === AlertType.saved) {
+      addSection.reset();
+    }
+  }, [addSection.values, alert]);
 
   const closeAddRow = () => {
     setAddOrg(false);
