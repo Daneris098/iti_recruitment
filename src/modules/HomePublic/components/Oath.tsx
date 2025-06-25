@@ -163,7 +163,7 @@ export default function Index() {
                                 fromHeadHunter: applicationForm.reference.applicationSource.headHunter,
                                 fromJobPosting: applicationForm.reference.applicationSource.jobStreet,
                                 fromWordOfMouth: applicationForm.reference.applicationSource.wordOfMouth,
-                                walkIn: applicationForm.reference.applicationSource.walkin,
+                                fromWalkIn: applicationForm.reference.applicationSource.walkin,
                                 others: applicationForm.reference.applicationSource.others,
                                 description: applicationForm.reference.applicationSource.description,
                             },
@@ -172,27 +172,15 @@ export default function Index() {
                                 name: applicationForm.generalInformation.personalInformation.religion?.trim() || 'N/A',
                             },
                             characterReferences: [
-                                ((applicationForm.reference.employmentReference).length > 0
-                                    ? [...applicationForm.reference.employmentReference.map((item) => {
-                                        return {
-                                            name: item.fullname,
-                                            company: item.company,
-                                            contactNo: item.ContactNo,
-                                            position: item.positionHeld,
-                                            isEmploymentReference: true
-                                        };
-                                    }),]
-                                    : []),
-
                                 ...applicationForm.reference.characterReference.map((item) => {
                                     return {
                                         name: item.fullname,
                                         company: item.company,
                                         contactNo: item.ContactNo,
                                         position: item.positionHeld,
-                                        isEmploymentReference: false
+                                        isEmploymentReference: false,
                                     };
-                                })
+                                }),
                             ],
                             addresses: [
                                 {
