@@ -16,9 +16,9 @@ import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
 import { IconFile, IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
-import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
 import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey, ExtendedPDFProps } from "@modules/Offers/types";
 import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
+import { useJobOfferStore, FilterStore, useJobOfferSortStore as useSortStore } from "@src/modules/Offers/store";
 import {
     OF, FOUND_IN,
     PAGE, PAGE_SIZE,
@@ -131,14 +131,14 @@ export default function index() {
     };
 
     //#region STATE & STORE
-    const { sortedRecords, setSort } = useSortStore();
+    const { columnAccessor, direction, setSort, sortedRecords, setRecords } = useSortStore();
     const { activeTab, setActiveTab } = FilterStore();
     const { records, loadCandidates } = useJobOfferStore();
     const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
 
     //#endregion
     const filteredRecords = filterRecords(activeTab!, sortedRecords.length > 0 ? sortedRecords : records);
-    const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
+    // const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
 
     const createOfferMap = (acceptedOffers: { applicantId: number, offer: any[] }[]) => {
         return acceptedOffers.reduce((map, { applicantId, offer }) => {
@@ -220,6 +220,7 @@ export default function index() {
         const applicantsWithOffers = mergeApplicantsWithOffers(sharedApplicants.applicants, offerMap);
         const transformedColumns = transformApplicants(applicantsWithOffers);
         loadCandidates(transformedColumns);
+        setRecords(transformedColumns);
         setHasLoaded(true);
     }, [sharedApplicants?.applicants, acceptedOffers, hasLoaded]);
 
@@ -312,7 +313,11 @@ export default function index() {
                                     <DataTable
                                         className="poppins text-[#6D6D6D] font-normal text-[16px]"
                                         columns={enhancedColumns}
-                                        records={filterRecords(activeTab!, paginatedRecords)}
+                                        sortStatus={{ columnAccessor, direction }}
+                                        onSortStatusChange={({ columnAccessor, direction }) =>
+                                            setSort(String(columnAccessor), records, direction)
+                                        }
+                                        records={filterRecords(activeTab!, sortedRecords.slice((page - 1) * pageSize, page * pageSize))}
                                         highlightOnHover
                                         onRowClick={({ record }) => {
                                             const isPending = record.status?.toLowerCase() === LABEL_PENDING;
