@@ -31,7 +31,7 @@ export default function PersonalDetails() {
             .catch(setError)
             .finally(() => setIsLoading(false));
     }, [applicantId, token]);
-    ;
+
     useEffect(() => {
         const firstChoice = applicant?.positionsApplied?.[0];
         const positiondId = applicant?.positionsApplied?.[0].id;
@@ -98,9 +98,10 @@ export default function PersonalDetails() {
 
     const firstChoice = positionsApplied[0] || {};
     const secondChoice = positionsApplied[1] || {};
-    const address = addresses[0] || {};
+    const presentAddress = addresses[0] || {};
+    const permanentAddress = addresses[1] || {};
     const education = educations[0] || {};
-    const education1 = educations[1] || {};
+    const education1 = educations?.[1] || {};
     const prevEmployment1 = previousEmployments[0] || {};
     const prevEmployment2 = previousEmployments[1] || {};
     const sibling1 = family.siblings?.[0] || {};
@@ -119,8 +120,8 @@ export default function PersonalDetails() {
                     {renderField("Applying for (first choice):", transferredPosition ?? applicant?.positionsApplied?.[0]?.name)}
                     {renderField("Desired Salary", firstChoice.salary)}
                     {renderField(
-                        "Permanent Address",
-                        [address?.houseNo, address?.street, address?.city?.name]
+                        "Present Address",
+                        [presentAddress?.houseNo, presentAddress?.street, presentAddress?.city?.name]
                             .filter(Boolean)
                             .join(", ")
                     )}
@@ -149,12 +150,23 @@ export default function PersonalDetails() {
                         <div className="flex gap-8">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(positionsApplied?.[0]?.availableDateStart ?? "N/A"))}
+                                {/* {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(educations?.[0]?.yearTo ?? "N/A"))} */}
+                                {renderField(
+                                    "Start Date",
+                                    educations?.[0]?.yearFrom
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(educations?.[0]?.yearFrom)
+                                        : "N/A"
+                                )}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(educations?.[0]?.yearTo ?? "N/A"))}
+                                {renderField(
+                                    "Start Date",
+                                    educations?.[0]?.yearTo
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(educations?.[0]?.yearTo)
+                                        : "N/A"
+                                )}
                             </div>
 
                         </div>
@@ -170,12 +182,24 @@ export default function PersonalDetails() {
                         <div className="flex gap-8 mt-4">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2?.dateFrom ?? "N/A"))}
+                                {/* {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2?.dateFrom ?? "N/A"))} */}
+                                {renderField(
+                                    "Start Date",
+                                    prevEmployment2?.dateFrom
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2?.dateFrom)
+                                        : "N/A"
+                                )}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2?.dateTo ?? "N/A"))}
+                                {/* {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2?.dateTo ?? "N/A"))} */}
+                                {renderField(
+                                    "Start Date",
+                                    prevEmployment2?.dateTo
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2?.dateTo)
+                                        : "N/A"
+                                )}
                             </div>
                         </div>
                         {renderField("Reason for Leaving", prevEmployment1?.reason)}
@@ -225,12 +249,18 @@ export default function PersonalDetails() {
             < div className="w-4/6 " >
                 <div className="">
                     {renderField("Applying for (second choice):", secondChoice.name)}
-                    {renderField("Availability to start", DateTimeUtils.dateDefaultToHalfMonthWord(secondChoice.availableDateStart ?? "N/A"))}
+                    {/* {renderField("Availability to start", DateTimeUtils.dateDefaultToHalfMonthWord(secondChoice.availableDateStart ?? "N/A"))} */}
+                    {renderField(
+                        "Availability to start",
+                        secondChoice.availableDateStart
+                            ? DateTimeUtils.dateDefaultToHalfMonthWord(secondChoice.availableDateStart)
+                            : "N/A"
+                    )}
                     {renderField(
                         "Permanent Address",
-                        [address?.houseNo, address?.street, address?.city?.name]
+                        [permanentAddress?.houseNo, permanentAddress?.street, permanentAddress?.city?.name]
                             .filter(Boolean)
-                            .join(", ")
+                            .join(", ") || "N/A"
                     )}
 
                     {/* Sub-Columns */}
@@ -284,12 +314,22 @@ export default function PersonalDetails() {
                         <div className="flex gap-8">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(education1.yearFrom ?? "N/A"))}
+                                {renderField(
+                                    "Start Date",
+                                    education1?.yearFrom
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(education1.yearFrom)
+                                        : "N/A"
+                                )}
                             </div>
 
                             {/* Right Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(education1.yearTo ?? "N/A"))}
+                                {renderField(
+                                    "Start Date",
+                                    education1?.yearFrom
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(education1.yearFrom)
+                                        : "N/A"
+                                )}
                             </div>
                         </div>
                     </div>
@@ -302,13 +342,22 @@ export default function PersonalDetails() {
                         <div className="flex gap-8 mt-4">
                             {/* Left Sub-Column */}
                             <div className="w-1/2">
-                                {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2.dateFrom ?? "N/A"))}
+                                {/* {renderField("Start Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2.dateFrom ?? "N/A"))} */}
+                                {renderField(
+                                    "Start Date",
+                                    prevEmployment2.dateFrom
+                                        ? DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2.dateFrom)
+                                        : "N/A"
+                                )}
                             </div>
 
                             {/* Right Sub-Column */}
-                            <div className="w-1/2">
-                                {renderField("End Date", DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2.dateTo ?? "N/A"))}
-                            </div>
+                            {renderField(
+                                "Start Date",
+                                prevEmployment2.dateTo
+                                    ? DateTimeUtils.dateDefaultToHalfMonthWord(prevEmployment2.dateTo)
+                                    : "N/A"
+                            )}
                         </div>
                         {renderField("Reason For Leaving", prevEmployment2.reason)}
                     </div>
@@ -325,7 +374,7 @@ export default function PersonalDetails() {
                     </div>
 
                     {/* Right Column: Sixth Section */}
-                    <div className="pt-10">
+                    <div className="pt-24">
                         <h2 className="text-[#559CDA] text-[16px] mt-8 font-bold"></h2>
                         {renderField("Hospitalized", questionnaire[1]?.answer)}
                         {renderField("Family Employed within the company", questionnaire[3]?.answer)}
