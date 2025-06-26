@@ -128,7 +128,7 @@ export default function index() {
 
   const { data: getApplicants, isLoading } = useApplicants(
     1,
-    10000,
+    50,
     queryParams,
     setLoadTime
   );
