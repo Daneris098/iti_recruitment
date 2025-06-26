@@ -108,7 +108,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             File: file,
             Feedback: feedback,
             ApplicantFeedback: applicantFeedback,
-            Comments: comments,
+            Comment: comments,
           });
           toast.success("Feedback Saved!");
           setIsFeedbackSent(true);
