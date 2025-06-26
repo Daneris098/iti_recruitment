@@ -45,6 +45,8 @@ export default function EditSection({ record }: { record: SectionType }) {
   });
 
   const { useDivisions, useDepartments } = useFetchOrganization();
+  const { data: divisions } = useDivisions();
+  const { data: departments } = useDepartments();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editSection", editSection.values);
@@ -68,7 +70,7 @@ export default function EditSection({ record }: { record: SectionType }) {
       />
       <Select
         radius={8}
-        data={useDivisions().data?.items.map((division: any) => ({
+        data={divisions?.items.map((division: any) => ({
           value: String(division.id),
           label: division.name,
         }))}
@@ -79,7 +81,7 @@ export default function EditSection({ record }: { record: SectionType }) {
         placeholder="Select Division"
         value={String(editSection.values.division.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = divisions?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editSection.setFieldValue("division.id", selectedItem.id);
             editSection.setFieldValue("division.name", selectedItem.name);
@@ -88,7 +90,7 @@ export default function EditSection({ record }: { record: SectionType }) {
       />
       <Select
         radius={8}
-        data={useDepartments().data?.items.map((department: any) => ({
+        data={departments?.items.map((department: any) => ({
           value: String(department.id),
           label: department.name,
         }))}
@@ -99,7 +101,7 @@ export default function EditSection({ record }: { record: SectionType }) {
         placeholder="Select Department"
         value={String(editSection.values.department.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = useDepartments().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = departments?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editSection.setFieldValue("department.id", selectedItem.id);
             editSection.setFieldValue("department.name", selectedItem.name);

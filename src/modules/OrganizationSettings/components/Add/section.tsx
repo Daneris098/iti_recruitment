@@ -42,6 +42,8 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
   });
 
   const { useDivisions, useDepartments } = useFetchOrganization();
+  const { data: divisions } = useDivisions();
+  const { data: departments } = useDepartments();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addSection", addSection.values);
@@ -111,7 +113,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
             <div className="relative">
               <Select
                 radius={8}
-                data={useDivisions().data?.items.map((division: any) => ({
+                data={divisions?.items.map((division: any) => ({
                   value: String(division.id),
                   label: division.name,
                 }))}
@@ -122,7 +124,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
                 placeholder="Select Division"
                 error={addSection.values.division.name === "" ? "Division is required" : null}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = divisions?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addSection.setFieldValue("division.id", selectedItem.id);
                     addSection.setFieldValue("division.name", selectedItem.name);
@@ -147,7 +149,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
             <div className="relative">
               <Select
                 radius={8}
-                data={useDepartments().data?.items.map((division: any) => ({
+                data={departments?.items.map((division: any) => ({
                   value: String(division.id),
                   label: division.name,
                 }))}
@@ -158,7 +160,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
                 placeholder="Select Division"
                 error={addSection.values.department.name === "" ? "Department is required" : null}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = useDepartments().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = departments?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addSection.setFieldValue("department.id", selectedItem.id);
                     addSection.setFieldValue("department.name", selectedItem.name);

@@ -38,6 +38,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
   });
 
   const { useBranches } = useFetchOrganization();
+  const { data } = useBranches();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editDivision", editDivision.values);
@@ -60,7 +61,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
       />
       <Select
         radius={8}
-        data={useBranches().data?.items.map((items: any) => ({
+        data={data?.items.map((items: any) => ({
           value: String(items.id),
           label: items.name,
         }))}
@@ -71,7 +72,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
         placeholder="Select Branch"
         value={String(editDivision.values.branch.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = useBranches().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editDivision.setFieldValue("branch.id", selectedItem.id);
             editDivision.setFieldValue("branch.name", selectedItem.name);

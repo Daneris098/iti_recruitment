@@ -36,6 +36,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
   });
 
   const { useDivisions } = useFetchOrganization();
+  const { data } = useDivisions();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addDepartment", addDepartment.values);
@@ -127,7 +128,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
             <div className="relative">
               <Select
                 radius={8}
-                data={useDivisions().data?.items.map((division: any) => ({
+                data={data?.items.map((division: any) => ({
                   value: String(division.id),
                   label: division.name,
                 }))}
@@ -138,7 +139,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
                 placeholder="Select Division"
                 error={addDepartment.values.division.name === "" ? "Division is Required" : undefined}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addDepartment.setFieldValue("division.id", selectedItem.id);
                     addDepartment.setFieldValue("division.name", selectedItem.name);

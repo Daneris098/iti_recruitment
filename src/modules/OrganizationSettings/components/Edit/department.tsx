@@ -39,6 +39,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
   });
 
   const { useDivisions } = useFetchOrganization();
+  const { data } = useDivisions();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editDepartment", editDepartment.values);
@@ -69,7 +70,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
       />
       <Select
         radius={8}
-        data={useDivisions().data?.items.map((division: any) => ({
+        data={data?.items.map((division: any) => ({
           value: String(division.id),
           label: division.name,
         }))}
@@ -80,7 +81,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
         placeholder="Select Area"
         defaultValue={String(editDepartment.values.division.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editDepartment.setFieldValue("division.id", selectedItem.id);
             editDepartment.setFieldValue("division.name", selectedItem.name);

@@ -25,6 +25,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
   });
 
   const { useBranches } = useFetchOrganization();
+  const { data } = useBranches();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addDivision", addDivision.values);
@@ -93,7 +94,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
             <div className="relative">
               <Select
                 radius={8}
-                data={useBranches().data?.items.map((items: any) => ({
+                data={data?.items.map((items: any) => ({
                   value: String(items.id),
                   label: items.name,
                 }))}
@@ -104,7 +105,7 @@ export default function AddDivision(addOrg: boolean): DataTableColumn<DivisionTy
                 placeholder="Select Company"
                 error={addDivision.values.branch.name === "" ? "Branch is Required" : undefined}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = useBranches().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addDivision.setFieldValue("branch.id", selectedItem.id);
                     addDivision.setFieldValue("branch.name", selectedItem.name);

@@ -7,6 +7,13 @@ import { create } from "zustand";
 //--- Calendar Types
 import { CalendarStoreType, RescheduleStoreType, EventInfo, MonthYearStoreType, EventDetails } from "../assets/Types";
 import { initialDetails } from "../assets/values";
+const getTodayFormatted = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}${month}${day}`;
+};
 
 export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewEvent: false,
@@ -15,7 +22,7 @@ export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewUpdate: false,
   onViewFilter: false,
   onMonthYear: false,
-  currentDate: "",
+  currentDate: getTodayFormatted(),
   details: initialDetails,
   filterDepartmentIds: [],
   filterCompanyId: [],
