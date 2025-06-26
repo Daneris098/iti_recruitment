@@ -147,7 +147,6 @@ export default function OfferedStatus() {
         setDivisionId, setPaymentSchemeId,
     } = useDropDownOfferedStore();
 
-
     // Independent Combobox hooks
     const positionCombobox = useCombobox();
 
@@ -176,6 +175,7 @@ export default function OfferedStatus() {
             setDepartmentNameJob(selected?.departmentName ?? null);
         }
     }, [openings, getPositionId]);
+
     if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) {
         return <div>Loading...</div>
     }

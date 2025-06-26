@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { filterVal } from "@modules/Applicants/values";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
 import { FilterStore, useDateUpdatedRangeStore } from '@modules/Applicants/store';
@@ -137,7 +137,7 @@ export default function DrawerFilter() {
     else {
       SetSelectedStatusId(0);
     }
-    
+
     if (dateUpdated?.[0]) {
       formattedFrom = dayjs(dateUpdated[0]).format("YYYYMMDD");
     }
@@ -180,6 +180,19 @@ export default function DrawerFilter() {
   const handlePositionChange = (selectedLabels: string[]) => {
     setLocalPositionFilter(selectedLabels);
   };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setFilter(filterVal);
+    setLocalApplicantName("");
+    setLocalPositionFilter([]);
+    setStatusFilter([]);
+    setIsFiltered(false);
+    setDateUpdated([null, null]);
+    setSelectedPositionId(0);
+    SetSelectedStatusId(0);
+  }, [location.pathname]);
 
   return (
     <Drawer

@@ -4,7 +4,7 @@ import header from '@src/assets/job-offers-header.png';
 import PoppinsBold from "@shared/assets/fonts/Poppins/Poppins-Bold.ttf"
 import { useDropDownOfferedStore } from "@src/modules/Applicants/store";
 import PoppinsRegular from '@shared/assets/fonts/Poppins/Poppins-regular.ttf';
-import { useApplicantNameStore, usePositionApplied, useChoiceStore, useJobOpeningPositionStore } from "@src/modules/Shared/store";
+import { useApplicantNameStore, usePositionApplied, useChoiceStore } from "@src/modules/Shared/store";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 // import { re,  } from "@src/modules/Applicants/store";
 // Register the Poppins font
@@ -149,11 +149,13 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
 
 
   const { amount } = useDropDownOfferedStore.getState();
+  const departmentName = useDropDownOfferedStore.getState().department;
+
   const annualAmount = amount * 12
   // const departmentName = useDepartmentStore.getState().departmentName;
   const getApplicantName = useApplicantNameStore.getState().applicantName
   const getPosition = usePositionApplied.getState().firstPositionApplied;
-  const setSelectedOpening = useJobOpeningPositionStore.getState().selectedOpening?.departmentName
+  // const setSelectedOpening = useJobOpeningPositionStore.getState().selectedOpening?.departmentName
   const transferredPosition = useChoiceStore.getState().transferredPositionName
 
   const formatPHPNumber = (value: number | string) => {
@@ -209,7 +211,7 @@ const PDFDocument: React.FC<Partial<PDFProps>> = ({
             <View style={{ flexDirection: 'row', width: '70%' }}>
               <Text style={[styles.text_title, { flex: 2 }]}>Department/Division</Text>
               <Text style={[styles.text_title, { flex: 0.3 }]}>:</Text>
-              <Text style={[styles.text_title, { flex: 3 }]}>{setSelectedOpening ?? "No Data"}</Text>
+              <Text style={[styles.text_title, { flex: 3 }]}>{departmentName ?? "No Data"}</Text>
             </View>
 
             {/* Status Upon Hiring */}
