@@ -6,7 +6,6 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useStatusFilterStore } from "@modules/Shared/store";
 import Filter from "@modules/Offers/components/filter/Filter";
-import { IconFile, IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useApplicantIdStore } from "@modules/Applicants/store";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
@@ -14,11 +13,12 @@ import { useApplicants } from "@modules/Shared/hooks/useSharedApplicants";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
-import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
+import { IconFile, IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
 import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
 import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey, ExtendedPDFProps } from "@modules/Offers/types";
+import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
 import {
     OF, FOUND_IN,
     PAGE, PAGE_SIZE,
@@ -27,7 +27,6 @@ import {
     LABEL_PENDING, LABEL_ACCEPTED,
     DATE_TRANSACTION, DATE_FORMAT,
     STATUS, ATTACHMENTS, LABEL_OFFERS,
-    // CURSOR_NOT_ALLOWED, CURSOR_POINTER,
     BASE_COLUMNS_WITH_STATUS_ATTACHMENTS,
     DEFAULT_PAGE_COUNT, DEFAULT_PAGE_NUMBER,
     LABEL_ARCHIVED, BASE_COLUMNS_WITH_STATUS,
