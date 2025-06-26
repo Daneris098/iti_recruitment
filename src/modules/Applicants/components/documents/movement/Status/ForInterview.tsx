@@ -39,10 +39,12 @@ export default function ForInterview() {
     useEffect(() => {
         if (!getInterviewStages || !getInterviewers) return;
 
-        const interviewStages = getInterviewStages.stages.map((stage: any) => ({
-            value: stage.id,
-            label: stage.name,
-        }));
+        const interviewStages = getInterviewStages.stages
+            .filter((stage: any) => stage.isActive === true)
+            .map((stage: any) => ({
+                value: stage.id,
+                label: stage.name,
+            }));
         setInterviewStagesOptions(interviewStages);
 
         const interviewersName = getInterviewers.interviewersName.map((names: any) => ({
