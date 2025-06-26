@@ -5,16 +5,15 @@ import { getCombinedColumns } from "@src/modules/Shared/components/columns";
 import { ApplicantMovementsProps, Props, InterviewSchedule } from "@src/modules/Shared/types";
 import { fetchApplicantByIdService } from "@src/modules/Shared/utils/GetApplicantById/applicantServiceById";
 import {
-
-    READY_FOR_TRANSFER,
-    FEEDBACK, TRANSFERRED,
     ALLOWED_ACCESSORS_BASE,
     MOVEMENT, COLUMN_HEADER_DATE,
-    ARCHIVED, COLUMN_ACCESSOR_DATE_APPLIED,
+    READY_FOR_TRANSFER, TRANSFERRED,
+    COLUMN_ACCESSOR_DATE_APPLIED,
 } from "@modules/Shared/utils/constants";
 import { DateTimeUtils } from "@shared/utils/DateTimeUtils";
 
 export default function ApplicationMovement({ status }: Props) {
+    console.log(status);
     /* ----------------------------- data ---------------------------- */
     const applicantId = useApplicantIdStore((s) => s.id);
     const token = sessionStorage.getItem("accessToken") ?? undefined;
@@ -35,7 +34,7 @@ export default function ApplicationMovement({ status }: Props) {
 
     /* -------------------------- columns ---------------------------- */
     const allowedAccessors = [...ALLOWED_ACCESSORS_BASE];
-    if (status === ARCHIVED) allowedAccessors.push(FEEDBACK);
+    // if (status === ARCHIVED) allowedAccessors.push(FEEDBACK);
 
     const allColumns = getCombinedColumns({ includeApplicants: true });
 

@@ -270,7 +270,7 @@ export type ArchiveForm = {
     File: File | null;
     Feedback: string;
     ApplicantFeedback: string;
-    Comments?: string;
+    Comment: string;
     Order?: number;
 }
 
