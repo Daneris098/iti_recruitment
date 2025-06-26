@@ -91,11 +91,15 @@ export const useHiredStartDate = create<SelectedDateStore>((set) => ({
 
 interface PositionAppliedState {
     firstPositionApplied: string;
+    positionId: number | undefined;
+    setPositionId: (positionId: number) => void;
     setFirstPositionApplied: (position: string) => void;
 }
 
 export const usePositionApplied = create<PositionAppliedState>()((set) => ({
     firstPositionApplied: '',
+    positionId: 0,
+    setPositionId: (positionId) => set({ positionId: positionId }),
     setFirstPositionApplied: (position) =>
         set({ firstPositionApplied: position }),
 }));
@@ -159,4 +163,39 @@ interface ApplicantChoiceState {
 export const useChoiceStore = create<ApplicantChoiceState>((set) => ({
     transferredPositionName: null,
     setTransferredPositionName: (value) => set({ transferredPositionName: value }),
+}));
+
+
+type Company = {
+    id: number;
+    name: string;
+};
+
+type JobOpening = {
+    id: number;
+    department: number;
+    position: string;
+    company: Company | null;
+    slots: number;
+    departmentName?: string;
+    divisionName?: string;
+    items?: any;
+};
+
+interface JobOpeningPositionStore {
+    jobOpenings: JobOpening[];
+    selectedOpening: JobOpening | null;
+    departmentName: string | null;
+    setJobOpenings: (openings: JobOpening[]) => void;
+    setSelectedOpening: (opening: JobOpening | null) => void;
+    setDepartmentName: (name: string | null) => void;
+}
+
+export const useJobOpeningPositionStore = create<JobOpeningPositionStore>((set) => ({
+    jobOpenings: [],
+    selectedOpening: null,
+    departmentName: null,
+    setJobOpenings: (openings) => set({ jobOpenings: openings }),
+    setSelectedOpening: (opening) => set({ selectedOpening: opening }),
+    setDepartmentName: (name) => set({ departmentName: name }),
 }));

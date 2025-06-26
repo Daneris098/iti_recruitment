@@ -170,6 +170,7 @@ export interface SelectedApplicantsStore {
 }
 
 export interface JobOpenings {
+    division: any;
     departmentResponse: {
         id: number;
         name?: string;
@@ -177,6 +178,7 @@ export interface JobOpenings {
     id: string | number;
     position: string;
     department: {
+        name: any;
         id: number
     }
     company: {
@@ -382,6 +384,7 @@ export type PDFViewerProps<T> = {
 
 export type PersonalDetailsType = {
     positionsApplied?: {
+        id: number | undefined;
         name?: string;
         salary?: string | number;
         availableDateStart?: string;
@@ -431,6 +434,7 @@ export type PersonalDetailsType = {
             occupation?: string;
             contactNo?: string;
         };
+        childCount?: number;
         siblings?: {
             name?: string;
             occupation?: string;

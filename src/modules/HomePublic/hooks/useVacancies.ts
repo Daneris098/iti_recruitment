@@ -11,7 +11,7 @@ export const useVacancies = () => {
   const fetchData = async () => {
     try {
       const searchFilter = searchParams === "" ? "" : `?${searchParams}`;
-      let url = `recruitment/vacancies${searchFilter}`;
+      let url = `recruitment/vacancies?&StatusIds=1&${searchFilter}`;
 
       const startTime = performance.now();
       const res = await axiosInstance.get(url);

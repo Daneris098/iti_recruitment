@@ -504,15 +504,15 @@ export default function index() {
                 data={
                   action === Action.Edit && firstLoad
                     ? selectedVacancy.branchObj?.map((branch: any) => ({
-                        id: branch.id,
-                        value: String(branch.id),
-                        label: branch.name,
-                      })) || []
+                      id: branch.id,
+                      value: String(branch.id),
+                      label: branch.name,
+                    })) || []
                     : branches.data?.items.map((branch: any) => ({
-                        id: branch.id,
-                        value: String(branch.id),
-                        label: branch.name,
-                      }))
+                      id: branch.id,
+                      value: String(branch.id),
+                      label: branch.name,
+                    }))
                 }
                 rightSection={<IconCaretDownFilled size="18" />}
                 className="border-none w-full text-sm"
@@ -539,15 +539,15 @@ export default function index() {
                 data={
                   action === Action.Edit && firstLoad
                     ? selectedVacancy.divisionObj?.map((division: any) => ({
-                        id: division.id,
-                        value: String(division.id),
-                        label: division.name,
-                      })) || []
+                      id: division.id,
+                      value: String(division.id),
+                      label: division.name,
+                    })) || []
                     : divisions.data?.items.map((division: any) => ({
-                        id: division.id,
-                        value: String(division.id),
-                        label: division.name,
-                      }))
+                      id: division.id,
+                      value: String(division.id),
+                      label: division.name,
+                    }))
                 }
                 rightSection={<IconCaretDownFilled size="18" />}
                 className="border-none w-full text-sm "
@@ -571,15 +571,15 @@ export default function index() {
                 data={
                   action === Action.Edit && firstLoad
                     ? selectedVacancy.departmentObj?.map((department: any) => ({
-                        id: department.id,
-                        value: String(department.id),
-                        label: department.name,
-                      })) || []
+                      id: department.id,
+                      value: String(department.id),
+                      label: department.name,
+                    })) || []
                     : departments.data?.items.map((department: any) => ({
-                        id: department.id,
-                        value: String(department.id),
-                        label: department.name,
-                      }))
+                      id: department.id,
+                      value: String(department.id),
+                      label: department.name,
+                    }))
                 }
                 rightSection={<IconCaretDownFilled size="18" />}
                 className="border-none w-full text-sm"
@@ -600,15 +600,15 @@ export default function index() {
                 data={
                   action === Action.Edit && firstLoad
                     ? selectedVacancy.sectionObj?.map((section: any) => ({
-                        id: section.id,
-                        value: String(section.id),
-                        label: section.name,
-                      })) || []
+                      id: section.id,
+                      value: String(section.id),
+                      label: section.name,
+                    })) || []
                     : sections.data?.items.map((section: any) => ({
-                        id: section.id,
-                        value: String(section.id),
-                        label: section.name,
-                      }))
+                      id: section.id,
+                      value: String(section.id),
+                      label: section.name,
+                    }))
                 }
                 rightSection={<IconCaretDownFilled size="18" />}
                 className="border-none w-full text-sm"

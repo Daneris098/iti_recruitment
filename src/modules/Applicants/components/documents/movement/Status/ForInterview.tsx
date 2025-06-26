@@ -105,7 +105,9 @@ export default function ForInterview() {
         }
     }, [interviewStagesOptions, getInterViewerNames]);
 
-
+    if (!getInterviewers || !getInterviewStages) {
+        return <div>Loading...</div>
+    }
 
     return (
         <div>

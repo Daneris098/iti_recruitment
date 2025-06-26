@@ -328,6 +328,8 @@ export interface Applicants {
 }
 
 export type FileUploadStore = {
+    fileName: string | null;
+    setFileName: (name: string) => void;
     file: File | null;
     setFile: (file: File) => void;
     clearFile: () => void;

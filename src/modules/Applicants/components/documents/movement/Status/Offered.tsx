@@ -8,13 +8,18 @@ import {
     useViewPositionLevels, useViewDepartments,
     useGetCompanyDivisions, useGetPaymentSchemes
 } from "@modules/Shared/hooks/useSharedApplicants";
-import { usePositionApplied, useDepartmentStore, useDivisionStore } from "@src/modules/Shared/store";
+import { usePositionApplied, useDepartmentStore, useDivisionStore, useChoiceStore, useJobOpeningPositionStore } from "@src/modules/Shared/store";
+import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
 
 export default function OfferedStatus() {
 
     const setDepartmentName = useDepartmentStore((state) => state.setDepartmentName);
     const setDivisionName = useDivisionStore((state) => state.setDivisionName)
-
+    const {
+        setJobOpenings,
+        setSelectedOpening,
+        // setDepartmentName,
+    } = useJobOpeningPositionStore()
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
     const { data: compDivisions } = useGetCompanyDivisions();
@@ -25,12 +30,29 @@ export default function OfferedStatus() {
     const [getDivisions, setDivisions] = useState<interviewStagesOption[]>([]);
     const [getPaymentSchemes, setPaymentSchemes] = useState<interviewStagesOption[]>([]);
 
-    const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
-    const departmentName = useDepartmentStore((state) => state.departmentName);
-    const divisionName = useDivisionStore((state) => state.divisionName)
+    const [localPage, _setLocalPage] = useState(1);
+    const localPageSize = 10;
+    const {
+        data: jobOpenings,
+    } = useTransferPositionLookup(localPage - 1, localPageSize);
+
+    const [openings, setOpenings] = useState<any[]>([]);
 
     useEffect(() => {
-        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) return;
+        if (jobOpenings && openings.length === 0) {
+            setOpenings(jobOpenings);
+        }
+    }, [jobOpenings]);
+
+    const transferredPosition = useChoiceStore.getState().transferredPositionName;
+    const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
+    const getPositionId = usePositionApplied((s) => s.positionId);
+
+    // const departmentName = useDepartmentStore((state) => state.departmentName);
+    // const divisionName = useDivisionStore((state) => state.divisionName)
+
+    useEffect(() => {
+        if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) return;
 
         const schemes = paymentSchemes.map((payments: any) => ({
             value: payments.id,
@@ -59,26 +81,28 @@ export default function OfferedStatus() {
     }, [positionLevels, orgDepartments])
 
     useEffect(() => {
-        if (getDepartments.length > 0) {
-            setDepartment(getDepartments[0].label);
-            setDepartmentId(getDepartments[0].value)
-            setDepartmentName(getDepartments[0].label);
-        }
-        if (getPositionLevels.length > 0) {
-            setPosition(getPositionLevels[0].label)
-            setPositionId(getPositionLevels[0].value)
-        }
-        if (getDivisions.length > 0) {
-            setDivision(getDivisions[0].label)
-            setDivisionId(getDivisions[0].value)
-            setDivisionName(getDivisions[0].label)
-        }
-        if (getPaymentSchemes.length > 0) {
-            setSalaryTypes(getPaymentSchemes[0].label)
-            setPaymentSchemeId(getPaymentSchemes[0].value)
+        if (jobOpenings && jobOpenings.length > 0) {
+            setOpenings(jobOpenings); // store locally if needed
+            setDepartmentName(jobOpenings[0].departmentName);
+            setDivisionName(jobOpenings[0].divisionName);
         }
 
-    }, [getPositionLevels, getDepartments, getDivisions])
+        if (getPositionLevels.length > 0) {
+            setPosition(getPositionLevels[0].label);
+            setPositionId(getPositionLevels[0].value);
+        }
+
+        if (getDivisions.length > 0) {
+            setDivision(getDivisions[0].label);
+            setDivisionId(getDivisions[0].value);
+            setDivisionName(getDivisions[0].label);
+        }
+
+        if (getPaymentSchemes.length > 0) {
+            setSalaryTypes(getPaymentSchemes[0].label);
+            setPaymentSchemeId(getPaymentSchemes[0].value);
+        }
+    }, [jobOpenings, getPositionLevels, getDepartments, getDivisions, getPaymentSchemes]);
 
     const {
         setDivision, setDepartment,
@@ -106,10 +130,22 @@ export default function OfferedStatus() {
     const divisionCombobox = useCombobox({
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
+    useEffect(() => {
+        if (openings) {
+            setJobOpenings(openings);
 
-    if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes) {
+            const selected = openings.find((job) => job.id === getPositionId);
+            setSelectedOpening(selected ?? null);
+            setDepartmentName(selected?.departmentName ?? null);
+        }
+    }, [openings, getPositionId]);
+    if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) {
         return <div>Loading...</div>
     }
+    const selectedOpening = jobOpenings?.find(
+        (job) => job.id === getPositionId
+    );
+
 
     return (
         <div>
@@ -125,7 +161,7 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 disabled
-                                value={positionsApplied || ""}
+                                value={transferredPosition || positionsApplied}
                                 onChange={(e) => setPosition(e.currentTarget.value)}
                                 onFocus={() => positionCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -168,7 +204,9 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 disabled
-                                value={departmentName || ""}
+                                // value={departmentName || ""}
+                                // value={openings?.[getPositionId ?? 0]?.departmentName}
+                                value={selectedOpening?.departmentName || ""}
                                 onChange={(e) => setDepartment(e.currentTarget.value)}
                                 onFocus={() => departmentCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -212,7 +250,8 @@ export default function OfferedStatus() {
                     <Combobox.Target>
                         <TextInput
                             disabled
-                            value={divisionName || ""}
+                            // value={divisionName || ""}
+                            value={openings?.[0]?.divisionName}
                             onChange={(e) => setDivision(e.currentTarget.value)}
                             onFocus={() => divisionCombobox.openDropdown()}
                             rightSection={<IconChevronDown size={16} />}

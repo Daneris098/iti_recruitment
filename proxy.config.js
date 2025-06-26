@@ -12,12 +12,12 @@ export const proxyConfig = {
     rewrite: (path) => path.replace(/^\/api/, ""),
   },
   "/files": {
-    target: "http://10.0.1.26:7101/",
+    target: "http://hrdotnet-dayone.intellismartinc.com:7101/",
     changeOrigin: true,
     rewrite: (path) => path.replace(/^\/files/, ""),
   },
   '/proxy/pdf': {
-    target: 'http://10.0.1.246:7111',
+    target: 'http://hrdotnet-dayone.intellismartinc.com:7111',
     changeOrigin: true,
     rewrite: p => p.replace(/^\/proxy\/pdf/, '')
   }

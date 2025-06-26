@@ -9,6 +9,9 @@ export default function PersonalDetails() {
     const transferredPosition = useChoiceStore.getState().transferredPositionName
 
     const setFirstPositionApplied = usePositionApplied((s) => s.setFirstPositionApplied);
+    const setPositionId = usePositionApplied((s) => s.setPositionId);
+    // const getPositionId = usePositionApplied((s) => s.positionId);
+
     const setDesiredSalary = useAmountStore((state) => state.setTotalAmount);
 
     const [error, setError] = useState<unknown>(null);
@@ -28,13 +31,16 @@ export default function PersonalDetails() {
             .catch(setError)
             .finally(() => setIsLoading(false));
     }, [applicantId, token]);
-
+    ;
     useEffect(() => {
         const firstChoice = applicant?.positionsApplied?.[0];
+        const positiondId = applicant?.positionsApplied?.[0].id;
+
         const desiredSalary = applicant?.positionsApplied?.[0]?.salary;
 
         if (firstChoice?.name) {
             setFirstPositionApplied(firstChoice.name);
+            setPositionId(positiondId ?? 0)
         }
 
         if (desiredSalary) {
@@ -42,6 +48,7 @@ export default function PersonalDetails() {
         }
 
     }, [applicant, setFirstPositionApplied]);
+
 
     if (isLoading) return <p>Loading…</p>;
     if (error || !applicant) {
@@ -87,7 +94,6 @@ export default function PersonalDetails() {
         height,
         weight,
         skills = [],
-        // mother,
     } = applicant || {};
 
     const firstChoice = positionsApplied[0] || {};
@@ -101,7 +107,7 @@ export default function PersonalDetails() {
     const sibling2 = family.siblings?.[1] || {};
     const ref1 = characterReferences[0] || {};
     const ref2 = characterReferences[1] || {};
-// debugger;
+
     return (
         <div className="flex gap-8 pb-56">
 
@@ -185,6 +191,7 @@ export default function PersonalDetails() {
                         {renderField("Sibling Name", sibling1.name)}
                         {renderField("Occupation", sibling1.occupation)}
                         {renderField("Contact", sibling1.contact)}
+                        {renderField("Children/s", family?.childCount ?? 0)}
                     </div>
 
                     {/* Left Column: Sixth Section */}

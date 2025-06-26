@@ -1,42 +1,18 @@
 import { Button, Divider, Drawer, Flex, MultiSelect, Text, useMatches } from "@mantine/core";
 import { IconCaretDownFilled, IconX } from "@tabler/icons-react";
-// import { useMediaQuery } from "@mantine/hooks";
 import { FilterStore, FilterItemsStore } from "@modules/Vacancies/store";
 import { cleanFilterVal } from "@modules/Vacancies/values";
 import { useEffect } from "react";
 import { DateRange } from "../DateRange";
 import { useDateRangeStore } from "@shared/hooks/useDateRange";
 import axiosInstance from "@src/api";
-// import { queryClient } from "@src/client/queryClient";
 
 export default function DrawerFilter() {
-  // const [value, setValue] = useState<Date | null>(null);
-  // const { value, setValue } = useDateRangeStore();
-  // const isMobile = useMediaQuery("(max-width: 425px)");
 
   const { filterDrawer, setFilterDrawer, filter, setFilter, clearFilter, setClearFilter, setIsFiltered } = FilterStore();
   const { companies, departments, status, vacancies, setCompanies, setDepartments, setInterviewers, setStatus, setVacancies } = FilterItemsStore();
   const { value, setValue } = useDateRangeStore();
 
-  // useEffect(() => {
-  //   // setFilter({ ...filter, dateFrom: (value[0]?.toString() || ''), dateTo: (value[1]?.toString() || '') })
-  // }, [value])
-
-  // useEffect(() => {
-  // setValue([null, null])
-  // }, [])
-
-  // const [companies, setCompanies] = useState([]);
-  // const [companies, setCompanies] = useState([
-  //   { id: 1, value: 'Company A', label: 'Company A' },
-  //   { id: 2, value: 'Company B', label: 'Company B' },
-  //   { id: 3, value: 'Company C', label: 'Company C' },
-  //   { id: 4, value: 'Company D', label: 'Company D' },
-  // ]);
-  // const [departments, setDepartments] = useState([]);
-  // const [interviewers, setInterviewers] = useState([]);
-  // const [status, setStatus] = useState([]);
-  // const [vacancies, setVacancies] = useState([]);
 
   const fetchLookups = async () => {
     await axiosInstance
@@ -135,6 +111,7 @@ export default function DrawerFilter() {
   }, [filter]);
 
   const clear = () => {
+    setValue([null, null])
     setFilter(cleanFilterVal);
     setIsFiltered(false);
   };
@@ -236,7 +213,7 @@ export default function DrawerFilter() {
             onChange={(value) => setFilter({ ...filter, vacancy: value })}
           />
           <Divider size={0.5} color="#edeeed" className="w-full" />
-          <p className="text-[#6d6d6d]">Published Date Range</p>
+          <p className="text-[#6d6d6d]">Vacancy Duration</p>
           <DateRange gapValue={12} size="md" value={value} setValue={setValue} fLabel="From" lLabel="To" fPlaceholder="Start Date" lPlaceholder="End Date" isColumn />
 
           <Divider size={0.5} color="#edeeed" className="w-full" />

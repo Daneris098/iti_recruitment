@@ -306,6 +306,9 @@ export const useTransferPositionLookup = (
                     position: item.position,
                     company: item.company,
                     slots: item.availableSlot,
+                    departmentName: item.department?.name,
+                    divisionName: item.division?.name,
+                    items: item,
                 })),
                 page: data.page,
                 pageSize: data.pageSize,
@@ -323,7 +326,7 @@ export const useTransferPositionLookup = (
         allVacancies: queryResult.data?.items
     };
 };
-
+// debugger;
 export const useViewInterviewStages = (
 ) => {
     return useQuery({
