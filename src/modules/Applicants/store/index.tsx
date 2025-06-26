@@ -50,7 +50,7 @@ interface SortState {
   direction: "asc" | "desc";
   sortedRecords: Applicant[];
 
-  setSort: (column: string, records: Applicant[]) => void;
+  setSort: (column: string, records: Applicant[], direction?: "asc" | "desc") => void;
   setRecords: (records: Applicant[]) => void;
 }
 
@@ -59,10 +59,11 @@ export const useSortStore = create<SortState>((set, get) => ({
   direction: "asc",
   sortedRecords: [],
 
-  setSort: (column, records) => {
+  setSort: (column, records, directionOverride) => {
     set((state) => {
       const newDirection =
-        state.columnAccessor === column && state.direction === "asc" ? "desc" : "asc";
+        directionOverride ??
+        (state.columnAccessor === column && state.direction === "asc" ? "desc" : "asc");
 
       const sorted = sortBy(records, column);
       const updatedRecords = newDirection === "desc" ? sorted.reverse() : sorted;

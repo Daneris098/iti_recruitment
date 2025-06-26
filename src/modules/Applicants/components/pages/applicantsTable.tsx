@@ -47,8 +47,14 @@ export default function index() {
 
   //#region STORES
   const { setPage } = usePaginationStore();
-  const { sortedRecords, setSort, setRecords } = useSortStore();
+  const { sortedRecords, setSort, setRecords, columnAccessor, direction } = useSortStore();
   const { isViewApplicant, setIsViewApplicant } = useCloseModal();
+
+  const sortStatus = {
+    columnAccessor: columnAccessor || '',
+    direction: direction || 'asc',
+  };
+
 
   const setApplicantId = useApplicantIdStore((state) => state.setApplicantId);
 
@@ -209,11 +215,8 @@ export default function index() {
         // Also this enables the Arrow Icon from DataTable to properly change depending on the
         // Ascending or Descending state of the column. In other words, for sorting animation.
         updatedCol.title = (  // This is for rendering the column title with the icon. 
-          <span
-            className="job-offers-table cursor-pointer flex items-center gap-1 text-[#5E6670]"
-            onClick={() => setSort(col.accessor, sortedRecords)}
-          >
-            {col.title}
+          <span className="job-offers-table flex items-center gap-1 text-[#5E6670] font-bold text-[14px]">
+            {col.title?.props?.children || col.title}
           </span>
         );
       } else {
@@ -253,9 +256,13 @@ export default function index() {
 
       {/* Table Wrapper (Grows to Fill Space) */}
       <div className="flex-grow overflow-auto poppins">
-        {isTransfereePath && (
+        {isTransfereePath ? (
           <DataTable
             columns={extendedColumn}
+            sortStatus={sortStatus}
+            onSortStatusChange={({ columnAccessor, direction }) =>
+              setSort(String(columnAccessor), getApplicants?.applicants || [], direction)
+            }
             records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             selectedRecords={selectedRecords}
             onSelectedRecordsChange={(records) => {
@@ -266,11 +273,13 @@ export default function index() {
             onRowClick={({ record }) => handleRowClick(record)}
             rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
           />
-        )}
-
-        {!isTransfereePath && (
+        ) : (
           <DataTable
             columns={extendedColumn}
+            sortStatus={sortStatus}
+            onSortStatusChange={({ columnAccessor, direction }) =>
+              setSort(columnAccessor, getApplicants?.applicants || [], direction)
+            }
             records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             onRowClick={({ record }) => handleRowClick(record)}
             rowClassName={() => "cursor-pointer text-[#6D6D6D]"}
