@@ -12,7 +12,7 @@ import Modal from "@shared/template/container/Modal";
 import { useCalendarStore, useRescheduleStore } from "../../store";
 import axiosInstance from "@src/api";
 import { useForm } from "@mantine/form";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useGetInterviewerService } from "@src/modules/Shared/api/useSharedUserService";
 
@@ -50,20 +50,12 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
       .post(`recruitment/calendar/${details.scheduleId}/reschedule`, payload)
       .then(() => {
         queryClient.refetchQueries({ queryKey: ["recruitment/calendar"], type: "active" });
-        setOnViewUpdate(true);
-        updateBtn();
+        useRescheduleStore.getState().setDate(date);
+        useRescheduleStore.getState().setReadyToUpdate(true);
       })
       .catch((error) => {
         console.error(error);
       });
-
-    // if (!date && !interviewer) {
-    //   updateBtn();
-    // } else {
-    //   updateBtn();
-    // }
-    // setInterviewer("");
-    // setDate(null!);
   };
 
   const interviewers = useQuery({
@@ -84,6 +76,15 @@ export default function ModalReschedule({ updateBtn }: { updateBtn(): void }) {
       location: (value: string) => (value === null || value === "" ? "Location is required" : null),
     },
   });
+  useEffect(() => {
+    const { date, readyToUpdate, setReadyToUpdate } = useRescheduleStore.getState();
+
+    if (readyToUpdate && date) {
+      setOnViewUpdate(true);
+      updateBtn();
+      setReadyToUpdate(false);
+    }
+  }, [useRescheduleStore((state) => state.readyToUpdate)]);
 
   return (
     <form ref={formRef} onSubmit={form.onSubmit(submit)} className="flex flex-col gap-4 sm:h-[55%] sm:w-[55%] m-auto p-4 sm:p-0">

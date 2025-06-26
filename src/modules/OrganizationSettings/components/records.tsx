@@ -1,4 +1,4 @@
-import { useFetchOrganizationSettings } from "../services/data";
+import { useFetchOrganization } from "../services/data";
 import { BranchType, CompanyType, DepartmentType, DivisionType, PositionType, SectionType } from "../assets/Types";
 import { Panel } from "../assets/Enum";
 
@@ -12,14 +12,14 @@ type DataRecords = {
 };
 
 export default function useRecords(): DataRecords {
-  const { branches, companies, departments, divisions, positions, sections } = useFetchOrganizationSettings();
+  const { useBranches, useCompanies, useDepartments, useDivisions, usePositions, useSections } = useFetchOrganization();
 
   return {
-    [Panel.branch]: branches.data?.items as BranchType[],
-    [Panel.companyList]: companies.data?.items as CompanyType[],
-    [Panel.departments]: departments.data?.items as DepartmentType[],
-    [Panel.division]: divisions.data?.items as DivisionType[],
-    [Panel.positionLevel]: positions.data?.items as PositionType[],
-    [Panel.section]: sections.data?.items as SectionType[],
+    [Panel.branch]: useBranches().data?.items as BranchType[],
+    [Panel.companyList]: useCompanies().data?.items as CompanyType[],
+    [Panel.departments]: useDepartments().data?.items as DepartmentType[],
+    [Panel.division]: useDivisions().data?.items as DivisionType[],
+    [Panel.positionLevel]: usePositions().data?.items as PositionType[],
+    [Panel.section]: useSections().data?.items as SectionType[],
   };
 }

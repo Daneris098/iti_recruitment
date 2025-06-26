@@ -5,7 +5,7 @@ import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 import { AlertType } from "../../assets/Enum";
 type AddDepartmentProps = {
   code: string;
@@ -35,7 +35,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
     },
   });
 
-  const { divisions } = useFetchOrganizationSettings();
+  const { useDivisions } = useFetchOrganization();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addDepartment", addDepartment.values);
@@ -127,7 +127,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
             <div className="relative">
               <Select
                 radius={8}
-                data={divisions.data?.items.map((division: any) => ({
+                data={useDivisions().data?.items.map((division: any) => ({
                   value: String(division.id),
                   label: division.name,
                 }))}
@@ -138,7 +138,7 @@ export default function AddDepartment(addOrg: boolean): DataTableColumn<Departme
                 placeholder="Select Division"
                 error={addDepartment.values.division.name === "" ? "Division is Required" : undefined}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addDepartment.setFieldValue("division.id", selectedItem.id);
                     addDepartment.setFieldValue("division.name", selectedItem.name);

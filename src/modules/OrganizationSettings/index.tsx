@@ -5,12 +5,11 @@ import OrganizationDataTable from "@modules/OrganizationSettings/components/";
 import { Panel, AlertType } from "./assets/Enum";
 import { useEffect, useRef } from "react";
 import { IconExclamationMark } from "@tabler/icons-react";
-import { useFetchOrganizationSettings } from "./services/data";
+import { useFetchOrganization } from "./services/data";
 
 export const OrganizationSettings = () => {
-  const { branches, departments, companies, divisions, positions, sections } = useFetchOrganizationSettings();
   const { setAlert, setActivePanel, activePanel, reroute, setReroute, addOrg, expandedIds, setValidationMessage } = OrganizationSettingsStore();
-
+  const { useBranches, useCompanies, useDepartments, useDivisions, usePositions, useSections } = useFetchOrganization();
   const dataTableRef = useRef<{
     saveAll: () => void;
     cancelAll: () => void;
@@ -72,22 +71,22 @@ export const OrganizationSettings = () => {
       <Tabs key={activePanel} defaultValue={activePanel} variant="default" className="h-[85%]  p-2" onChange={(val) => handleChangeTab(val!)}>
         <Tabs.List className="px-4 h-[15%] sm:h-auto  overflow-auto">
           <Tabs.Tab value={Panel.companyList} className={` ${activePanel === Panel.companyList ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center">Company List {companies.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
+            <Flex className="items-center">Company List {useCompanies().data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
           <Tabs.Tab value={Panel.branch} className={` ${activePanel === Panel.branch ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center"> Branch {branches.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
+            <Flex className="items-center"> Branch {useBranches().data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
           <Tabs.Tab value={Panel.division} className={` ${activePanel === Panel.division ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center">Division{divisions.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
+            <Flex className="items-center">Division{useDivisions().data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
           <Tabs.Tab value={Panel.departments} className={` ${activePanel === Panel.departments ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center"> Departments {departments.data?.total === 0 && <IconExclamationMark color="red" />} </Flex>
+            <Flex className="items-center"> Departments {useDepartments().data?.total === 0 && <IconExclamationMark color="red" />} </Flex>
           </Tabs.Tab>
           <Tabs.Tab value={Panel.section} className={` ${activePanel === Panel.section ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center">Section {sections.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
+            <Flex className="items-center">Section {useSections().data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
           <Tabs.Tab value={Panel.positionLevel} className={` ${activePanel === Panel.positionLevel ? "text-[#559CDA]" : "text-gray-500"}`}>
-            <Flex className="items-center"> Position Level{positions.data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
+            <Flex className="items-center"> Position Level{usePositions().data?.total === 0 && <IconExclamationMark color="red" />}</Flex>
           </Tabs.Tab>
         </Tabs.List>
 

@@ -15,7 +15,7 @@ export const useCalendarStore = create<CalendarStoreType>((set) => ({
   onViewUpdate: false,
   onViewFilter: false,
   onMonthYear: false,
-  currentDate: '',
+  currentDate: "",
   details: initialDetails,
   filterDepartmentIds: [],
   filterCompanyId: [],
@@ -55,9 +55,11 @@ export const useRescheduleStore = create<RescheduleStoreType>((set) => ({
   date: new Date(),
   time: new Date(),
   interviewer: "",
+  readyToUpdate: false,
   setDate: (date: Date) => set({ date: date }),
   setTime: (time: Date) => set({ time: time }),
   setInterviewer: (interviewer: string) => set({ interviewer: interviewer }),
+  setReadyToUpdate: (ready) => set({ readyToUpdate: ready }),
 }));
 
 export const useMonthYearStore = create<MonthYearStoreType>((set) => ({

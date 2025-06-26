@@ -5,7 +5,7 @@ import { OrganizationSettingsStore } from "../../store";
 import { DivisionType } from "../../assets/Types";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 
 type EditDivisionProps = {
   code: string;
@@ -37,7 +37,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
     },
   });
 
-  const { branches } = useFetchOrganizationSettings();
+  const { useBranches } = useFetchOrganization();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editDivision", editDivision.values);
@@ -60,7 +60,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
       />
       <Select
         radius={8}
-        data={branches.data?.items.map((items: any) => ({
+        data={useBranches().data?.items.map((items: any) => ({
           value: String(items.id),
           label: items.name,
         }))}
@@ -71,7 +71,7 @@ export default function EditDivision({ record }: { record: DivisionType }) {
         placeholder="Select Branch"
         value={String(editDivision.values.branch.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = branches.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = useBranches().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editDivision.setFieldValue("branch.id", selectedItem.id);
             editDivision.setFieldValue("branch.name", selectedItem.name);

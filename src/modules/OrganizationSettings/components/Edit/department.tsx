@@ -3,7 +3,7 @@ import { Select, TextInput } from "@mantine/core";
 import { IconCaretDownFilled, IconCircleMinus } from "@tabler/icons-react";
 import { OrganizationSettingsStore } from "../../store";
 import { useForm } from "@mantine/form";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 import { useEffect } from "react";
 
 type EditDepartmentProps = {
@@ -38,7 +38,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
     },
   });
 
-  const { divisions } = useFetchOrganizationSettings();
+  const { useDivisions } = useFetchOrganization();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editDepartment", editDepartment.values);
@@ -69,7 +69,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
       />
       <Select
         radius={8}
-        data={divisions.data?.items.map((division: any) => ({
+        data={useDivisions().data?.items.map((division: any) => ({
           value: String(division.id),
           label: division.name,
         }))}
@@ -80,7 +80,7 @@ export default function EditDepartment({ record }: { record: DepartmentType }) {
         placeholder="Select Area"
         defaultValue={String(editDepartment.values.division.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editDepartment.setFieldValue("division.id", selectedItem.id);
             editDepartment.setFieldValue("division.name", selectedItem.name);

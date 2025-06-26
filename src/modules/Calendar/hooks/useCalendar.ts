@@ -44,8 +44,8 @@ export const useCalendar = () => {
               id: `${dayIndex}-${entryIndex}`, // Ensures unique ID
               title: `${applicantName}`,
               start: entry.date, // Full timestamp of the interview
-              textColor: "#559cda",
-              backgroundColor: "#deecff",
+              textColor: "#deecff",
+              backgroundColor: "#559cda",
               entry: entry,
             };
           });

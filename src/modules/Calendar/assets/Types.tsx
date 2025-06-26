@@ -21,7 +21,7 @@ export interface CalendarStoreType {
   currentDate: any;
   filterDepartmentIds: number[];
   filterCompanyId: number[];
-  filterInterviewer: number[],
+  filterInterviewer: number[];
   details: EventDetails;
 
   setDetails(any: EventDetails): void;
@@ -57,10 +57,12 @@ export interface RescheduleStoreType {
   date: Date;
   time: Date;
   interviewer: string;
+  readyToUpdate: boolean;
 
   setDate(date: Date): void;
   setTime(time: Date): void;
   setInterviewer(int: string): void;
+  setReadyToUpdate: (ready: boolean) => void;
 }
 
 export interface MonthYearStoreType {

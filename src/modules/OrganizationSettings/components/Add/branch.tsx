@@ -5,7 +5,7 @@ import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 import { AlertType } from "../../assets/Enum";
 type AddBranchProps = {
   code: string;
@@ -38,13 +38,12 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
     },
   });
 
-  const { companies } = useFetchOrganizationSettings();
+  const { useCompanies } = useFetchOrganization();
+  const { data } = useCompanies();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addBranch", addBranch.values);
-    if (alert === AlertType.saved) {
-      addBranch.reset();
-    }
+    if (alert === AlertType.saved) addBranch.reset();
   }, [addBranch.values, alert]);
 
   const closeAddRow = () => {
@@ -108,7 +107,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
             <div className="relative">
               <Select
                 radius={8}
-                data={companies.data?.items.map((items: any) => ({
+                data={data?.items.map((items: any) => ({
                   value: String(items.id),
                   label: items.name,
                 }))}
@@ -119,7 +118,7 @@ export default function AddBranch(addOrg: boolean): DataTableColumn<BranchType>[
                 placeholder="Select Company"
                 error={addBranch.values.company.name === "" ? "Company is Required" : undefined}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = companies.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addBranch.setFieldValue("company.id", selectedItem.id);
                     addBranch.setFieldValue("company.name", selectedItem.name);

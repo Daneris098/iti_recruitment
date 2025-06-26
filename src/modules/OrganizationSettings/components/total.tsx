@@ -1,4 +1,4 @@
-import { useFetchOrganizationSettings } from "../services/data";
+import { useFetchOrganization } from "../services/data";
 import { Panel } from "../assets/Enum";
 
 type TotalRecords = {
@@ -11,14 +11,14 @@ type TotalRecords = {
 };
 
 export default function useTotalRecords(): TotalRecords {
-  const { branches, companies, departments, divisions, positions, sections } = useFetchOrganizationSettings();
+  const { useBranches, useCompanies, useDepartments, useDivisions, usePositions, useSections } = useFetchOrganization();
 
   return {
-    [Panel.branch]: branches.data?.total!,
-    [Panel.companyList]: companies.data?.total!,
-    [Panel.departments]: departments.data?.total!,
-    [Panel.division]: divisions.data?.total!,
-    [Panel.positionLevel]: positions.data?.total!,
-    [Panel.section]: sections.data?.total!,
+    [Panel.branch]: useBranches().data?.total!,
+    [Panel.companyList]: useCompanies().data?.total!,
+    [Panel.departments]: useDepartments().data?.total!,
+    [Panel.division]: useDivisions().data?.total!,
+    [Panel.positionLevel]: usePositions().data?.total!,
+    [Panel.section]: useSections().data?.total!,
   };
 }

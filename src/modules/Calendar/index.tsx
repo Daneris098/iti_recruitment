@@ -38,15 +38,16 @@ import { useSharedApplicantStore } from "../Shared/store";
 import React, { useEffect } from "react";
 
 export default function index() {
-  const { interviewer, date } = useRescheduleStore();
+  const { date } = useRescheduleStore();
   const { setIsViewApplicant, isViewApplicant } = ApplicantStore();
   const { selectedApplicant } = useSharedApplicantStore();
 
   const { setOnViewEvent, setOnViewResched, setEventInfo, eventInfo, setOnViewFilter, setOnMonthYear, currentDate, setCurrentDate, setDetails } = useCalendarStore();
   const calendarRef = React.useRef<FullCalendar>(null);
-  const [publicId, setPublicId] = React.useState<string>();
   const [dateStart, setDateStart] = React.useState<Date>();
   const { data, isError, isLoading, refetch } = useCalendar();
+
+  const [newEvent, setNewEvent] = React.useState<{ id: string; title: string; bg: string }>({ id: "", title: "", bg: "" });
 
   const handleEventClick = (clickInfo: EventClickArg) => {
     const ev = clickInfo.event._def;
@@ -70,10 +71,16 @@ export default function index() {
     }
 
     setEventInfo({ ...clickInfo.event._def });
-    setPublicId(clickInfo.event.id);
     setDateStart(clickInfo.event.start!);
+    setNewEvent({
+      id: clickInfo.event.id,
+      title: clickInfo.event.title,
+      bg: clickInfo.event.backgroundColor,
+    });
     setOnViewEvent(true);
   };
+
+  // console.log(newEvent);
 
   const handleSubmitUpdate = () => {
     const api = calendarRef!.current?.getApi() as CalendarApi;
@@ -82,15 +89,15 @@ export default function index() {
     // Adding Event
     api.addEvent({
       id: createEventId(),
-      title: interviewer,
+      title: newEvent.title,
       start: date,
-      textColor: "#fec001",
-      backgroundColor: "#fff0c0",
+      textColor: "",
+      backgroundColor: newEvent.bg,
     });
 
     // Delete Event
     if (date != dateStart) {
-      const event = api.getEventById(publicId!);
+      const event = api.getEventById(newEvent.id!);
       if (event) event.remove();
     }
 

@@ -5,7 +5,7 @@ import { useForm } from "@mantine/form";
 import { OrganizationSettingsStore } from "../../store";
 import { useEffect } from "react";
 import { IconCaretDownFilled, IconCircleMinus, IconPencil } from "@tabler/icons-react";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 import { AlertType } from "../../assets/Enum";
 type AddSectionProps = {
   code: string;
@@ -41,7 +41,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
     },
   });
 
-  const { divisions, departments } = useFetchOrganizationSettings();
+  const { useDivisions, useDepartments } = useFetchOrganization();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("addSection", addSection.values);
@@ -111,7 +111,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
             <div className="relative">
               <Select
                 radius={8}
-                data={divisions.data?.items.map((division: any) => ({
+                data={useDivisions().data?.items.map((division: any) => ({
                   value: String(division.id),
                   label: division.name,
                 }))}
@@ -122,7 +122,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
                 placeholder="Select Division"
                 error={addSection.values.division.name === "" ? "Division is required" : null}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addSection.setFieldValue("division.id", selectedItem.id);
                     addSection.setFieldValue("division.name", selectedItem.name);
@@ -147,7 +147,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
             <div className="relative">
               <Select
                 radius={8}
-                data={departments.data?.items.map((division: any) => ({
+                data={useDepartments().data?.items.map((division: any) => ({
                   value: String(division.id),
                   label: division.name,
                 }))}
@@ -158,7 +158,7 @@ export default function AddSection(addOrg: boolean): DataTableColumn<SectionType
                 placeholder="Select Division"
                 error={addSection.values.department.name === "" ? "Department is required" : null}
                 onChange={(value) => {
-                  const selectedItem: { id: number; name: string } = departments.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+                  const selectedItem: { id: number; name: string } = useDepartments().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
                   if (selectedItem) {
                     addSection.setFieldValue("department.id", selectedItem.id);
                     addSection.setFieldValue("department.name", selectedItem.name);

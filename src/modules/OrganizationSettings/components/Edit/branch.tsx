@@ -4,7 +4,7 @@ import { IconCaretDownFilled, IconCircleMinus } from "@tabler/icons-react";
 import { OrganizationSettingsStore } from "../../store";
 import { useForm } from "@mantine/form";
 import { useEffect } from "react";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 
 type EditBranchProps = {
   code: string;
@@ -41,7 +41,9 @@ export default function EditBranch({ record }: { record: BranchType }) {
     },
   });
 
-  const { companies } = useFetchOrganizationSettings();
+  const { useCompanies } = useFetchOrganization();
+
+  const { data: companies } = useCompanies();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editBranch", editBranch.values);
@@ -66,7 +68,7 @@ export default function EditBranch({ record }: { record: BranchType }) {
         />
         <Select
           radius={8}
-          data={companies.data?.items.map((items: any) => ({
+          data={companies?.items.map((items: any) => ({
             value: String(items.id),
             label: items.name,
           }))}
@@ -77,7 +79,7 @@ export default function EditBranch({ record }: { record: BranchType }) {
           placeholder="Select Company"
           value={String(editBranch.values.company.id)}
           onChange={(value) => {
-            const selectedItem: { id: number; name: string } = companies.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+            const selectedItem: { id: number; name: string } = companies?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
             if (selectedItem) {
               editBranch.setFieldValue("company.id", selectedItem.id);
               editBranch.setFieldValue("company.name", selectedItem.name);

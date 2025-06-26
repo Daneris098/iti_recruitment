@@ -3,7 +3,7 @@ import { IconCaretDownFilled, IconCircleMinus } from "@tabler/icons-react";
 import { OrganizationSettingsStore } from "../../store";
 import { SectionType } from "../../assets/Types";
 import { useForm } from "@mantine/form";
-import { useFetchOrganizationSettings } from "../../services/data";
+import { useFetchOrganization } from "../../services/data";
 import { useEffect } from "react";
 
 type EditSectionProps = {
@@ -44,7 +44,7 @@ export default function EditSection({ record }: { record: SectionType }) {
     },
   });
 
-  const { divisions, departments } = useFetchOrganizationSettings();
+  const { useDivisions, useDepartments } = useFetchOrganization();
 
   useEffect(() => {
     OrganizationSettingsStore.getState().updateForm("editSection", editSection.values);
@@ -68,7 +68,7 @@ export default function EditSection({ record }: { record: SectionType }) {
       />
       <Select
         radius={8}
-        data={divisions.data?.items.map((division: any) => ({
+        data={useDivisions().data?.items.map((division: any) => ({
           value: String(division.id),
           label: division.name,
         }))}
@@ -79,7 +79,7 @@ export default function EditSection({ record }: { record: SectionType }) {
         placeholder="Select Division"
         value={String(editSection.values.division.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = divisions.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = useDivisions().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editSection.setFieldValue("division.id", selectedItem.id);
             editSection.setFieldValue("division.name", selectedItem.name);
@@ -88,7 +88,7 @@ export default function EditSection({ record }: { record: SectionType }) {
       />
       <Select
         radius={8}
-        data={departments.data?.items.map((department: any) => ({
+        data={useDepartments().data?.items.map((department: any) => ({
           value: String(department.id),
           label: department.name,
         }))}
@@ -99,7 +99,7 @@ export default function EditSection({ record }: { record: SectionType }) {
         placeholder="Select Department"
         value={String(editSection.values.department.id)}
         onChange={(value) => {
-          const selectedItem: { id: number; name: string } = departments.data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
+          const selectedItem: { id: number; name: string } = useDepartments().data?.items.find((item: any) => item.id.toString() === value) as { id: number; name: string };
           if (selectedItem) {
             editSection.setFieldValue("department.id", selectedItem.id);
             editSection.setFieldValue("department.name", selectedItem.name);
