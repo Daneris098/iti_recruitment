@@ -158,11 +158,17 @@ export const useLoadTimeStore = create<LoadTimeState>()((set) => ({
 interface ApplicantChoiceState {
     transferredPositionName: string | null;
     setTransferredPositionName: (value: string | null) => void;
+
+    transferredDepartmentId: number | null;
+    setTransferredDepartmentId: (value: number | null) => void;
 }
 
 export const useChoiceStore = create<ApplicantChoiceState>((set) => ({
     transferredPositionName: null,
     setTransferredPositionName: (value) => set({ transferredPositionName: value }),
+
+    transferredDepartmentId: null,
+    setTransferredDepartmentId: (value) => set({ transferredDepartmentId: value }),
 }));
 
 

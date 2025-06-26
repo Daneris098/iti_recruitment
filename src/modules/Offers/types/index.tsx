@@ -112,11 +112,14 @@ export enum TABSKey {
 
 //#region SORT
 export interface SortState {
-  columnAccessor: string;
-  direction: "asc" | "desc";
+  columnAccessor: keyof JobOffersColumns | string;
+  direction: 'asc' | 'desc';
   sortedRecords: JobOffersColumns[];
-
-  setSort: (column: string, records: JobOffersColumns[]) => void;
+  setSort: (
+    column: keyof JobOffersColumns | string,
+    records: JobOffersColumns[],
+    directionOverride?: 'asc' | 'desc'
+  ) => void;
   setRecords: (records: JobOffersColumns[]) => void;
 }
 

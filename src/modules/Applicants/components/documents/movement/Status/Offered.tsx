@@ -13,12 +13,12 @@ import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplic
 
 export default function OfferedStatus() {
 
-    const setDepartmentName = useDepartmentStore((state) => state.setDepartmentName);
+    const setDepartmentNameJob = useDepartmentStore((state) => state.setDepartmentName);
     const setDivisionName = useDivisionStore((state) => state.setDivisionName)
     const {
         setJobOpenings,
         setSelectedOpening,
-        // setDepartmentName,
+        setDepartmentName,
     } = useJobOpeningPositionStore()
     const { data: positionLevels } = useViewPositionLevels();
     const { data: orgDepartments } = useViewDepartments();
@@ -47,9 +47,35 @@ export default function OfferedStatus() {
     const transferredPosition = useChoiceStore.getState().transferredPositionName;
     const positionsApplied = usePositionApplied((state) => state.firstPositionApplied);
     const getPositionId = usePositionApplied((s) => s.positionId);
+    const setTransferredDepartmentId = useChoiceStore((state) => state.setTransferredDepartmentId);
 
-    // const departmentName = useDepartmentStore((state) => state.departmentName);
-    // const divisionName = useDivisionStore((state) => state.divisionName)
+    useEffect(() => {
+        if (!jobOpenings?.length) return;
+
+        const findMatchByPosition = (pos: string | null | undefined) => {
+            if (!pos) return null;
+            return jobOpenings.find(
+                (job) => job.position.trim().toLowerCase() === pos.trim().toLowerCase()
+            );
+        };
+
+        let matched = findMatchByPosition(transferredPosition);
+        if (!matched && positionsApplied) {
+            matched = findMatchByPosition(positionsApplied);
+        }
+
+        if (matched) {
+            setTransferredDepartmentId(matched.department);
+            setPosition(matched.position);
+            setPositionId(Number(matched.id));
+            setDepartment(matched.departmentName);
+            setDepartmentId(matched.department);
+            setDivision(matched.divisionName); // 
+
+            // Optionally setDivisionId if you have it
+            // setDivisionId(matched.divisionId);
+        }
+    }, [transferredPosition, positionsApplied, jobOpenings]);
 
     useEffect(() => {
         if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) return;
@@ -70,6 +96,7 @@ export default function OfferedStatus() {
             value: deps.id,
             label: deps.name
         }));
+
         setDepartments(departments);
 
         const divisions = compDivisions.map((divs: any) => ({
@@ -82,8 +109,9 @@ export default function OfferedStatus() {
 
     useEffect(() => {
         if (jobOpenings && jobOpenings.length > 0) {
-            setOpenings(jobOpenings); // store locally if needed
+            setOpenings(jobOpenings);
             setDepartmentName(jobOpenings[0].departmentName);
+            setDepartmentId(Number(jobOpenings?.[0]?.id));
             setDivisionName(jobOpenings[0].divisionName);
         }
 
@@ -92,25 +120,33 @@ export default function OfferedStatus() {
             setPositionId(getPositionLevels[0].value);
         }
 
-        if (getDivisions.length > 0) {
+        if (getDivisions.length > 0 && !division) {
             setDivision(getDivisions[0].label);
             setDivisionId(getDivisions[0].value);
             setDivisionName(getDivisions[0].label);
         }
 
-        if (getPaymentSchemes.length > 0) {
+        if (getPaymentSchemes.length > 0 && !getSalaryTypes) {
             setSalaryTypes(getPaymentSchemes[0].label);
             setPaymentSchemeId(getPaymentSchemes[0].value);
         }
-    }, [jobOpenings, getPositionLevels, getDepartments, getDivisions, getPaymentSchemes]);
+    }, [
+        jobOpenings,
+        getPositionLevels,
+        getDepartments,
+        getDivisions,
+        getPaymentSchemes,
+    ]);
 
     const {
         setDivision, setDepartment,
+        department, division,
         amount, setAmount, setPosition,
         getSalaryTypes, setSalaryTypes,
         setPositionId, setDepartmentId,
         setDivisionId, setPaymentSchemeId,
     } = useDropDownOfferedStore();
+
 
     // Independent Combobox hooks
     const positionCombobox = useCombobox();
@@ -130,22 +166,19 @@ export default function OfferedStatus() {
     const divisionCombobox = useCombobox({
         onDropdownClose: () => divisionCombobox.resetSelectedOption(),
     })
+
     useEffect(() => {
         if (openings) {
             setJobOpenings(openings);
 
             const selected = openings.find((job) => job.id === getPositionId);
             setSelectedOpening(selected ?? null);
-            setDepartmentName(selected?.departmentName ?? null);
+            setDepartmentNameJob(selected?.departmentName ?? null);
         }
     }, [openings, getPositionId]);
     if (!positionLevels || !orgDepartments || !compDivisions || !paymentSchemes || !openings) {
         return <div>Loading...</div>
     }
-    const selectedOpening = jobOpenings?.find(
-        (job) => job.id === getPositionId
-    );
-
 
     return (
         <div>
@@ -155,7 +188,7 @@ export default function OfferedStatus() {
                 {/* Position Dropdown */}
                 <div>
                     <h3 className="font-medium text-[#6D6D6D] text-[15px] pb-1 poppins">
-                        Position <span className="text-[#F14336]">*</span>
+                        Position<span className="text-[#F14336]">*</span>
                     </h3>
                     <Combobox store={positionCombobox} withinPortal={false}>
                         <Combobox.Target>
@@ -204,9 +237,9 @@ export default function OfferedStatus() {
                         <Combobox.Target>
                             <TextInput
                                 disabled
-                                // value={departmentName || ""}
+                                value={department || ""}
                                 // value={openings?.[getPositionId ?? 0]?.departmentName}
-                                value={selectedOpening?.departmentName || ""}
+                                // value={selectedOpening?.departmentName || ""}
                                 onChange={(e) => setDepartment(e.currentTarget.value)}
                                 onFocus={() => departmentCombobox.openDropdown()}
                                 rightSection={<IconChevronDown size={16} />}
@@ -250,8 +283,8 @@ export default function OfferedStatus() {
                     <Combobox.Target>
                         <TextInput
                             disabled
-                            // value={divisionName || ""}
-                            value={openings?.[0]?.divisionName}
+                            value={division || ""}
+                            // value={openings?.[0]?.divisionName}
                             onChange={(e) => setDivision(e.currentTarget.value)}
                             onFocus={() => divisionCombobox.openDropdown()}
                             rightSection={<IconChevronDown size={16} />}

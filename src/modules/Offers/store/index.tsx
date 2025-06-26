@@ -11,15 +11,16 @@ export const useJobOfferStore = create<JobOffersStore>((set) => ({
 }));
 
 //#region SORT
-export const useSortStore = create<SortState>((set, get) => ({
-  columnAccessor: "id",
+export const useJobOfferSortStore = create<SortState>((set, get) => ({
+  columnAccessor: "applicantName",
   direction: "asc",
   sortedRecords: [],
 
-  setSort: (column, records) => {
+  setSort: (column, records, directionOverride) => {
     set((state) => {
       const newDirection =
-        state.columnAccessor === column && state.direction === "asc" ? "desc" : "asc";
+        directionOverride ??
+        (state.columnAccessor === column && state.direction === "asc" ? "desc" : "asc");
 
       const sorted = sortBy(records, column);
       const updatedRecords = newDirection === "desc" ? sorted.reverse() : sorted;
@@ -37,7 +38,8 @@ export const useSortStore = create<SortState>((set, get) => ({
     const sorted = sortBy(records, columnAccessor);
     set({ sortedRecords: direction === "desc" ? sorted.reverse() : sorted });
   },
-}))
+}));
+
 
 //#region FILTER
 // For Filtering

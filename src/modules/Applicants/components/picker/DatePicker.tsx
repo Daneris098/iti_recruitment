@@ -56,7 +56,7 @@ const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ label, value, onChang
               onChange(date ? DateTimeUtils.dateDashToDefaultAddDay(date.toISOString()) : null)
               setOpened(false); // Close the calendar
             }}
-            minDate={new Date()}
+            // minDate={new Date()}
           />
         </Popover.Dropdown>
       </Popover>

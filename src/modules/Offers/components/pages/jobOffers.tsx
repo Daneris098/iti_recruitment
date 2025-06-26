@@ -6,7 +6,6 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useStatusFilterStore } from "@modules/Shared/store";
 import Filter from "@modules/Offers/components/filter/Filter";
-import { IconFile, IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useApplicantIdStore } from "@modules/Applicants/store";
 import PDFModal from "@modules/Offers/components/modal/pdfModal";
 import { checkStatus } from "@modules/Offers/components/columns/Columns";
@@ -14,11 +13,12 @@ import { useApplicants } from "@modules/Shared/hooks/useSharedApplicants";
 import jobOfferColumns from "@modules/Offers/components/columns/Columns";
 import FilterDrawer from "@modules/Offers/components/filter/FilterDrawer";
 import { PDFViewer } from "@modules/Shared/components/pdfViewer/PDFViewer";
-import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
+import { IconFile, IconFileCheck, IconFileX } from "@tabler/icons-react";
 import { useSharedViewAcceptedOffer } from "@modules/Shared/api/useSharedUserService";
 import { STATUS_MAP, APPLICANT_FIELDS, JobOffersColumns } from "@modules/Shared/types";
-import { useJobOfferStore, useSortStore, FilterStore } from "@src/modules/Offers/store";
 import { TabKey, PDFProps, JobOfferRecord, Row, TABSKey, ExtendedPDFProps } from "@modules/Offers/types";
+import { getApplicantPDFPath, getPendingApplicantPDFPath } from "@modules/Shared/utils/PdfViewer/pdfUtils";
+import { useJobOfferStore, FilterStore, useJobOfferSortStore as useSortStore } from "@src/modules/Offers/store";
 import {
     OF, FOUND_IN,
     PAGE, PAGE_SIZE,
@@ -27,7 +27,6 @@ import {
     LABEL_PENDING, LABEL_ACCEPTED,
     DATE_TRANSACTION, DATE_FORMAT,
     STATUS, ATTACHMENTS, LABEL_OFFERS,
-    // CURSOR_NOT_ALLOWED, CURSOR_POINTER,
     BASE_COLUMNS_WITH_STATUS_ATTACHMENTS,
     DEFAULT_PAGE_COUNT, DEFAULT_PAGE_NUMBER,
     LABEL_ARCHIVED, BASE_COLUMNS_WITH_STATUS,
@@ -132,14 +131,14 @@ export default function index() {
     };
 
     //#region STATE & STORE
-    const { sortedRecords, setSort } = useSortStore();
+    const { columnAccessor, direction, setSort, sortedRecords, setRecords } = useSortStore();
     const { activeTab, setActiveTab } = FilterStore();
     const { records, loadCandidates } = useJobOfferStore();
     const [selectedRow, setSelectedRow] = useState<Partial<PDFProps> | null>(null);
 
     //#endregion
     const filteredRecords = filterRecords(activeTab!, sortedRecords.length > 0 ? sortedRecords : records);
-    const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
+    // const paginatedRecords = filteredRecords.slice((page - 1) * pageSize, page * pageSize);
 
     const createOfferMap = (acceptedOffers: { applicantId: number, offer: any[] }[]) => {
         return acceptedOffers.reduce((map, { applicantId, offer }) => {
@@ -221,6 +220,7 @@ export default function index() {
         const applicantsWithOffers = mergeApplicantsWithOffers(sharedApplicants.applicants, offerMap);
         const transformedColumns = transformApplicants(applicantsWithOffers);
         loadCandidates(transformedColumns);
+        setRecords(transformedColumns);
         setHasLoaded(true);
     }, [sharedApplicants?.applicants, acceptedOffers, hasLoaded]);
 
@@ -313,7 +313,11 @@ export default function index() {
                                     <DataTable
                                         className="poppins text-[#6D6D6D] font-normal text-[16px]"
                                         columns={enhancedColumns}
-                                        records={filterRecords(activeTab!, paginatedRecords)}
+                                        sortStatus={{ columnAccessor, direction }}
+                                        onSortStatusChange={({ columnAccessor, direction }) =>
+                                            setSort(String(columnAccessor), records, direction)
+                                        }
+                                        records={filterRecords(activeTab!, sortedRecords.slice((page - 1) * pageSize, page * pageSize))}
                                         highlightOnHover
                                         onRowClick={({ record }) => {
                                             const isPending = record.status?.toLowerCase() === LABEL_PENDING;

@@ -1,4 +1,6 @@
 {/*This is basically the component for Update Status Button inside the view applicant under the "current status" text*/ }
+import { toast } from 'sonner';
+import { useEffect, useState } from "react";
 import { useHiredStartDate } from "@modules/Shared/store";
 import { useStatusStore } from "@src/modules/Applicants/store";
 import { Divider, Textarea, Menu, Button } from "@mantine/core";
@@ -19,8 +21,7 @@ import TransferApplicantLoader from "@modules/Applicants/components/documents/mo
 import { useCreateHired, usePOSTArchive, usePOSTForInterview } from "@modules/Shared/hooks/useSharedApplicants";
 import { useDropDownOfferedStore, useCloseModal, useFeedbacksStore, useFileUploadStore } from "@modules/Applicants/store";
 import { HandleStatusClickTypes, StatusType, statusTransitions, ApplicantMovementStatus } from "@modules/Applicants/types";
-import { useEffect, useState } from "react";
-import { toast } from 'sonner';
+
 interface UpdateStatusProps {
   Status: string;
   onClose: () => void;
@@ -51,6 +52,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
   const {
     interviewTime,
     comments, setComments,
+    setAmount,
     interviewStages, interviewerId,
     interviewLocation, interviewDate,
     getInterviewer, interviewStagesId
@@ -106,7 +108,7 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
             File: file,
             Feedback: feedback,
             ApplicantFeedback: applicantFeedback,
-            Comments: comments,
+            Comment: comments,
           });
           toast.success("Feedback Saved!");
           setIsFeedbackSent(true);
@@ -397,6 +399,8 @@ export default function UpdateStatus({ onClose, Status }: UpdateStatusProps) {
                 setIsUpdateStatusButtonModalOpen(false);
                 setSelectedStatus(null);
                 setIsModalOpen(false);
+                setComments("");
+                setAmount(0);
               }}
                 className="bg-transparent text-[#559CDA] px-6 py-1 rounded-lg border-[#559CDA] font-medium text-[14px] poppins">
                 Cancel
