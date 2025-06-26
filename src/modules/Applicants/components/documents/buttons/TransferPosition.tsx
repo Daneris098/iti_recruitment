@@ -1,16 +1,16 @@
 import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
+import { useAmountStore } from "@src/modules/Shared/store";
 import { useApplicantIdStore } from "@src/modules/Shared/store";
 import ModalWrapper from "@modules/Applicants/components/modal/modalWrapper";
 import { useCloseModal, useDropDownOfferedStore } from "@modules/Applicants/store";
 import { JobOpenings, ApplicantTransfereeName, Slot } from "@modules/Shared/types";
-import { IconDots, IconRefresh, IconX, IconChevronDown, IconPlus } from "@tabler/icons-react";
 import TransferredPosition from "@modules/Applicants/components/alerts/Transferred";
 import { useTransferPositionLookup } from "@modules/Shared/hooks/useSharedApplicants";
-import { useJobOpeningStore, useSelectedApplicantsStore, useChoiceStore } from "@modules/Shared/store";
 import { Button, Divider, Textarea, TextInput, Menu, Pagination } from "@mantine/core";
 import { useTransferApplicantPosition } from "@modules/Shared/hooks/useSharedApplicants";
-import { useAmountStore } from "@src/modules/Shared/store";
+import { IconDots, IconRefresh, IconX, IconChevronDown, IconPlus } from "@tabler/icons-react";
+import { useJobOpeningStore, useSelectedApplicantsStore, useChoiceStore } from "@modules/Shared/store";
 
 export default function TransferPosition({ Applicant_Name, onClose }: ApplicantTransfereeName) {
 
@@ -34,6 +34,7 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
     const [filterType, setFilterType] = useState<"position" | "company">("position");
 
     const transferredPosition = useChoiceStore.getState().transferredPositionName;
+    const setTransferredDepartmentId = useChoiceStore((state) => state.setTransferredDepartmentId);
 
     const handlePageChange = (newPage: number) => {
         setLocalPage(newPage);
@@ -197,13 +198,17 @@ export default function TransferPosition({ Applicant_Name, onClose }: ApplicantT
                         }
 
                         try {
+                            // Store department ID in Zustand
+                            setTransferredDepartmentId(fullVacancy.department.id ?? 0);
+
+                            // Call mutation
                             await transferPosition({
                                 applicantId: applicantId,
                                 position: {
                                     id: selectedSlot.id,
                                     name: selectedSlot.position,
                                     salary: setDesiredSalary,
-                                    choice: { id: 1, name: selectedSlot.position },
+                                    choice: { id: 3, name: selectedSlot.position },
                                     availableDateStart: fullVacancy.vacancyDuration.dateStart,
                                     companyId: selectedSlot.company?.id ?? 0,
                                     departmentId: fullVacancy.department.id ?? 0,
