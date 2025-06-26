@@ -47,7 +47,7 @@ export default function index() {
 
   //#region STORES
   const { setPage } = usePaginationStore();
-  const { sortedRecords, setSort, setRecords, columnAccessor, direction } = useSortStore();
+  const { sortedRecords, setSort, setRecords, columnAccessor, direction, records } = useSortStore();
   const { isViewApplicant, setIsViewApplicant } = useCloseModal();
 
   const sortStatus = {
@@ -278,7 +278,8 @@ export default function index() {
             columns={extendedColumn}
             sortStatus={sortStatus}
             onSortStatusChange={({ columnAccessor, direction }) =>
-              setSort(columnAccessor, getApplicants?.applicants || [], direction)
+              // setSort(columnAccessor, getApplicants?.applicants || [], direction)
+              setSort(String(columnAccessor), records, direction)
             }
             records={sortedRecords.slice((page - 1) * pageSize, page * pageSize)}
             onRowClick={({ record }) => handleRowClick(record)}

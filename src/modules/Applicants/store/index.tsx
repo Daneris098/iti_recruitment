@@ -47,40 +47,53 @@ interface ApplicantId {
 // for sorting table
 interface SortState {
   columnAccessor: string;
-  direction: "asc" | "desc";
-  sortedRecords: Applicant[];
-
-  setSort: (column: string, records: Applicant[], direction?: "asc" | "desc") => void;
-  setRecords: (records: Applicant[]) => void;
+  direction: 'asc' | 'desc';
+  sortedRecords: any[];
+  records: any[]; // ✅ Added here
+  setSort: (
+    column: string,
+    records: any[],
+    directionOverride?: 'asc' | 'desc'
+  ) => void;
+  setRecords: (records: any[]) => void;
 }
 
 export const useSortStore = create<SortState>((set, get) => ({
-  columnAccessor: "applicantName",
-  direction: "asc",
+  columnAccessor: 'applicantName',
+  direction: 'asc',
   sortedRecords: [],
+  records: [],
 
   setSort: (column, records, directionOverride) => {
     set((state) => {
+      const columnKey = String(column);
       const newDirection =
         directionOverride ??
-        (state.columnAccessor === column && state.direction === "asc" ? "desc" : "asc");
+        (state.columnAccessor === columnKey && state.direction === "asc"
+          ? "desc"
+          : "asc");
 
-      const sorted = sortBy(records, column);
+      const sorted = sortBy(records, columnKey);
       const updatedRecords = newDirection === "desc" ? sorted.reverse() : sorted;
 
       return {
-        columnAccessor: column,
+        columnAccessor: columnKey,
         direction: newDirection,
         sortedRecords: updatedRecords,
+        records,
       };
     });
   },
 
   setRecords: (records) => {
     const { columnAccessor, direction } = get();
-    const sorted = sortBy(records, columnAccessor);
-    set({ sortedRecords: direction === "desc" ? sorted.reverse() : sorted });
+    const sorted = sortBy(records, String(columnAccessor)); // ✅ convert here too
+    set({
+      records,
+      sortedRecords: direction === "desc" ? sorted.reverse() : sorted,
+    });
   },
+
 }));
 // end of sorting table
 
